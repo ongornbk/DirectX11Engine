@@ -90,13 +90,23 @@ Task::~Task()
 	switch(m_type)
 	{
 	case Task::Type::TASKGOTOPOINT:
+	{
 		if(m_content.taskGotoPoint)
 		delete m_content.taskGotoPoint;
 		break;
+	}
 	case Task::Type::TASKPATROL:
+	{
 		if (m_content.taskPatrol)
 			delete m_content.taskPatrol;
 		break;
+	}
+		case Task::Type::TASKFOLLOW:
+		{
+		if (m_content.taskFollow)
+			delete m_content.taskFollow;
+		break;
+	}
 
 	}
 }
@@ -114,38 +124,25 @@ bool Task::Update()
 		return m_content.taskPatrol->Update();
 		break;
 	}
+		case Task::Type::TASKFOLLOW:
+	{
+		return m_content.taskFollow->Update();
+		break;
+	}
 	}
 	return false;
 }
-//
-//
-//
-//
-//
-//bool TaskGotoPoint::Update()
-//{
 
-//}
-//
-//bool TaskPatrol::Update()
-//{
-//	return false;
-//}
-//
-//bool TaskFollow::Update()
-//{
-//	return false;
-//}
+
+
+
 //
 //bool TaskAttack::Update()
 //{
 //	return false;
 //}
 //
-//bool TaskWander::Update()
-//{
-//	return false;
-//}
+
 //
 //bool TaskFleeFromUnit::Update()
 //{
@@ -237,7 +234,7 @@ bool TaskPatrol::Update()
 		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
 		rotation += 180.0f;
 		rotation /= 22.5f;
-		rotation = 20 - rotation;//to handle
+		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
 		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed, cos(angle*rotation)*object->m_speed*-1.0F);
 		return true;
@@ -272,7 +269,7 @@ bool TaskFollow::Update()
 		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
 		rotation += 180.0f;
 		rotation /= 22.5f;
-		rotation = 20 - rotation;//to handle
+		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
 		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed, cos(angle*rotation)*object->m_speed*-1.0F);
 		return true;

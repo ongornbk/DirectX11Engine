@@ -17,7 +17,6 @@ namespace
 
 Model::Model() : BoundingSphere()
 {
-	//m_position       = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	m_velocity         = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_lastPosition     = XMFLOAT3ZERO;
 	Center             = XMFLOAT3ZERO;
@@ -149,7 +148,7 @@ void Model::SetCollisionRadius(float radius)
 void Model::SetPosition(float x, float y,float z)
 {
 	Center.x = x;
-	Center.y = y-(m_lastsize/2.0f);
+	Center.y =-= (m_lastsize/2.0f);
 	Center.z = z;
 }
 

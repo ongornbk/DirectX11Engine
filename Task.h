@@ -53,7 +53,6 @@ struct Task
 			TaskPatrol*        taskPatrol;
 			TaskFollow*        taskFollow;
 			//TaskAttack*        taskAttack;
-			//TaskWander*        taskWander;
 			//TaskFleeFromUnit*  taskFleeFromUnit;
 			//TaskFleeFromPoint* taskFleeFromPoint;
 			//TaskDefendUnit*    taskDefendUnit;
