@@ -529,7 +529,6 @@ GRAPHICS EnableAlphaBlending(false);
 			int mousePosition[2];
 			UserInterfaceGame::GetMousePosition(mousePosition[0],mousePosition[1]);
 			FXMVECTOR point = XMVectorSet(mousePosition[0], mousePosition[1], 0.0f, 0.0f);
-			//Global::GetInstance()->m_lastSelectedModel = nullptr;
 			for (auto i = vec.begin(); i < vec.end(); ++i)
 			{
 				switch ((*i).m_type)
@@ -545,7 +544,7 @@ GRAPHICS EnableAlphaBlending(false);
 						model->SetRenderingStance(validateRendering(model->GetPosition()));
 						if (model->Contains(point))
 						{
-							model->GoBack();
+							//model->GoBack(); //Mouse stops units ..... usefull bugg
 							if (model->Contains(point))
 							{
 								model->m_flags[1] = true;
