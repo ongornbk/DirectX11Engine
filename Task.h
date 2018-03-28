@@ -1,7 +1,9 @@
 #pragma once
 #include <d3d11_1.h>
 #include <directxmath.h>
+#include <atomic>
 
+using std::atomic;
 using namespace DirectX;
 
 #pragma region
@@ -18,7 +20,7 @@ public:
 	XMFLOAT3 destination;
 };
 
-struct TaskPatrol
+struct TaskPatrol  //aint workin correctly
 {
 	TaskPatrol();
 	~TaskPatrol() = default;
@@ -30,6 +32,13 @@ private:
 	bool m_target;
 };
 
+struct TaskFollow
+{
+#define FOLLOWDISTANCE 200.0f
+	bool          Update();
+	Unit*         object;
+	atomic<Unit*> target;
+};
 
 
 struct Task
@@ -42,7 +51,7 @@ struct Task
 		{
 			TaskGotoPoint*     taskGotoPoint;
 			TaskPatrol*        taskPatrol;
-			//TaskFollow*        taskFollow;
+			TaskFollow*        taskFollow;
 			//TaskAttack*        taskAttack;
 			//TaskWander*        taskWander;
 			//TaskFleeFromUnit*  taskFleeFromUnit;
