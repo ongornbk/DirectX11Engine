@@ -139,7 +139,9 @@
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Area.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraControl.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="SettingsC.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteModel.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceMainMenu.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="Walls.h" />
     <ClInclude Include="WICTextureLoader.h" />
@@ -196,7 +200,9 @@
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Area.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
     <ClCompile Include="DXManager.cpp" />
@@ -224,6 +230,7 @@
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="SettingsC.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -243,6 +250,7 @@
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceMainMenu.cpp" />
+    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Walls.cpp" />

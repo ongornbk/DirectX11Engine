@@ -154,6 +154,10 @@ bool Font::LoadFontData(char* filename)
 	return true;
 }
 
+void Font::ReleaseFontData()
+{
+}
+
 
 
 bool Font::LoadTexture(ID3D11Device *device, WCHAR *filename)
@@ -173,5 +177,9 @@ bool Font::LoadTexture(ID3D11Device *device, WCHAR *filename)
 	}
 
 	return true;
+}
+
+void Font::ReleaseTexture()
+{
 }
 
