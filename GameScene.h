@@ -17,8 +17,8 @@ public:
 private:
 	//Player* m_player;
 	//Sprite* m_background;
-	Model*      m_hero;
-	Model**     m_enemy;
+	Unit*      m_hero;
+	Unit**     m_enemy;
 	XMFLOAT4X4  m_worldMatrix;
 };
 

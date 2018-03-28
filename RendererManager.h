@@ -1,5 +1,4 @@
 #pragma once
-#include "Model.h"
 #include "Engine.h"
 #include "Tile.h"
 #include "Unit.h"
@@ -10,6 +9,7 @@
 #pragma region
 class Engine;
 class Model;
+class Unit;
 class UserInterfaceGame;
 class UserInterface;
 struct TileMap;
@@ -21,17 +21,17 @@ extern "C"
 
 enum RenderType
 {
-	MODEL = 0,
-	UNIT  = 1,
-	BOX   = 2
+	UNIT   = 0,
+	MODEL  = 1,
+	BOX    = 2
 };
 
 
 
 	struct RenderObject
 	{
-#define OFFSETMULTIPLIER 1.30f
-#define MINIMALOFFSET 50.0f
+#define OFFSETMULTIPLIER 1.40f
+#define MINIMALOFFSET 5.0f
 
 		union
 		{
@@ -50,6 +50,11 @@ enum RenderType
 		{
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				return m_unit->m_model->m_flags[2];
+				break;
+			}
 			case MODEL:
 			{
 				return m_model->m_flags[2];
@@ -68,6 +73,11 @@ enum RenderType
 		{
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->Block(block);
+				break;
+			}
 			case MODEL:
 			{
 				m_model->Block(block);
@@ -91,6 +101,11 @@ enum RenderType
 			}
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->Center.x -= value;
+				break;
+			}
 			case MODEL:
 			{
 				m_model->Center.x -= value;
@@ -115,6 +130,11 @@ enum RenderType
 			}
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->Center.y -= value;
+				break;
+			}
 			case MODEL:
 			{
 				m_model->Center.y -= value;
@@ -139,6 +159,11 @@ enum RenderType
 			}
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->Center.x += value;
+				break;
+			}
 			case MODEL:
 			{
 				m_model->Center.x += value;
@@ -163,6 +188,11 @@ enum RenderType
 			}
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->Center.y += value;
+				break;
+			}
 			case MODEL:
 			{
 				m_model->Center.y += value;
@@ -181,6 +211,11 @@ enum RenderType
 		{
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->UpdatePosition();
+				break;
+			}
 			case MODEL:
 			{
 				m_model->UpdatePosition();
@@ -193,6 +228,11 @@ enum RenderType
 		{
 			switch (m_type)
 			{
+			case UNIT:
+			{
+				m_unit->m_model->GoBack();
+				break;
+			}
 			case MODEL:
 			{
 				m_model->GoBack();
@@ -220,6 +260,7 @@ public:
 
 	void PushModel(Model* model);
 	void PushBox(CollisionBox* box);
+	void PushUnit(Unit* unit);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
 	void RemoveAllObjects();

@@ -1,12 +1,16 @@
 #include "RendererManager.h"
 #include "Timer.h"
-#include <future>
-#include <mutex>
 #include "SettingsC.h"
 #include "Defines.h"
+#include <future>
+#include <mutex>
 
 using std::mutex;
 
+#pragma region
+class Unit;
+#define UnitPtr Unit*;
+#pragma endregion
 
 namespace
 {
@@ -59,6 +63,14 @@ void RendererManager::PushBox(CollisionBox * box)
 	m_objects.push_back(object);
 }
 
+void RendererManager::PushUnit(Unit * unit)
+{
+	RenderObject object;
+	object.SetRenderType(UNIT);
+	object.m_unit = unit;
+	m_objects.push_back(object);
+}
+
 extern "C"
 {
 
@@ -67,6 +79,17 @@ extern "C"
 			register float f[11];
 			switch (a.m_type)
 			{
+			case RenderType::UNIT:
+			{
+				if (a.m_unit->m_model->m_flags[0])
+				{
+					f[0] = a.m_unit->m_model->Center.x;
+					f[2] = a.m_unit->m_model->Center.y;
+					f[4] = a.m_unit->m_model->Radius;
+				}
+				else return false;
+				break;
+			}
 			case RenderType::MODEL:
 			{
 				if (a.m_model->m_flags[0])
@@ -89,6 +112,17 @@ extern "C"
 			}
 			switch (b.m_type)
 			{
+			case RenderType::UNIT:
+			{
+				if (b.m_unit->m_model->m_flags[0])
+				{
+					f[1] = b.m_unit->m_model->Center.x;
+					f[3] = b.m_unit->m_model->Center.y;
+					f[5] = b.m_unit->m_model->Radius;
+				}
+				else return false;
+				break;
+			}
 			case RenderType::MODEL:
 			{
 				if (b.m_model->m_flags[0])
@@ -177,6 +211,17 @@ extern "C"
 			register float f[11];
 			switch (a.m_type)
 			{
+			case RenderType::UNIT:
+			{
+				if (a.m_unit->m_model->m_flags[0])
+				{
+					f[0] = a.m_unit->m_model->Center.x;
+					f[2] = a.m_unit->m_model->Center.y;
+					f[4] = a.m_unit->m_model->Radius;
+				}
+				else return false;
+				break;
+			}
 			case RenderType::MODEL:
 			{
 				if (a.m_model->m_flags[0])
@@ -199,6 +244,17 @@ extern "C"
 			}
 			switch (b.m_type)
 			{
+			case RenderType::UNIT:
+			{
+				if (b.m_unit->m_model->m_flags[0])
+				{
+					f[1] = b.m_unit->m_model->Center.x;
+					f[3] = b.m_unit->m_model->Center.y;
+					f[5] = b.m_unit->m_model->Radius;
+				}
+				else return false;
+				break;
+			}
 			case RenderType::MODEL:
 			{
 				if (b.m_model->m_flags[0])
@@ -453,6 +509,10 @@ extern "C"
 
 			break;
 			}
+			case RenderType::UNIT:
+			{
+				object.m_unit->GetModel()->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
+			}
 		}
 	}
 		m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
@@ -474,6 +534,41 @@ GRAPHICS EnableAlphaBlending(false);
 			{
 				switch ((*i).m_type)
 				{
+				case RenderType::UNIT:
+				{
+
+					if ((*i).m_unit)
+					{
+						(*i).m_unit->Update();
+						Model* model = (*i).m_unit->GetModel();
+						model->Update(dt);
+						model->SetRenderingStance(validateRendering(model->GetPosition()));
+						if (model->Contains(point))
+						{
+							model->GoBack();
+							if (model->Contains(point))
+							{
+								model->m_flags[1] = true;
+								GLOBAL m_lastSelectedModel = model;
+							}
+							else
+							{
+								model->m_flags[1] = false;
+							}
+						}
+						else
+						{
+							model->m_flags[1] = false;
+						}
+
+					}
+					else
+					{
+						vec.erase(i);
+						i--;
+					}
+					break;
+				}
 				case RenderType::MODEL:
 				{
 					if ((*i).m_model)
@@ -556,6 +651,9 @@ void RendererManager::RemoveAllObjects()
 	{
 		switch (object.m_type)
 		{
+		case RenderType::UNIT:
+		delete object.m_unit;
+		break;
 		case RenderType::MODEL:
 			delete object.m_model;
 			break;

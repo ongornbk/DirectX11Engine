@@ -17,7 +17,7 @@ GameScene::GameScene()
 	//m_background = NULL;
 	//memset(&m_entity, NULL, sizeof(m_entity));
 	//XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
-	m_enemy = new Model*[(*(Settings::get()->NUMBER_OF_UNITS))];
+	m_enemy = new Unit*[(*(Settings::get()->NUMBER_OF_UNITS))];
 	m_hero = NULL;
 	//m_enemy = NULL;
 }
@@ -51,7 +51,16 @@ GameScene::~GameScene()
 
 bool GameScene::Initialize()
 {
-	TextureShader* shader = (TextureShader*)(ResourceManager::GetInstance()->GetShaderByName("texture.fx"));
+#pragma region
+#define INITIALIZATION_FAILED { return false; }
+	TextureShader*        shader   = (TextureShader*)(ResourceManager::GetInstance()->GetShaderByName("texture.fx"));
+	ID3D11Device*        _device   = GRAPHICS GetDevice();
+	ID3D11DeviceContext* _context  = GRAPHICS GetDeviceContext();
+	RendererManager*     _renderer = RendererManager::GetInstance();
+	if ((!shader) || (!_device) || (!_context) || (!_renderer)) INITIALIZATION_FAILED
+#pragma endregion
+
+
 	//shader->
 	ModelPaths paths;
 #pragma region
@@ -72,11 +81,13 @@ bool GameScene::Initialize()
 
 	float cora = *Settings::get()->COLLISSION_RADIUS;
 
-		m_hero = new Model();
-		m_hero->InitializeSpriteModel(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(), shader, paths, 100.0f);
-		m_hero->SetCollisionRadius(cora);
-		//m_hero->m_flags[2] = false;
-		RendererManager::GetInstance()->PushModel(m_hero);
+	m_hero = new Unit();
+		m_hero->Initialize(_device, _context, shader, paths, 100.0f,cora,XMFLOAT3(0.0F,0.0F,0.0F),false);
+		m_hero->SetWalkingStance(Unit::WalkingStance::RUN);
+		m_hero->SetSpeed(250.0f);
+
+
+		_renderer->PushUnit(m_hero);
 
 		paths.RUN = L"enemy_walk";
 		paths.TOWNNEUTRAL = L"enemy_townneutral";
@@ -85,12 +96,11 @@ bool GameScene::Initialize()
 		for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
 		{
 			float range = (float)(*Settings::get()->NUMBER_OF_UNITS);
-			m_enemy[i] = new Model();
-			m_enemy[i]->InitializeSpriteModel(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(), shader, paths, 100.0f);
-			m_enemy[i]->SetPosition(random(-range, range), random(-range, range));
-			m_enemy[i]->SetRotation(random(0, 15));
-			m_enemy[i]->SetCollisionRadius(cora);
-			RendererManager::GetInstance()->PushModel(m_enemy[i]);
+			m_enemy[i] = new Unit();
+			m_enemy[i]->Initialize(_device, _context, shader, paths, 100.0f,cora, XMFLOAT3(random(-range, range), random(-range, range), 0.0F));
+			m_enemy[i]->SetWalkingStance(Unit::WalkingStance::WALK);
+			m_enemy[i]->SetSpeed(150.0f);
+			_renderer->PushUnit(m_enemy[i]);
 		}
 	if (shader == NULL)
 	{
@@ -141,30 +151,7 @@ void GameScene::Update()
 
 	if (input == NULL) return;
 
-	if (input->IsKeyHit(DIK_SPACE))
-	{
-		Model* tempA = Global::GetInstance()->m_lastSelectedModel;
-		if (tempA)
-		{
-			if (tempA != m_hero)
-			{
-				Model* tempB = m_hero;
-				m_hero = tempA;
-				Global::GetInstance()->m_lastSelectedModel = tempB;
-			}
-		}
-	}
-
 	XMFLOAT3 xvm = m_hero->GetPosition();
-
-	XMFLOAT3 mfv;
-
-
-
-	float aspectratio = Settings::GetAspectRatio();
-	float speed, speed1;
-#define angle 3.14f / 8
-	float rotation = 0.0f, rotation1;
 
 	int xm, ym;
 	UserInterfaceGame::GetMousePosition(xm, ym);
@@ -180,82 +167,61 @@ void GameScene::Update()
 		//mfv.y *= mfv.y;
 		if (input->GetMouseState(1) == 128)
 		{
-			m_enemy[i]->SetAnimation(SpriteModel::ModelStance::WALK);
-			speed1 = 120.0f;
-
-			rotation1 = atan2(mep.y - ym, mep.x - xm)*180.0f / 3.141f;
-			rotation1 += 180.0f;
-			rotation1 /= 22.5f;
-			rotation1 = 28 - rotation1;
-			m_enemy[i]->SetRotation((int)rotation1);
-			m_enemy[i]->SetVelocity(sin(3.14F + angle * rotation1)*aspectratio*speed1, cos(angle*rotation1)*speed1*-1.0F);
+			Task* task = new Task();
+			TaskGotoPoint* tgtp = new TaskGotoPoint();
+			tgtp->destination = XMFLOAT3(xm, ym, 0.0f);
+			tgtp->object = m_enemy[i];
+			task->m_content.taskGotoPoint = tgtp;
+			task->m_type = Task::Type::TASKGOTOPOINT;
+			if (input->IsKeyDown(DIK_LSHIFT))
+			{
+				m_enemy[i]->GiveTask(task);
+			}
+			else
+			{
+				m_enemy[i]->SetTask(task);
+			}
 		}
 		else
 		{
-			m_enemy[i]->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-			m_enemy[i]->SetVelocity();
+
 		}
+
+		if (input->IsKeyHit(DIK_SPACE))
+		{
+			Task* task = new Task();
+			TaskPatrol* tgtp = new TaskPatrol();
+			tgtp->pointB = m_hero->GetPosition();
+			tgtp->pointA = m_enemy[i]->GetPosition();
+			tgtp->object = m_enemy[i];
+			task->m_content.taskPatrol = tgtp;
+			task->m_type = Task::Type::TASKPATROL;
+			m_enemy[i]->SetTask(task);
+		}
+
+		else
+		{
+
+		}
+		
 	
 
 	}
-
-	//m_hero->SetVelocity(sin(3.14F + angle * rotation)*aspectratio*speed, cos(angle*rotation)*speed*-1.0F);
-	
-	//}
-	//else
-	//{
-		//m_enemy->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-		//speed1 = 0.0f;
-	
-		
 
 	if (input->GetMouseState(0) == 128)
 	{
-		//bool tempBool = true;
-		Model* tempA = Global::GetInstance()->m_lastSelectedModel;
-		//if (tempA)
-		//{
-		//	//if (tempA != m_hero)
-			//{
-				//if (DistanceBetweenXMFLOAT3(m_hero->GetPosition(), tempA->GetPosition())<100.0f)
-				//{
-			//		Sound* attack = Engine::GetEngine()->CreateSound(L"Attack",100,false);
-			//		attack->Play();
-			//		speed = 0.0f;
-			//		rotation = atan2(ym - xvm.y, xm - xvm.x)*180.0f / 3.141f;
-			//		rotation += 180.0f;
-			//		rotation /= 22.5f;
-			//		rotation = 20 - rotation;
-			//		m_hero->SetRotation((int)rotation);
-			//		m_hero->PlayAnimation(SpriteModel::ModelStance::ATTACK_1);
-			//		tempBool = false;
-					//goto ENDFUNCTION;
-			//	}
-				
-			//}
-		//}
-		//if (tempBool)
-		//{
-			m_hero->SetAnimation(SpriteModel::ModelStance::RUN);
-			speed = 280.0f;
-			rotation = atan2(ym - xvm.y, xm - xvm.x)*180.0f / 3.141f;
-			rotation += 180.0f;
-			rotation /= 22.5f;
-			rotation = 20 - rotation;
-			m_hero->SetRotation((int)rotation);
-	//	}
-		//ENDFUNCTION:
+		Task* task = new Task();
+		TaskGotoPoint* tgtp = new TaskGotoPoint();
+		tgtp->destination = XMFLOAT3(xm, ym, 0.0f);
+		tgtp->object = m_hero;
+		task->m_content.taskGotoPoint = tgtp;
+		task->m_type = Task::Type::TASKGOTOPOINT;
+		m_hero->SetTask(task);
 	}
 	else
 	{
-		m_hero->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-		speed = 0.0f;
+
 	}
-
-
-
-	m_hero->SetVelocity(sin(3.14F + angle * rotation)*aspectratio*speed, cos(angle*rotation)*speed*-1.0F);
-	//m_enemy->SetVelocity(sin(3.14F + angle * rotation1)*aspectratio*speed1, cos(angle*rotation1)*speed1*-1.0F);
 
 
 
@@ -264,7 +230,7 @@ void GameScene::Update()
 		PostQuitMessage(1);
 	}
 	
-	Camera::GetCurrentCamera()->SetPosition(xvm.x,xvm.y);
+	CAMERA SetPosition(xvm.x,xvm.y);
 
 }
 
