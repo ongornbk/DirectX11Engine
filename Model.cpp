@@ -148,7 +148,7 @@ void Model::SetCollisionRadius(float radius)
 void Model::SetPosition(float x, float y,float z)
 {
 	Center.x = x;
-	Center.y =-= (m_lastsize/2.0f);
+	Center.y -= (m_lastsize/2.0f);
 	Center.z = z;
 }
 
