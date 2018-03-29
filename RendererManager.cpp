@@ -34,6 +34,7 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 	m_ui->m_interface.m_game = new UserInterfaceGame(engine, shader);
 	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+100.0f;
 	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 100.0f;
+
 }
 
 
@@ -477,44 +478,32 @@ extern "C"
 		//float distanceX = 0.0f, distanceY = 0.0f, distance = 0.0f;
 		//float collisionSum = 0.0f;
 		//float offset = 0.0f;
-		for (auto &&object : m_objects)
-		{
-			switch (object.m_type)
-			{
-			case RenderType::MODEL:
-			{
-				//if (object.m_model->m_enabledRendering)
-				//{
-					//if (_previous)
-					//{
-						//distanceX    = ((_previous->m_model->Center.x) - (object.m_model->Center.x));
-						//distanceY    = ((_previous->m_model->Center.y) - (object.m_model->Center.y));
-						//distance     = sqrt((distanceX*distanceX) + (distanceY*distanceY));
-						//collisionSum = (_previous->m_model->Radius + object.m_model->Radius);
-						//if (distance < collisionSum)
-					//	{
-							//offset = distance - collisionSum;
-							//object.m_model->Center.x -= sqrt((offset*offset) - (distanceY*distanceY))/2.0f;
-							//_previous->m_model->Center.x += sqrt((offset*offset) - (distanceY*distanceY)) / 2.0f;
-							//_previous->m_model->UpdatePosition();
-						//	object.m_model->UpdatePosition();
-					//	}
-					//}
 
-				//	object.m_model->m_selectedStance = object.m_model->Contains(cursorPosition);
+
+	
+			for (auto &&object : m_objects)
+			{
+				switch (object.m_type)
+				{
+				case RenderType::MODEL:
+				{
+
 					object.m_model->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
-					//_previous = &object;
-				//}
-			
 
-			break;
+
+
+					break;
+				}
+				case RenderType::UNIT:
+				{
+					object.m_unit->GetModel()->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
+				}
+				}
 			}
-			case RenderType::UNIT:
-			{
-				object.m_unit->GetModel()->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
-			}
-		}
-	}
+		
+	
+
+		
 		m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
 m_shader->End(deviceContext);
@@ -641,7 +630,6 @@ void RendererManager::Update()
 	std::reverse(m_objects.begin(), m_objects.end());
 	sort(m_objects.begin(), m_objects.end(), SortByX());
 	sort(m_objects.begin(), m_objects.end(), SortByY());
-
 
 }
 
