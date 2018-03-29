@@ -48,16 +48,13 @@ public:
 private:
 
 	XMFLOAT4X4   m_worldMatrix;
-	XMFLOAT3     m_lastPosition;
-//	XMVECTOR     m_position;
-	XMFLOAT3     m_velocity;
+	XMFLOAT3     m_floats[2];
+   
 	SpriteModel* m_spriteModel;
 
 public:
 	bool m_flags[4];
-	//bool         m_enabledRendering;
-	//bool         m_selectedStance;
-	//bool         m_pushable;
+
 
 
 };

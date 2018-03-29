@@ -117,6 +117,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
 	m_camera->InitializeProjectionMatrix((float)XM_PI / 4.0f,Settings::GetAspectRatio(), SCREEN_NEAR, SCREEN_DEPTH);
 	m_camera->InitializeOrthoMatrix((*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)), SCREEN_NEAR, SCREEN_DEPTH);
 	m_camera->SetPosition(0.0f, 0.0f, -1.0f);
+	m_cameraControl.SetCurrentCamera(m_camera);
 	m_graphics->Initialize();
 	m_music = CreateSound(L"harrogath", 100.0f, true);
 
@@ -256,6 +257,11 @@ Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 	return sound;
 }
 
+CameraControl * Engine::GetCameraControl()
+{
+	return &m_cameraControl;
+}
+
 
 
 
@@ -289,7 +295,7 @@ void Engine::Update()
 		m_gameComponent->Update();
 	}
 	float dt = Timer::GetDeltaTime();
-	m_camera->Update();
+	m_cameraControl.Update(dt);
 	m_rendererManager->Update();
 	(void)m_input->Update();
 }

@@ -17,8 +17,8 @@ namespace
 
 Model::Model() : BoundingSphere()
 {
-	m_velocity         = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_lastPosition     = XMFLOAT3ZERO;
+	m_floats[0]        = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_floats[1]        = XMFLOAT3ZERO;
 	Center             = XMFLOAT3ZERO;
 	Radius             = COLLISION_DISABLED_OR_NULL;
 	m_spriteModel      = NULL;
@@ -63,18 +63,18 @@ void Model::Update(float dt)
 	{
 		if (!m_spriteModel->IsLocked())
 		{
-			m_lastPosition = Center;
+			m_floats[1] = Center;
 			if (XMVectorGetIntX < 0)
 			{
-				Center.x -= m_velocity.x * dt;
-				Center.y -= m_velocity.y * dt;
+				Center.x -= m_floats[0].x * dt;
+				Center.y -= m_floats[0].y * dt;
 				//	Center.z -= m_velocity.z * dt;
 
 			}
 			else
 			{
-				Center.x += m_velocity.x * dt;
-				Center.y += m_velocity.y * dt;
+				Center.x += m_floats[0].x * dt;
+				Center.y += m_floats[0].y * dt;
 				//Center.z += m_velocity.z * dt;
 			}
 		}
@@ -127,12 +127,12 @@ XMFLOAT3 Model::GetPosition()
 
 XMFLOAT3 Model::GetVelocity()
 {
-	return m_velocity;
+	return m_floats[0];
 }
 
 void Model::GoBack()
 {
-	Center = m_lastPosition;
+	Center = m_floats[1];
 	//XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y, Center.z));
 	//if (m_spriteModel)
 	//{
@@ -159,14 +159,14 @@ void Model::SetPosition(XMFLOAT3 position)
 
 void Model::SetVelocity(float x, float y,float z)
 {
-	m_velocity.x = x;
-	m_velocity.y = y;
-	m_velocity.z = z;
+	m_floats[0].x = x;
+	m_floats[0].y = y;
+	m_floats[0].z = z;
 }
 
 void Model::SetVelocity(XMFLOAT3 velocity)
 {
-	m_velocity = velocity;
+	m_floats[0] = velocity;
 }
 
 void Model::Translate(float x, float y,float z)

@@ -9,6 +9,7 @@
 #include "GlobalUtilities.h"
 #include "RendererManager.h"
 #include "Global.h"
+#include "CameraControl.h"
 
 class RendererManager;
 
@@ -30,6 +31,7 @@ public:
 	Sound* CreateSound(WCHAR* name,float volume);
 	Sound* CreateSound(WCHAR* name,float volume,bool looping); 
 
+	CameraControl* GetCameraControl();
 
 	Graphics* GetGraphics();
 	Input* GetInput();
@@ -49,5 +51,7 @@ private:
 	//temp
 	ResourceManager* m_resourceManager;
 	RendererManager* m_rendererManager;
-	GameComponent* m_gameComponent;
+	GameComponent*   m_gameComponent;
+
+	CameraControl    m_cameraControl;
 };

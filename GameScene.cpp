@@ -86,6 +86,7 @@ bool GameScene::Initialize()
 		m_hero->SetWalkingStance(Unit::WalkingStance::RUN);
 		m_hero->SetSpeed(250.0f);
 
+		ENGINE GetCameraControl()->LockCameraPositionOnUnit(m_hero);
 
 		_renderer->PushUnit(m_hero);
 
@@ -203,6 +204,22 @@ void GameScene::Update()
 		{
 
 		}
+
+		if (input->IsKeyHit(DIK_1))
+		{
+			Task* task = new Task();
+			TaskFollow* tgtp = new TaskFollow();
+			tgtp->object = m_enemy[i];
+			tgtp->target = m_hero;
+			task->m_content.taskFollow = tgtp;
+			task->m_type = Task::Type::TASKFOLLOW;
+			m_enemy[i]->SetTask(task);
+		}
+
+		else
+		{
+
+		}
 		
 	
 
@@ -230,7 +247,7 @@ void GameScene::Update()
 		PostQuitMessage(1);
 	}
 	
-	CAMERA SetPosition(xvm.x,xvm.y);
+	
 
 }
 

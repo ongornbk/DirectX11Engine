@@ -10,7 +10,7 @@ using namespace DirectX;
 class  Unit;
 #pragma endregion
 
-struct TaskGotoPoint
+struct TaskGotoPoint // works correctly ;)
 {
 public:
 	TaskGotoPoint() = default;

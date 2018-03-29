@@ -30,8 +30,6 @@ enum RenderType
 
 	struct RenderObject
 	{
-#define OFFSETMULTIPLIER 1.40f
-#define MINIMALOFFSET 5.0f
 
 		union
 		{
@@ -93,27 +91,21 @@ enum RenderType
 
 		void TranslateXMinus(float offset) noexcept
 		{
-			float value = (offset*OFFSETMULTIPLIER);
-			if ((value) > MINIMALOFFSET)
-			{
-				value = 0;
-				return;
-			}
 			switch (m_type)
 			{
 			case UNIT:
 			{
-				m_unit->m_model->Center.x -= value;
+				m_unit->m_model->Center.x -= offset;
 				break;
 			}
 			case MODEL:
 			{
-				m_model->Center.x -= value;
+				m_model->Center.x -= offset;
 				break;
 			}
 			case BOX:
 			{
-				m_box->Center.x -= value;
+				m_box->Center.x -= offset;
 				break;
 			}
 			}
@@ -122,27 +114,22 @@ enum RenderType
 
 		void TranslateYMinus(float offset) noexcept
 		{
-			float value;
-			if ((value = (offset*OFFSETMULTIPLIER)) > MINIMALOFFSET)
-			{
-				value = 0;
-				return;
-			}
+
 			switch (m_type)
 			{
 			case UNIT:
 			{
-				m_unit->m_model->Center.y -= value;
+				m_unit->m_model->Center.y -= offset;
 				break;
 			}
 			case MODEL:
 			{
-				m_model->Center.y -= value;
+				m_model->Center.y -= offset;
 				break;
 			}
 			case BOX:
 			{
-				m_box->Center.y -= value;
+				m_box->Center.y -= offset;
 				break;
 			}
 			}
@@ -151,27 +138,22 @@ enum RenderType
 
 		void TranslateXPlus(float offset) noexcept
 		{
-			float value;
-			if ((value = (offset*OFFSETMULTIPLIER)) > MINIMALOFFSET)
-			{
-				value = 0;
-				return;
-			}
+
 			switch (m_type)
 			{
 			case UNIT:
 			{
-				m_unit->m_model->Center.x += value;
+				m_unit->m_model->Center.x += offset;
 				break;
 			}
 			case MODEL:
 			{
-				m_model->Center.x += value;
+				m_model->Center.x += offset;
 				break;
 			}
 			case BOX:
 			{
-				m_box->Center.x += value;
+				m_box->Center.x += offset;
 				break;
 			}
 			}
@@ -180,27 +162,22 @@ enum RenderType
 
 		void TranslateYPlus(float offset) noexcept
 		{
-			float value;
-			if ((value = (offset*OFFSETMULTIPLIER)) > MINIMALOFFSET)
-			{
-				value = 0;
-				return;
-			}
+
 			switch (m_type)
 			{
 			case UNIT:
 			{
-				m_unit->m_model->Center.y += value;
+				m_unit->m_model->Center.y += offset;
 				break;
 			}
 			case MODEL:
 			{
-				m_model->Center.y += value;
+				m_model->Center.y += offset;
 				break;
 			}
 			case BOX:
 			{
-				m_box->Center.y += value;
+				m_box->Center.y += offset;
 				break;
 			}
 			}
