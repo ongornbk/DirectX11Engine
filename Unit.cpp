@@ -23,6 +23,7 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	m_model = new Model();
 	m_model->InitializeSpriteModel(device, deviceContext, shader, paths, modelsize);
 	m_model->Radius = collision;
+	m_model->Center = position;
 	m_wanderingFlag = wander;
 }
 

@@ -190,17 +190,17 @@ extern "C"
 					else
 					{
 
-						a.GoBack();
-						b.GoBack();
+					//	a.GoBack();
+					//	b.GoBack();
 					}
 				}
-				a.Block();
-				b.Block();
+			//	a.Block();
+			//	b.Block();
 			}
 			else
 			{
-				a.Block(false);
-				b.Block(false);
+				//a.Block(false);
+				//b.Block(false);
 			}
 			return f[2] > f[3];
 		}
@@ -290,16 +290,16 @@ extern "C"
 						{
 							a.TranslateYPlus(f[10]);
 							b.TranslateYMinus(f[10]);
-							//a.Block();
-							//b.Block();
+
 						}
 						else
 						{
 							a.TranslateYMinus(f[10]);
 							b.TranslateYPlus(f[10]);
-							//a.Block();
-							//b.Block();
+
 						}
+
+
 						//a.Update();
 						//b.Update();
 					}
@@ -326,17 +326,17 @@ extern "C"
 					}
 					else
 					{
-						//a.Block();
-						//b.Block();
-						a.GoBack();
-						b.GoBack();
+					//	a.Block();
+					//	b.Block();
+					//	a.GoBack();
+					//	b.GoBack();
 					}
 				}
 			}
 			else
 			{
-				//a.Block(false);
-				//b.Block(false);
+			//	a.Block(false);
+			//	b.Block(false);
 			}
 			return  f[0] > f[1];
 		}
@@ -637,9 +637,10 @@ void RendererManager::Update()
 	{
 		std::this_thread::sleep_for(1ms);
 	}
+
+	std::reverse(m_objects.begin(), m_objects.end());
 	sort(m_objects.begin(), m_objects.end(), SortByX());
 	sort(m_objects.begin(), m_objects.end(), SortByY());
-
 
 
 }

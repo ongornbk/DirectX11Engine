@@ -73,12 +73,12 @@ enum RenderType
 			{
 			case UNIT:
 			{
-				m_unit->m_model->Block(block);
+			//	m_unit->m_model->Block(block);
 				break;
 			}
 			case MODEL:
 			{
-				m_model->Block(block);
+			//	m_model->Block(block);
 				break;
 			}
 			case BOX:

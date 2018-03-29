@@ -84,7 +84,7 @@ bool GameScene::Initialize()
 	m_hero = new Unit();
 		m_hero->Initialize(_device, _context, shader, paths, 100.0f,cora,XMFLOAT3(0.0F,0.0F,0.0F),false);
 		m_hero->SetWalkingStance(Unit::WalkingStance::RUN);
-		m_hero->SetSpeed(250.0f);
+		m_hero->SetSpeed(255.0f);
 
 		ENGINE GetCameraControl()->LockCameraPositionOnUnit(m_hero);
 
@@ -96,11 +96,15 @@ bool GameScene::Initialize()
 
 		for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
 		{
+			XMFLOAT3 vlt;
+			vlt.x = random(-1000.0f, 1000.0f);
+			vlt.y = random(-800.0f, 800.0f);
+			vlt.z = 0.0f;
 			float range = (float)(*Settings::get()->NUMBER_OF_UNITS);
 			m_enemy[i] = new Unit();
-			m_enemy[i]->Initialize(_device, _context, shader, paths, 100.0f,cora, XMFLOAT3(random(-range, range), random(-range, range), 0.0F));
+			m_enemy[i]->Initialize(_device, _context, shader, paths, 100.0f,cora, vlt);
 			m_enemy[i]->SetWalkingStance(Unit::WalkingStance::WALK);
-			m_enemy[i]->SetSpeed(150.0f);
+			m_enemy[i]->SetSpeed(140.0f);
 			_renderer->PushUnit(m_enemy[i]);
 		}
 	if (shader == NULL)
