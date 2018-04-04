@@ -10,7 +10,6 @@
 #include "RendererManager.h"
 #include "Global.h"
 #include "CameraControl.h"
-#include "Console.h"
 
 class RendererManager;
 
@@ -53,6 +52,6 @@ private:
 	ResourceManager* m_resourceManager;
 	RendererManager* m_rendererManager;
 	GameComponent*   m_gameComponent;
-	Console*         m_console;
+
 	CameraControl    m_cameraControl;
 };

@@ -10,24 +10,6 @@ using namespace DirectX;
 class  Unit;
 #pragma endregion
 
-struct TaskFleeFromPoint
-{
-	TaskFleeFromPoint() = default;
-	~TaskFleeFromPoint() = default;
-	bool     Update();
-	Unit*    object;
-	XMFLOAT3 pointA;
-};
-
-struct TaskFleeFromUnit
-{
-	TaskFleeFromUnit() = default;
-	~TaskFleeFromUnit() = default;
-	bool          Update();
-	Unit*         object;
-	atomic<Unit*> target;
-};
-
 struct TaskGotoPoint // works correctly ;)
 {
 public:
@@ -70,9 +52,9 @@ struct Task
 			TaskGotoPoint*     taskGotoPoint;
 			TaskPatrol*        taskPatrol;
 			TaskFollow*        taskFollow;
-			TaskFleeFromUnit*  taskFleeFromUnit;
-			TaskFleeFromPoint* taskFleeFromPoint;
 			//TaskAttack*        taskAttack;
+			//TaskFleeFromUnit*  taskFleeFromUnit;
+			//TaskFleeFromPoint* taskFleeFromPoint;
 			//TaskDefendUnit*    taskDefendUnit;
 		};
 	
@@ -81,9 +63,9 @@ struct Task
 			TASKGOTOPOINT = 0,
 			TASKPATROL = 1,
 			TASKFOLLOW = 2,
-			TASKFLEEFROMUNIT = 3,
-			TASKFLEEFROMPOINT = 4,
-			TASKATTACK = 5,
+			TASKATTACK = 3,
+			TASKFLEEFROMUNIT = 4,
+			TASKFLEEFROMPOINT = 5,
 			TASKDEFENDUNIT = 6
 		};
 	

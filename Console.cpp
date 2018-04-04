@@ -17,15 +17,7 @@ static Console* m_instance;
 
 Console::Console()
 {
-	if (m_instance)
-	{
-		delete m_instance;
-	}
 	m_instance = this;
-	if (m_hConsole)
-	{
-		delete m_hConsole;
-	}
 	m_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
@@ -40,6 +32,21 @@ void Console::Print(std::string value)
 }
 
 void Console::Println(std::string value)
+{
+	cout << value << endl;
+}
+
+void Console::Print(WCHAR * value)
+{
+	cout << value;
+}
+
+void Console::Println(WCHAR * value)
+{
+	cout << value << endl;
+}
+
+void Console::Println(int value)
 {
 	cout << value << endl;
 }

@@ -145,7 +145,6 @@
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="Console.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="DXManager.h" />
@@ -206,7 +205,6 @@
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
-    <ClCompile Include="Console.cpp" />
     <ClCompile Include="DXManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />

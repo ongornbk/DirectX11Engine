@@ -36,8 +36,6 @@ public:
 	friend struct TaskGotoPoint;
 	friend struct TaskPatrol;
 	friend struct TaskFollow;
-	friend struct TaskFleeFromPoint;
-	friend struct TaskFleeFromUnit;
 	friend struct RenderObject;
 	friend struct SortByX;
 	friend struct SortByY;

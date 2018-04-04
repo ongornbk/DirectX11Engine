@@ -1,6 +1,6 @@
 #pragma once
 
-#define CONSOLE_COLOR_RED 12u
+
 
 namespace COLORS
 {
@@ -16,10 +16,4 @@ namespace COLORS
 	static float DARKGRAY[4]       = { 0.662745f, 0.662745f, 0.662745f, 0.00f };
 	static float FIREBRICK[4]      = { 0.698039f, 0.133333f, 0.133333f, 0.00f };
 	static float SILVER[4]         = { 0.7529411f, 0.7529411f, 0.7529411f, 0.00f };
-
-
-
-
-
-
 }

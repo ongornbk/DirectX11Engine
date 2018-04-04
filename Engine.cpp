@@ -47,11 +47,6 @@ Engine::~Engine(void)
 		delete m_global;
 		m_global = NULL;
 	}
-	if (m_console)
-	{
-		delete m_console;
-		m_console = NULL;
-	}
 	if (m_gameComponent)
 	{
 	//	delete m_gameComponent;
@@ -68,7 +63,6 @@ Engine::Engine(void)
 	m_input = NULL;
 	m_gameComponent = NULL;
 	m_global = NULL;
-	m_console = NULL;
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)
@@ -87,7 +81,6 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
 #define LOADSOUND   m_resourceManager->LoadSoundResource(
 #define END );
 #pragma endregion
-	m_console = new Console();
 	m_global = new Global();
 	m_resourceManager = ResourceManager::GetInstance();
 
@@ -147,8 +140,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
 	}
 	else
 	{
-		CONSOLE SetColor(CONSOLE_COLOR_RED);
-		CONSOLE Println("Engine : No Game Component");
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << "Engine : No Game Component" << endl;
 	}
 	
 
