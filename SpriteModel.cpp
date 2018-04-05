@@ -2,7 +2,8 @@
 #include "Timer.h"
 #include "Engine.h"
 
-#define SPRITEMODEL_DEFAULT_ROTATION 0.0f;
+#define SPRITEMODEL_DEFAULT_ROTATION       0.0f
+#define SPRITEMODEL_DEFAULT_ROTATION_SPEED 0.01f
 
 SpriteModel::SpriteModel(float size)
 {
@@ -211,7 +212,45 @@ void SpriteModel::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMa
 
 void SpriteModel::SetRotation(int rotation)
 {
-	m_rotation = (float)(rotation % (int)ROTATIONS);
+	(this->m_rotation) = (float)(rotation % (int)ROTATIONS);
+	//float rotation0 = (float)(rotation % (int)ROTATIONS);
+	//switch (rotation0 > (this->m_rotation))
+	//{
+	//case true:
+	//{
+	//	switch ((this->m_rotation) >= (ROTATIONS - 1.0f))
+	//	{
+	//	case true:
+	//	{
+	//		(this->m_rotation) = 0.0f;
+	//		break;
+	//	}
+	//	case false:
+	//	{
+	//		(this->m_rotation) += SPRITEMODEL_DEFAULT_ROTATION_SPEED;
+	//		break;
+	//	}
+	//	}
+	//	break;
+	//}
+	//case false:
+	//{
+	//	switch ((this->m_rotation) <= 0.0f)
+	//	{
+	//	case true:
+	//	{
+	//		(this->m_rotation) = (ROTATIONS - 1.0f);
+	//		break;
+	//	}
+	//	case false:
+	//	{
+	//		(this->m_rotation) -= SPRITEMODEL_DEFAULT_ROTATION_SPEED;
+	//		break;
+	//	}
+	//	}
+	//	break;
+	//}
+	//}
 }
 
 void SpriteModel::PlayAnimation(ModelStance animation)
