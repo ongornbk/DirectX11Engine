@@ -70,6 +70,11 @@ XMFLOAT3 Unit::GetPosition()
 	return m_model->Center;
 }
 
+float Unit::GetSpeed()
+{
+	return m_speed;
+}
+
 void Unit::SetSpeed(float speed)
 {
 	m_speed = speed;

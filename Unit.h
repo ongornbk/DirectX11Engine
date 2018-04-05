@@ -27,6 +27,7 @@ public:
 	XMFLOAT3 GetPoint();
 	float    GetCollisionRadius();
 	XMFLOAT3 GetPosition();
+	float    GetSpeed();
 	void SetSpeed(float speed = 0.0f);
 	WalkingStance GetWalkingStance();
 	void SetWalkingStance(WalkingStance stance);

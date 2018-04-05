@@ -528,7 +528,7 @@ GRAPHICS EnableAlphaBlending(false);
 		{
 			int mousePosition[2];
 			UserInterfaceGame::GetMousePosition(mousePosition[0],mousePosition[1]);
-			FXMVECTOR point = XMVectorSet(mousePosition[0], mousePosition[1], 0.0f, 0.0f);
+			FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
 			for (auto i = vec.begin(); i < vec.end(); ++i)
 			{
 				switch ((*i).m_type)

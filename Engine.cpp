@@ -79,6 +79,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
 #define LOADTEXTURE m_resourceManager->LoadTextureResource(m_graphics->GetDevice(),
 #define LOADSHADER  m_resourceManager->LoadShaderResource(m_graphics->GetDevice(), hwnd, 
 #define LOADSOUND   m_resourceManager->LoadSoundResource(
+#define GETSHADER  (TextureShader*)ResourceManager::GetInstance()->GetShaderByName(
 #define END );
 #pragma endregion
 	m_global = new Global();
@@ -105,7 +106,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
     LOADSOUND   L"../../content/Sounds/Music/harrogath.ogg"         END
 	LOADSOUND   L"../../content/Sounds/FX/Attack.ogg"               END
 	//m_resourceManager->LoadSoundResource(L"Sounds/FX/wha.ogg");
-	TextureShader* shader = (TextureShader*)(ResourceManager::GetInstance()->GetShaderByName("texture.fx"));
+	TextureShader* shader = GETSHADER "texture.fx"                  END
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
 	InitializeTemplates();

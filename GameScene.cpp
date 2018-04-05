@@ -174,7 +174,7 @@ void GameScene::Update()
 		{
 			Task* task = new Task();
 			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination = XMFLOAT3(xm, ym, 0.0f);
+			tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
 			tgtp->object = m_enemy[i];
 			task->m_content.taskGotoPoint = tgtp;
 			task->m_type = Task::Type::TASKGOTOPOINT;
@@ -233,7 +233,7 @@ void GameScene::Update()
 	{
 		Task* task = new Task();
 		TaskGotoPoint* tgtp = new TaskGotoPoint();
-		tgtp->destination = XMFLOAT3(xm, ym, 0.0f);
+		tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
 		tgtp->object = m_hero;
 		task->m_content.taskGotoPoint = tgtp;
 		task->m_type = Task::Type::TASKGOTOPOINT;
