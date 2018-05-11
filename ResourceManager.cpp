@@ -9,9 +9,10 @@
 using namespace GlobalUtilities;
 
 #pragma region
-#define TEXTURES_LOCATION "../../content/textures/"
-#define RESOURCES_LOCATION "../../Resources/Resources.file"
-#define DIRT_LOCATION "../../content/textures/tiles/dirt.png"
+#define TEXTURES_LOCATION   "../../content/textures/"
+#define RESOURCES_LOCATION  "../../Resources/Resources.file"
+#define DIRT_LOCATION       "../../content/textures/tiles/dirt.png"
+#define TILES_LOCATION      "../../content/textures/tiles/"
 #pragma endregion
 
 #pragma comment(lib,"urlmon.lib")
@@ -34,6 +35,7 @@ namespace
 
 static HRESULT GetItemByUrl(string url, string path)
 {
+
 	HRESULT result = URLDownloadToFile(NULL, url.c_str(), path.c_str(), 0, NULL);
 	return result;
 }
@@ -53,9 +55,8 @@ ResourceManager::ResourceManager()
 	{
 		ss = istringstream(obj);
 		getline(ss, token, '@');
-		getline(ss, token2, '@');
+		getline(ss, token2);
 		m_resourcesURLS[token] = token2;
-		cout << token << endl << token2 << endl << endl;
 	}
 
 
@@ -125,7 +126,7 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 	{
 		wstring ws(textureFileName);
 		string str(ws.begin(), ws.end());
-		if (!GetItemByUrl(m_resourcesURLS[str],str))
+		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str],str)))
 		{
 			
 			if (!resourceTexture->Load(device, textureFileName))
@@ -133,12 +134,8 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 				delete resourceTexture;
 				SetConsoleTextAttribute(hConsole, 12);
 				cout << "ResourceManager : Unable To Download" << endl;
-				Sleep(3000);
+				Sleep(1000);
 				return;
-			}
-			else
-			{
-				cout << "ResourceManager : Successfully Loaded from URL" << endl;
 			}
 		}
 		else
