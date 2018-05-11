@@ -56,13 +56,14 @@ Engine::~Engine(void)
 
 Engine::Engine(void)
 {
-	m_graphics = NULL;
+	m_graphics        = NULL;
 	m_rendererManager = NULL;
-	m_camera = NULL;
+	m_camera          = NULL;
 	m_resourceManager = NULL;
-	m_input = NULL;
-	m_gameComponent = NULL;
-	m_global = NULL;
+	m_input           = NULL;
+	m_gameComponent   = NULL;
+	m_global          = NULL;
+	m_framework       = NULL;
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)
@@ -73,7 +74,7 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 
 
-bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd)
+bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
 #pragma region
 #define LOADTEXTURE m_resourceManager->LoadTextureResource(m_graphics->GetDevice(),
@@ -261,6 +262,11 @@ Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 CameraControl * Engine::GetCameraControl()
 {
 	return &m_cameraControl;
+}
+
+FrameWork * Engine::GetFrameWork()
+{
+	return m_framework;
 }
 
 

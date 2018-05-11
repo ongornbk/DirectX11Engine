@@ -1,6 +1,8 @@
 #include "Graphics.h"
 #include "SettingsC.h"
 
+
+
 Graphics::Graphics(void)
 {
 	m_dxManager = NULL;
@@ -54,6 +56,8 @@ void Graphics::Release()
 {
 	m_dxManager->Release();
 }
+
+
 
 DXManager * Graphics::GetDXManager()
 {

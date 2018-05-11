@@ -8,7 +8,7 @@ using GlobalUtilities::Translate;
 namespace
 {
 	Shader* kkk;
-	WCHAR* str[7] = { L"w",L"b",L"h",L"d",L"n",L"y",L"z"};
+	//WCHAR* str[7] = { L"w",L"b",L"h",L"d",L"n",L"y",L"z"};
 	float hhhh = -900.0f;
 	float kjh = 28.0f;
 }
@@ -22,7 +22,7 @@ Player::Player(void)
 
 Player::~Player(void)
 {
-	delete[] str;
+	//delete[] str;
 }
 
 void Player::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader)

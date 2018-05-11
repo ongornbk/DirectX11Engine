@@ -7,7 +7,7 @@ namespace
 
 Global::Global()
 {
-	m_lastSelectedModel = NULL;
+	m_lastSelectedUnit = NULL;
 	m_instance = this;
 }
 

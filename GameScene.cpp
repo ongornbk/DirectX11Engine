@@ -161,10 +161,12 @@ void GameScene::Update()
 	int xm, ym;
 	UserInterfaceGame::GetMousePosition(xm, ym);
 
+	Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
+
 	//m_enemy->SetAnimation(SpriteModel::ModelStance::WALK);
 //	speed1 = 100.0f;
 	XMFLOAT3 mep;
-
+	/*
 	for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
 	{
 		mep = m_enemy[i]->GetPosition();
@@ -227,6 +229,85 @@ void GameScene::Update()
 		
 	
 
+	}
+
+	*/
+
+	if (input->GetMouseState(0) == 128)
+	{
+		
+		Task* task = new Task();
+		TaskGotoPoint* tgtp = new TaskGotoPoint();
+		tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
+		tgtp->object = m_hero;
+		task->m_content.taskGotoPoint = tgtp;
+		task->m_type = Task::Type::TASKGOTOPOINT;
+		m_hero->SetTask(task);
+	}
+	else
+	{
+
+	}
+
+	if (selectedunit)
+	{
+		mep = selectedunit->GetPosition();
+		//mfv.x *= mfv.x;
+		//mfv.y *= mfv.y;
+		if (input->GetMouseState(1) == 128)
+		{
+			Task* task = new Task();
+			TaskGotoPoint* tgtp = new TaskGotoPoint();
+			tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
+			tgtp->object = selectedunit;
+			task->m_content.taskGotoPoint = tgtp;
+			task->m_type = Task::Type::TASKGOTOPOINT;
+			if (input->IsKeyDown(DIK_LSHIFT))
+			{
+				selectedunit->GiveTask(task);
+			}
+			else
+			{
+				selectedunit->SetTask(task);
+			}
+		}
+		else
+		{
+
+		}
+
+		if (input->IsKeyHit(DIK_SPACE))
+		{
+			Task* task = new Task();
+			TaskPatrol* tgtp = new TaskPatrol();
+			tgtp->pointB = m_hero->GetPosition();
+			tgtp->pointA = selectedunit->GetPosition();
+			tgtp->object = selectedunit;
+			task->m_content.taskPatrol = tgtp;
+			task->m_type = Task::Type::TASKPATROL;
+			selectedunit->SetTask(task);
+		}
+
+		else
+		{
+
+		}
+
+		if (input->IsKeyHit(DIK_1))
+		{
+			Task* task = new Task();
+			TaskFollow* tgtp = new TaskFollow();
+			tgtp->object = selectedunit;
+			tgtp->target = m_hero;
+			task->m_content.taskFollow = tgtp;
+			task->m_type = Task::Type::TASKFOLLOW;
+			selectedunit->SetTask(task);
+		}
+
+		else
+		{
+
+		}
 	}
 
 	if (input->GetMouseState(0) == 128)

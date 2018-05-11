@@ -100,11 +100,13 @@ public:
 	void SetAnimationSpeed(float speed);
 	void PlayAnimation(ModelStance animation);
 	bool IsLocked();
+	void DrawRectangle(ID3D11DeviceContext * deviceContext,Shader* shader,int borderWidth = 1);
 
 private:
 	ID3D11DeviceContext * m_deviceContext;
 	float m_currentFrame;
 	float m_previousFrame;
+
 
 	float         m_animationSpeed;
 	float         m_currentSpeed;

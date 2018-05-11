@@ -1,12 +1,12 @@
 #pragma once
-#include "Model.h"
+#include "Unit.h"
 
 class Global
 {
 public:
 	Global(void);
 	~Global(void);
-	Model * m_lastSelectedModel;
+	Unit* m_lastSelectedUnit;
 	static Global* GetInstance();
 
 };

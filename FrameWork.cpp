@@ -18,6 +18,7 @@ namespace
 FrameWork::FrameWork(void)
 {
 	Instance = this;
+	m_hDC = NULL;
 }
 
 FrameWork::~FrameWork(void)
@@ -41,7 +42,7 @@ bool FrameWork::Initialize(GameComponent* gameComponent)
 
 	Engine::GetEngine()->SetGameComponent(gameComponent);
 
-	if (!Engine::GetEngine()->Initialize(m_hInstance, Engine::GetEngine()->GetGraphics()->GetHwnd()))
+	if (!Engine::GetEngine()->Initialize(m_hInstance, Engine::GetEngine()->GetGraphics()->GetHwnd(),this))
 	{
 		return false;
 	}
@@ -127,6 +128,8 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		PostQuitMessage(0);
 		return false;
 	}
+
+	m_hDC = GetDC(hwnd);
 
 	if (!Engine::GetEngine()->InitializeGraphics(hwnd))
 	{

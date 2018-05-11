@@ -548,7 +548,7 @@ GRAPHICS EnableAlphaBlending(false);
 							if (model->Contains(point))
 							{
 								model->m_flags[1] = true;
-								GLOBAL m_lastSelectedModel = model;
+								GLOBAL m_lastSelectedUnit = (*i).m_unit;
 							}
 							else
 							{
@@ -582,7 +582,7 @@ GRAPHICS EnableAlphaBlending(false);
 							if (model->Contains(point))
 							{
 								model->m_flags[1] = true;
-								GLOBAL m_lastSelectedModel = model;
+								GLOBAL m_lastSelectedUnit = (*i).m_unit;
 							}
 							else
 							{

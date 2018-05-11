@@ -22,4 +22,5 @@ const bool VSYNC_ENABLED = true;
 #define GLOBAL   Global::GetInstance()->
 #define GRAPHICS Engine::GetEngine()->GetGraphics()->
 #define ENGINE Engine::GetEngine()->
+#define FRAMEWORK Engine::GetEngine()->GetFrameWork()->
 #pragma endregion

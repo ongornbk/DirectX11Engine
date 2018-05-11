@@ -10,6 +10,7 @@
 #include "RendererManager.h"
 #include "Global.h"
 #include "CameraControl.h"
+#include "FrameWork.h"
 
 class RendererManager;
 
@@ -20,7 +21,7 @@ public:
 	~Engine(void);
 
 	bool InitializeGraphics(HWND hwnd);
-	bool Initialize(HINSTANCE hInstance, HWND hwnd);
+	bool Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework);
 	void Run();
 
 	void Release();
@@ -32,6 +33,7 @@ public:
 	Sound* CreateSound(WCHAR* name,float volume,bool looping); 
 
 	CameraControl* GetCameraControl();
+	FrameWork* GetFrameWork();
 
 	Graphics* GetGraphics();
 	Input* GetInput();
@@ -43,6 +45,7 @@ private:
 	void Update();
 	void Render();
 
+	FrameWork m_framework;
     Graphics* m_graphics;
 	Global*   m_global;
 	static Engine* m_instance;

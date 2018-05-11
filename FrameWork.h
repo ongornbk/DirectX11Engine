@@ -12,6 +12,7 @@ public:
 
 	bool Initialize(GameComponent* gameComponent);
 	void Run();
+	HDC  GetHDC();
 
 protected:
 private:
@@ -20,4 +21,5 @@ private:
 
 
 	HINSTANCE m_hInstance;
+	HDC       m_hDC;
 };

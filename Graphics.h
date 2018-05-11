@@ -20,6 +20,8 @@ public:
 	void EnableZBuffer(bool enable);
 	void Release();
 
+
+
 	DXManager* GetDXManager();
 	HWND GetHwnd();
 	ID3D11Device* GetDevice();

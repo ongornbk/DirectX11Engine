@@ -272,6 +272,11 @@ bool SpriteModel::IsLocked()
 	return m_stop;
 }
 
+void SpriteModel::DrawRectangle(ID3D11DeviceContext * deviceContext, Shader* shader, int borderWidth)
+{
+	deviceContext->
+}
+
 void SpriteModel::SetAnimation(ModelStance animation, bool lock, bool force)
 {
 
