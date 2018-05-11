@@ -1,1 +1,8 @@
-dirt.png https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png
+dirt.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png
+floor.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/floor.png
+grass.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/grass.png
+grasstofloor@https://github.com/ongornbk/engine-0.1/raw/master/Resources/grasstofloor.png
+hole.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/hole.png
+simplegrass.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/simplegrass.png
+simplestone.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/simplestone.png
+stone.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/stone.png

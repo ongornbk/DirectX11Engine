@@ -34,7 +34,7 @@ namespace
 
 static HRESULT GetItemByUrl(string url, string path)
 {
-	HRESULT result = URLDownloadToFile(NULL, "https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png", path.c_str(), 0, NULL);
+	HRESULT result = URLDownloadToFile(NULL, url.c_str(), path.c_str(), 0, NULL);
 	return result;
 }
 
