@@ -13,6 +13,7 @@
 #include "FrameWork.h"
 
 class RendererManager;
+class FrameWork;
 
 #undef PlaySound
 class Engine
@@ -45,7 +46,7 @@ private:
 	void Update();
 	void Render();
 
-	FrameWork m_framework;
+	FrameWork* m_framework;
     Graphics* m_graphics;
 	Global*   m_global;
 	static Engine* m_instance;

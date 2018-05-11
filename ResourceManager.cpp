@@ -1,21 +1,67 @@
 #include "ResourceManager.h"
 #include "GlobalUtilities.h"
 #include <map>
+#include <urlmon.h>
+#include <sstream>
+#include <fstream>
+#include <streambuf>
 
 using namespace GlobalUtilities;
 
+#pragma region
 #define TEXTURES_LOCATION "../../content/textures/"
+#define RESOURCES_LOCATION "../../Resources/Resources.file"
+#define DIRT_LOCATION "../../content/textures/tiles/dirt.png"
+#pragma endregion
+
+#pragma comment(lib,"urlmon.lib")
+
+#pragma region
+using std::ifstream;
+using std::stringstream;
+using std::streambuf;
+using std::getline;
+using std::istringstream;
+#pragma endregion
 
 ResourceManager* ResourceManager::m_instance = NULL;
 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 namespace
 {
+	map<string, string> m_resourcesURLS;
+}
 
+static HRESULT GetItemByUrl(string url, string path)
+{
+	string path_rel = "../content/textures/tiles" + path;
+	HRESULT result = URLDownloadToFile(NULL, "https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png", path_rel.c_str(), 0, NULL);
+	return result;
 }
 
 ResourceManager::ResourceManager()
 {
+	ifstream stream(RESOURCES_LOCATION);
+	std::string BUFFER((std::istreambuf_iterator<char>(stream)),std::istreambuf_iterator<char>());
+	istringstream ss(BUFFER);
+	vector<string> resources;
+	string token, token2;
+	while (getline(ss, token, '\n'))
+	{
+		resources.push_back(token);
+	}
+	for (auto && obj : resources)
+	{
+		ss = istringstream(obj);
+		getline(ss, token, ' ');
+		getline(ss, token2, ' ');
+		m_resourcesURLS[token] = token2;
+		cout << token << endl << token2 << endl << endl;
+	}
+
+
+
+
 }
 
 
@@ -78,15 +124,36 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 	ResourceTexture* resourceTexture = new ResourceTexture();
 	if (!resourceTexture->Load(device, textureFileName))
 	{
-		delete resourceTexture;
-		SetConsoleTextAttribute(hConsole, 12);
-		cout << "ResourceManager : Unable To Load : " << *textureFileName << endl;
-		Sleep(3000);
-		return;
+		wstring ws(textureFileName);
+		string str(ws.begin(), ws.end());
+		if (GetItemByUrl(m_resourcesURLS[str],str))
+		{
+			
+			if (!resourceTexture->Load(device, textureFileName))
+			{
+				delete resourceTexture;
+				SetConsoleTextAttribute(hConsole, 12);
+				cout << "ResourceManager : Unable To Download : " << endl;
+				Sleep(3000);
+				return;
+			}
+			else
+			{
+				cout << "ResourceManager : Successfully Loaded from URL" << endl;
+			}
+		}
+		else
+		{
+			delete resourceTexture;
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "ResourceManager : Unable To Load : " <<endl;
+			Sleep(3000);
+			return;
+		}
 	}
 	m_textures.push_back(resourceTexture);
 	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded : " << *textureFileName <<" at "<<resourceTexture<< endl;
+	cout << "ResourceManager : Successfully Loaded : " << endl;
 }
 
 void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
