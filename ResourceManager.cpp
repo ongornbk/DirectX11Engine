@@ -34,8 +34,7 @@ namespace
 
 static HRESULT GetItemByUrl(string url, string path)
 {
-	string path_rel = "../content/textures/tiles" + path;
-	HRESULT result = URLDownloadToFile(NULL, "https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png", path_rel.c_str(), 0, NULL);
+	HRESULT result = URLDownloadToFile(NULL, "https://github.com/ongornbk/engine-0.1/raw/master/Resources/dirt.png", path.c_str(), 0, NULL);
 	return result;
 }
 
@@ -53,8 +52,8 @@ ResourceManager::ResourceManager()
 	for (auto && obj : resources)
 	{
 		ss = istringstream(obj);
-		getline(ss, token, ' ');
-		getline(ss, token2, ' ');
+		getline(ss, token, '@');
+		getline(ss, token2, '@');
 		m_resourcesURLS[token] = token2;
 		cout << token << endl << token2 << endl << endl;
 	}
@@ -126,14 +125,14 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 	{
 		wstring ws(textureFileName);
 		string str(ws.begin(), ws.end());
-		if (GetItemByUrl(m_resourcesURLS[str],str))
+		if (!GetItemByUrl(m_resourcesURLS[str],str))
 		{
 			
 			if (!resourceTexture->Load(device, textureFileName))
 			{
 				delete resourceTexture;
 				SetConsoleTextAttribute(hConsole, 12);
-				cout << "ResourceManager : Unable To Download : " << endl;
+				cout << "ResourceManager : Unable To Download" << endl;
 				Sleep(3000);
 				return;
 			}
@@ -146,14 +145,14 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 		{
 			delete resourceTexture;
 			SetConsoleTextAttribute(hConsole, 12);
-			cout << "ResourceManager : Unable To Load : " <<endl;
+			cout << "ResourceManager : Unable To Load" <<endl;
 			Sleep(3000);
 			return;
 		}
 	}
 	m_textures.push_back(resourceTexture);
 	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded : " << endl;
+	cout << "ResourceManager : Successfully Loaded" << endl;
 }
 
 void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
