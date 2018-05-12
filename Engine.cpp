@@ -91,16 +91,16 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADTEXTURE L"../../content/textures/enemy_walk.png"            END
 	LOADTEXTURE L"../../content/textures/enemy_townneutral.png"     END
     LOADTEXTURE L"../../content/textures/barbarian_attack1.png"     END
-	LOADTEXTURE L"../../content/textures/gui/ui_cursor.png"         END
-	LOADTEXTURE L"../../content/textures/gui/ui_game.png"           END
-	LOADTEXTURE L"../../content/textures/tiles/simplegrass.png"     END
-	LOADTEXTURE L"../../content/textures/tiles/simplestone.png"     END
-	LOADTEXTURE L"../../content/textures/tiles/hole.png"            END
-	LOADTEXTURE L"../../content/textures/tiles/dirt.png"            END
-	LOADTEXTURE L"../../content/textures/tiles/floor.png"           END
-	LOADTEXTURE L"../../content/textures/tiles/stone.png"           END
-	LOADTEXTURE L"../../content/textures/tiles/grasstofloor.png"    END
-	LOADTEXTURE L"../../content/textures/tiles/grass.png"           END
+	LOADTEXTURE L"../../content/textures/gui/ui_cursor.png"         END //HANDLED
+	LOADTEXTURE L"../../content/textures/gui/ui_game.png"           END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/simplegrass.png"     END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/simplestone.png"     END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/hole.png"            END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/dirt.png"            END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/floor.png"           END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/stone.png"           END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/grasstofloor.png"    END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/grass.png"           END //HANDLED
 
 	LOADSHADER  L"../Shaders/texture.fx"                            END
 
