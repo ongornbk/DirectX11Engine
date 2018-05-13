@@ -102,7 +102,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADTEXTURE L"../../content/textures/tiles/stone.png"           END //HANDLED
 	LOADTEXTURE L"../../content/textures/tiles/grasstofloor.png"    END //HANDLED
 	LOADTEXTURE L"../../content/textures/tiles/grass.png"           END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/fallen_tile.png"     END
+	LOADTEXTURE L"../../content/textures/tiles/fallen_tile.png"     END //HANDLED
 
 	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
 

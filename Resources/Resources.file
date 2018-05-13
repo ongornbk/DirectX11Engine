@@ -16,3 +16,4 @@
 ../Shaders/texture.fx@https://raw.githubusercontent.com/ongornbk/engine-0.1/master/Resources/texture.fx
 ../../content/Sounds/Music/harrogath.ogg@https://github.com/ongornbk/engine-0.1/raw/master/Resources/harrogath.ogg
 ../../content/Sounds/FX/Attack.ogg@https://github.com/ongornbk/engine-0.1/raw/master/Resources/Attack.ogg
+../../content/textures/tiles/fallen_tile.png@https://github.com/ongornbk/engine-0.1/raw/master/Resources/fallen_tile.png
