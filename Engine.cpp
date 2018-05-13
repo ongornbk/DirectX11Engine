@@ -86,11 +86,12 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_global = new Global();
 	m_resourceManager = ResourceManager::GetInstance();
 
-	LOADTEXTURE L"../../content/textures/barbarian_run.png"         END
-	LOADTEXTURE L"../../content/textures/barbarian_townneutral.png" END
-	LOADTEXTURE L"../../content/textures/enemy_walk.png"            END
-	LOADTEXTURE L"../../content/textures/enemy_townneutral.png"     END
-    LOADTEXTURE L"../../content/textures/barbarian_attack1.png"     END
+#pragma region
+	LOADTEXTURE L"../../content/textures/barbarian_run.png"         END //HANDLED
+	LOADTEXTURE L"../../content/textures/barbarian_townneutral.png" END //HANDLED
+	LOADTEXTURE L"../../content/textures/enemy_walk.png"            END //HANDLED
+	LOADTEXTURE L"../../content/textures/enemy_townneutral.png"     END //HANDLED
+    LOADTEXTURE L"../../content/textures/barbarian_attack1.png"     END //HANDLED
 	LOADTEXTURE L"../../content/textures/gui/ui_cursor.png"         END //HANDLED
 	LOADTEXTURE L"../../content/textures/gui/ui_game.png"           END //HANDLED
 	LOADTEXTURE L"../../content/textures/tiles/simplegrass.png"     END //HANDLED
@@ -101,13 +102,15 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADTEXTURE L"../../content/textures/tiles/stone.png"           END //HANDLED
 	LOADTEXTURE L"../../content/textures/tiles/grasstofloor.png"    END //HANDLED
 	LOADTEXTURE L"../../content/textures/tiles/grass.png"           END //HANDLED
+	LOADTEXTURE L"../../content/textures/tiles/fallen_tile.png"     END
 
-	LOADSHADER  L"../Shaders/texture.fx"                            END
+	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
 
-    LOADSOUND   L"../../content/Sounds/Music/harrogath.ogg"         END
-	LOADSOUND   L"../../content/Sounds/FX/Attack.ogg"               END
-	//m_resourceManager->LoadSoundResource(L"Sounds/FX/wha.ogg");
-	TextureShader* shader = GETSHADER "texture.fx"                  END
+    LOADSOUND   L"../../content/Sounds/Music/harrogath.ogg"         END //HANDLED
+	LOADSOUND   L"../../content/Sounds/FX/Attack.ogg"               END //HANDLED
+#pragma endregion
+
+	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
 	InitializeTemplates();

@@ -21,8 +21,8 @@ using GlobalUtilities::random;
 #define CAMERA_RENDER_CUT       1
 #define CAMERA_TILE_CUT         CAMERA_TILE_VIEW - CAMERA_RENDER_CUT
 #define CAMERA_TILE_DEEP_CUT    CAMERA_TILE_CUT + 2
-#define TILE_NUMBER_OF_TEXTURES 12
-#define DEFINED_TEMPLATES       2
+#define TILE_NUMBER_OF_TEXTURES 13
+#define DEFINED_TEMPLATES       3
 
 #pragma region
 #define COPYLOOP8 for(int x = 0;x<8;x++) for (int y = 0; y < 8; y++)
@@ -114,6 +114,21 @@ extern "C"
 			COPYLOOP8
 				m_template[2].m_tile[x][y] = tempA[x][y];
 		}
+		{
+			unsigned char tempA[8][8] =
+			{
+			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u },
+			{ 7u, 7u, 7u, 7u, 8u, 7u, 7u, 7u },
+			{ 7u, 5u, 7u, 7u, 7u, 7u, 7u, 5u },
+			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u },
+			{ 7u, 7u, 7u, 7u, 8u, 7u, 7u, 7u },
+			{ 7u, 7u, 7u, 7u, 5u, 7u, 7u, 7u },
+			{ 7u, 5u, 7u, 7u, 7u, 7u, 8u, 7u },
+			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u }
+			};
+			COPYLOOP8
+				m_template[2].m_tile[x][y] = tempA[x][y];
+		}
 
 	}
 
@@ -180,6 +195,7 @@ COPYLOOP8
 	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("stone");
 	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("grasstofloor");
 	m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("grass");
+	m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("fallen_tile");
 }
 
 void Tile::SetVolatileGlobals(ID3D11DeviceContext * deviceContext,XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)

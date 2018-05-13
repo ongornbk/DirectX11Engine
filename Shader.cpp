@@ -402,9 +402,9 @@ void Shader::OutputShadeErrorMessage(ID3D10Blob * errorMessage, HWND hwnd, WCHAR
 
 	(void)errorMessage->Release();
 	errorMessage = 0;
-	wstring tmp0 = wstring(shaderFileName);
-	string tmp1 = string(tmp0.begin(), tmp0.end());
-	MessageBox(hwnd, "Error compiling shader. CHeck shader-error.txt for message", tmp1.c_str(), MB_OK);
+	//wstring tmp0 = wstring(shaderFileName);
+	//string tmp1 = string(tmp0.begin(), tmp0.end());
+	//MessageBox(hwnd, "Error compiling shader. CHeck shader-error.txt for message", tmp1.c_str(), MB_OK);
 
 	return;
 }
