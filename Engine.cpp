@@ -58,6 +58,7 @@ Engine::~Engine(void)
 
 Engine::Engine(void)
 {
+#pragma region
 	m_graphics        = NULL;
 	m_rendererManager = NULL;
 	m_camera          = NULL;
@@ -66,6 +67,8 @@ Engine::Engine(void)
 	m_gameComponent   = NULL;
 	m_global          = NULL;
 	m_framework       = NULL;
+	m_lua             = NULL;
+#pragma endregion
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)

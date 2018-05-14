@@ -2,6 +2,8 @@
 #include <Windows.h>
 #define LUA_LOCATION "lua53.dll"
 
+#pragma comment(lib,"liblua53.a")
+
 extern "C"
 {
 	namespace
@@ -15,7 +17,7 @@ extern "C"
 
 		void LoadLuaLibrary()
 		{
-			m_iddl = LoadLibrary(LUA_LOCATION);
+			//m_iddl = LoadLibrary(LUA_LOCATION);
 		}
 
 		void Open() noexcept
@@ -25,6 +27,7 @@ extern "C"
 				lua::Close();
 			}
 			m_instance = luaL_newstate();
+			luaL_openlibs(m_instance);
 		}
 
 		void Close() noexcept
