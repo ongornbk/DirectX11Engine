@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Timer.h"
 #include "SettingsC.h"
+#include "LUAManager.h"
 
 Engine* Engine::m_instance = NULL;
 
@@ -52,6 +53,7 @@ Engine::~Engine(void)
 	//	delete m_gameComponent;
 		m_gameComponent = NULL;
 	}
+	lua::Close();
 }
 
 Engine::Engine(void)
@@ -76,6 +78,11 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
+#pragma region
+	lua::LoadLuaLibrary();
+	lua::Open();
+	m_lua = lua::GetInstance();
+#pragma endregion
 #pragma region
 #define LOADTEXTURE m_resourceManager->LoadTextureResource(m_graphics->GetDevice(),
 #define LOADSHADER  m_resourceManager->LoadShaderResource(m_graphics->GetDevice(), hwnd, 

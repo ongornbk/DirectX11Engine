@@ -14,6 +14,7 @@
 
 class RendererManager;
 class FrameWork;
+struct lua_State;
 
 #undef PlaySound
 class Engine
@@ -43,6 +44,7 @@ protected:
 private:
 	Engine(void);
 
+#
 	void Update();
 	void Render();
 
@@ -58,4 +60,6 @@ private:
 	GameComponent*   m_gameComponent;
 
 	CameraControl    m_cameraControl;
+
+	lua_State*       m_lua;
 };

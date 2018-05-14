@@ -237,6 +237,9 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="LUAManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -409,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="mDynamicArray.hpp">
       <Filter>Header Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="LUAManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

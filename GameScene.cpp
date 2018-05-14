@@ -3,6 +3,7 @@
 #include "GlobalUtilities.h"
 #include <thr\threads.h>
 #include "Defines.h"
+#include "LUAManager.h"
 
 using GlobalUtilities::random;
 
@@ -100,7 +101,6 @@ bool GameScene::Initialize()
 			vlt.x = random(-1000.0f, 1000.0f);
 			vlt.y = random(-800.0f, 800.0f);
 			vlt.z = 0.0f;
-			float range = (float)(*Settings::get()->NUMBER_OF_UNITS);
 			m_enemy[i] = new Unit();
 			m_enemy[i]->Initialize(_device, _context, shader, paths, 100.0f,cora, vlt);
 			m_enemy[i]->SetWalkingStance(Unit::WalkingStance::WALK);
@@ -162,6 +162,7 @@ void GameScene::Update()
 	UserInterfaceGame::GetMousePosition(xm, ym);
 
 	Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
+
 
 	//m_enemy->SetAnimation(SpriteModel::ModelStance::WALK);
 //	speed1 = 100.0f;
