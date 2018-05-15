@@ -4,6 +4,7 @@
 #include "SettingsC.h"
 #include "LUAManager.h"
 #include "CALLBACK.cpp"
+#include <map>
 
 Engine* Engine::m_instance = NULL;
 
@@ -13,7 +14,10 @@ static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 namespace
 {
-	Sound* m_music = nullptr;
+
+	using std::map;
+	static map<string, Sound*> m_music;
+	static Sound*              m_playingMusic = nullptr;
 }
 
 
@@ -84,52 +88,47 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
 #pragma region
 
-	lua_callback::SetResourceManager(m_resourceManager);
-	rm::SetDevice(m_graphics->GetDevice());
+
 #pragma endregion
 #pragma region
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
-#define LOADSOUND   m_resourceManager->LoadSoundResource(
 #define GETSHADER  (TextureShader*)ResourceManager::GetInstance()->GetShaderByName(
 #define END );
 #pragma endregion
+	//NEWS
 	m_global = new Global();
+	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();
-	lua::Open();
+	//LUA CALLBACK
+	lua_callback::Initialize(this);
 	lua_callback::SetResourceManager(m_resourceManager);
+	lua_callback::SetCamera(m_camera);
+	//RESOURCE MANAGER
+	rm::SetDevice(m_graphics->GetDevice());
+	//LUA
+	lua::Open();
 	lua_callback::RegisterFunctions();
-	lua::Execute(lua::LUA_LOCATION_INITIALIZATION);
-	m_lua = lua::GetInstance();
+
+	//LUA EXECUTE
+
+	lua::Execute(lua::LUA_LOCATION_ENGINE_INITIALIZATION);
+
+	// END LUA EXECUTE
 
 #pragma region
 	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
+	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED
 #pragma endregion
 
-	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED
+	
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
+	lua_callback::SetInput(m_input);
 	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, shader);
 	
-
-
-	m_camera = new Camera();
-	m_camera->InitializeProjectionMatrix((float)XM_PI / 4.0f,Settings::GetAspectRatio(), SCREEN_NEAR, SCREEN_DEPTH);
-	m_camera->InitializeOrthoMatrix((*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)), SCREEN_NEAR, SCREEN_DEPTH);
-	m_camera->SetPosition(0.0f, 0.0f, -1.0f);
 	m_cameraControl.SetCurrentCamera(m_camera);
 	m_graphics->Initialize();
-	m_music = CreateSound(L"harrogath", 100.0f, true);
-
-	
-
-
-
-	
-
-	m_music->Play();
-
-
 
 	if(m_gameComponent!=NULL)
 	{
@@ -255,6 +254,26 @@ Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 	sound->SetVolume(volume);
 	sound->SetLooping(looping);
 	return sound;
+}
+
+void Engine::AddMusic(WCHAR* name, float volume,bool looping)
+{
+	wstring tmp0 = wstring(name);
+	string  tmp1 = string(tmp0.begin(), tmp0.end());
+	m_music[tmp1] = CreateSound(name, volume, looping);
+}
+
+void Engine::PlayMusic(WCHAR * music)
+{
+	wstring tmp0 = wstring(music);
+	string  tmp1 = string(tmp0.begin(), tmp0.end());
+	Sound* __music = m_music[tmp1];
+	if (m_playingMusic)
+	{
+		m_playingMusic->Stop();
+	}
+	m_playingMusic = __music;
+	__music->Play();
 }
 
 CameraControl * Engine::GetCameraControl()

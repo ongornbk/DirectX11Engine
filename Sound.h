@@ -22,6 +22,7 @@ public:
 	void Play(float volume);
 	void Play(bool isLooping);
 	void Play(bool isLooping, float volume);
+	void Stop();
 	void SetLooping(bool looping = true);
 	void SetVolume(float volume);
 	float GetVolume();

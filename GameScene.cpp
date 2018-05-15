@@ -61,24 +61,11 @@ bool GameScene::Initialize()
 	if ((!shader) || (!_device) || (!_context) || (!_renderer)) INITIALIZATION_FAILED
 #pragma endregion
 
+		lua::Execute(lua::LUA_LOCATION_GAMESCENE_INITIALIZATION);
+
 
 	//shader->
-	ModelPaths paths;
-#pragma region
-	paths.ATTACK_1 = L"barbarian_attack1";
-	paths.ATTACK_2 = NULL;
-	paths.GETHIT   = L"enemy_gethit";
-	paths.KICK     = NULL;
-	paths.NEUTRAL = NULL;
-	paths.RUN = L"barbarian_run";
-	paths.SPECIALCAST = NULL;
-	paths.SPECIAL_1 = NULL;
-	paths.SPECIAL_3 = NULL;
-	paths.SPECIAL_4 = NULL;
-	paths.TOWNNEUTRAL = L"barbarian_townneutral";
-	paths.TOWNWALK = NULL;
-	paths.WALK = L"barbarian_run";
-#pragma endregion
+	ModelPaths paths(L"../../content/Textures/models/barbarian.mod");
 
 	float cora = *Settings::get()->COLLISSION_RADIUS;
 
@@ -152,6 +139,9 @@ extern "C"
 
 void GameScene::Update()
 {
+
+	lua::Execute(lua::LUA_LOCATION_GAMESCENE_UPDATE);
+
 	Input* input = ENGINE GetInput();
 
 	if (input == NULL) return;

@@ -34,6 +34,9 @@ public:
 	Sound* CreateSound(WCHAR* name,float volume);
 	Sound* CreateSound(WCHAR* name,float volume,bool looping); 
 
+	void AddMusic(WCHAR* name, float volume, bool looping = false);
+	void PlayMusic(WCHAR* music);
+
 	CameraControl* GetCameraControl();
 	FrameWork* GetFrameWork();
 

@@ -7,10 +7,6 @@
 	static const int WINDOW_POS_X = 1630;
 	static const int WINDOW_POS_Y = 85;
 
-
-
-const float SCREEN_DEPTH = 1000.0f;
-const float	SCREEN_NEAR = 0.1f;
 const bool FULL_SCREEN = true;
 const bool VSYNC_ENABLED = true;
 

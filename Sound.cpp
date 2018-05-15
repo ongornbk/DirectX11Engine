@@ -107,6 +107,11 @@ void Sound::Play(bool isLooping, float volume)
 	
 }
 
+void Sound::Stop()
+{
+	m_sound->stop();
+}
+
 void Sound::SetLooping(bool looping)
 {
 	m_isLooping = looping;
