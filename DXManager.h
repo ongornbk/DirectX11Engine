@@ -11,7 +11,8 @@ class DXManager
 public:
 	DXManager(void);
 	~DXManager(void);
-	bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen);
+	bool Initialize(int screenWidth, int screenHeight,HWND hwnd);
+	void SetSettings(bool vsync, bool fullscreen);
 	void BeginScrene(float r, float g, float b, float a);
 	void BeginScrene(float* color);
 	void EndScene();
@@ -33,6 +34,7 @@ private:
 	bool InitializeZBuffer();
 
 	bool vsync_enabled;
+	bool fullscreen_enabled;
 	int m_videoCardMemory;
 	char m_videoCardDescription[128];
 

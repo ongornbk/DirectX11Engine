@@ -316,12 +316,6 @@ void GameScene::Update()
 
 	}
 
-
-
-	if (input->IsKeyHit(DIK_ESCAPE))
-	{
-		PostQuitMessage(1);
-	}
 	
 	
 

@@ -81,7 +81,7 @@ DXManager::~DXManager(void)
 
 }
 
-bool DXManager::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen)
+bool DXManager::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	HRESULT result;
 	IDXGIFactory* factory;
@@ -94,7 +94,6 @@ bool DXManager::Initialize(int screenWidth, int screenHeight, bool vsync, HWND h
 	int error;
 	ID3D11Texture2D* backBufferPtr;
 
-	vsync_enabled = vsync;
 
 
 	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -184,7 +183,7 @@ bool DXManager::Initialize(int screenWidth, int screenHeight, bool vsync, HWND h
 		}
 
 
-		if (!InitializeSwapChain(hwnd, fullscreen, screenWidth, screenHeight, numerator, denominator))
+		if (!InitializeSwapChain(hwnd, fullscreen_enabled, screenWidth, screenHeight, numerator, denominator))
 		{
 			return false;
 		}
@@ -241,6 +240,12 @@ bool DXManager::Initialize(int screenWidth, int screenHeight, bool vsync, HWND h
 		}
 
 	return true;
+}
+
+void DXManager::SetSettings(bool vsync, bool fullscreen)
+{
+	this->fullscreen_enabled = fullscreen;
+	this->vsync_enabled      = vsync;
 }
 
 void DXManager::BeginScrene(float r, float g, float b, float a)

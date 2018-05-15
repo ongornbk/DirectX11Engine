@@ -1,6 +1,6 @@
 #include "Graphics.h"
 #include "SettingsC.h"
-
+#include "LUAManager.h"
 
 
 Graphics::Graphics(void)
@@ -16,7 +16,8 @@ Graphics::~Graphics(void)
 bool Graphics::InitializeDX(HWND hwnd)
 {
 	m_dxManager = new DXManager();
-	if (!m_dxManager->Initialize(*(Settings::get()->REALRESOLUTION_X),*(Settings::get()->REALRESOLUTION_Y), VSYNC_ENABLED, hwnd, FULL_SCREEN))
+	lua::Execute(lua::LUA_LOCATION_GRAPHICS_INITIALIZATION);
+	if (!m_dxManager->Initialize(*(Settings::get()->REALRESOLUTION_X),*(Settings::get()->REALRESOLUTION_Y), hwnd))
 	{
 		return false;
 	}

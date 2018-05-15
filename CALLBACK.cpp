@@ -27,6 +27,7 @@ namespace lua_callback
 	static void SetCamera(Camera* camera);
 	static void Initialize(Engine* engine);
 	static void SetInput(Input* input);
+	static void SetDirectX(DXManager* manager);
 
 	namespace
 	{
@@ -35,6 +36,7 @@ namespace lua_callback
 		static Camera*          m_camera;
 		static Engine*          m_engine;
 		static Input*           m_input;
+		static DXManager*       m_directX;
 		
 
 	}
@@ -57,6 +59,11 @@ namespace lua_callback
 	static void SetInput(Input* input)
 	{
 		m_input = input;
+	}
+
+	static void SetDirectX(DXManager* manager)
+	{
+		m_directX = manager;
 	}
 
 	static int LoadTexture(lua_State* state) //EXPORTED
@@ -133,9 +140,27 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int __PostQuitMessage(lua_State* state)
+	static int __PostQuitMessage(lua_State* state) //EXPORTED
 	{
 		PostQuitMessage(lua_tointeger(state,1));
+		return 1;
+	}
+
+	static int __IsKeyHit(lua_State* state) //EXPORTED
+	{
+		if (m_input->IsKeyHit(lua_tointeger(state,1)))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	static int InitializeDirectX(lua_State* state)
+	{
+		m_directX->SetSettings(LUA_BOOLEAN(state, 1), LUA_BOOLEAN(state,2));
 	}
 
 	static void RegisterFunctions()
@@ -153,8 +178,12 @@ namespace lua_callback
 		//Music
 		lua_register(m_lua, "AddMusic", lua_callback::AddMusic);
 		lua_register(m_lua, "PlayMusic", lua_callback::PlayMusic);
-		//Engine
+		//System
 		lua_register(m_lua, "PostQuitMessage", lua_callback::__PostQuitMessage);
+		//Input
+		lua_register(m_lua, "IsKeyHit", __IsKeyHit);
+		//Graphics
+		lua_register(m_lua, "InitializeDirectX", InitializeDirectX);
 
 	}
 
