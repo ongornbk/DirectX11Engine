@@ -1,11 +1,15 @@
 #include "LUAManager.h"
 #include <Windows.h>
+#include <map>
 #define LUA_LOCATION "lua53.dll"
 
 #pragma comment(lib,"liblua53.a")
 
 extern "C"
 {
+#pragma region
+	using std::map;
+#pragma endregion
 	namespace
 	{
 		static lua_State* m_instance = NULL;
@@ -20,15 +24,7 @@ extern "C"
 			//m_iddl = LoadLibrary(LUA_LOCATION);
 		}
 
-		void Open() noexcept
-		{
-			if (m_instance)
-			{
-				lua::Close();
-			}
-			m_instance = luaL_newstate();
-			luaL_openlibs(m_instance);
-		}
+
 
 		void Close() noexcept
 		{
@@ -51,9 +47,47 @@ extern "C"
 			lua_pop(m_instance,1);
 		}
 
-		lua_State* GetInstance() noexcept
+		lua_State* GetInstance() noexcept //UNSAFE
 		{
-			return m_instance; //UNSAFE
+			return m_instance;
+		}
+
+		void Open() noexcept
+		{
+			m_instance = luaL_newstate();
+			luaL_openlibs(m_instance);
+		}
+
+		lua_State* GetInstance_s() noexcept //SAFE
+		{
+			if (m_instance)
+			{
+				return m_instance;
+			}
+			else
+			{
+				lua::Open();
+			}
+		}
+
+		void Execute(const char* filename)
+		{
+			int result;
+			result = luaL_loadfile(m_instance, filename);
+			if (result != LUA_OK) {
+				lua::PrintError();
+				return;
+			}
+			result = lua_pcall(m_instance, 0, LUA_MULTRET, 0);
+			if (result != LUA_OK) {
+				lua::PrintError();
+				return;
+			}
+		}
+
+		void RegisterFunction(void* function)
+		{
+
 		}
 
 	}

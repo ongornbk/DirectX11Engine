@@ -108,9 +108,6 @@
     <ClInclude Include="FrameWork.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Area.h">
-      <Filter>Header Files\Engine\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
@@ -184,9 +181,6 @@
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
     <ClInclude Include="TaskQueue.h">
-      <Filter>Header Files\Engine\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Tasks.h">
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
     <ClInclude Include="TemplateTileset.h">
@@ -377,9 +371,6 @@
     <ClCompile Include="Global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Area.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TemplateTileset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -414,6 +405,9 @@
       <Filter>Header Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="LUAManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CALLBACK.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

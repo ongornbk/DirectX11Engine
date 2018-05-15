@@ -29,9 +29,26 @@ using std::istringstream;
 ResourceManager* ResourceManager::m_instance = NULL;
 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-namespace
+extern "C"
 {
-	map<string, string> m_resourcesURLS;
+
+
+	namespace
+	{
+		map<string, string> m_resourcesURLS;
+		ID3D11Device*       m_device;
+	}
+
+	namespace rm
+	{
+
+		void SetDevice(ID3D11Device* device)
+		{
+			m_device = device;
+		}
+
+	}
+
 }
 
 static HRESULT GetItemByUrl(string url, string path)
@@ -49,7 +66,7 @@ ResourceManager::ResourceManager()
 		if (FAILED(GetItemByUrl(RESOURCES_URL,RESOURCES_LOCATION)))
 		{
 			SetConsoleTextAttribute(hConsole, 12);
-			cout << "ResourceManager : Unable To Load : RESOURCES FILE" << endl;
+			cout << "Download Failed : "<<RESOURCES_URL<< endl;
 			return;
 		}
 		else
@@ -102,30 +119,27 @@ ResourceManager::~ResourceManager()
 
 }
 
-void ResourceManager::LoadShaderResource(ID3D11Device * device, HWND hwnd, WCHAR* shaderFileName)
+void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 {
 	using std::cout;
 	ResourceShader* resourceShader = new ResourceShader();
-	if (!resourceShader->Load(device, hwnd, shaderFileName))
+	if (!resourceShader->Load(m_device, hwnd, shaderFileName))
 	{
 		wstring ws(shaderFileName);
 		string str(ws.begin(), ws.end());
 		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str], str)))
 		{
 
-			if (!resourceShader->Load(device,hwnd, shaderFileName))
+			if (!resourceShader->Load(m_device,hwnd, shaderFileName))
 			{
 				delete resourceShader;
 				SetConsoleTextAttribute(hConsole, 12);
-				cout << "ResourceManager : Unable To Download" << endl;
-				Sleep(1000);
+				cout << "Download Failed : " << m_resourcesURLS[str]<< endl;
 				return;
 			}
 			else
 			{
 				m_shaders.push_back(resourceShader);
-				SetConsoleTextAttribute(hConsole, 10);
-				cout << "ResourceManager : Successfully Downloaded from Url..." << endl;
 				return;
 			}
 		}
@@ -133,14 +147,11 @@ void ResourceManager::LoadShaderResource(ID3D11Device * device, HWND hwnd, WCHAR
 		{
 			delete resourceShader;
 			SetConsoleTextAttribute(hConsole, 12);
-			cout << "ResourceManager : Unable To Load" << endl;
-			Sleep(3000);
+			cout << "Load Failed : "<<shaderFileName << endl;
 			return;
 		}
 	}
 	m_shaders.push_back(resourceShader);
-	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded : " << *shaderFileName << endl;
 }
 
 void ResourceManager::LoadShaderResource(Shader * shader)
@@ -152,38 +163,33 @@ void ResourceManager::LoadShaderResource(Shader * shader)
 	{
 		delete resourceShader;
 		SetConsoleTextAttribute(hConsole, 12);
-		cout << "ResourceManager : Unable To Load shader!" << endl;
+		cout << "Unable To Load shader!" << endl;
 		return;
 	}
 	m_shaders.push_back(resourceShader);
-	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded : " << resourceShader->GetName() << endl;
 }
 
-void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureFileName)
+void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 {
 	using std::cout;
 	ResourceTexture* resourceTexture = new ResourceTexture();
-	if (!resourceTexture->Load(device, textureFileName))
+	if (!resourceTexture->Load(m_device, textureFileName))
 	{
 		wstring ws(textureFileName);
 		string str(ws.begin(), ws.end());
 		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str],str)))
 		{
 			
-			if (!resourceTexture->Load(device, textureFileName))
+			if (!resourceTexture->Load(m_device, textureFileName))
 			{
 				delete resourceTexture;
 				SetConsoleTextAttribute(hConsole, 12);
-				cout << "ResourceManager : Unable To Download" << endl;
-				Sleep(1000);
+				cout << "Download Failed :" << m_resourcesURLS[str]<< endl;
 				return;
 			}
 			else
 			{
 				m_textures.push_back(resourceTexture);
-				SetConsoleTextAttribute(hConsole, 10);
-				cout << "ResourceManager : Successfully Downloaded from Url..." << endl;
 				return;
 			}
 		}
@@ -191,14 +197,11 @@ void ResourceManager::LoadTextureResource(ID3D11Device * device, WCHAR* textureF
 		{
 			delete resourceTexture;
 			SetConsoleTextAttribute(hConsole, 12);
-			cout << "ResourceManager : Unable To Load" <<endl;
-			Sleep(3000);
+			cout << "Load Failed : " << m_resourcesURLS[str]<<endl;
 			return;
 		}
 	}
 	m_textures.push_back(resourceTexture);
-	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded" << endl;
 }
 
 void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
@@ -215,15 +218,12 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 			{
 				delete resourceSound;
 				SetConsoleTextAttribute(hConsole, 12);
-				cout << "ResourceManager : Unable To Download" << endl;
-				Sleep(1000);
+				cout << "Download Failed : " << m_resourcesURLS[str]<< endl;
 				return;
 			}
 			else
 			{
 				m_sounds.push_back(resourceSound);
-				SetConsoleTextAttribute(hConsole, 10);
-				cout << "ResourceManager : Successfully Downloaded from Url..." << endl;
 				return;
 			}
 		}
@@ -231,14 +231,11 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 		{
 			delete resourceSound;
 			SetConsoleTextAttribute(hConsole, 12);
-			cout << "ResourceManager : Unable To Load" << endl;
-			Sleep(3000);
+			cout << "Load Failed : " << soundFileName<< endl;
 			return;
 		}
 	}
 	m_sounds.push_back(resourceSound);
-	SetConsoleTextAttribute(hConsole, 10);
-	cout << "ResourceManager : Successfully Loaded : " << *soundFileName << " at " << resourceSound << endl;
 }
 
 void ResourceManager::LoadFontResource(WCHAR * fontFileName)

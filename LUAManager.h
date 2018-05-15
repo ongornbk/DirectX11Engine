@@ -7,10 +7,13 @@ extern "C"
 
 	namespace lua
 	{
-		void       Open()           noexcept;
-		void       Close()          noexcept;
-		void       PrintError()     noexcept;
-		void       LoadLuaLibrary() noexcept;
-		lua_State* GetInstance()    noexcept;
+		static const char* LUA_LOCATION_INITIALIZATION = "lua/init.lua";
+
+		void       Execute(const char* filename);
+		void       Close()                          noexcept;
+		void       Open()                           noexcept;
+		void       PrintError()                     noexcept;
+		void       LoadLuaLibrary()                 noexcept;
+		lua_State* GetInstance()                    noexcept;
 	}
 }

@@ -138,7 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
-    <ClInclude Include="Area.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="SpriteModel.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />
-    <ClInclude Include="Tasks.h" />
     <ClInclude Include="TemplateTileset.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
@@ -200,8 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
-    <ClCompile Include="Area.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="CALLBACK.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="CollisionBox.cpp" />

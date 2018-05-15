@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
+#include "CALLBACK.cpp"
 
 Engine* Engine::m_instance = NULL;
 
@@ -82,42 +83,26 @@ bool Engine::InitializeGraphics(HWND hwnd)
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
 #pragma region
-	lua::LoadLuaLibrary();
-	lua::Open();
-	m_lua = lua::GetInstance();
+
+	lua_callback::SetResourceManager(m_resourceManager);
+	rm::SetDevice(m_graphics->GetDevice());
 #pragma endregion
 #pragma region
-#define LOADTEXTURE m_resourceManager->LoadTextureResource(m_graphics->GetDevice(),
-#define LOADSHADER  m_resourceManager->LoadShaderResource(m_graphics->GetDevice(), hwnd, 
+#define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define LOADSOUND   m_resourceManager->LoadSoundResource(
 #define GETSHADER  (TextureShader*)ResourceManager::GetInstance()->GetShaderByName(
 #define END );
 #pragma endregion
 	m_global = new Global();
 	m_resourceManager = ResourceManager::GetInstance();
+	lua::Open();
+	lua_callback::SetResourceManager(m_resourceManager);
+	lua_callback::RegisterFunctions();
+	lua::Execute(lua::LUA_LOCATION_INITIALIZATION);
+	m_lua = lua::GetInstance();
 
 #pragma region
-	LOADTEXTURE L"../../content/textures/barbarian_run.png"         END //HANDLED
-	LOADTEXTURE L"../../content/textures/barbarian_townneutral.png" END //HANDLED
-	LOADTEXTURE L"../../content/textures/enemy_walk.png"            END //HANDLED
-	LOADTEXTURE L"../../content/textures/enemy_townneutral.png"     END //HANDLED
-    LOADTEXTURE L"../../content/textures/barbarian_attack1.png"     END //HANDLED
-	LOADTEXTURE L"../../content/textures/gui/ui_cursor.png"         END //HANDLED
-	LOADTEXTURE L"../../content/textures/gui/ui_game.png"           END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/simplegrass.png"     END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/simplestone.png"     END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/hole.png"            END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/dirt.png"            END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/floor.png"           END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/stone.png"           END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/grasstofloor.png"    END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/grass.png"           END //HANDLED
-	LOADTEXTURE L"../../content/textures/tiles/fallen_tile.png"     END //HANDLED
-
 	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
-
-    LOADSOUND   L"../../content/Sounds/Music/harrogath.ogg"         END //HANDLED
-	LOADSOUND   L"../../content/Sounds/FX/Attack.ogg"               END //HANDLED
 #pragma endregion
 
 	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED

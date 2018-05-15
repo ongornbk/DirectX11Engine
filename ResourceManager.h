@@ -9,14 +9,22 @@
 
 using namespace std;
 
+extern "C"
+{
+	namespace rm
+	{
+		void SetDevice(ID3D11Device* device);
+	}
+}
+
 class ResourceManager
 {
 public:
 	~ResourceManager(void);
 
-	void LoadShaderResource(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
+	void LoadShaderResource(HWND hwnd, WCHAR* shaderFileName);
 	void LoadShaderResource(Shader* shader);
-	void LoadTextureResource(ID3D11Device* device, WCHAR* textureFileName);
+	void LoadTextureResource( WCHAR* textureFileName);
 	void LoadSoundResource(WCHAR* soundFileName);
 	void LoadFontResource(WCHAR* fontFileName);
 	void Release();
