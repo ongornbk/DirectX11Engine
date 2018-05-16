@@ -16,8 +16,7 @@ public:
 
 private:
 
-	Unit*      m_hero;
-	Unit**     m_enemy;
-	XMFLOAT4X4  m_worldMatrix;
+	Unit*         m_hero;
+	XMFLOAT4X4    m_worldMatrix;
 };
 

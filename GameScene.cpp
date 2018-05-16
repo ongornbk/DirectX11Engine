@@ -18,7 +18,7 @@ GameScene::GameScene()
 	//m_background = NULL;
 	//memset(&m_entity, NULL, sizeof(m_entity));
 	//XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
-	m_enemy = new Unit*[(*(Settings::get()->NUMBER_OF_UNITS))];
+	//m_enemy = new Unit*[(*(Settings::get()->NUMBER_OF_UNITS))];
 	m_hero = NULL;
 	//m_enemy = NULL;
 }
@@ -41,11 +41,6 @@ GameScene::~GameScene()
 	{
 		delete m_hero;
 		m_hero = NULL;
-	}
-	if (m_enemy)
-	{
-		delete[] m_enemy;
-		//m_enemy = NULL;
 	}
 
 }
@@ -78,22 +73,24 @@ bool GameScene::Initialize()
 
 		_renderer->PushUnit(m_hero);
 
-		paths.RUN = L"enemy_walk";
-		paths.TOWNNEUTRAL = L"enemy_townneutral";
-		paths.WALK = L"enemy_walk";
-
-		for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
-		{
-			XMFLOAT3 vlt;
-			vlt.x = random(-1000.0f, 1000.0f);
-			vlt.y = random(-800.0f, 800.0f);
-			vlt.z = 0.0f;
-			m_enemy[i] = new Unit();
-			m_enemy[i]->Initialize(_device, _context, shader, paths, 100.0f,cora, vlt);
-			m_enemy[i]->SetWalkingStance(Unit::WalkingStance::WALK);
-			m_enemy[i]->SetSpeed(140.0f);
-			_renderer->PushUnit(m_enemy[i]);
-		}
+		//ModelPaths paths2;
+		//
+		//paths2.RUN = L"enemy_walk";
+		//paths2.TOWNNEUTRAL = L"enemy_townneutral";
+		//paths2.WALK = L"enemy_walk";
+		//
+		//for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
+		//{
+		//	XMFLOAT3 vlt;
+		//	vlt.x = random(-1000.0f, 1000.0f);
+		//	vlt.y = random(-800.0f, 800.0f);
+		//	vlt.z = 0.0f;
+		//	m_enemy[i] = new Unit();
+		//	m_enemy[i]->Initialize(_device, _context, shader, paths2, 100.0f,cora, vlt);
+		//	m_enemy[i]->SetWalkingStance(Unit::WalkingStance::WALK);
+		//	m_enemy[i]->SetSpeed(140.0f);
+		//	_renderer->PushUnit(m_enemy[i]);
+		//}
 	if (shader == NULL)
 	{
 		return false;

@@ -1,7 +1,7 @@
 #include "Graphics.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
-
+#include "CALLBACK.cpp"
 
 Graphics::Graphics(void)
 {
@@ -16,8 +16,7 @@ Graphics::~Graphics(void)
 bool Graphics::InitializeDX(HWND hwnd)
 {
 	m_dxManager = new DXManager();
-	lua::Execute(lua::LUA_LOCATION_GRAPHICS_INITIALIZATION);
-	if (!m_dxManager->Initialize(*(Settings::get()->REALRESOLUTION_X),*(Settings::get()->REALRESOLUTION_Y), hwnd))
+	if (!m_dxManager->Initialize(*(Settings::get()->REALRESOLUTION_X),*(Settings::get()->REALRESOLUTION_Y),FULL_SCREEN, hwnd,VSYNC_ENABLED))
 	{
 		return false;
 	}

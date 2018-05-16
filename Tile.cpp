@@ -4,6 +4,10 @@
 #include "Camera.h"
 #include "RendererManager.h"
 #include <array>
+#include <fstream>
+#include <string>
+#include <streambuf>
+#include <sstream>
 
 
 
@@ -11,16 +15,8 @@ using GlobalUtilities::random;
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
 
-#define CELL_WIDTH              160.0f
-#define CELL_HALF_WIDTH         80.0f
-#define CELL_HEIGHT             80.0f
-#define CELL_HALF_HEIGHT        40.0f
 #define CELL_MULTIPLIER         1.02f
 #define CELL_ZERO_Z             0.0f
-#define CAMERA_TILE_VIEW        14
-#define CAMERA_RENDER_CUT       1
-#define CAMERA_TILE_CUT         CAMERA_TILE_VIEW - CAMERA_RENDER_CUT
-#define CAMERA_TILE_DEEP_CUT    CAMERA_TILE_CUT + 2
 #define TILE_NUMBER_OF_TEXTURES 13
 #define DEFINED_TEMPLATES       3
 
@@ -41,6 +37,19 @@ extern "C"
 		static TileTemplate m_template[DEFINED_TEMPLATES + 1];
 	}
 
+	namespace tile
+	{
+
+static float CELL_WIDTH           = 160.0f;
+static float CELL_HALF_WIDTH      = 80.0f;
+static float CELL_HEIGHT          = 80.0f;
+static float CELL_HALF_HEIGHT     = 40.0f;
+static int   CAMERA_TILE_VIEW     = 14;
+static int   CAMERA_RENDER_CUT    = 1;
+static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
+static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
+
+	}
 
 
 	inline void squash(int &value) noexcept
@@ -141,7 +150,7 @@ namespace
 	static Shader*              m_tileShader;
 	static VertexBuffer* m_vertexBuffer;
 	static Texture*             m_texture[TILE_NUMBER_OF_TEXTURES];
-	static float   m_size[2] = { CELL_WIDTH * CELL_MULTIPLIER,CELL_HEIGHT * CELL_MULTIPLIER };
+	static float   m_size[2];
 	static ID3D11DeviceContext* m_deviceContext;
 	static XMFLOAT4X4 m_viewMatrix;
 	static XMFLOAT4X4 m_projectionMatrix;
@@ -172,21 +181,57 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 {
 
 	m_renderer = renderer;
-	for (int i = 0; i < TILE_MAP_SIZE; i+=8)
-		for (int j = 0; j < TILE_MAP_SIZE; j+=8)
+
+
+
+#pragma warning(disable : 4996)
+#pragma region
+	using std::ifstream;
+	using std::getline;
+	using std::istreambuf_iterator;
+	using std::istringstream;
+#pragma endregion
+	ifstream stream("../settings/tile.file");
+	if (!stream.good())
+	{
+
+	}
+	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
+	istringstream ss(BUFFER);
+	vector<int> sizes;
+	string token;
+	while (getline(ss, token, '\n'))
+	{
+		sizes.push_back(atoi(token.c_str()));
+	}
+	tile::CELL_WIDTH = (float)sizes.at(0);
+	tile::CELL_HEIGHT = (float)sizes.at(1);
+	tile::CELL_HALF_HEIGHT = tile::CELL_HEIGHT / 2.0f;
+	tile::CELL_HALF_WIDTH = tile::CELL_WIDTH / 2.0f;
+
+	m_size[0] = tile::CELL_WIDTH * CELL_MULTIPLIER;
+	m_size[1] = tile::CELL_HEIGHT * CELL_MULTIPLIER;
+
+	tile::CAMERA_TILE_VIEW     = sizes.at(2);
+	tile::CAMERA_RENDER_CUT    = sizes.at(3);
+	tile::CAMERA_TILE_CUT      = tile::CAMERA_TILE_VIEW - tile::CAMERA_RENDER_CUT;
+	tile::CAMERA_TILE_DEEP_CUT = tile::CAMERA_TILE_CUT + sizes.at(4);
+
+	for (int i = 0; i < TILE_MAP_SIZE; i += 8)
+		for (int j = 0; j < TILE_MAP_SIZE; j += 8)
 		{
 			int _rand = random(0, DEFINED_TEMPLATES);
-			if((i<TILE_MAP_SIZE)&&(j<TILE_MAP_SIZE))
-COPYLOOP8
-				{
+			if ((i<TILE_MAP_SIZE) && (j<TILE_MAP_SIZE))
+				COPYLOOP8
+			{
 
-					m_tile[i + x][j + y] = m_template[_rand].m_tile[x][y];
+				m_tile[i + x][j + y] = m_template[_rand].m_tile[x][y];
 			}
 		}
 	m_tileShader = shader;
 	m_device = device;
 	m_vertexBuffer = new VertexBuffer();
-	(void)m_vertexBuffer->Initialize(device, shader, m_size,true);
+	(void)m_vertexBuffer->Initialize(device, shader, m_size, true);
 	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("simplegrass");
 	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("hole");
 	m_texture[2] = ResourceManager::GetInstance()->GetTextureByName("simplestone");
@@ -196,6 +241,7 @@ COPYLOOP8
 	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("grasstofloor");
 	m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("grass");
 	m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("fallen_tile");
+
 }
 
 void Tile::SetVolatileGlobals(ID3D11DeviceContext * deviceContext,XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
@@ -240,21 +286,21 @@ TileMap::~TileMap()
 
 void TileMap::Initialize()
 {
-	float offsety = (TILE_MAP_RANGE) *CELL_HALF_HEIGHT;
+	float offsety = (TILE_MAP_RANGE) *tile::CELL_HALF_HEIGHT;
 	float offsetx = 0.0f;
 	for (int i = 0; i < TILE_MAP_SIZE; i++)
 	{
 		for (int j = 0; j < TILE_MAP_SIZE; j++)
 		{
-			map[i][j] = new Tile(offsetx + (CELL_HALF_WIDTH*j), offsety - (CELL_HALF_HEIGHT*j), i, j);
+			map[i][j] = new Tile(offsetx + (tile::CELL_HALF_WIDTH*j), offsety - (tile::CELL_HALF_HEIGHT*j), i, j);
 			if (m_tile[i][j])
 			{
 				//CollisionBox* box = new CollisionBox(XMFLOAT3(offsetx + (CELL_HALF_WIDTH*j)+40.0f, offsety - (CELL_HALF_HEIGHT*j)+20.0f, 0.0f), 80.0f);
 			//	m_renderer->PushBox(box);
 			}
 		}
-		offsetx -= CELL_HALF_WIDTH;
-		offsety -= CELL_HALF_HEIGHT;
+		offsetx -= tile::CELL_HALF_WIDTH;
+		offsety -= tile::CELL_HALF_HEIGHT;
 	}
 }
 
@@ -267,21 +313,21 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 {
 	register float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 	register int   _i[4];
-	_f[0] += cameraPosition.m128_f32[0] / CELL_WIDTH;
-	_f[0] -= cameraPosition.m128_f32[1] / CELL_HEIGHT;
-	_f[1] -= cameraPosition.m128_f32[0] / CELL_WIDTH;
-	_f[1] -= cameraPosition.m128_f32[1] / CELL_HEIGHT;
-	_i[2] = (int)_f[1] - CAMERA_TILE_VIEW;
-	_i[3] = (int)_f[1] + CAMERA_TILE_VIEW;
-	_i[0] = (int)_f[0] - CAMERA_TILE_VIEW;
-	_i[1] = (int)_f[0] + CAMERA_TILE_VIEW;
+	_f[0] += cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
+	_f[0] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
+	_f[1] -= cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
+	_f[1] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
+	_i[2] = (int)_f[1] - tile::CAMERA_TILE_VIEW;
+	_i[3] = (int)_f[1] + tile::CAMERA_TILE_VIEW;
+	_i[0] = (int)_f[0] - tile::CAMERA_TILE_VIEW;
+	_i[1] = (int)_f[0] + tile::CAMERA_TILE_VIEW;
 	squashArray4(_i);
 	Tile::SetVolatileGlobals(deviceContext, viewMatrix, projectionMatrix);
 	for (int j = _i[2]; j <_i[3]; j++)
 	{
 		for (int i = _i[0]; i < _i[1]; i++)
 		{
-			if (((i + j) > (_i[3] + _i[1] - CAMERA_TILE_DEEP_CUT)) || ((i + j) < (_i[0] + _i[2] + CAMERA_TILE_CUT)))
+			if (((i + j) > (_i[3] + _i[1] - tile::CAMERA_TILE_DEEP_CUT)) || ((i + j) < (_i[0] + _i[2] + tile::CAMERA_TILE_CUT)))
 				continue;
 			map[j][i]->Render();
 		}

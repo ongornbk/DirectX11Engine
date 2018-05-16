@@ -27,6 +27,8 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	m_wanderingFlag = wander;
 }
 
+
+
 void Unit::Update()
 {
 	if (!m_tasks.Update())

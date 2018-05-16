@@ -8,6 +8,7 @@ namespace
 Global::Global()
 {
 	m_lastSelectedUnit = NULL;
+	m_lastCreatedUnit = NULL;
 	m_instance = this;
 }
 

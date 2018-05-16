@@ -126,9 +126,13 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	lua_callback::SetInput(m_input);
 	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, shader);
+	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);
 	m_graphics->Initialize();
+
+
+	lua_callback::InitializeGraphics();
 
 	if(m_gameComponent!=NULL)
 	{
@@ -137,13 +141,16 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 			return false;
 		}
 	}
+
+	
+
 	else
 	{
 		SetConsoleTextAttribute(hConsole, 12);
 		cout << "Engine : No Game Component" << endl;
 	}
 	
-
+	
 
 
 	return true;
