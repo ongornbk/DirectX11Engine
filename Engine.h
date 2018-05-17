@@ -16,6 +16,11 @@ class RendererManager;
 class FrameWork;
 struct lua_State;
 
+namespace
+{
+	static ModelPaths* GetModelPaths(string paths);
+}
+
 #undef PlaySound
 class Engine
 {
@@ -32,9 +37,11 @@ public:
 	Sound* CreateSound(WCHAR* name);
 	Sound* CreateSound(WCHAR* name,bool looping);
 	Sound* CreateSound(WCHAR* name,float volume);
-	Sound* CreateSound(WCHAR* name,float volume,bool looping); 
+	Sound* CreateSound(WCHAR* name,float volume,bool looping);
+	Sound* CreateSound(string name, float volume, bool looping);
 
-	void AddMusic(WCHAR* name, float volume, bool looping = false);
+	void AddMusic(string name, float volume, bool looping = false);
+	void AddModelPaths(string name);
 	void PlayMusic(WCHAR* music);
 
 	CameraControl* GetCameraControl();

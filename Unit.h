@@ -18,7 +18,7 @@ public:
 #pragma endregion
 	Unit();
 	~Unit();
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, ModelPaths paths,float size, float collision, XMFLOAT3 position,bool wander = true);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths,float size, float collision, XMFLOAT3 position,bool wander = true);
 	void Update();
 	void SetTask(Task* task);
 	void GiveTask(Task* task);

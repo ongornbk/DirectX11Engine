@@ -19,7 +19,7 @@ public:
 	Model(const Model&);
 	~Model(void);
 
-	void InitializeSpriteModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,ModelPaths paths, float spriteSize);
+	void InitializeSpriteModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,ModelPaths* paths, float spriteSize);
 
 
 	void Update(float dt);

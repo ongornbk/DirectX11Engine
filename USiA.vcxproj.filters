@@ -49,9 +49,6 @@
     <Filter Include="Header Files\Engine\Components\Scenes">
       <UniqueIdentifier>{1ecd5268-bfc0-43c5-8ae2-c3f170043d46}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resources">
-      <UniqueIdentifier>{220e1e99-4842-4e03-a0dc-f92a17bba98e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Sound">
       <UniqueIdentifier>{75fa65c2-f874-4a83-84b8-73b3c6532d61}</UniqueIdentifier>
     </Filter>
@@ -67,9 +64,6 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files\Engine\ResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceFont.h">
       <Filter>Header Files\Engine\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="ResourceShader.h">
@@ -98,12 +92,6 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="FontShader.h">
-      <Filter>Header Files\Graphics\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork.h">
       <Filter>Header Files\Framework</Filter>
@@ -183,16 +171,7 @@
     <ClInclude Include="TaskQueue.h">
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
-    <ClInclude Include="TemplateTileset.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureArray.h">
       <Filter>Header Files\Graphics\Items</Filter>
     </ClInclude>
     <ClInclude Include="TextureShader.h">
@@ -225,13 +204,13 @@
     <ClInclude Include="VertexBuffer.h">
       <Filter>Header Files\Graphics\Items</Filter>
     </ClInclude>
-    <ClInclude Include="Walls.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="LUAManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="S_ModelPaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -299,9 +278,6 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceSound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -320,25 +296,10 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RendererManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FontShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceFont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Unit.cpp">
@@ -348,9 +309,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UserInterfaceGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuScene.cpp">
@@ -371,43 +329,22 @@
     <ClCompile Include="Global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TemplateTileset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Walls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TaskQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tasks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CameraControl.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mDynamicArray.hpp">
-      <Filter>Header Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="LUAManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CALLBACK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="S_ModelPaths.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

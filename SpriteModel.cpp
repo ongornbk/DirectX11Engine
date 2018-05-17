@@ -31,7 +31,7 @@ SpriteModel::~SpriteModel(void)
 }
 
 
-void SpriteModel::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader,ModelPaths paths)
+void SpriteModel::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader,ModelPaths* paths)
 {
 
 	m_vertexBuffer = new VertexBuffer();
@@ -39,84 +39,84 @@ void SpriteModel::Initialize(ID3D11Device * device, ID3D11DeviceContext * device
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 
 	
-	if (paths.TOWNWALK != NULL)
+	if (paths->TOWNWALK != NULL)
 	{
-		wstring tmp0 = wstring(paths.TOWNWALK);
+		wstring tmp0 = wstring(paths->TOWNWALK);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[0] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
-	if (paths.TOWNNEUTRAL != NULL)
+	if (paths->TOWNNEUTRAL != NULL)
 	{
-		wstring tmp0 = wstring(paths.TOWNNEUTRAL);
+		wstring tmp0 = wstring(paths->TOWNNEUTRAL);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[1] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
-	if (paths.SPECIALCAST != NULL)
+	if (paths->SPECIALCAST != NULL)
 	{
-		wstring tmp0 = wstring(paths.SPECIALCAST);
+		wstring tmp0 = wstring(paths->SPECIALCAST);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[2] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
-	if (paths.GETHIT != NULL)
+	if (paths->GETHIT != NULL)
 	{
-		wstring tmp0 = wstring(paths.GETHIT);
+		wstring tmp0 = wstring(paths->GETHIT);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[3] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.KICK != NULL)
+	if (paths->KICK != NULL)
 	{
-		wstring tmp0 = wstring(paths.KICK);
+		wstring tmp0 = wstring(paths->KICK);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[4] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.SPECIAL_1 != NULL)
+	if (paths->SPECIAL_1 != NULL)
 	{
-		wstring tmp0 = wstring(paths.SPECIAL_1);
+		wstring tmp0 = wstring(paths->SPECIAL_1);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[5] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.WALK != NULL)
+	if (paths->WALK != NULL)
 	{
-		wstring tmp0 = wstring(paths.WALK);
+		wstring tmp0 = wstring(paths->WALK);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[6] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.ATTACK_1 != NULL)
+	if (paths->ATTACK_1 != NULL)
 	{
-		wstring tmp0 = wstring(paths.ATTACK_1);
+		wstring tmp0 = wstring(paths->ATTACK_1);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[7] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.NEUTRAL != NULL)
+	if (paths->NEUTRAL != NULL)
 	{
-		wstring tmp0 = wstring(paths.NEUTRAL);
+		wstring tmp0 = wstring(paths->NEUTRAL);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[8] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.ATTACK_2 != NULL)
+	if (paths->ATTACK_2 != NULL)
 	{
-		wstring tmp0 = wstring(paths.ATTACK_2);
+		wstring tmp0 = wstring(paths->ATTACK_2);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[9] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.RUN != NULL)
+	if (paths->RUN != NULL)
 	{
-		wstring tmp0 = wstring(paths.RUN);
+		wstring tmp0 = wstring(paths->RUN);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[10] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.SPECIAL_3 != NULL)
+	if (paths->SPECIAL_3 != NULL)
 	{
-		wstring tmp0 = wstring(paths.SPECIAL_3);
+		wstring tmp0 = wstring(paths->SPECIAL_3);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[11] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths.SPECIAL_4 != NULL)
+	if (paths->SPECIAL_4 != NULL)
 	{
-		wstring tmp0 = wstring(paths.SPECIAL_4);
+		wstring tmp0 = wstring(paths->SPECIAL_4);
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[12] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}

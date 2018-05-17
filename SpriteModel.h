@@ -1,6 +1,6 @@
 #pragma once
 #include "Sprite.h"
-#include "TextureArray.h"
+#include "S_ModelPaths.h"
 
 
 
@@ -90,7 +90,7 @@ public:
 
 	virtual ~SpriteModel(void);
 
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,ModelPaths paths);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,ModelPaths* paths);
 
 	void Update(float dt);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader);

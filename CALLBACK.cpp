@@ -89,7 +89,7 @@ namespace lua_callback
 			wcscpy(wide_string,ws.c_str());
 			m_resources->LoadTextureResource(wide_string);
 			delete wide_string;
-		return 1;
+		return 0;
 	}
 
 	static int LoadSound(lua_State* state) //EXPORTED
@@ -102,20 +102,20 @@ namespace lua_callback
 		wcscpy(wide_string, ws.c_str());
 		m_resources->LoadSoundResource(wide_string);
 		delete wide_string;
-		return 1;
+		return 0;
 	}
 
 
 	static int InitializeProjectionMatrix(lua_State* state) //EXPORTED
 	{
 		m_camera->InitializeProjectionMatrix((float)XM_PI / LUA_FLOAT(state, 1), Settings::GetAspectRatio(),1.0f / LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
-		return 1;
+		return 0;
 	}
 
 	static int InitializeOrthoMatrix(lua_State* state) //EXPORTED
 	{
 		m_camera->InitializeOrthoMatrix(*(Settings::get()->RESOLUTION_X), *(Settings::get()->RESOLUTION_Y), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
-		return 1;
+		return 0;
 	}
 
 	static int SetCameraPosition(lua_State* state) //EXPORTED
@@ -125,20 +125,21 @@ namespace lua_callback
 		position.m128_f32[1] = LUA_FLOAT(state, 2);
 		position.m128_f32[2] = LUA_FLOAT(state, 3);
 		m_camera->SetPosition(position);
-		return 1;
+		return 0;
 	}
 
 	static int AddMusic(lua_State* state) //EXPORTED
 	{
-#pragma warning(disable : 4996)
 		string str = LUA_STRING(state, 1);
+		m_engine->AddMusic(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
+		return 0;
+	}
 
-		wchar_t* wide_string = new wchar_t[str.length() + 1];
-		wstring ws = std::wstring(str.begin(), str.end()).c_str();
-		wcscpy(wide_string, ws.c_str());
-		m_engine->AddMusic(wide_string, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
-		delete wide_string;
-		return 1;
+	static int AddModelPaths(lua_State* state) //EXPORTED
+	{
+		string str = LUA_STRING(state, 1);
+		m_engine->AddModelPaths(str);
+		return 0;
 	}
 
 	static int PlayMusic(lua_State* state) //EXPORTED
@@ -151,13 +152,13 @@ namespace lua_callback
 		wcscpy(wide_string, ws.c_str());
 		m_engine->PlayMusic(wide_string);
 		delete wide_string;
-		return 1;
+		return 0;
 	}
 
 	static int __PostQuitMessage(lua_State* state) //EXPORTED
 	{
 		PostQuitMessage((int)lua_tointeger(state,1));
-		return 1;
+		return 0;
 	}
 
 	static int __IsKeyHit(lua_State* state) //EXPORTED
@@ -246,6 +247,9 @@ namespace lua_callback
 
 	static int InitializeUnit(lua_State* state)
 	{
+		Unit* unit = m_global->m_lastCreatedUnit;
+		if (unit)
+		{
 		string str = lua_tostring(state, 1);
 		float size = (float)lua_tointeger(state, 2);
 		float collision = (float)lua_tointeger(state, 3);
@@ -257,13 +261,10 @@ namespace lua_callback
 		wchar_t* wide_string = new wchar_t[str.length() + 1];
 		wstring ws = std::wstring(str.begin(), str.end()).c_str();
 		wcscpy(wide_string, ws.c_str());
-		ModelPaths path(wide_string);
-		Unit* unit = m_global->m_lastCreatedUnit;
-		if (unit)
-		{
-			unit->Initialize(m_device, m_deviceContext, m_shader, path, size, collision, pos, wander);
+
+
+			unit->Initialize(m_device, m_deviceContext, m_shader, wide_string, size, collision, pos, wander);
 			m_renderer->PushUnit(unit);
-			
 		}
 		return 0;
 		
@@ -303,8 +304,8 @@ namespace lua_callback
 		{
 			XMFLOAT3 position;
 			position = unit->GetPosition();
-			lua_pushinteger(state,position.x);
-			lua_pushinteger(state,position.y);
+			lua_pushinteger(state,(int)position.x);
+			lua_pushinteger(state,(int)position.y);
 			return 2;
 		}
 		return 0;
@@ -369,6 +370,7 @@ namespace lua_callback
 		lua_register(m_lua, "SetTaskGotoPoint", SetTaskGotoPoint);
 		lua_register(m_lua, "CleanTasks", CleanTasks);
 		lua_register(m_lua, "GetUnitPosition",GetUnitPosition);
+		lua_register(m_lua, "AddModelPaths", AddModelPaths);
 		//RendererManager
 		lua_register(m_lua, "SetRendereringStyle", lua_callback::SetRenderingStyle);
 	}

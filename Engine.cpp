@@ -4,7 +4,13 @@
 #include "SettingsC.h"
 #include "LUAManager.h"
 #include "CALLBACK.cpp"
+#include "S_ModelPaths.h"
 #include <map>
+#include <streambuf>
+#include <fstream>
+#include <istream>
+#include <sstream>
+#include <stack>
 
 Engine* Engine::m_instance = NULL;
 
@@ -15,9 +21,13 @@ static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 namespace
 {
 
+
 	using std::map;
-	static map<string, Sound*> m_music;
-	static Sound*              m_playingMusic = nullptr;
+	static map<string, Sound*>     m_music;
+	static Sound*                  m_playingMusic = nullptr;
+
+
+
 }
 
 
@@ -223,12 +233,9 @@ void Engine::SetGameComponent(GameComponent * gameComponent)
 
 Sound * Engine::CreateSound(WCHAR* name)
 {
-
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-
 	return m_resourceManager->GetSoundByName((char*)tmp1.c_str());
-	
 }
 
 Sound * Engine::CreateSound(WCHAR* name, bool looping)
@@ -263,11 +270,35 @@ Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 	return sound;
 }
 
-void Engine::AddMusic(WCHAR* name, float volume,bool looping)
+Sound * Engine::CreateSound(string name, float volume, bool looping)
 {
-	wstring tmp0 = wstring(name);
-	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	m_music[tmp1] = CreateSound(name, volume, looping);
+	Sound* sound = m_resourceManager->GetSoundByName((char*)name.c_str());
+	sound->SetVolume(volume);
+	sound->SetLooping(looping);
+	return sound;
+}
+
+void Engine::AddMusic(string name, float volume,bool looping)
+{
+	m_music[name] = CreateSound(name, volume, looping);
+}
+
+void Engine::AddModelPaths(string name)
+{
+#pragma region
+#pragma warning(disable : 4996)
+	using std::getline;
+	using std::istringstream;
+	using std::stack;
+#pragma endregion
+	istringstream ss(name.c_str());
+	string token;
+	while (getline(ss, token, '/')) { ;; }
+	wchar_t* wide_string = new wchar_t[name.length() + 1];
+	wstring ws = std::wstring(name.begin(), name.end()).c_str();
+	wcscpy(wide_string, ws.c_str());
+	S_ModelPaths::AddModelPaths(token, wide_string);
+	delete wide_string;
 }
 
 void Engine::PlayMusic(WCHAR * music)

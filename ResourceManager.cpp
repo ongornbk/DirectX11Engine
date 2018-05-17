@@ -238,9 +238,7 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 	m_sounds.push_back(resourceSound);
 }
 
-void ResourceManager::LoadFontResource(WCHAR * fontFileName)
-{
-}
+
 
 void ResourceManager::Release()
 {
@@ -291,10 +289,6 @@ Sound  * ResourceManager::GetSoundByName(	char* soundName)
 	return NULL;
 }
 
-Font * ResourceManager::GetFontByName(char * fontName)
-{
-	return nullptr;
-}
 
 ResourceManager * ResourceManager::GetInstance()
 {

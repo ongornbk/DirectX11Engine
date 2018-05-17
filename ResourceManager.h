@@ -2,7 +2,6 @@
 #include "ResourceShader.h"
 #include "ResourceTexture.h"
 #include "ResourceSound.h"
-#include "ResourceFont.h"
 
 #include <iostream>
 #include <vector>
@@ -32,14 +31,14 @@ public:
 	Shader* GetShaderByName(char* shaderName);
 	Texture* GetTextureByName(char* textureName);
 	Sound* GetSoundByName(char* soundName);
-	Font* GetFontByName(char* fontName);
+
 
 	static ResourceManager* GetInstance();
 private:
 	vector<ResourceTexture*> m_textures;
 	vector<ResourceShader*>  m_shaders;
 	vector<ResourceSound*>   m_sounds;
-	vector<ResourceFont*>    m_font;
+
 
 	static ResourceManager* m_instance;
 

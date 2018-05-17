@@ -150,8 +150,6 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="FontShader.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameScene.h" />
@@ -166,7 +164,6 @@
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RendererManager.h" />
-    <ClInclude Include="ResourceFont.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceShader.h" />
     <ClInclude Include="ResourceSound.h" />
@@ -177,12 +174,10 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteModel.h" />
+    <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />
-    <ClInclude Include="TemplateTileset.h" />
-    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TextureArray.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
@@ -193,12 +188,10 @@
     <ClInclude Include="UserInterfaceMainMenu.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="Walls.h" />
     <ClInclude Include="WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="CALLBACK.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
@@ -208,8 +201,6 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="FrameWork.cpp" />
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -219,41 +210,30 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LUAManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
-    <ClCompile Include="mDynamicArray.hpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RendererManager.cpp" />
-    <ClCompile Include="ResourceFont.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />
     <ClCompile Include="ResourceSound.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="SettingsC.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteModel.cpp" />
+    <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskQueue.cpp" />
-    <ClCompile Include="Tasks.cpp" />
-    <ClCompile Include="TemplateTileset.cpp" />
-    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureArray.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Types.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceMainMenu.cpp" />
-    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="Walls.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

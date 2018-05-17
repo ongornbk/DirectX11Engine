@@ -46,7 +46,7 @@ Model::~Model(void)
 
 
 
-void Model::InitializeSpriteModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader,ModelPaths paths, float spriteSize)
+void Model::InitializeSpriteModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader,ModelPaths* paths, float spriteSize)
 {
 	m_spriteModel = new SpriteModel(spriteSize);
 	dynamic_cast<SpriteModel*>(m_spriteModel)->Initialize(device, deviceContext, shader,paths);

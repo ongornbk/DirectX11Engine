@@ -1,6 +1,6 @@
 #include "Unit.h"
-
-
+#include "Engine.h"
+#include "S_ModelPaths.h"
 
 Unit::Unit()
 {
@@ -18,10 +18,14 @@ Unit::~Unit()
 	}
 }
 
-void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, ModelPaths paths, float modelsize,float collision,XMFLOAT3 position,bool wander)
+void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR* paths, float modelsize,float collision,XMFLOAT3 position,bool wander)
 {
+
 	m_model = new Model();
-	m_model->InitializeSpriteModel(device, deviceContext, shader, paths, modelsize);
+	wstring tmp0 = wstring(paths);
+	string  tmp1 = string(tmp0.begin(), tmp0.end());
+	ModelPaths* ptr = S_ModelPaths::GetModelPaths(tmp1);
+	m_model->InitializeSpriteModel(device, deviceContext, shader, ptr, modelsize);
 	m_model->Radius = collision;
 	m_model->Center = position;
 	m_wanderingFlag = wander;
