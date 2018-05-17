@@ -36,7 +36,6 @@ TextureArray::~TextureArray()
 
 bool TextureArray::InitializeArray(ID3D11Device* device,ModelPaths paths)
 {
-	HRESULT result;
 	Initialize(device, paths.TOWNWALK, 0);
 	Initialize(device, paths.TOWNNEUTRAL, 1);
 	Initialize(device, paths.SPECIALCAST, 2);

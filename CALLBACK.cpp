@@ -4,6 +4,7 @@
 #include "SettingsC.h"
 #include "Engine.h"
 #include "Global.h"
+#include "GameScene.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -155,27 +156,92 @@ namespace lua_callback
 
 	static int __PostQuitMessage(lua_State* state) //EXPORTED
 	{
-		PostQuitMessage(lua_tointeger(state,1));
+		PostQuitMessage((int)lua_tointeger(state,1));
 		return 1;
 	}
 
 	static int __IsKeyHit(lua_State* state) //EXPORTED
 	{
-		if (m_input->IsKeyHit(lua_tointeger(state,1)))
+		if (m_input->IsKeyHit((unsigned int)lua_tointeger(state,1)))
 		{
-			return 1;
+			lua_pushboolean(state, true);
 		}
 		else
 		{
-			return 0;
+			lua_pushboolean(state, false);
 		}
+		return 1;
+	}
+
+	static int __GetMouseState(lua_State* state) //EXPORTED
+	{
+		if (m_input->GetMouseState((unsigned int)lua_tointeger(state, 1)))
+		{
+			lua_pushboolean(state,true);
+		}
+		else
+		{
+			lua_pushboolean(state, false);
+		}
+		return 1;
 	}
 
 	static int CreateUnit(lua_State* state)
 	{
 		Unit* unit = new Unit();
 		m_global->m_lastCreatedUnit = unit;
-		return 1;
+		return 0;
+	}
+
+	static int GetMousePosition(lua_State* state)
+	{
+		int xm, ym;
+		UserInterfaceGame::GetMousePosition(xm, ym);
+		m_global->m_lastPoint = XMFLOAT3((float)xm, (float)ym, 0.0f);
+		return 0;
+	}
+
+	static int GetHero(lua_State*)
+	{
+		m_global->m_lastCreatedUnit = GameScene::GetHero();
+		return 0;
+	}
+
+	static int GiveTaskGotoPoint(lua_State* state)
+	{
+			Task* task = new Task();
+			TaskGotoPoint* tgtp = new TaskGotoPoint();
+			tgtp->destination = m_global->m_lastPoint;
+			tgtp->object = m_global->m_lastCreatedUnit;
+			task->m_content.taskGotoPoint = tgtp;
+			task->m_type = Task::Type::TASKGOTOPOINT;
+			m_global->m_lastCreatedUnit->GiveTask(task);
+			return 0;
+	}
+
+	static int SetTaskGotoPoint(lua_State* state)
+	{
+		Task* task = new Task();
+		TaskGotoPoint* tgtp = new TaskGotoPoint();
+		tgtp->destination = m_global->m_lastPoint;
+		tgtp->object = m_global->m_lastCreatedUnit;
+		task->m_content.taskGotoPoint = tgtp;
+		task->m_type = Task::Type::TASKGOTOPOINT;
+		m_global->m_lastCreatedUnit->SetTask(task);
+		return 0;
+	}
+
+	static int CleanTasks(lua_State* state)
+	{
+
+		m_global->m_lastCreatedUnit->DiscardTasks();
+		return 0;
+	}
+
+	static int LockCameraOnUnit(lua_State* state)
+	{
+		m_engine->GetCameraControl()->LockCameraPositionOnUnit(m_global->m_lastCreatedUnit);
+		return 0;
 	}
 
 	static int InitializeUnit(lua_State* state)
@@ -197,20 +263,15 @@ namespace lua_callback
 		{
 			unit->Initialize(m_device, m_deviceContext, m_shader, path, size, collision, pos, wander);
 			m_renderer->PushUnit(unit);
-			return 1;
+			
 		}
-		else
-		{
-			return 0;
-		}
+		return 0;
 		
 	}
 
 	static int SetWalkingStance(lua_State* state)
 	{
 		Unit* unit = m_global->m_lastCreatedUnit;
-		if (unit)
-		{
 			Unit::WalkingStance ws;
 			switch (lua_tointeger(state, 1))
 			{
@@ -220,12 +281,8 @@ namespace lua_callback
 			case 1:
 				ws = Unit::WalkingStance::RUN;
 				break;
-			default:
-				return 2;
 			}
 			unit->SetWalkingStance(ws);
-			return 1;
-		}
 		return 0;
 	}
 
@@ -235,8 +292,33 @@ namespace lua_callback
 		if (unit)
 		{
 			unit->SetSpeed((float)lua_tointeger(state,1));
-			return 1;
 		}
+		return 0;
+	}
+
+	static int SetUnitRotations(lua_State* state)
+	{
+		Unit* unit = m_global->m_lastCreatedUnit;
+		if (unit)
+		{
+			unit->SetRotations((float)lua_tointeger(state, 1));
+		}
+		return 0;
+	}
+
+	static int SetRenderingStyle(lua_State* state)
+	{
+		RendererManager::RenderingStyle rs;
+		switch (lua_tointeger(state, 1))
+		{
+		case 0:
+			rs = RendererManager::RenderingStyle::REVERSE;
+			break;
+		case 1:
+			rs = RendererManager::RenderingStyle::NOREVERSE;
+			break;
+		}
+		m_renderer->SetRenderingStyle(rs);
 		return 0;
 	}
 
@@ -252,18 +334,29 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::InitializeProjectionMatrix);
 		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::InitializeOrthoMatrix);
 		lua_register(m_lua, "SetCameraPosition", lua_callback::SetCameraPosition);
+		lua_register(m_lua, "LockCameraOnUnit", lua_callback::LockCameraOnUnit);
 		//Music
 		lua_register(m_lua, "AddMusic", lua_callback::AddMusic);
 		lua_register(m_lua, "PlayMusic", lua_callback::PlayMusic);
 		//System
 		lua_register(m_lua, "PostQuitMessage", lua_callback::__PostQuitMessage);
 		//Input
-		lua_register(m_lua, "IsKeyHit", __IsKeyHit);
+		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
+		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
+		lua_register(m_lua, "GetMousePosition", GetMousePosition);
 		//Units
 		lua_register(m_lua, "CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua, "InitializeUnit", lua_callback::InitializeUnit);
 		lua_register(m_lua, "SetWalkingStance", lua_callback::SetWalkingStance);
 		lua_register(m_lua, "SetUnitSpeed", lua_callback::SetUnitSpeed);
+		lua_register(m_lua, "SetUnitRotations", lua_callback::SetUnitSpeed);
+		lua_register(m_lua, "GetHero", lua_callback::GetHero);
+		lua_register(m_lua, "GiveTaskGotoPoint", GiveTaskGotoPoint);
+		lua_register(m_lua, "SetTaskGotoPoint", SetTaskGotoPoint);
+		lua_register(m_lua, "CleanTasks", CleanTasks);
+		
+		//RendererManager
+		lua_register(m_lua, "SetRendereringStyle", lua_callback::SetRenderingStyle);
 	}
 
 }

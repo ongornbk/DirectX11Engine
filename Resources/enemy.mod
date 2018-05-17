@@ -3,11 +3,11 @@ NULL
 NULL
 NULL
 NULL
-enemy_run
+enemy_walk
 NULL
 NULL
 NULL
 NULL
 enemy_townneutral
 NULL
-enemy_run
+enemy_walk

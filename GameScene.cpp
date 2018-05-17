@@ -10,6 +10,7 @@ using GlobalUtilities::random;
 namespace
 {
 	float j = 0;
+	static Unit*         m_hero;
 }
 
 GameScene::GameScene()
@@ -55,23 +56,23 @@ bool GameScene::Initialize()
 	RendererManager*     _renderer = RendererManager::GetInstance();
 	if ((!shader) || (!_device) || (!_context) || (!_renderer)) INITIALIZATION_FAILED
 #pragma endregion
-
+		m_hero = new Unit();
 		lua::Execute(lua::LUA_LOCATION_GAMESCENE_INITIALIZATION);
 
 
 	//shader->
-	ModelPaths paths(L"../../content/Textures/models/barbarian.mod");
+	//ModelPaths paths(L"../../content/Textures/models/barbarian.mod");
 
-	float cora = *Settings::get()->COLLISSION_RADIUS;
+//	float cora = *Settings::get()->COLLISSION_RADIUS;
 
-	m_hero = new Unit();
-		m_hero->Initialize(_device, _context, shader, paths, 100.0f,cora,XMFLOAT3(0.0F,0.0F,0.0F),false);
-		m_hero->SetWalkingStance(Unit::WalkingStance::RUN);
-		m_hero->SetSpeed(255.0f);
 
-		ENGINE GetCameraControl()->LockCameraPositionOnUnit(m_hero);
+		//m_hero->Initialize(_device, _context, shader, paths, 100.0f,cora,XMFLOAT3(0.0F,0.0F,0.0F),false);
+		//m_hero->SetWalkingStance(Unit::WalkingStance::RUN);
+	//	m_hero->SetSpeed(255.0f);
 
-		_renderer->PushUnit(m_hero);
+	//	ENGINE GetCameraControl()->LockCameraPositionOnUnit(m_hero);
+
+	//	_renderer->PushUnit(m_hero);
 
 		//ModelPaths paths2;
 		//
@@ -137,16 +138,18 @@ extern "C"
 void GameScene::Update()
 {
 
-	lua::Execute(lua::LUA_LOCATION_GAMESCENE_UPDATE);
+	
 
 	Input* input = ENGINE GetInput();
 
 	if (input == NULL) return;
 
-	XMFLOAT3 xvm = m_hero->GetPosition();
+	lua::Execute(lua::LUA_LOCATION_GAMESCENE_UPDATE);
 
-	int xm, ym;
-	UserInterfaceGame::GetMousePosition(xm, ym);
+	//XMFLOAT3 xvm = m_hero->GetPosition();
+
+	//int xm, ym;
+	//UserInterfaceGame::GetMousePosition(xm, ym);
 
 	Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
 
@@ -221,97 +224,105 @@ void GameScene::Update()
 
 	*/
 
-	if (input->GetMouseState(0) == 128)
-	{
-		
-		Task* task = new Task();
-		TaskGotoPoint* tgtp = new TaskGotoPoint();
-		tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
-		tgtp->object = m_hero;
-		task->m_content.taskGotoPoint = tgtp;
-		task->m_type = Task::Type::TASKGOTOPOINT;
-		m_hero->SetTask(task);
-	}
-	else
-	{
+	//if (input->GetMouseState(0) == 128)
+//	{
+//		
+//		Task* task = new Task();
+//		TaskGotoPoint* tgtp = new TaskGotoPoint();
+//		tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
+//		tgtp->object = m_hero;
+//		task->m_content.taskGotoPoint = tgtp;
+//		task->m_type = Task::Type::TASKGOTOPOINT;
+//		if (input->IsKeyDown(DIK_LSHIFT))
+//		{
+//			m_hero->GiveTask(task);
+//		}
+//		else
+//		{
+//			m_hero->SetTask(task);
+//		}
+//	}
+//	else
+//	{
+//
+//	}
 
-	}
-
-	if (selectedunit)
-	{
-		mep = selectedunit->GetPosition();
+	//if (selectedunit)
+	//{
+	//	mep = selectedunit->GetPosition();
 		//mfv.x *= mfv.x;
 		//mfv.y *= mfv.y;
-		if (input->GetMouseState(1) == 128)
-		{
-			Task* task = new Task();
-			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
-			tgtp->object = selectedunit;
-			task->m_content.taskGotoPoint = tgtp;
-			task->m_type = Task::Type::TASKGOTOPOINT;
-			if (input->IsKeyDown(DIK_LSHIFT))
-			{
-				selectedunit->GiveTask(task);
-			}
-			else
-			{
-				selectedunit->SetTask(task);
-			}
-		}
-		else
-		{
+	//	if (input->GetMouseState(1) == 128)
+	//	{
+		//	Task* task = new Task();
+	//		TaskGotoPoint* tgtp = new TaskGotoPoint();
+		//	tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
+		//	tgtp->object = selectedunit;
+	//		task->m_content.taskGotoPoint = tgtp;
+	//		task->m_type = Task::Type::TASKGOTOPOINT;
+	//		if (input->IsKeyDown(DIK_LSHIFT))
+	//		{
+	//			selectedunit->GiveTask(task);
+	//		}
+	//		else
+	//		{
+	//			selectedunit->SetTask(task);
+	//		}
+	//	}
+	//	else
+	//	{
+//
+	//	}
+//	}
+	//
+	//	if (input->IsKeyHit(DIK_SPACE))
+	//	{
+	//		Task* task = new Task();
+	//		TaskPatrol* tgtp = new TaskPatrol();
+	//		tgtp->pointB = m_hero->GetPosition();
+	//		tgtp->pointA = selectedunit->GetPosition();
+	//		tgtp->object = selectedunit;
+	//		task->m_content.taskPatrol = tgtp;
+	//		task->m_type = Task::Type::TASKPATROL;
+	//		selectedunit->SetTask(task);
+	//	}
+	//
+	//	else
+	//	{
+	//
+	//	}
+	//
+	//	if (input->IsKeyHit(DIK_1))
+	//	{
+	//		Task* task = new Task();
+	//		TaskFollow* tgtp = new TaskFollow();
+	//		tgtp->object = selectedunit;
+	//		tgtp->target = m_hero;
+	//		task->m_content.taskFollow = tgtp;
+	//		task->m_type = Task::Type::TASKFOLLOW;
+	//		selectedunit->SetTask(task);
+	//	}
+	//
+	//	else
+	//	{
+	//
+	//	}
+	//}
 
-		}
-
-		if (input->IsKeyHit(DIK_SPACE))
-		{
-			Task* task = new Task();
-			TaskPatrol* tgtp = new TaskPatrol();
-			tgtp->pointB = m_hero->GetPosition();
-			tgtp->pointA = selectedunit->GetPosition();
-			tgtp->object = selectedunit;
-			task->m_content.taskPatrol = tgtp;
-			task->m_type = Task::Type::TASKPATROL;
-			selectedunit->SetTask(task);
-		}
-
-		else
-		{
-
-		}
-
-		if (input->IsKeyHit(DIK_1))
-		{
-			Task* task = new Task();
-			TaskFollow* tgtp = new TaskFollow();
-			tgtp->object = selectedunit;
-			tgtp->target = m_hero;
-			task->m_content.taskFollow = tgtp;
-			task->m_type = Task::Type::TASKFOLLOW;
-			selectedunit->SetTask(task);
-		}
-
-		else
-		{
-
-		}
-	}
-
-	if (input->GetMouseState(0) == 128)
-	{
-		Task* task = new Task();
-		TaskGotoPoint* tgtp = new TaskGotoPoint();
-		tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
-		tgtp->object = m_hero;
-		task->m_content.taskGotoPoint = tgtp;
-		task->m_type = Task::Type::TASKGOTOPOINT;
-		m_hero->SetTask(task);
-	}
-	else
-	{
-
-	}
+	//if (input->GetMouseState(0) == 128)
+	//{
+	//	Task* task = new Task();
+	//	TaskGotoPoint* tgtp = new TaskGotoPoint();
+	//	tgtp->destination = XMFLOAT3((float)xm, (float)ym, 0.0f);
+	//	tgtp->object = m_hero;
+	//	task->m_content.taskGotoPoint = tgtp;
+	//	task->m_type = Task::Type::TASKGOTOPOINT;
+	//	m_hero->SetTask(task);
+	//}
+	//else
+	//{
+	//
+	//}
 
 	
 	
@@ -320,5 +331,10 @@ void GameScene::Update()
 
 void GameScene::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
+}
+
+Unit* GameScene::GetHero()
+{
+	return m_hero;
 }
 

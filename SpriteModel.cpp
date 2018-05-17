@@ -16,6 +16,7 @@ SpriteModel::SpriteModel(float size)
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_stop = false;
+	m_rotations = 16.0f;
 }
 
 
@@ -166,16 +167,16 @@ void SpriteModel::Update(float dt)
 	VertexBuffer::VertexType* vertices = m_vertexBuffer->GetVertices();
 
 	vertices[0].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
-	vertices[0].uv.y = (m_rotation + 1.0f) / ROTATIONS;
+	vertices[0].uv.y = (m_rotation + 1.0f) / m_rotations;
 
 	vertices[1].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
-	vertices[1].uv.y = m_rotation / ROTATIONS;
+	vertices[1].uv.y = m_rotation / m_rotations;
 
 	vertices[2].uv.x =( m_currentFrame+1.0f) / m_modelVariant.GetMaxFrames();
-	vertices[2].uv.y = m_rotation / ROTATIONS;
+	vertices[2].uv.y = m_rotation / m_rotations;
 
 	vertices[3].uv.x = (m_currentFrame + 1.0f) / m_modelVariant.GetMaxFrames();
-	vertices[3].uv.y = (m_rotation + 1.0f) / ROTATIONS;
+	vertices[3].uv.y = (m_rotation + 1.0f) / m_rotations;
 
 
 
@@ -212,7 +213,7 @@ void SpriteModel::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMa
 
 void SpriteModel::SetRotation(int rotation)
 {
-	(this->m_rotation) = (float)(rotation % (int)ROTATIONS);
+	(this->m_rotation) = (float)(rotation % (int)m_rotations);
 	//float rotation0 = (float)(rotation % (int)ROTATIONS);
 	//switch (rotation0 > (this->m_rotation))
 	//{
@@ -275,6 +276,12 @@ bool SpriteModel::IsLocked()
 void SpriteModel::DrawRectangle(ID3D11DeviceContext * deviceContext, Shader* shader, int borderWidth)
 {
 	//deviceContext->
+}
+
+void SpriteModel::SetRotations(float rotations)
+{
+	this->m_rotations = rotations;
+	m_modelVariant.m_maxFrames[10] = 22;
 }
 
 void SpriteModel::SetAnimation(ModelStance animation, bool lock, bool force)

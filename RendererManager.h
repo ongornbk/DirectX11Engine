@@ -230,7 +230,11 @@ class RendererManager
 public:
 
 
-
+	enum RenderingStyle
+	{
+		NOREVERSE = 0,
+		REVERSE = 1
+	};
 
 	RendererManager(Engine* engine,Shader* shader);
 	~RendererManager();
@@ -241,6 +245,7 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
 	void RemoveAllObjects();
+	void SetRenderingStyle(RenderingStyle render);
 
 	static RendererManager* GetInstance();
 private:
@@ -251,7 +256,7 @@ private:
 
 
 
-
+	RenderingStyle m_renderingStyle;
 	TileMap m_map;
 	UserInterface* m_ui;
 };

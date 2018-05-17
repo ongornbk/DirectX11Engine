@@ -91,3 +91,13 @@ void Unit::SetWalkingStance(WalkingStance stance)
 {
 	this->m_walkingStance = stance;
 }
+
+void Unit::SetRotations(float rotations)
+{
+	m_model->SetRotations(rotations);
+}
+
+void Unit::DiscardTasks()
+{
+	m_tasks.Discard();
+}

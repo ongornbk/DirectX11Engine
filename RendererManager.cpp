@@ -24,6 +24,7 @@ namespace
 
 RendererManager::RendererManager(Engine* engine,Shader* shader)
 {
+	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
 	this->m_objects.reserve(*(SETTINGS NUMBER_OF_UNITS)+2);
 	m_instance = this;
@@ -638,7 +639,10 @@ void RendererManager::Update()
 		std::this_thread::sleep_for(1ms);
 	}
 
-	std::reverse(m_objects.begin(), m_objects.end());
+	if (m_renderingStyle == RendererManager::RenderingStyle::REVERSE)
+	{
+		std::reverse(m_objects.begin(), m_objects.end());
+	}
 	sort(m_objects.begin(), m_objects.end(), SortByX());
 	sort(m_objects.begin(), m_objects.end(), SortByY());
 
@@ -663,6 +667,11 @@ void RendererManager::RemoveAllObjects()
 		}
 	}
 	m_objects.clear();
+}
+
+void RendererManager::SetRenderingStyle(RenderingStyle render)
+{
+	m_renderingStyle = render;
 }
 
 RendererManager * RendererManager::GetInstance()

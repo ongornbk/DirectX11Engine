@@ -50,6 +50,7 @@ void Model::InitializeSpriteModel(ID3D11Device * device, ID3D11DeviceContext * d
 {
 	m_spriteModel = new SpriteModel(spriteSize);
 	dynamic_cast<SpriteModel*>(m_spriteModel)->Initialize(device, deviceContext, shader,paths);
+	m_size = spriteSize;
 	m_lastsize = spriteSize;
 }
 
@@ -81,7 +82,7 @@ void Model::Update(float dt)
 
 		if (m_spriteModel&&m_flags[0])
 		{
-			STOREFLOAT Center.x, Center.y, Center.z DEND
+			STOREFLOAT Center.x, Center.y+(m_size/1.5f), Center.z-(m_size/1.5f) DEND
 			m_spriteModel->Update(dt);
 		}
 	}
@@ -194,6 +195,11 @@ void Model::SetAnimation(SpriteModel::ModelStance animation,bool lock,bool force
 
 void Model::SetAnimationSpeed(float speed)
 {
+}
+
+void Model::SetRotations(float rotations)
+{
+	m_spriteModel->SetRotations(rotations);
 }
 
 void Model::PlayAnimation(SpriteModel::ModelStance animation)

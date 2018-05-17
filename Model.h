@@ -36,6 +36,7 @@ public:
 	void SetRotation(int rotation);
 	void SetAnimation(SpriteModel::ModelStance animation,bool lock = false,bool force = false);
 	void SetAnimationSpeed(float speed = 1.0f);
+	void SetRotations(float rotations);
 	void PlayAnimation(SpriteModel::ModelStance animation);
 	void PlayAnimation(SpriteModel::ModelStance animation, SpriteModel::ModelStance after);
 	void Resize(ID3D11Device * device, Shader * shader, float resize);
@@ -51,6 +52,7 @@ private:
 	XMFLOAT3     m_floats[2];
    
 	SpriteModel* m_spriteModel;
+	float        m_size;
 
 public:
 	bool m_flags[4];

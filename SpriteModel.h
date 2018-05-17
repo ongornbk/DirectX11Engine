@@ -7,8 +7,7 @@
 class SpriteModel
 {
 public:
-#define ROTATIONS 16.0f
-#define STANDARDSTANCE 8
+#define STANDARDSTANCE 4
 
 	struct MCoord
 	{
@@ -82,6 +81,7 @@ public:
 		float m_maxFrames[13] = { 8,16,15,5,0,0,8,16,8,0,8,0,0 };
 	private:
 		int m_variant;
+		
 	};
 
 	
@@ -101,6 +101,7 @@ public:
 	void PlayAnimation(ModelStance animation);
 	bool IsLocked();
 	void DrawRectangle(ID3D11DeviceContext * deviceContext,Shader* shader,int borderWidth = 1);
+	void SetRotations(float rotations);
 
 private:
 	ID3D11DeviceContext * m_deviceContext;
@@ -117,6 +118,7 @@ private:
 	ModelVariant  m_modelVariant;
 	float         m_size;
 	float         m_previousSpeed;
+	float         m_rotations;
 	int           m_stopped;
 	bool          m_stop;
 };

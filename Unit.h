@@ -31,6 +31,8 @@ public:
 	void SetSpeed(float speed = 0.0f);
 	WalkingStance GetWalkingStance();
 	void SetWalkingStance(WalkingStance stance);
+	void SetRotations(float rotations);
+	void DiscardTasks(); 
 
 #pragma region
 	friend struct Task;
