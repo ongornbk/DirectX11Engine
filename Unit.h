@@ -31,6 +31,7 @@ public:
 	void SetSpeed(float speed = 0.0f);
 	WalkingStance GetWalkingStance();
 	void SetWalkingStance(WalkingStance stance);
+	void ChangeWalkingStance();
 	void SetRotations(float rotations);
 	void DiscardTasks(); 
 
@@ -47,7 +48,7 @@ public:
 
 private:
 	Model*        m_model;
-	float         m_speed;
+	float         m_speed[2];
 	WalkingStance m_walkingStance;
 	TaskQueue     m_tasks;
 	bool          m_wanderingFlag;

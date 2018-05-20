@@ -70,7 +70,7 @@ void TaskQueue::Wander(Unit * unit)
 {
 	Task* task = new Task();
 	TaskGotoPoint* tgtp = new TaskGotoPoint();
-	tgtp->destination = RandomizeXMFLOAT3(unit->GetPosition(), 300.0f, 300.0f);
+	tgtp->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
 	tgtp->object = unit;
 	task->m_content.taskGotoPoint = tgtp;
 	task->m_type = Task::Type::TASKGOTOPOINT;

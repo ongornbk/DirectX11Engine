@@ -137,10 +137,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
+    <ClInclude Include="Canals.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
@@ -195,6 +197,7 @@
     <ClCompile Include="CALLBACK.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
+    <ClCompile Include="Canals.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
     <ClCompile Include="DXManager.cpp" />

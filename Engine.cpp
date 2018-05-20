@@ -21,9 +21,6 @@ static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 namespace
 {
 
-
-	using std::map;
-	static map<string, Sound*>     m_music;
 	static Sound*                  m_playingMusic = nullptr;
 
 
@@ -278,9 +275,9 @@ Sound * Engine::CreateSound(string name, float volume, bool looping)
 	return sound;
 }
 
-void Engine::AddMusic(string name, float volume,bool looping)
+void Engine::AddMusicSound(string name, float volume,bool looping)
 {
-	m_music[name] = CreateSound(name, volume, looping);
+	m_canals.__AddSound(CanalType::MUSIC, name, CreateSound(name, volume, looping));
 }
 
 void Engine::AddModelPaths(string name)
@@ -305,7 +302,7 @@ void Engine::PlayMusic(WCHAR * music)
 {
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	Sound* __music = m_music[tmp1];
+	Sound* __music = m_canals.__GetSound(tmp1);
 	if (m_playingMusic)
 	{
 		m_playingMusic->Stop();

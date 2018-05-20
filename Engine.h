@@ -11,15 +11,11 @@
 #include "Global.h"
 #include "CameraControl.h"
 #include "FrameWork.h"
+#include "Canals.h"
 
 class RendererManager;
 class FrameWork;
 struct lua_State;
-
-namespace
-{
-	static ModelPaths* GetModelPaths(string paths);
-}
 
 #undef PlaySound
 class Engine
@@ -40,7 +36,7 @@ public:
 	Sound* CreateSound(WCHAR* name,float volume,bool looping);
 	Sound* CreateSound(string name, float volume, bool looping);
 
-	void AddMusic(string name, float volume, bool looping = false);
+	void AddMusicSound(string name, float volume, bool looping = false);
 	void AddModelPaths(string name);
 	void PlayMusic(WCHAR* music);
 
@@ -54,7 +50,7 @@ protected:
 private:
 	Engine(void);
 
-#
+
 	void Update();
 	void Render();
 
@@ -68,7 +64,7 @@ private:
 	ResourceManager* m_resourceManager;
 	RendererManager* m_rendererManager;
 	GameComponent*   m_gameComponent;
-
+	Canals           m_canals;
 	CameraControl    m_cameraControl;
 
 	lua_State*       m_lua;

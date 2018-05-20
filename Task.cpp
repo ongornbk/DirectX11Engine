@@ -184,7 +184,7 @@ bool TaskGotoPoint::Update()
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle
 			model->SetRotation((int)rotation);
-			model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed, cos(angle*rotation)*object->m_speed*-1.0F);
+			model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
 			return true;
 		}
 		else
@@ -236,7 +236,7 @@ bool TaskPatrol::Update()
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
-		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed, cos(angle*rotation)*object->m_speed*-1.0F);
+		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
 		return true;
 	}
 	else
@@ -271,7 +271,7 @@ bool TaskFollow::Update()
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
-		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed, cos(angle*rotation)*object->m_speed*-1.0F);
+		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
 		return true;
 	}
 	else

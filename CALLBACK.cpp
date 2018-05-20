@@ -131,7 +131,7 @@ namespace lua_callback
 	static int AddMusic(lua_State* state) //EXPORTED
 	{
 		string str = LUA_STRING(state, 1);
-		m_engine->AddMusic(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
+		m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
 		return 0;
 	}
 
@@ -199,7 +199,9 @@ namespace lua_callback
 		int xm, ym;
 		UserInterfaceGame::GetMousePosition(xm, ym);
 		m_global->m_lastPoint = XMFLOAT3((float)xm, (float)ym, 0.0f);
-		return 0;
+		lua_pushinteger(state, xm);
+		lua_pushinteger(state, ym);
+		return 2;
 	}
 
 	static int GetHero(lua_State*)
@@ -287,6 +289,12 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int ChangeWalkingStance(lua_State* state)
+	{
+		m_global->m_lastCreatedUnit->ChangeWalkingStance();
+		return 0;
+	}
+
 	static int SetUnitSpeed(lua_State* state)
 	{
 		Unit* unit = m_global->m_lastCreatedUnit;
@@ -363,8 +371,9 @@ namespace lua_callback
 		lua_register(m_lua, "CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua, "InitializeUnit", lua_callback::InitializeUnit);
 		lua_register(m_lua, "SetWalkingStance", lua_callback::SetWalkingStance);
+		lua_register(m_lua, "ChangeWalkingStance",lua_callback::ChangeWalkingStance);
 		lua_register(m_lua, "SetUnitSpeed", lua_callback::SetUnitSpeed);
-		lua_register(m_lua, "SetUnitRotations", lua_callback::SetUnitSpeed);
+		lua_register(m_lua, "SetUnitRotations", lua_callback::SetUnitRotations);
 		lua_register(m_lua, "GetHero", lua_callback::GetHero);
 		lua_register(m_lua, "GiveTaskGotoPoint", GiveTaskGotoPoint);
 		lua_register(m_lua, "SetTaskGotoPoint", SetTaskGotoPoint);
