@@ -170,6 +170,14 @@ void Model::SetVelocity(float x, float y,float z)
 	m_floats[0].z = z;
 }
 
+void Model::SetVelocity(float velocity[3])
+{
+	m_floats[0].x = velocity[0];
+	m_floats[0].y = velocity[1];
+	m_floats[0].z = velocity[2];
+	free(velocity);
+}
+
 void Model::SetVelocity(XMFLOAT3 velocity)
 {
 	m_floats[0] = velocity;

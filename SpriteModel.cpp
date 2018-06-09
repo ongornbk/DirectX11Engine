@@ -281,7 +281,7 @@ void SpriteModel::DrawRectangle(ID3D11DeviceContext * deviceContext, Shader* sha
 void SpriteModel::SetRotations(float rotations)
 {
 	this->m_rotations = rotations;
-	m_modelVariant.m_maxFrames[10] = 22;
+	//m_modelVariant.m_maxFrames[10] = 22;
 }
 
 void SpriteModel::SetAnimation(ModelStance animation, bool lock, bool force)

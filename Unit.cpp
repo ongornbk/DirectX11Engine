@@ -78,13 +78,13 @@ XMFLOAT3 Unit::GetPosition()
 
 float Unit::GetSpeed()
 {
-	return m_speed[1];
+	return m_speed[0];
 }
 
 void Unit::SetSpeed(float speed)
 {
+	m_speed[0] = speed;
 	m_speed[1] = speed;
-	m_speed[2] = speed;
 }
 
 Unit::WalkingStance Unit::GetWalkingStance()
@@ -98,10 +98,10 @@ void Unit::SetWalkingStance(WalkingStance stance)
 	switch (stance)
 	{
 	case WALK:
-		m_speed[1] = m_speed[2] / 2.0f;
+		m_speed[0] = m_speed[1] / 2.0f;
 		break;
 	case RUN: 
-		m_speed[1] = m_speed[2];
+		m_speed[0] = m_speed[1];
 		break;
 	}
 }
@@ -112,11 +112,11 @@ void Unit::ChangeWalkingStance()
 	{
 	case Unit::WalkingStance::RUN:
 			m_walkingStance = Unit::WalkingStance::WALK;
-			m_speed[1] = m_speed[2] / 2.0f;
+			m_speed[0] = m_speed[1] / 2.0f;
 			break;
 	case Unit::WalkingStance::WALK:
 		m_walkingStance = Unit::WalkingStance::RUN;
-		m_speed[1] = m_speed[2];
+		m_speed[0] = m_speed[1];
 		break;
 	}
 }

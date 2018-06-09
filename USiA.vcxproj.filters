@@ -55,6 +55,9 @@
     <Filter Include="Header Files\Graphics\Interface">
       <UniqueIdentifier>{2b6d3242-3bcc-4219-bd62-56eb435370fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LUA">
+      <UniqueIdentifier>{1843190f-f5aa-4970-8e70-8c61db8ef461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -207,9 +210,6 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="LUAManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="S_ModelPaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -218,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LUAManager.h">
+      <Filter>Header Files\LUA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

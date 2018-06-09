@@ -31,6 +31,7 @@ public:
 	void SetPosition(float x = POSITION_ZERO_POINT_X, float y = POSITION_ZERO_POINT_Y,float z = POSITION_ZERO_POINT_Z);
 	void SetPosition(XMFLOAT3 position);
 	void SetVelocity(float x = 0.0f, float y = 0.0f,float z = 0.0f);
+	void SetVelocity(float velocity[3]);
 	void SetVelocity(XMFLOAT3 velocity);
 	void Translate(float x = 0.0f, float y = 0.0f,float z = 0.0f);
 	void SetRotation(int rotation);

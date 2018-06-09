@@ -6,6 +6,14 @@
 #pragma region 
 
 #pragma endregion
+
+struct FLOAT3
+{
+	float x;
+	float y;
+	float z;
+};
+
 //
 
 //
@@ -76,12 +84,20 @@
 extern "C"
 {
 
-	inline float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) noexcept
+	 float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) noexcept
 	{
-		float xd = std::abs(a.x - b.x);
-		float yd = std::abs(a.y - b.y);
-		float d = sqrt((xd*xd) + (yd*yd));
-		return d;
+		float f[2] = { (a.x - b.x),(a.y - b.y) };
+		return sqrt((f[0]*f[0]) + (f[1]*f[1]));
+	}
+
+	 FLOAT3 _vectorcall calculateVelocity(float speed,float rotation) noexcept
+	{
+#define ANGLE (3.14f / 8.0f)
+		 FLOAT3 f3;
+		f3.x = sin(3.14f + ANGLE * rotation)*Settings::GetAspectRatio()*speed;
+		f3.y = cos(ANGLE*rotation)*speed * -1.0f;
+		f3.z = 0.0f;
+		return f3;
 	}
 
 }
@@ -161,7 +177,7 @@ bool Task::Update()
 
 bool TaskGotoPoint::Update()
 {
-	#define angle 3.14f / 8
+
 	XMFLOAT3 position = object->GetPosition();
 		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 		{
@@ -184,7 +200,8 @@ bool TaskGotoPoint::Update()
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle
 			model->SetRotation((int)rotation);
-			model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
+			FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+			model->SetVelocity(f3.x,f3.y,f3.z);
 			return true;
 		}
 		else
@@ -236,7 +253,8 @@ bool TaskPatrol::Update()
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
-		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
+		FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		model->SetVelocity(f3.x, f3.y, f3.z);
 		return true;
 	}
 	else
@@ -271,7 +289,8 @@ bool TaskFollow::Update()
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		model->SetRotation((int)rotation);
-		model->SetVelocity(sin(3.14F + angle * rotation)*Settings::GetAspectRatio()*object->m_speed[1], cos(angle*rotation)*object->m_speed[1]*-1.0F);
+		FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		model->SetVelocity(f3.x, f3.y, f3.z);
 		return true;
 	}
 	else
