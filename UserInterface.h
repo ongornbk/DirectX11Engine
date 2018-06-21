@@ -41,6 +41,7 @@ public:
 	 void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	 void Update(XMVECTOR cameraPosition);
 	 void SetScene(Type scene,Shader* shader);
+	 void SetScene(unsigned int scene, Shader* shader);
 	 static void GetMousePosition(int &X, int &Y);
 
 	Interface m_interface;

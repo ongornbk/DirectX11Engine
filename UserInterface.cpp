@@ -110,6 +110,22 @@ void UserInterface::SetScene(Type scene,Shader* shader)
 	}
 }
 
+void UserInterface::SetScene(unsigned int scene, Shader * shader)
+{
+	switch (scene)
+	{
+	case 1u:
+		SetScene(Type::GAME, shader);
+		break;
+	case 0u:
+		SetScene(Type::MAINMENU, shader);
+		break;
+	case 2u:
+		SetScene(Type::GAMEMENU, shader);
+		break;
+	}
+}
+
 void UserInterface::GetMousePosition(int & X, int & Y)
 {
 	switch (m_instance->m_type)

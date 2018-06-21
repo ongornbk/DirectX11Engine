@@ -673,9 +673,9 @@ void RendererManager::SetRenderingStyle(RenderingStyle render)
 	m_renderingStyle = render;
 }
 
-void RendererManager::SetInterface(UserInterface::Type type,Shader* shader)
+void RendererManager::SetInterface(unsigned int type,Shader* shader)
 {
-	m_ui->SetScene(UserInterface::GAMEMENU, shader);
+	m_ui->SetScene(type, shader);
 }
 
 RendererManager * RendererManager::GetInstance()

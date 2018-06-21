@@ -248,7 +248,7 @@ public:
 	void Update();
 	void RemoveAllObjects();
 	void SetRenderingStyle(RenderingStyle render);
-	void SetInterface(UserInterface::Type type, Shader* shader);
+	void SetInterface(unsigned int type, Shader* shader);
 
 	static RendererManager* GetInstance();
 private:
