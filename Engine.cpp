@@ -133,6 +133,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	lua_callback::SetInput(m_input);
 	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, shader);
+	m_rendererManager->SetInterface(UserInterface::GAME, shader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);

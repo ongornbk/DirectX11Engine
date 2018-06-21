@@ -8,6 +8,8 @@ using namespace DirectX;
 class GameComponent
 {
 public:
+
+
 	GameComponent() {};
 	virtual ~GameComponent() {};
 

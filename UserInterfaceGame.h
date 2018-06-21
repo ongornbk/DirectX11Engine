@@ -12,7 +12,7 @@ public:
 	UserInterfaceGame(Engine* engine, Shader* shader);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
-    static void GetMousePosition(int &X,int &Y);
+    void GetMousePosition(int &x,int &y);
 	~UserInterfaceGame();
 private:
 	Sprite * m_cursor;
@@ -21,5 +21,10 @@ private:
 
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_uiMatrix;
+
+	ASINDEX2 m_mousePosition;
+	Engine*  m_engine;
+	Input*   m_input;
+	int xm, ym;
 };
 

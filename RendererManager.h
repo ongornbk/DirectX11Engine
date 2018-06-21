@@ -11,6 +11,8 @@ class Engine;
 class Model;
 class Unit;
 class UserInterfaceGame;
+class UserInterfaceGameMenu;
+class UserInterfaceMainMenu;
 class UserInterface;
 struct TileMap;
 #pragma endregion
@@ -246,6 +248,7 @@ public:
 	void Update();
 	void RemoveAllObjects();
 	void SetRenderingStyle(RenderingStyle render);
+	void SetInterface(UserInterface::Type type, Shader* shader);
 
 	static RendererManager* GetInstance();
 private:

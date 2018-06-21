@@ -31,8 +31,7 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 	this->m_shader = shader;
 	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), shader,this);
 	m_map.Initialize();
-	m_ui = new UserInterface(UserInterface::GAME);
-	m_ui->m_interface.m_game = new UserInterfaceGame(engine, shader);
+	m_ui = new UserInterface();
 	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+100.0f;
 	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 100.0f;
 }
@@ -528,7 +527,7 @@ GRAPHICS EnableAlphaBlending(false);
 		void _vectorcall UpdatePart(std::vector<RenderObject> &vec,float dt) noexcept
 		{
 			int mousePosition[2];
-			UserInterfaceGame::GetMousePosition(mousePosition[0],mousePosition[1]);
+			UserInterface::GetMousePosition(mousePosition[0],mousePosition[1]);
 			FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
 			for (auto i = vec.begin(); i < vec.end(); ++i)
 			{
@@ -672,6 +671,11 @@ void RendererManager::RemoveAllObjects()
 void RendererManager::SetRenderingStyle(RenderingStyle render)
 {
 	m_renderingStyle = render;
+}
+
+void RendererManager::SetInterface(UserInterface::Type type,Shader* shader)
+{
+	m_ui->SetScene(UserInterface::GAMEMENU, shader);
 }
 
 RendererManager * RendererManager::GetInstance()

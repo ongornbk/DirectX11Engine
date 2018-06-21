@@ -222,6 +222,9 @@
     <ClInclude Include="LUAManager.h">
       <Filter>Header Files\LUA</Filter>
     </ClInclude>
+    <ClInclude Include="UserInterfaceGameMenu.h">
+      <Filter>Header Files\Graphics\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -357,6 +360,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Canals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterfaceGameMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

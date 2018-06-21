@@ -4,8 +4,8 @@
 class MainMenuScene : GameComponent
 {
 public:
-	MainMenuScene();
-	virtual ~MainMenuScene();
+	MainMenuScene(void);
+	~MainMenuScene(void);
 
 	bool Initialize() override;
 	void Update() override;

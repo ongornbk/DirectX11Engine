@@ -1,24 +1,6 @@
 #include "UserInterfaceGame.h"
 #include "SettingsC.h"
 
-#define UI_CURSOR_SIZE 48.0f
-#define UI_MUI_OFFSET 455.0f
-#define UI_MUI_HEIGHT 175.0f
-#define UI_CURSOR_ZERO_Z 0.0f
-
-#pragma region
-
-#pragma endregion
-
-namespace
-{
-	ASINDEX2 m_mousePosition;
-	Engine*  m_engine;
-	Input*   m_input;
-
-	static int xm, ym;
-}
-
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
 	m_engine = engine;
@@ -65,6 +47,6 @@ UserInterfaceGame::~UserInterfaceGame()
 
 void UserInterfaceGame::GetMousePosition(int & x,int & y)
 {
-	x =(int)m_mousePosition.i;
-	y =(int)m_mousePosition.j;
+	x =(int)(m_mousePosition.i);
+	y =(int)(m_mousePosition.j);
 }

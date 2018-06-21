@@ -197,7 +197,7 @@ namespace lua_callback
 	static int GetMousePosition(lua_State* state)
 	{
 		int xm, ym;
-		UserInterfaceGame::GetMousePosition(xm, ym);
+		UserInterface::GetMousePosition(xm, ym);
 		m_global->m_lastPoint = XMFLOAT3((float)xm,(float)ym, 0.0f);
 		lua_pushinteger(state, xm);
 		lua_pushinteger(state, ym);

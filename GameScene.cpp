@@ -1,7 +1,7 @@
 #include "GameScene.h"
 #include "TextureShader.h"
 #include "GlobalUtilities.h"
-#include <thr\threads.h>
+//#include <thr\threads.h>
 #include "Defines.h"
 #include "LUAManager.h"
 
