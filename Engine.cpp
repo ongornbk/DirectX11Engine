@@ -71,6 +71,7 @@ Engine::~Engine(void)
 Engine::Engine(void)
 {
 #pragma region
+	m_gamePaused      = FALSE;
 	m_graphics        = NULL;
 	m_rendererManager = NULL;
 	m_camera          = NULL;
@@ -133,7 +134,6 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	lua_callback::SetInput(m_input);
 	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, shader);
-	m_rendererManager->SetInterface(UserInterface::GAME, shader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);
@@ -229,6 +229,16 @@ void Engine::SetGameComponent(GameComponent * gameComponent)
 	m_gameComponent = gameComponent;
 }
 
+void Engine::PauseGame()
+{
+	m_gamePaused = true;
+}
+
+void Engine::ResumeGame()
+{
+	m_gamePaused = false;
+}
+
 Sound * Engine::CreateSound(WCHAR* name)
 {
 	wstring tmp0 = wstring(name);
@@ -322,6 +332,11 @@ FrameWork * Engine::GetFrameWork()
 	return m_framework;
 }
 
+bool Engine::GetGameStance()
+{
+	return m_gamePaused;
+}
+
 
 
 
@@ -350,10 +365,10 @@ Engine * Engine::GetEngine()
 void Engine::Update()
 {
 	
-	if (m_gameComponent != NULL)
-	{
-		m_gameComponent->Update();
-	}
+		if (m_gameComponent != NULL)
+		{
+			m_gameComponent->Update();
+		}
 	float dt = Timer::GetDeltaTime();
 	m_cameraControl.Update(dt);
 	m_rendererManager->Update();

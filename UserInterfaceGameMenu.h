@@ -14,9 +14,10 @@ public:
 private:
 
 	Sprite* m_cursor;
-
+	Sprite* m_gameMenu;
 
 	XMFLOAT4X4 m_cursorMatrix;
+	XMFLOAT4X4 m_gameMenuMatrix;
 
 	ASINDEX2 m_mousePosition;
 	Engine*  m_engine;

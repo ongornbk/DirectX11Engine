@@ -30,6 +30,9 @@ public:
 	void Release();
 
 	void SetGameComponent(GameComponent* gameComponent);
+	void PauseGame();
+	void ResumeGame();
+
 	Sound* CreateSound(WCHAR* name);
 	Sound* CreateSound(WCHAR* name,bool looping);
 	Sound* CreateSound(WCHAR* name,float volume);
@@ -38,10 +41,12 @@ public:
 
 	void AddMusicSound(string name, float volume, bool looping = false);
 	void AddModelPaths(string name);
+
 	void PlayMusic(WCHAR* music);
 
 	CameraControl* GetCameraControl();
 	FrameWork* GetFrameWork();
+	bool       GetGameStance();
 
 	Graphics* GetGraphics();
 	Input* GetInput();
@@ -53,6 +58,8 @@ private:
 
 	void Update();
 	void Render();
+
+	volatile bool m_gamePaused;
 
 	FrameWork* m_framework;
     Graphics* m_graphics;

@@ -156,7 +156,7 @@ void GameScene::Update()
 
 	//m_enemy->SetAnimation(SpriteModel::ModelStance::WALK);
 //	speed1 = 100.0f;
-	XMFLOAT3 mep;
+	//XMFLOAT3 mep;
 	/*
 	for (int i = 0; i < (*(Settings::get()->NUMBER_OF_UNITS)); i++)
 	{

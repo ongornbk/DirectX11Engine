@@ -345,6 +345,24 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int SetInterface(lua_State* state)
+	{
+		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
+		return 0;
+	}
+
+	static int PauseGame(lua_State* state)
+	{
+		m_engine->PauseGame();
+		return 0;
+	}
+
+	static int ResumeGame(lua_State* state)
+	{
+		m_engine->ResumeGame();
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 
@@ -382,6 +400,10 @@ namespace lua_callback
 		lua_register(m_lua, "AddModelPaths", AddModelPaths);
 		//RendererManager
 		lua_register(m_lua, "SetRendereringStyle", lua_callback::SetRenderingStyle);
+		lua_register(m_lua, "SetInterface", lua_callback::SetInterface);
+		//Engine
+		lua_register(m_lua, "ResumeGame", lua_callback::ResumeGame);
+		lua_register(m_lua, "PauseGame", lua_callback::PauseGame);
 	}
 
 }

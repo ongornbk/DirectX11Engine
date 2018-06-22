@@ -623,28 +623,30 @@ void RendererManager::Update()
 	m_ui->Update(m_cameraPosition);
 	float dt = Timer::GetDeltaTime();
 
-
-	size_t middle = m_objects.size() / 2;
-	vector<RenderObject>::const_iterator middleIter(m_objects.cbegin());
-	advance(middleIter, middle);
-
-	vector<RenderObject> leftHalf(m_objects.cbegin(), middleIter);
-	vector<RenderObject> rightHalf(middleIter, m_objects.cend());
-
-	async(launch::async,UpdatePart, leftHalf,dt);
-	async(launch::async,UpdatePart, rightHalf, dt);
-	while (m_asyncState != 2)
+	if (m_engine->GetGameStance() == false)
 	{
-		std::this_thread::sleep_for(1ms);
-	}
+		size_t middle = m_objects.size() / 2;
+		vector<RenderObject>::const_iterator middleIter(m_objects.cbegin());
+		advance(middleIter, middle);
 
-	if (m_renderingStyle == RendererManager::RenderingStyle::REVERSE)
-	{
-		std::reverse(m_objects.begin(), m_objects.end());
-	}
-	sort(m_objects.begin(), m_objects.end(), SortByX());
-	sort(m_objects.begin(), m_objects.end(), SortByY());
+		vector<RenderObject> leftHalf(m_objects.cbegin(), middleIter);
+		vector<RenderObject> rightHalf(middleIter, m_objects.cend());
 
+		async(launch::async, UpdatePart, leftHalf, dt);
+		async(launch::async, UpdatePart, rightHalf, dt);
+		while (m_asyncState != 2)
+		{
+			std::this_thread::sleep_for(1ms);
+		}
+
+		if (m_renderingStyle == RendererManager::RenderingStyle::REVERSE)
+		{
+			std::reverse(m_objects.begin(), m_objects.end());
+		}
+
+		sort(m_objects.begin(), m_objects.end(), SortByX());
+		sort(m_objects.begin(), m_objects.end(), SortByY());
+	}
 
 }
 
