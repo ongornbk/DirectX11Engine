@@ -1,5 +1,5 @@
 #include "DXManager.h"
-#include "GlobalUtilities.h"
+
 
 
 DXManager::DXManager(void)

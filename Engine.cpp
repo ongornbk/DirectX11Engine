@@ -1,16 +1,19 @@
 
 #include "Engine.h"
-#include "Timer.h"
+#include "Onion.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
 #include "CALLBACK.cpp"
 #include "S_ModelPaths.h"
+#include "Font.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
 #include <istream>
 #include <sstream>
 #include <stack>
+
+using namespace Onion;
 
 Engine* Engine::m_instance = NULL;
 
@@ -307,6 +310,11 @@ void Engine::AddModelPaths(string name)
 	wcscpy(wide_string, ws.c_str());
 	S_ModelPaths::AddModelPaths(token, wide_string);
 	delete wide_string;
+}
+
+void Engine::AddFont(string filename, float width, float height)
+{
+	Font::LoadFontFromFile(filename, width, height);
 }
 
 void Engine::PlayMusic(WCHAR * music)

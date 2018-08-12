@@ -1,10 +1,11 @@
 #include "RendererManager.h"
-#include "Timer.h"
+#include "Onion.h"
 #include "SettingsC.h"
 #include "Defines.h"
 #include <future>
 #include <mutex>
 
+using Onion::Timer;
 using std::mutex;
 
 #pragma region
@@ -26,7 +27,6 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 {
 	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
-	this->m_objects.reserve(*(SETTINGS NUMBER_OF_UNITS)+2);
 	m_instance = this;
 	this->m_shader = shader;
 	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), shader,this);

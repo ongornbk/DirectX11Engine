@@ -1,12 +1,13 @@
 #include "FrameWork.h"
 #include "Defines.h"
-#include "Timer.h"
+#include "Onion.h"
 #include "GlobalUtilities.h"
-#include <iostream>
 #include "SettingsC.h"
 
-using namespace std;
-
+using Onion::Timer;
+using Onion::System::GetScreenHeight;
+using Onion::System::GetScreenWidth;
+using Onion::Console;
 
 LRESULT CALLBACK WndProc(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
 
@@ -96,8 +97,8 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		return false;
 	}
 
-	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-	int screenHeight= GetSystemMetrics(SM_CYSCREEN);
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
 
 	if (FULL_SCREEN)
 	{
@@ -147,7 +148,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	ShowWindow(hwnd, SW_SHOW);
 	(void)SetForegroundWindow(hwnd);
 	(void)SetFocus(hwnd);
-	cout << "FrameWork : Window has been created" << endl;
+	Console::Println("FrameWork : Window has been created", Onion::LIGHTGREEN);
 	return true;
 }
 

@@ -1,6 +1,5 @@
 #include "S_ModelPaths.h"
 #include <map>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <streambuf>
@@ -51,19 +50,19 @@ ModelPaths::ModelPaths(WCHAR * file)
 		}
 	}
 
-	ATTACK_1 = animations.at(0);
-	ATTACK_2 = animations.at(1);
-	GETHIT = animations.at(2);
-	KICK = animations.at(3);
-	NEUTRAL = animations.at(4);
-	RUN = animations.at(5);
+	ATTACK_1    = animations.at(0);
+	ATTACK_2    = animations.at(1);
+	GETHIT      = animations.at(2);
+	KICK        = animations.at(3);
+	NEUTRAL     = animations.at(4);
+	RUN         = animations.at(5);
 	SPECIALCAST = animations.at(6);
-	SPECIAL_1 = animations.at(7);
-	SPECIAL_3 = animations.at(8);
-	SPECIAL_4 = animations.at(9);
+	SPECIAL_1   = animations.at(7);
+	SPECIAL_3   = animations.at(8);
+	SPECIAL_4   = animations.at(9);
 	TOWNNEUTRAL = animations.at(10);
-	TOWNWALK = animations.at(11);
-	WALK = animations.at(12);
+	TOWNWALK    = animations.at(11);
+	WALK        = animations.at(12);
 }
 
 

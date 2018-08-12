@@ -1,12 +1,10 @@
 #include "Input.h"
 #include <iostream>
 #include "GlobalUtilities.h"
-
-
-
-using namespace std;
+#include "Onion.h"
 
 using GlobalUtilities::Unacquire;
+using Onion::Console;
 
 Input::DeviceReadingState Input::m_readingState = Input::DeviceReadingState::READ_KEYBOARDANDMOUSE;
 
@@ -95,18 +93,7 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 	{
 		return false;
 	}
-	SetConsoleTextAttribute(hConsole, 10);
-	cout << "DirectInput Initialized Successfully! " << endl;
-	SetConsoleTextAttribute(hConsole, 15);
-	cout << "DirectInput : Reading State : ";
-	switch (m_readingState)
-	{
-	case READ_KEYBOARDANDMOUSE: cout << "READ_KEYBOARDANDMOUSE" << endl; break;
-	case READ_KEYBOARD: cout << "READ_KEYBOARD" << endl; break;
-	case READ_MOUSE: cout << "READ_MOUSE" << endl; break;
-	case READ_NOTHING: cout << "READ_NOTHING" << endl; break;
-	default:  cout << "UNKNOWN-ENUM-READSTATE" << endl; break;
-	}
+	Console::Println("DirectInput Initialized Successfully!", Onion::LIGHTGREEN);
 	return true;
 }
 

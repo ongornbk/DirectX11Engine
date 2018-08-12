@@ -1,7 +1,7 @@
 #include "Shader.h"
 #include "GlobalUtilities.h"
+#include "Onion.h"
 #include <d3dcompilerW.h>
-#include <iostream>
 #include "Defines.h"
 
 #pragma comment(lib,"d3dcompilerW.lib")

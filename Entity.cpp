@@ -1,9 +1,9 @@
 #include "Entity.h"
-#include "Timer.h"
+#include "Onion.h"
 #include "Engine.h"
 #include "GlobalUtilities.h"
 
-using GlobalUtilities::Delete;
+using Onion::Timer;
 
 Entity::Entity()
 {

@@ -41,6 +41,7 @@ public:
 
 	void AddMusicSound(string name, float volume, bool looping = false);
 	void AddModelPaths(string name);
+	void AddFont(string filename, float width, float height);
 
 	void PlayMusic(WCHAR* music);
 

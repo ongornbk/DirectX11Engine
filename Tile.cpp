@@ -3,6 +3,7 @@
 #include "GlobalUtilities.h"
 #include "Camera.h"
 #include "RendererManager.h"
+#include "Onion.h"
 #include <array>
 #include <fstream>
 #include <string>
@@ -10,7 +11,8 @@
 #include <sstream>
 
 
-
+using Onion::Math::SquashInt32;
+using Onion::Math::SquashInt32Array;
 using GlobalUtilities::random;
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
@@ -51,30 +53,7 @@ static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 
 	}
 
-
-	inline void squash(int &value) noexcept
-	{
-		if (value > TILE_MAP_RANGE)
-		{
-			value = TILE_MAP_RANGE;
-			return;
-		}
-		if (value < 0)
-		{
-			value = 0;
-			return;
-		}
-	}
-
-	inline void _vectorcall squashArray4(int value[4]) noexcept
-	{
-		for (char i = 0; i < 4; i++)
-		{
-			if (value[i] > TILE_MAP_RANGE) value[i] = TILE_MAP_RANGE;
-			else if (value[i] < 0) value[i] = 0;
-		}
-		return;
-	}
+	
 
 	void _vectorcall InitializeTemplates() noexcept
 	{
@@ -321,7 +300,7 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	_i[3] = (int)_f[1] + tile::CAMERA_TILE_VIEW;
 	_i[0] = (int)_f[0] - tile::CAMERA_TILE_VIEW;
 	_i[1] = (int)_f[0] + tile::CAMERA_TILE_VIEW;
-	squashArray4(_i);
+	SquashInt32Array(_i,4,0,TILE_MAP_RANGE);
 	Tile::SetVolatileGlobals(deviceContext, viewMatrix, projectionMatrix);
 	for (int j = _i[2]; j <_i[3]; j++)
 	{

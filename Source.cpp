@@ -1,7 +1,7 @@
 #include "FrameWork.h"
 #include "GameScene.h"
 #include "SettingsC.h"
-#include <iostream>
+#include "Onion.h"
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -33,16 +33,8 @@ void main(int argc,char** argv)
 	ifstream stream(SETTINGS_LOCATION);
 	if (!stream.good())
 	{
-		//if (FAILED(GetItemByUrl(RESOURCES_URL, RESOURCES_LOCATION)))
-		//{
-			//SetConsoleTextAttribute(hConsole, 12);
-		////	cout << "ResourceManager : Unable To Load : RESOURCES FILE" << endl;
-		//	return;
-		//}
-		//else
-		//{
-		//	stream = ifstream(RESOURCES_LOCATION);
-		//}
+		Onion::Console::SetTextColor(Onion::RED);
+		Onion::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
 	}
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
 	istringstream ss(BUFFER);
@@ -58,25 +50,7 @@ void main(int argc,char** argv)
 	SETTINGS NUMBER_OF_UNITS = new int(atoi(settings.at(2).c_str()));
 	SETTINGS COLLISSION_RADIUS = new float((float)atof(settings.at(3).c_str()));
 
-	/*
-	int input;
-	float inputf;
-	cout << "Podaj poczatkowe parrametry" << endl;
-	cout << "Podaj szerokosc ekranu" << endl;
-	cin >> input;
-	SETTINGS RESOLUTION_X = new int(input);
-	cout << "Podaj wysokosc ekranu" << endl;
 
-	cin >> input;
-	SETTINGS RESOLUTION_Y = new int(input);
-	cout << "Podaj ilosc jednostek" << endl;
-	cin >> input;
-
-	SETTINGS NUMBER_OF_UNITS = new int(input);
-	cout << "Podaj KOLIZJE JEDNOSTEK" << endl;
-	cin >> inputf;
-	SETTINGS COLLISSION_RADIUS = new float(inputf);
-	*/
 	FrameWork* frameWork = new FrameWork();
 
 	if (frameWork->Initialize(new GameScene))

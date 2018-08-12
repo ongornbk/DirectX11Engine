@@ -1,12 +1,13 @@
 #include "ResourceManager.h"
 #include "GlobalUtilities.h"
+#include "Onion.h"
 #include <map>
 #include <urlmon.h>
 #include <sstream>
 #include <fstream>
 #include <streambuf>
 
-using namespace GlobalUtilities;
+using Onion::Console;
 
 #pragma region
 #define TEXTURES_LOCATION   "../../content/textures/"
@@ -27,7 +28,6 @@ using std::istringstream;
 #pragma endregion
 
 ResourceManager* ResourceManager::m_instance = NULL;
-static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 extern "C"
 {
@@ -65,8 +65,7 @@ ResourceManager::ResourceManager()
 	{
 		if (FAILED(GetItemByUrl(RESOURCES_URL,RESOURCES_LOCATION)))
 		{
-			SetConsoleTextAttribute(hConsole, 12);
-			cout << "Download Failed : "<<RESOURCES_URL<< endl;
+				Console::Println(("Download Failed : " + string(RESOURCES_URL)),Onion::RED);
 			return;
 		}
 		else
@@ -133,8 +132,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 			if (!resourceShader->Load(m_device,hwnd, shaderFileName))
 			{
 				delete resourceShader;
-				SetConsoleTextAttribute(hConsole, 12);
-				cout << "Download Failed : " << m_resourcesURLS[str]<< endl;
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
 				return;
 			}
 			else
@@ -146,8 +144,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 		else
 		{
 			delete resourceShader;
-			SetConsoleTextAttribute(hConsole, 12);
-			cout << "Load Failed : "<<shaderFileName << endl;
+			Console::Println("Load Failed : ",wstring(shaderFileName), Onion::RED);
 			return;
 		}
 	}
@@ -162,8 +159,7 @@ void ResourceManager::LoadShaderResource(Shader * shader)
 	if (!resourceShader->Load(shader))
 	{
 		delete resourceShader;
-		SetConsoleTextAttribute(hConsole, 12);
-		cout << "Unable To Load shader!" << endl;
+		Console::Println("Unable to load shader!", Onion::RED);
 		return;
 	}
 	m_shaders.push_back(resourceShader);
@@ -183,8 +179,7 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 			if (!resourceTexture->Load(m_device, textureFileName))
 			{
 				delete resourceTexture;
-				SetConsoleTextAttribute(hConsole, 12);
-				cout << "Download Failed :" << m_resourcesURLS[str]<< endl;
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
 				return;
 			}
 			else
@@ -196,8 +191,7 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 		else
 		{
 			delete resourceTexture;
-			SetConsoleTextAttribute(hConsole, 12);
-			cout << "Load Failed : " << m_resourcesURLS[str]<<endl;
+            Console::Println(("Load Failed : " + string(m_resourcesURLS[str])), Onion::RED);
 			return;
 		}
 	}
@@ -217,8 +211,7 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 			if (!resourceSound->Load(soundFileName))
 			{
 				delete resourceSound;
-				SetConsoleTextAttribute(hConsole, 12);
-				cout << "Download Failed : " << m_resourcesURLS[str]<< endl;
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
 				return;
 			}
 			else
@@ -230,8 +223,7 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 		else
 		{
 			delete resourceSound;
-			SetConsoleTextAttribute(hConsole, 12);
-			cout << "Load Failed : " << soundFileName<< endl;
+			Console::Println("Load Failed : ", wstring(soundFileName), Onion::RED);
 			return;
 		}
 	}

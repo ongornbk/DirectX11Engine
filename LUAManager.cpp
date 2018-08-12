@@ -1,9 +1,12 @@
 #include "LUAManager.h"
 #include <Windows.h>
 #include <map>
+#include "Onion.h"
 #define LUA_LOCATION "lua53.dll"
 
 #pragma comment(lib,"liblua53.a")
+
+using Onion::Console;
 
 extern "C"
 {
@@ -43,7 +46,7 @@ extern "C"
 		void PrintError() noexcept
 		{
 			const char* message = lua_tostring(m_instance, -1);
-			puts(message);
+			Console::Println(message);
 			lua_pop(m_instance,1);
 		}
 

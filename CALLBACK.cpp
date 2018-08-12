@@ -12,8 +12,6 @@ extern "C"
 {
 
 
-
-
 namespace lua_callback
 {
 #pragma region
@@ -363,14 +361,19 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int LoadFont(lua_State* state) //EXPORTED
+	{
+		m_engine->AddFont(lua_tostring(state, 1), LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
-
 		lua_State* m_lua = lua::GetInstance();
 
 		//ResourceManager
-		lua_register(m_lua, "LoadTexture", LoadTexture);
-		lua_register(m_lua, "LoadSound", LoadSound);
+		lua_register(m_lua, "LoadTexture", lua_callback::LoadTexture);
+		lua_register(m_lua, "LoadSound", lua_callback::LoadSound);
 		//Camera
 		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::InitializeProjectionMatrix);
 		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::InitializeOrthoMatrix);
@@ -384,26 +387,28 @@ namespace lua_callback
 		//Input
 		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
 		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
-		lua_register(m_lua, "GetMousePosition", GetMousePosition);
+		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
 		//Units
-		lua_register(m_lua, "CreateUnit", lua_callback::CreateUnit);
-		lua_register(m_lua, "InitializeUnit", lua_callback::InitializeUnit);
-		lua_register(m_lua, "SetWalkingStance", lua_callback::SetWalkingStance);
-		lua_register(m_lua, "ChangeWalkingStance",lua_callback::ChangeWalkingStance);
-		lua_register(m_lua, "SetUnitSpeed", lua_callback::SetUnitSpeed);
-		lua_register(m_lua, "SetUnitRotations", lua_callback::SetUnitRotations);
-		lua_register(m_lua, "GetHero", lua_callback::GetHero);
-		lua_register(m_lua, "GiveTaskGotoPoint", GiveTaskGotoPoint);
-		lua_register(m_lua, "SetTaskGotoPoint", SetTaskGotoPoint);
-		lua_register(m_lua, "CleanTasks", CleanTasks);
-		lua_register(m_lua, "GetUnitPosition",GetUnitPosition);
-		lua_register(m_lua, "AddModelPaths", AddModelPaths);
+		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
+		lua_register(m_lua,"InitializeUnit", lua_callback::InitializeUnit);
+		lua_register(m_lua,"SetWalkingStance", lua_callback::SetWalkingStance);
+		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
+		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
+		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
+		lua_register(m_lua,"GetHero", lua_callback::GetHero);
+		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);
+		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);
+		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);
+		lua_register(m_lua,"GetUnitPosition", lua_callback::GetUnitPosition);
+		lua_register(m_lua,"AddModelPaths", lua_callback::AddModelPaths);
 		//RendererManager
-		lua_register(m_lua, "SetRendereringStyle", lua_callback::SetRenderingStyle);
-		lua_register(m_lua, "SetInterface", lua_callback::SetInterface);
+		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
+		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);
 		//Engine
-		lua_register(m_lua, "ResumeGame", lua_callback::ResumeGame);
-		lua_register(m_lua, "PauseGame", lua_callback::PauseGame);
+		lua_register(m_lua,"ResumeGame", lua_callback::ResumeGame);
+		lua_register(m_lua,"PauseGame", lua_callback::PauseGame);
+		//Fonts
+		lua_register(m_lua, "LoadFont", lua_callback::LoadFont);
 	}
 
 }

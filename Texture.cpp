@@ -1,9 +1,6 @@
 #include "Texture.h"
-#include <iostream>
 #include "GlobalUtilities.h"
 
-using std::cout;
-using std::endl;
 using namespace DirectX;
 
 Texture::Texture()
