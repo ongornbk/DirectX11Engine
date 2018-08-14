@@ -68,11 +68,13 @@ namespace Onion
 	protected:
 		explicit __Console(void);
 		~__Console(void);
+		void __Println(float number);
 		void __Print(std::string text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
 		void __Print(float number);
 		void __Print(int number);
+		void __Print(void* address);
 		void __Flush();
 		void __SetCursorPosition(int16 x, int16 y);
 		void __SetTextColor(TextColors color);
@@ -94,9 +96,11 @@ namespace Onion
 		static void Println(std::string text);
 		static void Println(std::string text, TextColors color);
 		static void Println(std::string text,std::wstring wide, TextColors color);
+		static void Println(float number);
 		static void Print(std::string text);
 		static void Print(float number);
 		static void Print(int number);
+		static void Print(void* address);
 		static void Flush();
 		static void SetCursorPosition(int16 x, int16 y);
 		static void SetTextColor(TextColors color);

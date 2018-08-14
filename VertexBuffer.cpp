@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 #include "GlobalUtilities.h"
-
+#include "Onion.h"
 
 VertexBuffer::VertexBuffer()
 {
@@ -104,6 +104,94 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 
 	
 	
+	return true;
+}
+
+bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float size[2], float coords[6], bool writeable)
+{
+	m_shader = shader;
+	unsigned long* indices;
+	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	HRESULT result;
+
+	m_vertexCount = 4;
+	m_indexCount = 6;
+
+	m_vertices = new VertexType[m_vertexCount];
+	indices = new unsigned long[m_indexCount];
+
+	float halfSizex = size[0] / 2.0f;
+	float halfSizey = size[1] / 1.0f;
+
+	float width = coords[0];
+	float height = coords[1];
+	float left = coords[2];
+	float top = coords[3];
+	float right = coords[4];
+	float bottom = coords[5];
+
+	for (int i = 0; i < 6; i++)
+	{
+		Onion::Console::Println(coords[i]);
+	}
+	m_vertices[0].position = XMFLOAT3(-halfSizex, -halfSizey, 0.0f);
+	m_vertices[0].uv = XMFLOAT2(left/width, bottom/height);
+
+	m_vertices[1].position = XMFLOAT3(-halfSizex, halfSizey, 0.0f);
+	m_vertices[1].uv = XMFLOAT2(left/width, top/height);
+
+	m_vertices[2].position = XMFLOAT3(halfSizex, halfSizey, 0.0f);
+	m_vertices[2].uv = XMFLOAT2(right/width,top/height);
+
+	m_vertices[3].position = XMFLOAT3(halfSizex, -halfSizey, 0.0f);
+	m_vertices[3].uv = XMFLOAT2(right/width, bottom/height);
+
+	indices[0] = 0;
+	indices[1] = 1;
+	indices[2] = 2;
+	indices[3] = 0;
+	indices[4] = 2;
+	indices[5] = 3;
+
+	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType)*m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	vertexData.pSysMem = m_vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	delete[] indices;
+
+
+
 	return true;
 }
 

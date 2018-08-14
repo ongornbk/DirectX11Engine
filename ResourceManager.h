@@ -25,7 +25,7 @@ public:
 	void LoadShaderResource(Shader* shader);
 	void LoadTextureResource( WCHAR* textureFileName);
 	void LoadSoundResource(WCHAR* soundFileName);
-	void LoadFontResource(WCHAR* fontFileName);
+	void PrintOutTextures();
 	void Release();
 
 	Shader* GetShaderByName(char* shaderName);

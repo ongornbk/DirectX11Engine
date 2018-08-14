@@ -61,6 +61,11 @@ void Onion::Console::Println(std::string text, std::wstring wide, TextColors col
 	GetInstance()->__Print(text, wide, color);
 }
 
+void Onion::Console::Println(float number)
+{
+	GetInstance()->__Println(number);
+}
+
 void Onion::Console::Print(std::string text)
 {
 	GetInstance()->__Print(text);
@@ -74,6 +79,11 @@ void Onion::Console::Print(float number)
 void Onion::Console::Print(int number)
 {
 	GetInstance()->__Print(number);
+}
+
+void Onion::Console::Print(void * address)
+{
+	GetInstance()->__Print(address);
 }
 
 void Onion::Console::Flush()
@@ -113,6 +123,11 @@ Onion::__Console::~__Console(void)
 {
 }
 
+void Onion::__Console::__Println(float number)
+{
+	printf("%f\n",number);
+}
+
 void Onion::__Console::__Print(std::string text)
 {
 	printf("%s", text.c_str());
@@ -139,6 +154,11 @@ void Onion::__Console::__Print(float number)
 void Onion::__Console::__Print(int number)
 {
 	printf("%d", number);
+}
+
+void Onion::__Console::__Print(void * address)
+{
+	printf("%p", address);
 }
 
 void Onion::__Console::__Flush()

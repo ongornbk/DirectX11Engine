@@ -68,6 +68,7 @@ Engine::~Engine(void)
 	//	delete m_gameComponent;
 		m_gameComponent = NULL;
 	}
+	Font::ReleaseFonts();
 	lua::Close();
 }
 
@@ -142,8 +143,9 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_cameraControl.SetCurrentCamera(m_camera);
 	m_graphics->Initialize();
 
-
 	lua_callback::InitializeGraphics();
+
+	
 
 	if(m_gameComponent!=NULL)
 	{

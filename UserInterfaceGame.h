@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "Engine.h"
 #include "Camera.h"
+#include "LetterSprite.h"
 
 class Engine;
 
@@ -23,6 +24,7 @@ private:
 	XMFLOAT4X4 m_uiMatrix;
 
 	ASINDEX2 m_mousePosition;
+	LetterSprite* m_l;
 	Engine*  m_engine;
 	Input*   m_input;
 	int xm, ym;

@@ -1,5 +1,6 @@
 #include "UserInterfaceGame.h"
 #include "SettingsC.h"
+#include "LetterSprite.h"
 
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
@@ -11,12 +12,16 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_ui->Initialize(engine->GetGraphics()->GetDevice(), shader, L"ui_game", true);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixIdentity());
 	m_input = m_engine->GetInput();
+	Font* font = Font::GetFontByName("ExocetLight");
+	m_l = new LetterSprite(font,'a',30.0f,shader);
+	m_l->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(), shader,font);
 }
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
 	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	m_l->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 }
 
 void UserInterfaceGame::Update(XMVECTOR cameraPosition)
@@ -42,6 +47,12 @@ UserInterfaceGame::~UserInterfaceGame()
 	{
 		delete m_ui;
 		m_ui = NULL;
+	}
+
+	if (m_l)
+	{
+		delete m_l;
+		m_l = NULL;
 	}
 }
 

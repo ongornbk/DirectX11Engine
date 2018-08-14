@@ -230,6 +230,21 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 	m_sounds.push_back(resourceSound);
 }
 
+void ResourceManager::PrintOutTextures()
+{
+	using namespace Onion;
+
+	Console::SetTextColor(Onion::GOLDEN);
+	Console::Print((int)m_textures.size());
+	Console::Println(" Textures found ...");
+
+	for (int i = 0; i < (int)m_textures.size(); i++)
+	{
+		Console::Print((void*)m_textures[i]);
+		Console::Println(" : " + m_textures[i]->GetName());
+	}
+}
+
 
 
 void ResourceManager::Release()

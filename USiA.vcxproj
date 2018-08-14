@@ -160,6 +160,7 @@
     <ClInclude Include="GlobalUtilities.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LetterSprite.h" />
     <ClInclude Include="LUAManager.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Model.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="GlobalUtilities.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LetterSprite.cpp" />
     <ClCompile Include="LUAManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Model.cpp" />
