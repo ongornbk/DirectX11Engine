@@ -265,6 +265,30 @@ void Font::InitializeCoordinates(std::vector<float> coords)
 	m_char['4'].m_top = coords.at(117);
 	m_char['4'].m_right = coords.at(118);
 	m_char['4'].m_bottom = coords.at(119);
+	m_char['5'].m_left = coords.at(120);
+	m_char['5'].m_top = coords.at(121);
+	m_char['5'].m_right = coords.at(122);
+	m_char['5'].m_bottom = coords.at(123);
+	m_char['6'].m_left = coords.at(124);
+	m_char['6'].m_top = coords.at(125);
+	m_char['6'].m_right = coords.at(126);
+	m_char['6'].m_bottom = coords.at(127);
+	m_char['7'].m_left = coords.at(128);
+	m_char['7'].m_top = coords.at(129);
+	m_char['7'].m_right = coords.at(130);
+	m_char['7'].m_bottom = coords.at(131);
+	m_char['8'].m_left = coords.at(132);
+	m_char['8'].m_top = coords.at(133);
+	m_char['8'].m_right = coords.at(134);
+	m_char['8'].m_bottom = coords.at(135);
+	m_char['9'].m_left = coords.at(136);
+	m_char['9'].m_top = coords.at(137);
+	m_char['9'].m_right = coords.at(138);
+	m_char['9'].m_bottom = coords.at(139);
+	m_char['0'].m_left = coords.at(140);
+	m_char['0'].m_top = coords.at(141);
+	m_char['0'].m_right = coords.at(142);
+	m_char['0'].m_bottom = coords.at(143);
 
 	if (m_flag)
 	{
