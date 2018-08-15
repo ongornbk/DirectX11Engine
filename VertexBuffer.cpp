@@ -131,10 +131,11 @@ bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float 
 	float right = coords[4];
 	float bottom = coords[5];
 
-	for (int i = 0; i < 6; i++)
-	{
-		Onion::Console::Println(coords[i]);
-	}
+	//for (int i = 0; i < 6; i++)
+	//{
+	//	Onion::Console::Println(coords[i]);
+	//}
+
 	m_vertices[0].position = XMFLOAT3(-halfSizex, -halfSizey, 0.0f);
 	m_vertices[0].uv = XMFLOAT2(left/width, bottom/height);
 

@@ -195,28 +195,16 @@ void Engine::Run()
 	deltaTime += endFrame - beginFrame;
 	frames++;
 
-	//if you really want FPS
-	if (clockToMilliseconds(deltaTime)>1000.0) { //every second
-		frameRate = (double)frames*0.5 + frameRate * 0.5; //more stable
+	if (clockToMilliseconds(deltaTime)>1000.0) {
+		frameRate = (double)frames*0.5 + frameRate * 0.5;
 		frames = 0;
 		deltaTime -= CLOCKS_PER_SEC;
 		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
 
-//		if (vsync)
 		int fps = (int)(1000 / averageFrameTimeMilliseconds);
-			if (fps < 30)
-			{
-				SetConsoleTextAttribute(hConsole, 12);
-		}
-			else if (fps < 45)
-			{
-				SetConsoleTextAttribute(hConsole, 11);
-			}
-			else
-				SetConsoleTextAttribute(hConsole, 10);
-			std::cout << "FPS : " << fps << std::endl;
-//		else
-//			std::cout << "CPU time was:" << averageFrameTimeMilliseconds << std::endl;
+
+		UserInterfaceGame::SetFPS(fps);
+
 	}
 }
 

@@ -130,16 +130,58 @@ float * Font::GetCoordsOfLetter(char letter)
 	return f;
 }
 
+float Font::GetLeftOfLetter(char letter)
+{
+	return m_char['a'].m_left;
+}
+
+float Font::GetWidthOfLetter(char letter)
+{
+	return (m_char['a'].m_right) - (m_char['a'].m_left);
+}
+
 void Font::InitializeCoordinates(std::vector<float> coords)
 {
 	std::reverse(coords.begin(), coords.end());
+
+
 	m_char['a'].m_left = coords.at(0);
 	m_char['a'].m_top = coords.at(1);
 	m_char['a'].m_right = coords.at(2);
 	m_char['a'].m_bottom = coords.at(3);
+	m_char['b'].m_left = coords.at(4);
+	m_char['b'].m_top = coords.at(5);
+	m_char['b'].m_right = coords.at(6);
+	m_char['b'].m_bottom = coords.at(7);
+	m_char['c'].m_left = coords.at(8);
+	m_char['c'].m_top = coords.at(9);
+	m_char['c'].m_right = coords.at(10);
+	m_char['c'].m_bottom = coords.at(11);
+	m_char['d'].m_left = coords.at(12);
+	m_char['d'].m_top = coords.at(13);
+	m_char['d'].m_right = coords.at(14);
+	m_char['d'].m_bottom = coords.at(15);
+	m_char['e'].m_left = coords.at(16);
+	m_char['e'].m_top = coords.at(17);
+	m_char['e'].m_right = coords.at(18);
+	m_char['e'].m_bottom = coords.at(19);
+	m_char['f'].m_left = coords.at(20);
+	m_char['f'].m_top = coords.at(21);
+	m_char['f'].m_right = coords.at(22);
+	m_char['f'].m_bottom = coords.at(23);
+	m_char['g'].m_left = coords.at(24);
+	m_char['g'].m_top = coords.at(25);
+	m_char['g'].m_right = coords.at(26);
+	m_char['g'].m_bottom = coords.at(27);
 	if (m_flag)
 	{
 		m_char['A'] = m_char['a'];
+		m_char['B'] = m_char['b'];
+		m_char['C'] = m_char['c'];
+		m_char['D'] = m_char['d'];
+		m_char['E'] = m_char['e'];
+		m_char['F'] = m_char['f'];
+		m_char['G'] = m_char['g'];
 	}
 }
 

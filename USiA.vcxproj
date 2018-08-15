@@ -182,6 +182,7 @@
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="Tile.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskQueue.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="Tile.cpp" />

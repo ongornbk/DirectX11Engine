@@ -25,6 +25,8 @@ static void ReleaseFonts();
 
 std::string GetName();
 float* GetCoordsOfLetter(char letter);
+float GetLeftOfLetter(char letter);
+float GetWidthOfLetter(char letter);
 
 void InitializeCoordinates(std::vector<float> coords);
 

@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Engine.h"
 #include "Camera.h"
-#include "LetterSprite.h"
+#include "Text.h"
 
 class Engine;
 
@@ -15,6 +15,9 @@ public:
 	void Update(XMVECTOR cameraPosition);
     void GetMousePosition(int &x,int &y);
 	~UserInterfaceGame();
+
+	static void SetFPS(int fps);
+
 private:
 	Sprite * m_cursor;
 	Sprite*  m_ui;
@@ -24,7 +27,7 @@ private:
 	XMFLOAT4X4 m_uiMatrix;
 
 	ASINDEX2 m_mousePosition;
-	LetterSprite* m_l;
+	Text     m_fpsText;
 	Engine*  m_engine;
 	Input*   m_input;
 	int xm, ym;
