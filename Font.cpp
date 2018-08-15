@@ -132,12 +132,12 @@ float * Font::GetCoordsOfLetter(char letter)
 
 float Font::GetLeftOfLetter(char letter)
 {
-	return m_char['a'].m_left;
+	return m_char[letter].m_left;
 }
 
 float Font::GetWidthOfLetter(char letter)
 {
-	return (m_char['a'].m_right) - (m_char['a'].m_left);
+	return (m_char[letter].m_right) - (m_char[letter].m_left);
 }
 
 void Font::InitializeCoordinates(std::vector<float> coords)
@@ -289,6 +289,10 @@ void Font::InitializeCoordinates(std::vector<float> coords)
 	m_char['0'].m_top = coords.at(141);
 	m_char['0'].m_right = coords.at(142);
 	m_char['0'].m_bottom = coords.at(143);
+	m_char['('].m_left = coords.at(144);
+	m_char['('].m_top = coords.at(145);
+	m_char['('].m_right = coords.at(146);
+	m_char['('].m_bottom = coords.at(147);
 
 	if (m_flag)
 	{

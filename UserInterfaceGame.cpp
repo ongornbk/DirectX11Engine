@@ -18,7 +18,7 @@ namespace
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
 	m_fpsText.SetText("");
-	m_mainText.SetText(GAME_NAME_VERSION);
+	m_mainText.SetText(string(GAME_NAME_VERSION));
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
@@ -62,8 +62,8 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	string sss = ss.str();
 	string fps = "FPS " + string(ss.str());
 	m_fpsText.SetText(fps);
-	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] -(float)yr + TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
-	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] - (float)yr + (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
+	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
+	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
 	m_fpsText.Update();
 	m_mainText.Update();
 }
