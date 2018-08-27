@@ -5,10 +5,10 @@
 #include "Defines.h"
 #include <sstream>
 
-#define UIG_HEIGHT 175.0F
-#define TEXT_MARGIN_LEFT 50.0f
+#define UIG_HEIGHT 120.0F
+#define TEXT_MARGIN_LEFT 20.0f
 #define TEXT_MARGIN_TOP 20.0f
-#define TEXT_FPS_MARGIN 50.0f
+#define TEXT_FPS_MARGIN 25.0f
 
 namespace
 {
@@ -17,15 +17,20 @@ namespace
 
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
-	m_fpsText.SetText("");
-	m_mainText.SetText(string(GAME_NAME_VERSION));
-	m_engine = engine;
-	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
 	ID3D11Device* device = engine->GetGraphics()->GetDevice();
 	ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
 	float resolutionX = (float)*(Settings::get()->RESOLUTION_X);
 	Font* font = Font::GetFontByName("ExocetLight");
+
+	m_fpsText.Initialize(device, deviceContext, shader, font);
+	m_mainText.Initialize(device, deviceContext, shader, font);
+	m_fpsText.SetText("");
+	m_mainText.SetText(string(GAME_NAME_VERSION));
+	m_engine = engine;
+	m_cursor = new Sprite(UI_CURSOR_SIZE);
+
+
 
 	m_cursor->Initialize(device, shader, L"ui_cursor", true);
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixIdentity());
@@ -33,17 +38,17 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_ui->Initialize(device, shader, L"ui_game", true);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixIdentity());
 	m_input = m_engine->GetInput();
-	m_fpsText.Initialize(device, deviceContext, shader, font);
-	m_mainText.Initialize(device, deviceContext, shader, font);
+
 	
 }
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
 	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
-	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+
 }
 
 void UserInterfaceGame::Update(XMVECTOR cameraPosition)

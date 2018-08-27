@@ -149,6 +149,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="DXManager.h" />
+    <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -166,9 +167,11 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Onion.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PerlinNoise.hpp" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RendererManager.h" />
+    <ClInclude Include="RenderModel.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceShader.h" />
     <ClInclude Include="ResourceSound.h" />
@@ -179,6 +182,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteModel.h" />
+    <ClInclude Include="SuperModel.h" />
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />
@@ -222,6 +226,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Onion.cpp" />
     <ClCompile Include="RendererManager.cpp" />
+    <ClCompile Include="RenderModel.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />
     <ClCompile Include="ResourceSound.cpp" />
@@ -232,6 +237,7 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteModel.cpp" />
+    <ClCompile Include="SuperModel.cpp" />
     <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskQueue.cpp" />

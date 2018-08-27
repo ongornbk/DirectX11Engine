@@ -14,7 +14,7 @@ SpriteModel::SpriteModel(float size)
 	m_size = size;
 	m_rotation = SPRITEMODEL_DEFAULT_ROTATION;
 	m_isLooping = true;
-	m_animationSpeed = 0.25f;
+	m_animationSpeed = 0.20f;
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_stop = false;

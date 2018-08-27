@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "RendererManager.h"
 #include "Onion.h"
+#include "PerlinNoise.hpp"
 #include <array>
 #include <fstream>
 #include <string>
@@ -17,7 +18,6 @@ using GlobalUtilities::random;
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
 
-#define CELL_MULTIPLIER         1.02f
 #define CELL_ZERO_Z             0.0f
 #define TILE_NUMBER_OF_TEXTURES 13
 #define DEFINED_TEMPLATES       3
@@ -37,6 +37,7 @@ extern "C"
 	namespace
 	{
 		static TileTemplate m_template[DEFINED_TEMPLATES + 1];
+		static float        m_cellMultiplier = 1.00;
 	}
 
 	namespace tile
@@ -120,6 +121,11 @@ static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 
 	}
 
+	void SetCellMultiplier(float multiplier)
+	{
+		m_cellMultiplier = multiplier/100.0f;
+	}
+
 
 }
 
@@ -188,38 +194,32 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 	tile::CELL_HALF_HEIGHT = tile::CELL_HEIGHT / 2.0f;
 	tile::CELL_HALF_WIDTH = tile::CELL_WIDTH / 2.0f;
 
-	m_size[0] = tile::CELL_WIDTH * CELL_MULTIPLIER;
-	m_size[1] = tile::CELL_HEIGHT * CELL_MULTIPLIER;
+	m_size[0] = tile::CELL_WIDTH * m_cellMultiplier;
+	m_size[1] = tile::CELL_HEIGHT * m_cellMultiplier;
 
 	tile::CAMERA_TILE_VIEW     = sizes.at(2);
 	tile::CAMERA_RENDER_CUT    = sizes.at(3);
 	tile::CAMERA_TILE_CUT      = tile::CAMERA_TILE_VIEW - tile::CAMERA_RENDER_CUT;
 	tile::CAMERA_TILE_DEEP_CUT = tile::CAMERA_TILE_CUT + sizes.at(4);
 
-	for (int i = 0; i < TILE_MAP_SIZE; i += 8)
-		for (int j = 0; j < TILE_MAP_SIZE; j += 8)
+	for (int i = 0; i < TILE_MAP_SIZE; ++i)
+		for (int j = 0; j < TILE_MAP_SIZE; ++j)
 		{
-			int _rand = random(0, DEFINED_TEMPLATES);
-			if ((i<TILE_MAP_SIZE) && (j<TILE_MAP_SIZE))
-				COPYLOOP8
-			{
-
-				m_tile[i + x][j + y] = m_template[_rand].m_tile[x][y];
-			}
+			m_tile[i][j] = (i * j) % 7;
 		}
 	m_tileShader = shader;
 	m_device = device;
 	m_vertexBuffer = new VertexBuffer();
 	(void)m_vertexBuffer->Initialize(device, shader, m_size, true);
-	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("simplegrass");
-	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("hole");
-	m_texture[2] = ResourceManager::GetInstance()->GetTextureByName("simplestone");
-	m_texture[3] = ResourceManager::GetInstance()->GetTextureByName("dirt");
-	m_texture[4] = ResourceManager::GetInstance()->GetTextureByName("floor");
-	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("stone");
-	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("grasstofloor");
-	m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("grass");
-	m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("fallen_tile");
+	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");
+	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("dirt");
+	m_texture[2] = ResourceManager::GetInstance()->GetTextureByName("rock");
+	m_texture[3] = ResourceManager::GetInstance()->GetTextureByName("leaves");
+	m_texture[4] = ResourceManager::GetInstance()->GetTextureByName("paving");
+	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("paving2");
+	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("dust");
+	//m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("grass");
+	//m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("fallen_tile");
 
 }
 
@@ -231,6 +231,8 @@ void Tile::SetVolatileGlobals(ID3D11DeviceContext * deviceContext,XMFLOAT4X4 vie
 	current = 0u;
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current]->GetTexture());
 }
+
+
 
 void Tile::LoadTexture()
 {
@@ -290,8 +292,8 @@ TileMap::TileMap()
 
 void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition)
 {
-	register float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-	register int   _i[4];
+	 float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
+	 int   _i[4];
 	_f[0] += cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
 	_f[0] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
 	_f[1] -= cameraPosition.m128_f32[0] / tile::CELL_WIDTH;

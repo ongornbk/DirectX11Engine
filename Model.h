@@ -45,6 +45,7 @@ public:
 	void Block(bool block = true);
 	XMFLOAT3 GetPosition();
 	XMFLOAT3 GetVelocity();
+	float GetRotation();
 	void GoBack();
 
 private:
@@ -54,6 +55,7 @@ private:
    
 	SpriteModel* m_spriteModel;
 	float        m_size;
+	float        m_lastsize;
 
 public:
 	bool m_flags[4];

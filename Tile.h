@@ -10,6 +10,7 @@
 extern "C"
 {
 	extern void _vectorcall InitializeTemplates();
+	extern void SetCellMultiplier(float multiplier = 1.0f);
 }
 
 #pragma region
@@ -34,6 +35,7 @@ public:
 
 	static void SetGlobals(ID3D11Device* device, Shader* shader,RendererManager* renderer);
 	static void SetVolatileGlobals(ID3D11DeviceContext * deviceContex, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	
 	 void Update();
 	 void Render();
 private:

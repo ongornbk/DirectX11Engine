@@ -367,6 +367,12 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int SetTilesMultiplier(lua_State* state) //EXPORTED
+	{
+		SetCellMultiplier(LUA_FLOAT(state, 1));
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 		lua_State* m_lua = lua::GetInstance();
@@ -409,6 +415,8 @@ namespace lua_callback
 		lua_register(m_lua,"PauseGame", lua_callback::PauseGame);
 		//Fonts
 		lua_register(m_lua, "LoadFont", lua_callback::LoadFont);
+		//Tiles
+		lua_register(m_lua, "SetTilesMultiplier", lua_callback::SetTilesMultiplier);
 	}
 
 }

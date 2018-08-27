@@ -252,7 +252,7 @@ public:
 
 	static RendererManager* GetInstance();
 private:
-	vector<RenderObject> m_objects;
+	vector<Unit*> m_objects;
 
 	Engine* m_engine;
 	Shader* m_shader;

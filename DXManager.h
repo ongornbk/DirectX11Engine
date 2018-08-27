@@ -1,6 +1,6 @@
 #pragma once
 #include "Colors.h"
-#include <d3d11_1.h>
+#include <d3d11_2.h>
 #include <directxmath.h>
 #include <directxcolors.h>
 
@@ -47,6 +47,7 @@ private:
 	ID3D11BlendState* m_alphaEnableBlendingState;
 	ID3D11BlendState* m_alphaDisableBlendingState;
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
+	
 
 
 

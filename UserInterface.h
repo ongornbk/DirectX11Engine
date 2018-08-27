@@ -14,7 +14,7 @@ class UserInterface
 public:
 
 #define UI_CURSOR_SIZE 48.0f
-#define UI_MUI_OFFSET 455.0f
+#define UI_MUI_OFFSET 490.0f
 #define UI_GAMEMENU_OFFSET 800.0f
 #define UI_MUI_HEIGHT 175.0f
 #define UI_CURSOR_ZERO_Z 0.0f

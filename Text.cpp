@@ -12,7 +12,7 @@ namespace
 
 Text::Text()
 {
-
+	m_letters.reserve(10);
 }
 
 
@@ -60,21 +60,23 @@ void Text::SetPosition(XMFLOAT3 position)
 	float sumup = 0.0f;
 	for (auto && letter : m_letters)
 	{
-		XMStoreFloat4x4(&letter->m_world, XMMatrixTranslation((position.x+sumup),position.y,position.z));
-		sumup += ((m_font->GetWidthOfLetter(letter->m_char))*0.5f);
+		XMStoreFloat4x4(&letter->m_world, XMMatrixTranslation((position.x+sumup),position.y,0.0f));
+		sumup += ((m_font->GetWidthOfLetter(letter->m_char))*0.6f);
 	}
 }
 
 void Text::SetText(std::string text)
 {
-	if (strcmp(text.c_str(), m_text.c_str())!=0)
-	{
-		for (auto && letter : m_letters)
+	
+		if (!m_letters.empty())
 		{
-			if (letter->m_sprite)
+			for (auto && letter : m_letters)
 			{
-				delete letter->m_sprite;
-				letter->m_sprite = NULL;
+				if (letter)
+				{
+					delete letter;
+					letter = NULL;
+				}
 			}
 		}
 		m_letters.clear();
@@ -87,7 +89,6 @@ void Text::SetText(std::string text)
 		}
 
 		this->Initialize();
-	}
 }
 
 string Text::GetText()
@@ -100,7 +101,7 @@ void Text::Initialize()
 	for (auto && letter : m_letters)
 	{
 		XMStoreFloat4x4(&(letter->m_world), XMMatrixIdentity());
-		letter->m_sprite = new LetterSprite(m_font, letter->m_char, 15.0f, m_shader);
+		letter->m_sprite = new LetterSprite(m_font, letter->m_char, 18.0f, m_shader);
 		letter->m_sprite->Initialize(m_device, m_deviceContext, m_shader, m_font);
 	}
 }

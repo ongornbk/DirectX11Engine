@@ -12,6 +12,18 @@ public:
 
 	struct LetterSpriteStruct
 	{
+		LetterSpriteStruct()
+		{
+			m_sprite = nullptr;
+		}
+		~LetterSpriteStruct()
+		{
+			if (m_sprite)
+			{
+				delete m_sprite;
+				m_sprite = nullptr;
+			}
+		}
 		LetterSprite* m_sprite;
 		XMFLOAT4X4    m_world;
 		CHAR          m_char;

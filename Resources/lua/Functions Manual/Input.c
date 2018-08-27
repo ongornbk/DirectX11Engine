@@ -1,3 +1,0 @@
-
-
-int IsKeyHit(int key);

@@ -153,6 +153,8 @@ void GameScene::Update()
 
 	Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
 
+	//CAMERA SetRotation(0.0f,0.0f,m_hero->GetModel()->GetRotation()*180.0f);
+
 
 	//m_enemy->SetAnimation(SpriteModel::ModelStance::WALK);
 //	speed1 = 100.0f;

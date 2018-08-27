@@ -88,7 +88,7 @@ public:
 
 	SpriteModel(float size);
 
-	virtual ~SpriteModel(void);
+	~SpriteModel(void);
 
 	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,ModelPaths* paths);
 
@@ -102,6 +102,8 @@ public:
 	bool IsLocked();
 	void DrawRectangle(ID3D11DeviceContext * deviceContext,Shader* shader,int borderWidth = 1);
 	void SetRotations(float rotations);
+
+	friend class Model;
 
 private:
 	ID3D11DeviceContext * m_deviceContext;

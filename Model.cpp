@@ -3,13 +3,6 @@
 #include "Engine.h"
 #include "GlobalUtilities.h"
 
-#pragma region
-#define XMFLOAT3ZERO XMFLOAT3(POSITION_ZERO_POINT_X, POSITION_ZERO_POINT_Y, POSITION_ZERO_POINT_Z)
-#define UPDATEWORLD  XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity())
-#define STOREFLOAT   XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(
-#define DEND         ));
-#pragma endregion
-
 namespace
 {
 	static float m_lastsize = 0.0f;
@@ -18,15 +11,15 @@ namespace
 Model::Model() : BoundingSphere()
 {
 	m_floats[0]        = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_floats[1]        = XMFLOAT3ZERO;
-	Center             = XMFLOAT3ZERO;
+	m_floats[1]        = XMFLOAT3(POSITION_ZERO_POINT_X, POSITION_ZERO_POINT_Y, POSITION_ZERO_POINT_Z);
+	Center             = XMFLOAT3(POSITION_ZERO_POINT_X, POSITION_ZERO_POINT_Y, POSITION_ZERO_POINT_Z);
 	Radius             = COLLISION_DISABLED_OR_NULL;
 	m_spriteModel      = NULL;
 	m_flags[0]         = TRUE;//rendering
 	m_flags[1]         = FALSE;//selected
 	m_flags[2]         = TRUE;//pushable
 	m_flags[3]         = FALSE;//blocked
-	UPDATEWORLD;
+	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 }
 
 Model::Model(const Model &model) : BoundingSphere()
@@ -82,7 +75,7 @@ void Model::Update(float dt)
 
 		if (m_spriteModel&&m_flags[0])
 		{
-			STOREFLOAT Center.x, Center.y+(m_size/1.5f), Center.z-(m_size/1.5f) DEND
+			XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
 			m_spriteModel->Update(dt);
 		}
 	}
@@ -136,6 +129,11 @@ XMFLOAT3 Model::GetVelocity()
 	return m_floats[0];
 }
 
+float Model::GetRotation()
+{
+	return m_spriteModel->m_rotation / 16.0f;
+}
+
 void Model::GoBack()
 {
 	Center = m_floats[1];
@@ -175,7 +173,6 @@ void Model::SetVelocity(float velocity[3])
 	m_floats[0].x = velocity[0];
 	m_floats[0].y = velocity[1];
 	m_floats[0].z = velocity[2];
-	free(velocity);
 }
 
 void Model::SetVelocity(XMFLOAT3 velocity)
