@@ -1,0 +1,92 @@
+#pragma once
+#include "Defines.h"
+#include "Sprite.h"
+#include "Types.h"
+
+
+
+#define TILE_MAP_RANGE TILE_MAP_SIZE -1
+
+extern "C"
+{
+	//extern void _vectorcall InitializeTemplates();
+	extern void SetCellMultiplier(float multiplier = 1.0f);
+	
+}
+
+extern "C++"
+{
+	extern INDEX2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept;
+	extern INDEX2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept;
+}
+
+#pragma region
+class Tile;
+class RendererManager;
+#pragma endregion
+
+struct TileMap
+{
+	TileMap(float size, float framesPerSecond, float animationSpeed, bool isLooping);
+	~TileMap();
+	void Initialize();
+	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
+	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile);
+	Tile* map[TILE_MAP_SIZE][TILE_MAP_SIZE];
+
+	void Update(float dt);
+
+private:
+
+	int   renderInts[4];
+
+	float m_currentFrame;
+	float m_previousFrame;
+	float m_maxFrames;
+	float m_animationSpeed;
+	float m_currentSpeed;
+	float m_framesPerSecond;
+	bool m_isLooping;
+};
+
+class Tile
+{
+public:
+	Tile(float x,float y,int ix,int iy);
+	virtual ~Tile();
+
+	static void SetGlobals(ID3D11Device* device, Shader* shader,RendererManager* renderer);
+	static void SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	static void SetDeviceContext(ID3D11DeviceContext* context);
+	
+	virtual void Update();
+	virtual void Render();
+
+	enum Type
+	{
+		TILE,
+		ANIMATEDTILE
+	}m_type;
+
+protected:
+	void LoadTexture();
+	XMFLOAT4X4 m_world;
+	INDEX2     m_index;
+};
+
+class AnimatedTile : Tile
+{
+public:
+	AnimatedTile(float x, float y, int ix, int iy,Texture* texture);
+	~AnimatedTile();
+
+	void SetTexture(Texture* texture);
+	void Update(float dt);
+	void Render();
+private:
+	void LoadTexture();
+
+	Texture* m_texture;
+
+};
+

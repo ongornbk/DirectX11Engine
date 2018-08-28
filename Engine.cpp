@@ -136,7 +136,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
 	lua_callback::SetInput(m_input);
-	InitializeTemplates();
+//	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, shader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	

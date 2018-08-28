@@ -7,9 +7,10 @@ namespace
 
 Global::Global()
 {
-	m_lastSelectedUnit = NULL;
-	m_lastCreatedUnit = NULL;
-	m_lastTask = NULL;
+	m_lastPickedUnit = nullptr;
+	m_lastSelectedUnit = nullptr;
+	m_lastCreatedUnit = nullptr;
+	m_lastTask = nullptr;
 	m_instance = this;
 	m_lastPoint = XMFLOAT3(0.0F, 0.0F, 0.0F);
 }

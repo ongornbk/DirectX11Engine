@@ -167,7 +167,6 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Onion.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PerlinNoise.hpp" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RendererManager.h" />

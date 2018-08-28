@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Global.h"
 #include "GameScene.h"
+#include "Onion.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -171,6 +172,18 @@ namespace lua_callback
 		}
 		return 1;
 	}
+	static int __IsKeyPressed(lua_State* state) //EXPORTED
+	{
+		if (m_input->IsKeyDown((unsigned int)lua_tointeger(state, 1)))
+		{
+			lua_pushboolean(state, true);
+		}
+		else
+		{
+			lua_pushboolean(state, false);
+		}
+		return 1;
+	}
 
 	static int __GetMouseState(lua_State* state) //EXPORTED
 	{
@@ -202,52 +215,112 @@ namespace lua_callback
 		return 2;
 	}
 
-	static int GetHero(lua_State*)
+	static int PickHero(lua_State*)
 	{
-		m_global->m_lastCreatedUnit = GameScene::GetHero();
+		Unit* unit = GameScene::GetHero();
+		if (unit)
+		{
+			m_global->m_lastPickedUnit = unit;
+		}
+		else
+		{
+			Onion::Console::Println("PickHero : Hero == nullptr");
+		}
+		return 0;
+	}
+
+	static int PickLastSelectedUnit(lua_State*)
+	{
+		Unit* unit = m_global->m_lastSelectedUnit;
+		if (unit)
+		{
+			m_global->m_lastPickedUnit = unit;
+		}
+		else
+		{
+			Onion::Console::Println("PickLastSelectedUnit : Unit == nullptr");
+		}
+		return 0;
+	}
+
+	static int PickLastCreatedUnit(lua_State*)
+	{
+		Unit* unit = m_global->m_lastCreatedUnit;
+		if (unit)
+		{
+			m_global->m_lastPickedUnit = unit;
+		}
+		else
+		{
+			Onion::Console::Println("PickLastCreatedUnit : Unit == nullptr");
+		}
 		return 0;
 	}
 
 	static int GiveTaskGotoPoint(lua_State* state)
 	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
 			Task* task = new Task();
 			TaskGotoPoint* tgtp = new TaskGotoPoint();
 			tgtp->destination = m_global->m_lastPoint;
-			tgtp->object = m_global->m_lastCreatedUnit;
+			tgtp->object = unit;
 			task->m_content.taskGotoPoint = tgtp;
 			task->m_type = Task::Type::TASKGOTOPOINT;
-			m_global->m_lastCreatedUnit->GiveTask(task);
+			unit->GiveTask(task);
+		}
+		else
+		{
+			Onion::Console::Println("GiveTaskGotoPoint : Unit == nullptr");
+		}
 			return 0;
 	}
 
 	static int SetTaskGotoPoint(lua_State* state)
 	{
-		Task* task = new Task();
-		TaskGotoPoint* tgtp = new TaskGotoPoint();
-		tgtp->destination = m_global->m_lastPoint;
-		tgtp->object = m_global->m_lastCreatedUnit;
-		task->m_content.taskGotoPoint = tgtp;
-		task->m_type = Task::Type::TASKGOTOPOINT;
-		m_global->m_lastCreatedUnit->SetTask(task);
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			Task* task = new Task();
+			TaskGotoPoint* tgtp = new TaskGotoPoint();
+			tgtp->destination = m_global->m_lastPoint;
+			tgtp->object = unit;
+			task->m_content.taskGotoPoint = tgtp;
+			task->m_type = Task::Type::TASKGOTOPOINT;
+			unit->SetTask(task);
+		}
+		else
+		{
+			Onion::Console::Println("SetTaskGotoPoint : Unit == nullptr");
+		}
 		return 0;
 	}
 
 	static int CleanTasks(lua_State* state)
 	{
 
-		m_global->m_lastCreatedUnit->DiscardTasks();
+		m_global->m_lastPickedUnit->DiscardTasks();
 		return 0;
 	}
 
 	static int LockCameraOnUnit(lua_State* state)
 	{
-		m_engine->GetCameraControl()->LockCameraPositionOnUnit(m_global->m_lastCreatedUnit);
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
+		}
+		else
+		{
+			Onion::Console::Println("LockCameraOnUnit : Unit == nullptr ERROR !!!");
+		}
 		return 0;
 	}
 
 	static int InitializeUnit(lua_State* state)
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 		string str = lua_tostring(state, 1);
@@ -272,7 +345,7 @@ namespace lua_callback
 
 	static int SetWalkingStance(lua_State* state)
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = m_global->m_lastPickedUnit;
 			Unit::WalkingStance ws;
 			switch (lua_tointeger(state, 1))
 			{
@@ -289,13 +362,13 @@ namespace lua_callback
 
 	static int ChangeWalkingStance(lua_State* state)
 	{
-		m_global->m_lastCreatedUnit->ChangeWalkingStance();
+		m_global->m_lastPickedUnit->ChangeWalkingStance();
 		return 0;
 	}
 
 	static int SetUnitSpeed(lua_State* state)
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			unit->SetSpeed((float)lua_tointeger(state,1));
@@ -305,7 +378,7 @@ namespace lua_callback
 	
 	static int GetUnitPosition(lua_State* state)
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			XMFLOAT3 position;
@@ -319,7 +392,7 @@ namespace lua_callback
 
 	static int SetUnitRotations(lua_State* state)
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			unit->SetRotations((float)lua_tointeger(state, 1));
@@ -373,6 +446,15 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int SetTile(lua_State* state) //EXPORTED
+	{
+		XMFLOAT2 position;
+		position.x= m_global->m_lastPoint.x;
+		position.y = m_global->m_lastPoint.y;
+		m_renderer->SetTile(position, (int32_t)lua_tointeger(state, 1));
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 		lua_State* m_lua = lua::GetInstance();
@@ -392,6 +474,7 @@ namespace lua_callback
 		lua_register(m_lua, "PostQuitMessage", lua_callback::__PostQuitMessage);
 		//Input
 		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
+		lua_register(m_lua, "IsKeyPressed", lua_callback::__IsKeyPressed);
 		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
 		//Units
@@ -401,7 +484,9 @@ namespace lua_callback
 		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
-		lua_register(m_lua,"GetHero", lua_callback::GetHero);
+		lua_register(m_lua,"PickHero", lua_callback::PickHero);
+		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
+		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);
 		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);
@@ -417,6 +502,7 @@ namespace lua_callback
 		lua_register(m_lua, "LoadFont", lua_callback::LoadFont);
 		//Tiles
 		lua_register(m_lua, "SetTilesMultiplier", lua_callback::SetTilesMultiplier);
+		lua_register(m_lua, "SetTile", lua_callback::SetTile);
 	}
 
 }

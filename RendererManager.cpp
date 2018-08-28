@@ -29,7 +29,9 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 	m_instance = this;
 	this->m_shader = shader;
 	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), shader,this);
-	m_map.Initialize();
+	m_map = new TileMap(1.0f,1.0f,0.2f,true);
+	m_map->Initialize();
+	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
 	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+100.0f;
 	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 100.0f;
@@ -43,6 +45,11 @@ RendererManager::~RendererManager()
 	{
 		delete m_ui;
 		m_ui = NULL;
+	}
+	if (m_map)
+	{
+		delete m_map;
+		m_map = nullptr;
 	}
 }
 
@@ -250,7 +257,7 @@ extern "C"
 		
 		m_shader->Begin(deviceContext);
 		GRAPHICS EnableAlphaBlending(true);
-		m_map.Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
+		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
 
 		for (auto &&object : m_objects)
 		{
@@ -285,7 +292,7 @@ m_shader->End(deviceContext);
 							if (model->Contains(point))
 							{
 								model->m_flags[1] = true;
-								//GLOBAL m_lastSelectedUnit = (*i);
+								GLOBAL m_lastSelectedUnit = unit;
 							}
 							else
 							{
@@ -314,6 +321,7 @@ void RendererManager::Update()
 	m_cameraPosition = CAMERA GetPosition();
 	m_ui->Update(m_cameraPosition);
 	float dt = Timer::GetDeltaTime();
+	m_map->Update(dt);
 
 	if (m_engine->GetGameStance() == false)
 	{
@@ -348,6 +356,11 @@ void RendererManager::SetRenderingStyle(RenderingStyle render)
 void RendererManager::SetInterface(unsigned int type,Shader* shader)
 {
 	m_ui->SetScene(type, shader);
+}
+
+void RendererManager::SetTile(XMFLOAT2 position, int32_t tile)
+{
+	m_map->SetTile(position, tile);
 }
 
 RendererManager * RendererManager::GetInstance()

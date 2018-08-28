@@ -249,6 +249,7 @@ public:
 	void RemoveAllObjects();
 	void SetRenderingStyle(RenderingStyle render);
 	void SetInterface(unsigned int type, Shader* shader);
+	void SetTile(XMFLOAT2 position, int32_t tile);
 
 	static RendererManager* GetInstance();
 private:
@@ -260,7 +261,7 @@ private:
 
 
 	RenderingStyle m_renderingStyle;
-	TileMap m_map;
+	TileMap* m_map;
 	UserInterface* m_ui;
 };
 

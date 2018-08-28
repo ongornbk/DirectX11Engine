@@ -6,6 +6,7 @@ class Global
 public:
 	Global(void);
 	~Global(void);
+	Unit* m_lastPickedUnit;
 	Unit* m_lastSelectedUnit;
 	Unit* m_lastCreatedUnit;
 	Task* m_lastTask;
