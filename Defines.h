@@ -11,7 +11,7 @@
 const bool FULL_SCREEN = true;
 const bool VSYNC_ENABLED = true;
 
-#define TILE_MAP_SIZE 256
+#define TILE_MAP_SIZE 512
 
 #pragma region
 #define SETTINGS Settings::get()->
@@ -20,4 +20,7 @@ const bool VSYNC_ENABLED = true;
 #define GRAPHICS Engine::GetEngine()->GetGraphics()->
 #define ENGINE Engine::GetEngine()->
 #define FRAMEWORK Engine::GetEngine()->GetFrameWork()->
+#define GETSHADER  (TextureShader*)ResourceManager::GetInstance()->GetShaderByName(
+#define END       );
+#define CLOSE     )
 #pragma endregion

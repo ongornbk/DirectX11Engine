@@ -14,6 +14,7 @@ AnimatedSprite::AnimatedSprite(float size, float framesPerSecond, float animatio
 
 
 
+
 AnimatedSprite::~AnimatedSprite()
 {
 }

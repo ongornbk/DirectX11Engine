@@ -58,7 +58,7 @@ private:
 	float        m_lastsize;
 
 public:
-	bool m_flags[4];
+	bool m_flags[5];
 
 
 

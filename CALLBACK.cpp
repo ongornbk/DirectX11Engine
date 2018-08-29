@@ -375,6 +375,16 @@ namespace lua_callback
 		}
 		return 0;
 	}
+
+	static int SetUnitPosition(lua_State* state)
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			unit->SetPosition(XMFLOAT3((float)lua_tointeger(state, 1), (float)lua_tointeger(state, 2), (float)lua_tointeger(state, 3)));
+		}
+		return 0;
+	}
 	
 	static int GetUnitPosition(lua_State* state)
 	{
@@ -492,6 +502,7 @@ namespace lua_callback
 		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);
 		lua_register(m_lua,"GetUnitPosition", lua_callback::GetUnitPosition);
 		lua_register(m_lua,"AddModelPaths", lua_callback::AddModelPaths);
+		lua_register(m_lua, "SetUnitPosition", lua_callback::SetUnitPosition);
 		//RendererManager
 		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);

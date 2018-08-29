@@ -34,6 +34,7 @@ public:
 	void ChangeWalkingStance();
 	void SetRotations(float rotations);
 	void DiscardTasks(); 
+	void SetPosition(XMFLOAT3 position);
 
 #pragma region
 	friend struct Task;

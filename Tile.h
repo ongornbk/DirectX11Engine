@@ -32,6 +32,9 @@ struct TileMap
 	void Initialize();
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile);
+
+	static bool CollisionAt(XMFLOAT3 position);
+	static void SetCurrentTileMap(TileMap* tilemap);
 	Tile* map[TILE_MAP_SIZE][TILE_MAP_SIZE];
 
 	void Update(float dt);
@@ -49,10 +52,14 @@ private:
 	bool m_isLooping;
 };
 
+class AnimatedTile;
+
 class Tile
 {
 public:
 	Tile(float x,float y,int ix,int iy);
+	Tile(XMFLOAT2 position,INDEX2 index);
+	explicit Tile(AnimatedTile* tile);
 	virtual ~Tile();
 
 	static void SetGlobals(ID3D11Device* device, Shader* shader,RendererManager* renderer);
@@ -69,15 +76,24 @@ public:
 	}m_type;
 
 protected:
+
+	friend class AnimatedTile;
+
 	void LoadTexture();
 	XMFLOAT4X4 m_world;
 	INDEX2     m_index;
+	XMFLOAT2   m_position;
+
+public:
+
+	bool m_collision;
 };
 
 class AnimatedTile : Tile
 {
 public:
 	AnimatedTile(float x, float y, int ix, int iy,Texture* texture);
+	explicit AnimatedTile(Tile* tile, Texture* texture);
 	~AnimatedTile();
 
 	void SetTexture(Texture* texture);
@@ -87,6 +103,10 @@ private:
 	void LoadTexture();
 
 	Texture* m_texture;
+
+protected:
+
+	friend class Tile;
 
 };
 

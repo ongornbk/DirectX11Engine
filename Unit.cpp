@@ -130,3 +130,10 @@ void Unit::DiscardTasks()
 {
 	m_tasks.Discard();
 }
+
+void Unit::SetPosition(XMFLOAT3 position)
+{
+	m_model->Center.x = position.x;
+	m_model->Center.y = position.y;
+	m_model->Center.z = position.z;
+}

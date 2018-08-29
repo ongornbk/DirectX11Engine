@@ -38,7 +38,8 @@ void LetterSprite::Initialize(ID3D11Device * device, ID3D11DeviceContext * devic
 {
 	m_vertexBuffer = new VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->InitializePart(device, shader, sizexy,font->GetCoordsOfLetter(m_char), true);
+	FLOATX6 coords = font->GetCoordsOfLetter(m_char);
+	(void)m_vertexBuffer->InitializePart(device, shader, sizexy,coords.__f32, true);
 }
 
 void LetterSprite::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)

@@ -104,7 +104,6 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 #pragma endregion
 #pragma region
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
-#define GETSHADER  (TextureShader*)ResourceManager::GetInstance()->GetShaderByName(
 #define END );
 #pragma endregion
 	//NEWS
@@ -129,6 +128,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 #pragma region
 	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
+	LOADSHADER  L"../Shaders/tile.fx"                               END //HANDLED
 	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED
 #pragma endregion
 

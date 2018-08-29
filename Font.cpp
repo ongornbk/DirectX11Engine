@@ -118,15 +118,15 @@ std::string Font::GetName()
 	return "ExocetLight";
 }
 
-float * Font::GetCoordsOfLetter(char letter)
+FLOATX6 Font::GetCoordsOfLetter(char letter)
 {
-	float f[6];
-	f[0] = m_width;
-	f[1] = m_height;
-	f[2] = m_char[letter].m_left;
-	f[3] = m_char[letter].m_top;
-	f[4] = m_char[letter].m_right;
-	f[5] = m_char[letter].m_bottom;
+	FLOATX6 f;
+	f.__f32[0] = m_width;
+	f.__f32[1] = m_height;
+	f.__f32[2] = m_char[letter].m_left;
+	f.__f32[3] = m_char[letter].m_top;
+	f.__f32[4] = m_char[letter].m_right;
+	f.__f32[5] = m_char[letter].m_bottom;
 	return f;
 }
 

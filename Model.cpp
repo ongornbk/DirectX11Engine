@@ -19,6 +19,7 @@ Model::Model() : BoundingSphere()
 	m_flags[1]         = FALSE;//selected
 	m_flags[2]         = TRUE;//pushable
 	m_flags[3]         = FALSE;//blocked
+	m_flags[4]         = FALSE;//collision with tilemap
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 }
 

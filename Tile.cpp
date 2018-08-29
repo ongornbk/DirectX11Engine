@@ -20,6 +20,7 @@ using GlobalUtilities::random;
 #define CELL_ZERO_Z             0.0f
 #define TILE_NUMBER_OF_TEXTURES 13
 #define DEFINED_TEMPLATES       3
+#define ANIMATEDTILE_FRAME_COUNT 4.0f
 
 //#pragma region
 //#define COPYLOOP8 for(int x = 0;x<8;x++) for (int y = 0; y < 8; y++)
@@ -42,10 +43,10 @@ extern "C"
 	namespace tile
 	{
 
-static float CELL_WIDTH           = 160.0f;
-static float CELL_HALF_WIDTH      = 80.0f;
-static float CELL_HEIGHT          = 80.0f;
-static float CELL_HALF_HEIGHT     = 40.0f;
+static float CELL_WIDTH           = 320.0f;
+static float CELL_HALF_WIDTH      = 160.0f;
+static float CELL_HEIGHT          = 160.0f;
+static float CELL_HALF_HEIGHT     = 80.0f;
 static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
@@ -178,13 +179,32 @@ namespace
 	static unsigned char m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
 	static unsigned char current = 0u;
 	static RendererManager*     m_renderer;
+	static TileMap*              m_currentTileMap;
 }
 
 Tile::Tile(float x,float y,int ix,int iy)
 {
+	m_position = { x,y };
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y, CELL_ZERO_Z));
 	m_index.i = ix;
 	m_index.j = iy;
+	m_collision = false;
+}
+
+Tile::Tile(XMFLOAT2 position,INDEX2 index)
+{
+	XMStoreFloat4x4(&m_world, XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
+	m_index.i = index.i;
+	m_index.j = index.j;
+	m_collision = false;
+}
+
+Tile::Tile(AnimatedTile * tile)
+{
+	m_position = tile->m_position;
+	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
+	m_index = tile->m_index;
+	m_collision = false;
 }
 
 
@@ -348,11 +368,13 @@ TileMap::TileMap(float size, float framesPerSecond, float animationSpeed, bool i
 
 	m_currentFrame = 0;
 	m_previousFrame = -1.0f;
-	m_maxFrames = 2.0f;
+	m_maxFrames = ANIMATEDTILE_FRAME_COUNT;
 }
 
 void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition)
 {
+	m_tileShader->Begin(deviceContext);
+	GRAPHICS EnableAlphaBlending(true);
 	 float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 	 
 	_f[0] += cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
@@ -387,6 +409,9 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 			
 		}
 	}
+	GRAPHICS EnableAlphaBlending(false);
+	m_tileShader->End(deviceContext);
+	
 }
 
 void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
@@ -399,13 +424,12 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 		
 		if (map[pos.i][pos.j]->m_type == Tile::Type::TILE)
 		{
-			float offsety = (TILE_MAP_RANGE)*tile::CELL_HALF_HEIGHT;
-			float offsetx = 0.0f;
-			offsetx -= tile::CELL_HALF_WIDTH*pos.i;
-			offsety -= tile::CELL_HALF_HEIGHT*pos.j;
+
+			AnimatedTile* tilep = new AnimatedTile(map[pos.i][pos.j], m_texture[tile]);
 			delete map[pos.i][pos.j];
-			map[pos.i][pos.j] = (Tile*)(new AnimatedTile(offsetx + (tile::CELL_HALF_WIDTH*pos.j), offsety - (tile::CELL_HALF_HEIGHT*pos.j), pos.i, pos.j, m_texture[tile]));
+			map[pos.i][pos.j] = (Tile*)tilep;
 			map[pos.i][pos.j]->m_type = Tile::Type::ANIMATEDTILE;
+			map[pos.i][pos.j]->m_collision = true;
 			
 		}
 		else
@@ -417,18 +441,34 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 	{
 		if (map[pos.i][pos.j]->m_type == Tile::Type::ANIMATEDTILE)
 		{
-			float offsety = (TILE_MAP_RANGE)*tile::CELL_HALF_HEIGHT;
-			float offsetx = 0.0f;
-			offsetx -= tile::CELL_HALF_WIDTH*pos.i;
-			offsety -= tile::CELL_HALF_HEIGHT*pos.j;
-			delete map[pos.i][pos.j];
-			map[pos.i][pos.j] = new Tile(offsetx + (tile::CELL_HALF_WIDTH*pos.j), offsety - (tile::CELL_HALF_HEIGHT*pos.j), pos.i, pos.j);
+			Tile* tilep = new Tile(((AnimatedTile*)map[pos.i][pos.j]));
+			delete (AnimatedTile*)map[pos.i][pos.j];
+			map[pos.i][pos.j] = tilep;
 			map[pos.i][pos.j]->m_type = Tile::Type::TILE;
+			map[pos.i][pos.j]->m_collision = false;
 		}
 	}
 	
 	 
 
+}
+
+bool TileMap::CollisionAt(XMFLOAT3 position)
+{
+	INDEX2 index = TransformXMFLOAT3ToTileMapINDEX2(position);
+	Tile* tilep = m_currentTileMap->map[index.i][index.j];
+	if (tilep)
+	{
+		return tilep->m_collision;
+	}
+	else
+	{
+		return false;
+	}
+}
+void TileMap::SetCurrentTileMap(TileMap* tilemap)
+{
+	m_currentTileMap = tilemap;
 }
 
 void TileMap::Update(float dt)
@@ -497,6 +537,11 @@ void TileMap::Update(float dt)
 }
 
 AnimatedTile::AnimatedTile(float x, float y, int ix, int iy,Texture* texture) : Tile(x, y, ix, iy)
+{
+	m_texture = texture;
+}
+
+AnimatedTile::AnimatedTile(Tile * tile, Texture * texture) : Tile(tile->m_position,tile->m_index)
 {
 	m_texture = texture;
 }

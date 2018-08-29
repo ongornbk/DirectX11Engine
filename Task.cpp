@@ -179,15 +179,24 @@ bool TaskGotoPoint::Update()
 {
 
 	XMFLOAT3 position = object->GetPosition();
+	Model* model = object->m_model;
+
+	if (model->m_flags[4])
+	{
+		return false;
+	}
+	else
+	{
 		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 		{
-			Model* model = object->m_model;
+
+
 			switch (object->GetWalkingStance())
 			{
 			case Unit::WalkingStance::RUN:
 			{
-			model->SetAnimation(SpriteModel::ModelStance::RUN);
-			break;
+				model->SetAnimation(SpriteModel::ModelStance::RUN);
+				break;
 			}
 			case Unit::WalkingStance::WALK:
 			{
@@ -195,18 +204,53 @@ bool TaskGotoPoint::Update()
 				break;
 			}
 			}
-			float rotation = atan2(destination.y - position.y,destination.x - position.x)*180.0f / 3.141f;
+			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
 			rotation += 180.0f;
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle
 			model->SetRotation((int)rotation);
 			FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-			model->SetVelocity(f3.x,f3.y,f3.z);
+			model->SetVelocity(f3.x, f3.y, f3.z);
 			return true;
+
 		}
 		else
 		{
-			Model* model = object->m_model;
+			model->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
+			model->SetVelocity(0.0f);
+			return false;
+		}
+	}
+
+		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
+		{
+			
+			
+				switch (object->GetWalkingStance())
+				{
+				case Unit::WalkingStance::RUN:
+				{
+					model->SetAnimation(SpriteModel::ModelStance::RUN);
+					break;
+				}
+				case Unit::WalkingStance::WALK:
+				{
+					model->SetAnimation(SpriteModel::ModelStance::WALK);
+					break;
+				}
+				}
+				float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
+				rotation += 180.0f;
+				rotation /= 22.5f;
+				rotation = 20 - rotation;//to handle
+				model->SetRotation((int)rotation);
+				FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+				model->SetVelocity(f3.x, f3.y, f3.z);
+				return true;
+			
+		}
+		else
+		{
 			model->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
 			model->SetVelocity(0.0f);
 			return false;

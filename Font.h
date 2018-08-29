@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 
+struct FLOATX6
+{
+	float __f32[6];
+};
+
 class Font
 {
 public:
@@ -24,7 +29,7 @@ static Font* GetFontByName(std::string name);
 static void ReleaseFonts();
 
 std::string GetName();
-float* GetCoordsOfLetter(char letter);
+FLOATX6 GetCoordsOfLetter(char letter);
 float GetLeftOfLetter(char letter);
 float GetWidthOfLetter(char letter);
 

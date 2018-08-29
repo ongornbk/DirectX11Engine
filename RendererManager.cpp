@@ -28,9 +28,10 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 	this->m_engine = engine;
 	m_instance = this;
 	this->m_shader = shader;
-	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), shader,this);
+	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
 	m_map->Initialize();
+	TileMap::SetCurrentTileMap(m_map);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
 	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+100.0f;
@@ -255,10 +256,10 @@ extern "C"
 	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 	{
 		
+
+		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
 		m_shader->Begin(deviceContext);
 		GRAPHICS EnableAlphaBlending(true);
-		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
-
 		for (auto &&object : m_objects)
 		{
 					object->GetModel()->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
@@ -291,16 +292,38 @@ m_shader->End(deviceContext);
 							model->GoBack();
 							if (model->Contains(point))
 							{
+								model->m_flags[4] = true;
 								model->m_flags[1] = true;
 								GLOBAL m_lastSelectedUnit = unit;
 							}
 							else
 							{
+								model->m_flags[4] = false;
 								model->m_flags[1] = false;
 							}
 						}
 						else
 						{
+							model->m_flags[4] = false;
+							model->m_flags[1] = false;
+						}
+						if (TileMap::CollisionAt(model->Center))
+						{
+							model->GoBack();
+							if (TileMap::CollisionAt(model->Center))
+							{
+								model->m_flags[4] = true;
+								model->m_flags[1] = true;
+							}
+							else
+							{
+								model->m_flags[4] = false;
+								model->m_flags[1] = false;
+							}
+						}
+						else
+						{
+							model->m_flags[4] = false;
 							model->m_flags[1] = false;
 						}
 						
