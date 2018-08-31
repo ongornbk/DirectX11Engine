@@ -5,7 +5,9 @@
 
 Graphics::Graphics(void)
 {
-	m_dxManager = NULL;
+	m_dxManager = nullptr;
+	m_vulcanManager = nullptr;
+	m_gfxEngine = DIRECTX11;
 }
 
 Graphics::~Graphics(void)
@@ -21,6 +23,12 @@ bool Graphics::InitializeDX(HWND hwnd)
 		return false;
 	}
 	return true;
+}
+
+bool Graphics::InitializeVulcan(HWND hwnd)
+{
+	m_vulcanManager = new VulcanManager();
+	return m_vulcanManager->Initialize(*(Settings::get()->REALRESOLUTION_X), *(Settings::get()->REALRESOLUTION_Y), FULL_SCREEN, hwnd, VSYNC_ENABLED);
 }
 
 void Graphics::Initialize()
@@ -54,7 +62,10 @@ void Graphics::EnableZBuffer(bool enable)
 
 void Graphics::Release()
 {
+	if(m_dxManager)
 	m_dxManager->Release();
+	if(m_vulcanManager)
+	m_vulcanManager->Release();
 }
 
 

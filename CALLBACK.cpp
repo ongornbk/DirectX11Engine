@@ -465,6 +465,30 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int SaveInstance(lua_State* state)
+	{
+		m_renderer->SaveInstanceToFile(lua_tostring(state, 1));
+		return 0;
+	}
+
+	static int LoadInstance(lua_State* state)
+	{
+		m_renderer->LoadInstanceToFile(lua_tostring(state, 1));
+		return 0;
+	}
+
+	static int GetInput(lua_State* state)
+	{
+		lua_pushstring(state, (Onion::Console::GetInput().c_str()));
+		return 1;
+	}
+
+	static int Println(lua_State* state)
+	{
+		Onion::Console::Println(lua_tostring(state, 1));
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 		lua_State* m_lua = lua::GetInstance();
@@ -482,6 +506,8 @@ namespace lua_callback
 		lua_register(m_lua, "PlayMusic", lua_callback::PlayMusic);
 		//System
 		lua_register(m_lua, "PostQuitMessage", lua_callback::__PostQuitMessage);
+		lua_register(m_lua, "SaveInstance", lua_callback::SaveInstance);
+		lua_register(m_lua, "LoadInstance", lua_callback::LoadInstance);
 		//Input
 		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
 		lua_register(m_lua, "IsKeyPressed", lua_callback::__IsKeyPressed);
@@ -514,6 +540,9 @@ namespace lua_callback
 		//Tiles
 		lua_register(m_lua, "SetTilesMultiplier", lua_callback::SetTilesMultiplier);
 		lua_register(m_lua, "SetTile", lua_callback::SetTile);
+		//Console
+		lua_register(m_lua, "GetInput", lua_callback::GetInput);
+		lua_register(m_lua, "Println", lua_callback::Println);
 	}
 
 }

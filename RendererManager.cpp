@@ -386,6 +386,16 @@ void RendererManager::SetTile(XMFLOAT2 position, int32_t tile)
 	m_map->SetTile(position, tile);
 }
 
+void RendererManager::SaveInstanceToFile(std::string filename)
+{
+	m_map->SaveToFile(filename);
+}
+
+void RendererManager::LoadInstanceToFile(std::string filename)
+{
+	m_map->LoadFromFile(filename);
+}
+
 RendererManager * RendererManager::GetInstance()
 {
 	return m_instance;

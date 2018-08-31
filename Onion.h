@@ -5,10 +5,6 @@
 
 namespace Onion
 {
-#define int64 __int64
-#define uint32 unsigned int 
-#define uint16 unsigned short
-#define int16  short
 
 #define SQR(x)						((x) * (x))
 #define ABS(x) ((x)<0 ? -(x) : (x))
@@ -61,6 +57,8 @@ namespace Onion
 	{
 		int _stdcall GetScreenWidth() noexcept;
 		int _stdcall GetScreenHeight() noexcept;
+		std::string _stdcall GetFileName(const std::string &s) noexcept;
+		void _stdcall Exit(const int return_value = 0) noexcept;
 	}
 
 	class __Console
@@ -72,13 +70,15 @@ namespace Onion
 		void __Print(std::string text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
+		void __Print(std::string text,const int32_t value);
 		void __Print(float number);
-		void __Print(int number);
+		void __Print(int32_t number);
 		void __Print(void* address);
 		void __Flush();
-		void __SetCursorPosition(int16 x, int16 y);
+		void __SetCursorPosition(int16_t x, int16_t y);
 		void __SetTextColor(TextColors color);
-		void __SetTextColor(uint16 color);
+		void __SetTextColor(uint16_t color);
+		std::string __GetInput();
 
 
 		HANDLE                     m_outputHandle;
@@ -96,16 +96,18 @@ namespace Onion
 		static void Println(std::string text);
 		static void Println(std::string text, TextColors color);
 		static void Println(std::string text,std::wstring wide, TextColors color);
+		static void Println(std::string text, const int value);
 		static void Println(float number);
 		static void Print(std::string text);
 		static void Print(float number);
 		static void Print(int number);
 		static void Print(void* address);
 		static void Flush();
-		static void SetCursorPosition(int16 x, int16 y);
+		static void SetCursorPosition(int16_t x, int16_t y);
 		static void SetTextColor(TextColors color);
-		static void SetTextColor(uint16 color);
+		static void SetTextColor(uint16_t color);
 		static void SetTitle(std::string title);
+		static std::string GetInput();
 	private:
 		explicit Console(void);
 
@@ -121,9 +123,9 @@ namespace Onion
 		static void  GetDeltaTime(float &dt);
 	private:
 
-		static int64 m_prevFrame;
-		static int64 m_currentFrame;
-		static int64 m_freq;
+		static int64_t m_prevFrame;
+		static int64_t m_currentFrame;
+		static int64_t m_freq;
 		static float m_deltaTime;
 	};
 

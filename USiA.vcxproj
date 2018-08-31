@@ -70,13 +70,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
+    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -160,6 +169,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="GlobalUtilities.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="GraphicsManager.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LetterSprite.h" />
     <ClInclude Include="LUAManager.h" />
@@ -197,6 +207,7 @@
     <ClInclude Include="UserInterfaceMainMenu.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VulcanManager.h" />
     <ClInclude Include="WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +229,7 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="GlobalUtilities.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="GraphicsManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LetterSprite.cpp" />
     <ClCompile Include="LUAManager.cpp" />
@@ -250,6 +262,7 @@
     <ClCompile Include="UserInterfaceGameMenu.cpp" />
     <ClCompile Include="UserInterfaceMainMenu.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VulcanManager.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

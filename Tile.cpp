@@ -272,7 +272,7 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("paving2");
 	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("dust");
 	m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("water");
-	//m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("fallen_tile");
+	m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("sand");
 
 }
 
@@ -416,41 +416,83 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 
 void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 {
-	INDEX2 pos = TransformXMFLOAT2ToTileMapINDEX2(position);
-	SquashInt32(tile, 0, 7);
-	m_tile[pos.i][pos.j] = (unsigned char)tile;
+	SetTile(TransformXMFLOAT2ToTileMapINDEX2(position),tile);
+}
+
+void TileMap::SetTile(INDEX2 index, int32_t tile)
+{
+	SquashInt32(tile, 0, 8);
+	m_tile[index.i][index.j] = (unsigned char)tile;
 	if (tile == 7)
 	{
-		
-		if (map[pos.i][pos.j]->m_type == Tile::Type::TILE)
+
+		if (map[index.i][index.j]->m_type == Tile::Type::TILE)
 		{
 
-			AnimatedTile* tilep = new AnimatedTile(map[pos.i][pos.j], m_texture[tile]);
-			delete map[pos.i][pos.j];
-			map[pos.i][pos.j] = (Tile*)tilep;
-			map[pos.i][pos.j]->m_type = Tile::Type::ANIMATEDTILE;
-			map[pos.i][pos.j]->m_collision = true;
-			
+			AnimatedTile* tilep = new AnimatedTile(map[index.i][index.j], m_texture[tile]);
+			delete map[index.i][index.j];
+			map[index.i][index.j] = (Tile*)tilep;
+			map[index.i][index.j]->m_type = Tile::Type::ANIMATEDTILE;
+			map[index.i][index.j]->m_collision = true;
+
 		}
 		else
 		{
-			((AnimatedTile*)map[pos.i][pos.j])->SetTexture(m_texture[tile]);
+			((AnimatedTile*)map[index.i][index.j])->SetTexture(m_texture[tile]);
 		}
 	}
 	else
 	{
-		if (map[pos.i][pos.j]->m_type == Tile::Type::ANIMATEDTILE)
+		if (map[index.i][index.j]->m_type == Tile::Type::ANIMATEDTILE)
 		{
-			Tile* tilep = new Tile(((AnimatedTile*)map[pos.i][pos.j]));
-			delete (AnimatedTile*)map[pos.i][pos.j];
-			map[pos.i][pos.j] = tilep;
-			map[pos.i][pos.j]->m_type = Tile::Type::TILE;
-			map[pos.i][pos.j]->m_collision = false;
+			Tile* tilep = new Tile(((AnimatedTile*)map[index.i][index.j]));
+			delete (AnimatedTile*)map[index.i][index.j];
+			map[index.i][index.j] = tilep;
+			map[index.i][index.j]->m_type = Tile::Type::TILE;
+			map[index.i][index.j]->m_collision = false;
 		}
 	}
-	
-	 
+}
 
+void TileMap::SaveToFile(std::string filename)
+{
+	remove(filename.c_str());
+	std::ofstream myfile;
+	myfile.open(filename);
+	
+	for (uint16_t i = 0u; i < TILE_MAP_SIZE; ++i)
+	{
+		for (uint16_t j = 0u; j < TILE_MAP_SIZE; ++j)
+		{
+			myfile << m_tile[i][j];
+		}
+		myfile << '\n';
+	}
+	
+
+
+	myfile.close();
+}
+
+void TileMap::LoadFromFile(std::string filename)
+{
+	std::ifstream myfile;
+	myfile.open(filename);
+	char ch;
+	for (uint16_t i = 0u; i < TILE_MAP_SIZE; ++i)
+	{
+		for (uint16_t j = 0u; j < TILE_MAP_SIZE; ++j)
+		{
+
+			myfile.get(ch);
+			SetTile(INDEX2(i, j), (unsigned char)ch);
+		}
+		myfile.get(ch);
+	}
+
+
+
+	myfile.close();
 }
 
 bool TileMap::CollisionAt(XMFLOAT3 position)

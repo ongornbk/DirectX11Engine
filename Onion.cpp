@@ -14,7 +14,7 @@ float Onion::Timer::m_deltaTime = 0.0f;
 
 namespace
 {
-	static Onion::Console* m_instance;
+	static Onion::Console* m_instance = nullptr;
 	static std::mutex m_consoleMutex;
 }
 
@@ -61,6 +61,11 @@ void Onion::Console::Println(std::string text, std::wstring wide, TextColors col
 	GetInstance()->__Print(text, wide, color);
 }
 
+void Onion::Console::Println(std::string text, const int value)
+{
+	GetInstance()->__Print(text+ "\n", value);
+}
+
 void Onion::Console::Println(float number)
 {
 	GetInstance()->__Println(number);
@@ -91,7 +96,7 @@ void Onion::Console::Flush()
 	GetInstance()->__Flush();
 }
 
-void Onion::Console::SetCursorPosition(int16 x, int16 y)
+void Onion::Console::SetCursorPosition(int16_t x, int16_t y)
 {
 	GetInstance()->__SetCursorPosition(x, y);
 }
@@ -101,7 +106,7 @@ void Onion::Console::SetTextColor(TextColors color)
 	GetInstance()->__SetTextColor(color);
 }
 
-void Onion::Console::SetTextColor(uint16 color)
+void Onion::Console::SetTextColor(uint16_t color)
 {
 	GetInstance()->__SetTextColor(color);
 }
@@ -109,6 +114,11 @@ void Onion::Console::SetTextColor(uint16 color)
 void Onion::Console::SetTitle(std::string title)
 {
 	SetConsoleTitle(title.c_str());
+}
+
+std::string Onion::Console::GetInput()
+{
+	return GetInstance()->GetInput();
 }
 
 
@@ -146,12 +156,17 @@ void Onion::__Console::__Print(std::string text, std::wstring wide, TextColors c
 	wprintf(L"%s", wide.c_str());
 }
 
+void Onion::__Console::__Print(std::string text, const int32_t value)
+{
+	printf("%s%d", text.c_str(),value);
+}
+
 void Onion::__Console::__Print(float number)
 {
 	printf("%f", number);
 }
 
-void Onion::__Console::__Print(int number)
+void Onion::__Console::__Print(int32_t number)
 {
 	printf("%d", number);
 }
@@ -169,7 +184,7 @@ void Onion::__Console::__Flush()
 	__SetCursorPosition(0u, 0u);
 }
 
-void Onion::__Console::__SetCursorPosition(int16 x, int16 y)
+void Onion::__Console::__SetCursorPosition(int16_t x, int16_t y)
 {
 	SetConsoleCursorPosition(m_outputHandle, { x,y });
 }
@@ -179,9 +194,16 @@ void Onion::__Console::__SetTextColor(TextColors color)
 	SetConsoleTextAttribute(m_outputHandle, color);
 }
 
-void Onion::__Console::__SetTextColor(uint16 color)
+void Onion::__Console::__SetTextColor(uint16_t color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
+}
+
+std::string Onion::__Console::__GetInput()
+{
+	std::string input{};
+	std::getline(std::cin,input);
+	return input;
 }
 
 void Onion::Timer::Update()
@@ -249,7 +271,7 @@ float Onion::Math::Atan2(float y, float x)
 	return atan2(y, x) * (180.0f / Onion::PI);
 }
 
-void Onion::Math::SquashInt32(int & value, int min, int max) noexcept
+void Onion::Math::SquashInt32(int32_t & value, int32_t min, int32_t max) noexcept
 {
 		if (value > max)
 		{
@@ -263,7 +285,7 @@ void Onion::Math::SquashInt32(int & value, int min, int max) noexcept
 		}
 }
 
-bool Onion::Math::CheckInt32(int & value, int min, int max) noexcept
+bool Onion::Math::CheckInt32(int32_t & value, int32_t min, int32_t max) noexcept
 {
 		if (value > max)
 		{
@@ -276,7 +298,7 @@ bool Onion::Math::CheckInt32(int & value, int min, int max) noexcept
 		return true;
 }
 
-void Onion::Math::SquashInt32Array(int * value, int size,int min,int max) noexcept
+void Onion::Math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32_t max) noexcept
 {
 		for (char i = 0; i < size; i++)
 		{
@@ -294,4 +316,28 @@ int Onion::System::GetScreenWidth() noexcept
 int Onion::System::GetScreenHeight() noexcept
 {
 	return GetSystemMetrics(SM_CYSCREEN);
+}
+
+std::string Onion::System::GetFileName(const std::string & s) noexcept
+{
+	char sep = '/';
+
+#ifdef _WIN32
+	sep = '\\';
+#endif
+
+	// cout << "in get_file_name\n";
+	size_t i = s.rfind(sep, s.length());
+	if (i != std::string::npos) {
+		return (s.substr(i + 1, s.length() - i));
+	}
+
+	return ("");
+}
+
+void Onion::System::Exit(const int32_t return_value) noexcept
+{
+	if (return_value)
+		Onion::Console::Println("System::Exit Code : ",return_value);
+	std::exit(return_value);
 }

@@ -250,6 +250,8 @@ public:
 	void SetRenderingStyle(RenderingStyle render);
 	void SetInterface(unsigned int type, Shader* shader);
 	void SetTile(XMFLOAT2 position, int32_t tile);
+	void SaveInstanceToFile(std::string filename);
+	void LoadInstanceToFile(std::string filename);
 
 	static RendererManager* GetInstance();
 private:

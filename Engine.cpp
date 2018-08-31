@@ -91,7 +91,7 @@ Engine::Engine(void)
 bool Engine::InitializeGraphics(HWND hwnd)
 {
 	m_graphics = new Graphics();
-	return m_graphics->InitializeDX(hwnd);
+	return (m_graphics->InitializeDX(hwnd)&&m_graphics->InitializeVulcan(hwnd));
 }
 
 
