@@ -13,30 +13,23 @@
 
 using Onion::Math::SquashInt32;
 using Onion::Math::SquashInt32Array;
-using GlobalUtilities::random;
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
 
 #define CELL_ZERO_Z             0.0f
 #define TILE_NUMBER_OF_TEXTURES 13
-#define DEFINED_TEMPLATES       3
+
 #define ANIMATEDTILE_FRAME_COUNT 4.0f
 
-//#pragma region
-//#define COPYLOOP8 for(int x = 0;x<8;x++) for (int y = 0; y < 8; y++)
-//#pragma endregion
+
 
 extern "C"
 {
 
-//	struct TileTemplate
-//	{
-//		unsigned char m_tile[8][8];
-//	};
+
 
 	namespace
 	{
-		//static TileTemplate m_template[DEFINED_TEMPLATES + 1];
 		static float        m_cellMultiplier = 1.00;
 	}
 
@@ -54,81 +47,10 @@ static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 
 	}
 
-	
-	/*
-	void _vectorcall InitializeTemplates() noexcept
-	{
-		{
-			unsigned char tempA[8][8] =
-			{
-			{4u, 4u, 4u, 4u, 4u, 4u, 4u, 4u },
-			{4u, 4u, 4u, 4u, 4u, 4u, 4u, 4u},
-			{6u, 6u, 6u, 6u, 6u, 6u, 6u, 6u},
-			{7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u},
-			{7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u},
-			{7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u},
-			{0u, 0u, 1u, 3u, 3u, 0u, 0u, 0u},
-			{0u, 0u, 0u, 3u, 3u, 0u, 0u, 0u}
-			};
-			COPYLOOP8
-				m_template[0].m_tile[x][y] = tempA[x][y];
-		}
-		{
-			unsigned char tempA[8][8] =
-			{
-			{ 4u, 3u, 3u, 3u, 3u, 0u, 0u, 2u },
-			{ 4u, 3u, 3u, 3u, 3u, 0u, 4u, 3u },
-			{ 4u, 4u, 4u, 4u, 3u, 4u, 3u, 3u },
-			{ 4u, 4u, 4u, 3u, 3u, 4u, 4u, 4u },
-			{ 4u, 4u, 4u, 3u, 3u, 4u, 4u, 4u },
-			{ 0u, 0u, 4u, 4u, 4u, 4u, 0u, 0u },
-			{ 0u, 5u, 1u, 3u, 3u, 0u, 1u, 0u },
-			{ 0u, 0u, 0u, 3u, 3u, 0u, 0u, 0u }
-			};
-			COPYLOOP8
-				m_template[1].m_tile[x][y] = tempA[x][y];
-		}
-		{
-			unsigned char tempA[8][8] =
-			{
-			{ 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u },
-			{ 1u, 2u, 5u, 5u, 4u, 5u, 5u, 1u },
-			{ 1u, 5u, 5u, 5u, 4u, 5u, 5u, 1u },
-			{ 1u, 5u, 5u, 2u, 4u, 5u, 5u, 1u },
-			{ 1u, 4u, 4u, 4u, 4u, 4u, 4u, 4u },
-			{ 1u, 3u, 3u, 3u, 4u, 5u, 5u, 1u },
-			{ 1u, 3u, 3u, 3u, 3u, 5u, 5u, 1u },
-			{ 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u }
-			};
-			COPYLOOP8
-				m_template[2].m_tile[x][y] = tempA[x][y];
-		}
-		{
-			unsigned char tempA[8][8] =
-			{
-			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u },
-			{ 7u, 7u, 7u, 7u, 8u, 7u, 7u, 7u },
-			{ 7u, 5u, 7u, 7u, 7u, 7u, 7u, 5u },
-			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u },
-			{ 7u, 7u, 7u, 7u, 8u, 7u, 7u, 7u },
-			{ 7u, 7u, 7u, 7u, 5u, 7u, 7u, 7u },
-			{ 7u, 5u, 7u, 7u, 7u, 7u, 8u, 7u },
-			{ 7u, 7u, 7u, 7u, 7u, 7u, 7u, 7u }
-			};
-			COPYLOOP8
-				m_template[2].m_tile[x][y] = tempA[x][y];
-		}
-
-	}
-	*/
-
 	void SetCellMultiplier(float multiplier)
 	{
 		m_cellMultiplier = multiplier/100.0f;
 	}
-
-
-
 
 }
 
@@ -137,7 +59,7 @@ extern "C++"
 	INDEX2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept
 	{
 		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-		int   _i[2] = { 0 };
+		int   _i[2] = { 0,0 };
 		_f[0] -= floats.x / tile::CELL_WIDTH;
 		_f[0] -= floats.y / tile::CELL_HEIGHT;
 		_f[1] += floats.x / tile::CELL_WIDTH;
@@ -385,10 +307,11 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	renderInts[3] = (int)_f[1] + tile::CAMERA_TILE_VIEW;
 	renderInts[0] = (int)_f[0] - tile::CAMERA_TILE_VIEW;
 	renderInts[1] = (int)_f[0] + tile::CAMERA_TILE_VIEW;
-
 	int tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	int tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
 	SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
+	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
+	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
 	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
 	for (int j = renderInts[2]; j <renderInts[3]; j++)
 	{
@@ -445,8 +368,9 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 	{
 		if (map[index.i][index.j]->m_type == Tile::Type::ANIMATEDTILE)
 		{
-			Tile* tilep = new Tile(((AnimatedTile*)map[index.i][index.j]));
-			delete (AnimatedTile*)map[index.i][index.j];
+			AnimatedTile* atile = dynamic_cast<AnimatedTile*>(map[index.i][index.j]);
+			Tile* tilep = new Tile(atile);
+			delete atile;
 			map[index.i][index.j] = tilep;
 			map[index.i][index.j]->m_type = Tile::Type::TILE;
 			map[index.i][index.j]->m_collision = false;
@@ -519,7 +443,8 @@ void TileMap::Update(float dt)
 	{
 		for (int i = renderInts[0]; i < renderInts[1]; i++)
 		{
-			if (((i + j) >(renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT)) || ((i + j) < (renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT)))
+			int sum = i + j;
+			if ((sum >(renderInts[4])) || (sum < (renderInts[5])))
 				continue;
 			map[j][i]->Update();
 		}

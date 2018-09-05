@@ -44,7 +44,7 @@ struct TileMap
 
 private:
 
-	int   renderInts[4];
+	int32_t   renderInts[6];
 
 	float m_currentFrame;
 	float m_previousFrame;

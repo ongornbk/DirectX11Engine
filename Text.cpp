@@ -3,10 +3,10 @@
 
 namespace
 {
-	static ID3D11Device * m_device;
-	static ID3D11DeviceContext * m_deviceContext;
-	static Shader * m_shader;
-	static Font * m_font;
+	static ID3D11Device * m_device = nullptr;
+	static ID3D11DeviceContext * m_deviceContext = nullptr;
+	static Shader * m_shader = nullptr;
+	static Font * m_font = nullptr;
 }
 
 
@@ -75,7 +75,7 @@ void Text::SetText(std::string text)
 				if (letter)
 				{
 					delete letter;
-					letter = NULL;
+					letter = nullptr;
 				}
 			}
 		}

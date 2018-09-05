@@ -78,9 +78,6 @@
     <ClInclude Include="ResourceTexture.h">
       <Filter>Header Files\Engine\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="AnimatedSprite.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Header Files\Graphics\Items</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
     <ClInclude Include="CameraControl.h">
-      <Filter>Header Files\Engine\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionBox.h">
       <Filter>Header Files\Engine\Items</Filter>
     </ClInclude>
     <ClInclude Include="CollisionMap.h">
@@ -240,13 +234,25 @@
     <ClInclude Include="SuperModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VulcanManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionCircle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedSprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -279,9 +285,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
@@ -353,9 +356,6 @@
     <ClCompile Include="UserInterfaceMainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SettingsC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -401,14 +401,32 @@
     <ClCompile Include="SuperModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VulcanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedSprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CudaVector.cu">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="CudaVector2.cu" />
   </ItemGroup>
 </Project>

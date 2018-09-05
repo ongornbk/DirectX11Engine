@@ -19,6 +19,6 @@ void UserInterfaceMainMenu::Update(XMVECTOR cameraPosition)
 {
 }
 
-void UserInterfaceMainMenu::GetMousePosition(int & X, int & Y)
+void UserInterfaceMainMenu::GetMousePosition(int16_t & X, int16_t & Y)
 {
 }

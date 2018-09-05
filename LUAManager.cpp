@@ -34,7 +34,7 @@ extern "C"
 			if (m_instance)
 			{
 				lua_close(m_instance);
-				m_instance = NULL;
+				m_instance = nullptr;
 			}
 			if (m_iddl)
 			{

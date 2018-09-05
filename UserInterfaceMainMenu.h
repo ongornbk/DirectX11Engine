@@ -11,6 +11,6 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosItion);
-	static void GetMousePosition(int &X, int &Y);
+	static void GetMousePosition(int16_t &X, int16_t &Y);
 };
 

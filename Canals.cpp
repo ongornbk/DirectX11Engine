@@ -1,9 +1,11 @@
 #include "Canals.h"
+#include <mutex>
 
 namespace
 {
 	static Canals* m_instance = NULL;
 	static Sound* a_sound = NULL;
+
 }
 
 Canals::Canals()
@@ -39,16 +41,20 @@ Canals * Canals::GetInstance()
 
 Sound* Canals::__GetSound(string sound)
 {	
+
 	for (int i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		m_canals[i]->GetSound(sound);
 	}
+
 	return a_sound;
 }
 
 void Canals::__AddSound(CanalType type, string name, Sound * sound)
 {
+
 	m_canals[type]->AddSound(sound, name);
+
 }
 
 Sound_Canal::Sound_Canal(CanalType type, float volume)
@@ -62,7 +68,9 @@ Sound_Canal::~Sound_Canal()
 
 void Sound_Canal::AddSound(Sound * sound, string name)
 {
+
 	m_sounds[name] = sound;
+
 }
 
 void Sound_Canal::GetSound(string name)

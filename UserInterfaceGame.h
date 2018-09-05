@@ -13,7 +13,7 @@ public:
 	UserInterfaceGame(Engine* engine, Shader* shader);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
-    void GetMousePosition(int &x,int &y);
+    void GetMousePosition(int16_t &x,int16_t &y);
 	~UserInterfaceGame();
 
 	static void SetFPS(int fps);

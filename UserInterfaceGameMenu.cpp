@@ -41,8 +41,8 @@ void UserInterfaceGameMenu::Update(XMVECTOR cameraPosition)
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition.i, m_mousePosition.j, cameraPosition.m128_f32[2]));
 }
 
-void UserInterfaceGameMenu::GetMousePosition(int & x, int & y)
+void UserInterfaceGameMenu::GetMousePosition(int16_t & x, int16_t & y)
 {
-	x = (int)(m_mousePosition.i);
-	y = (int)(m_mousePosition.j);
+	x = (m_mousePosition.i);
+	y = (m_mousePosition.j);
 }

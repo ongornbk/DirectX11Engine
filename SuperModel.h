@@ -1,8 +1,8 @@
 #pragma once
 #include "Sprite.h"
-#include "RenderModel.h"
+#include "CollisionCircle.h"
 
-class SuperModel : RenderModel
+class SuperModel : public CollisionCircle
 {
 public:
 
@@ -54,7 +54,7 @@ public:
 		WAND,
 		ROD,
 		STAFF,
-		GRATSTAFF
+		GREATSTAFF
 	};
 
 	enum Shield
@@ -65,13 +65,13 @@ public:
 
 	enum ModelStance
 	{
-		STANCE,
-		RUNNING,
-		MELEE_SWING,
-		BLOCK,
-		HIT_AND_DIE,
-		CAST_SPELL,
-		SHOOT_BOW
+		STANCE = 0,
+		RUNNING = 1,
+		MELEE_SWING = 2,
+		BLOCK = 3,
+		HIT_AND_DIE = 4,
+		CAST_SPELL = 5,
+		SHOOT_BOW = 6
 	};
 
 
@@ -113,9 +113,10 @@ public:
 	SuperModel(ModelEquipmentAndGender model,float size);
 	~SuperModel();
 
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* filename);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader);
 	void Update(float dt = 0.0f);
-	void Render(XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	void Render(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	void SetRotation(uint16_t rotation);
 
 	static void InitializeTextures();
 
@@ -123,15 +124,18 @@ public:
 private:
 
 
+	VertexBuffer*            m_vertexBuffer = nullptr;
+	ModelStance              m_stance = STANCE;
+	ModelEquipmentAndGender  m_equipmentAndGender;
 
-	ModelStance             m_stance;
-	ModelEquipmentAndGender m_equipmentAndGender;
+	XMFLOAT4X4               m_worldMatrix;
+	XMFLOAT3                 m_velocity;
+	XMFLOAT3                 m_lastPosition;
 
 
 	float         m_size;
 	float         m_previousSpeed;
-	float         m_rotations;
-	int           m_stopped;
+	uint16_t      m_rotations;
 	bool          m_stop;
 
 	float m_currentFrame;
@@ -143,5 +147,18 @@ private:
 	float         m_framesPerSecond;
 	bool          m_isLooping;
 	float         m_rotation;
+
+public:
+
+	struct
+	{
+		bool  f_rendering = true;
+		bool  f_selected = false;
+		bool  f_pushable = true;
+		bool  f_blocked = false;
+		bool  f_collisionWithTilemap = true;
+		bool  f_locked = false;
+	};
+
 };
 

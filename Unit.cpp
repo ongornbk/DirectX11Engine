@@ -1,49 +1,81 @@
 #include "Unit.h"
 #include "Engine.h"
 #include "S_ModelPaths.h"
+#include "RendererManager.h"
 
-Unit::Unit()
+Unit::Unit() : Model()
 {
-	m_model = new Model();
-
 }
 
 
 Unit::~Unit()
 {
-	if (m_model)
-	{
-		delete m_model;
-		m_model = NULL;
-	}
 }
 
-void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR* paths, float modelsize,float collision,XMFLOAT3 position,bool wander)
+void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR* paths, float modelsize, float collision, XMFLOAT3 position, bool wander)
 {
-
-	m_model = new Model();
 	wstring tmp0 = wstring(paths);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 	ModelPaths* ptr = S_ModelPaths::GetModelPaths(tmp1);
-	m_model->InitializeSpriteModel(device, deviceContext, shader, ptr, modelsize);
-	m_model->Radius = collision;
-	m_model->Center = position;
+	Model::InitializeSpriteModel(device, deviceContext, shader, ptr, modelsize);
+	Model::Radius = collision;
+	Model::Center = position;
 	m_wanderingFlag = wander;
 }
 
 
 
-void Unit::Update()
+void Unit::Update(float dt)
 {
-	if (!m_tasks.Update())
+	if (!m_tasks.Update())if(m_wanderingFlag)m_tasks.Wander(this);
 
+	Model::Update(dt);
+
+	Model::SetRenderingStance(validateRendering(Model::Center));
+
+	int16_t mousePosition[2];
+	UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
+	FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
+	if (Model::BoundingSphere::Contains(point))
 	{
-		if(m_wanderingFlag)m_tasks.Wander(this);
+		Model::GoBack();
+		if (Model::BoundingSphere::Contains(point))
+		{
+			Model::m_flags[4] = true;
+			Model::m_flags[1] = true;
+			GLOBAL m_lastSelectedUnit = this;
+		}
+		else
+		{
+			Model::m_flags[4] = false;
+			Model::m_flags[1] = false;
+		}
 	}
 	else
 	{
-
+		Model::m_flags[4] = false;
+		Model::m_flags[1] = false;
 	}
+	if (TileMap::CollisionAt(Model::Center))
+	{
+		Model::GoBack();
+		if (TileMap::CollisionAt(Model::Center))
+		{
+			Model::m_flags[4] = true;
+			Model::m_flags[1] = true;
+		}
+		else
+		{
+			Model::m_flags[4] = false;
+			Model::m_flags[1] = false;
+		}
+	}
+	else
+	{
+		Model::m_flags[4] = false;
+		Model::m_flags[1] = false;
+	}
+	
 }
 
 void Unit::SetTask(Task* task)
@@ -56,24 +88,18 @@ void Unit::GiveTask(Task * task)
 	m_tasks.QueueTask(task);
 }
 
-Model * Unit::GetModel()
-{
-	return m_model;
-}
 
-XMFLOAT3 Unit::GetPoint()
-{
-	return m_model->Center;
-}
+
+
 
 float Unit::GetCollisionRadius()
 {
-	return m_model->Radius;
+	return Model::Radius;
 }
 
 XMFLOAT3 Unit::GetPosition()
 {
-	return m_model->Center;
+	return Model::Center;
 }
 
 float Unit::GetSpeed()
@@ -123,7 +149,7 @@ void Unit::ChangeWalkingStance()
 
 void Unit::SetRotations(float rotations)
 {
-	m_model->SetRotations(rotations);
+	Model::SetRotations(rotations);
 }
 
 void Unit::DiscardTasks()
@@ -133,7 +159,8 @@ void Unit::DiscardTasks()
 
 void Unit::SetPosition(XMFLOAT3 position)
 {
-	m_model->Center.x = position.x;
-	m_model->Center.y = position.y;
-	m_model->Center.z = position.z;
+	Model::Center = position;
 }
+
+
+

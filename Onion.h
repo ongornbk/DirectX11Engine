@@ -67,6 +67,7 @@ namespace Onion
 		explicit __Console(void);
 		~__Console(void);
 		void __Println(float number);
+		void __Println(uint32_t number);
 		void __Print(std::string text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
@@ -98,6 +99,7 @@ namespace Onion
 		static void Println(std::string text,std::wstring wide, TextColors color);
 		static void Println(std::string text, const int value);
 		static void Println(float number);
+		static void Println(uint32_t number);
 		static void Print(std::string text);
 		static void Print(float number);
 		static void Print(int number);

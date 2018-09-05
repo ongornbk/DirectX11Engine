@@ -17,8 +17,6 @@ using namespace Onion;
 
 Engine* Engine::m_instance = NULL;
 
-static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 
 
 namespace
@@ -36,37 +34,37 @@ Engine::~Engine(void)
 	if (m_graphics)
 	{
 		delete m_graphics;
-		m_graphics = NULL;
+		m_graphics = nullptr;
 	}
 	if (m_rendererManager)
 	{
 		delete m_rendererManager;
-		m_rendererManager = NULL;
+		m_rendererManager = nullptr;
 	}
 	if (m_camera)
 	{
 		delete m_camera;
-		m_camera = NULL;
+		m_camera = nullptr;
 	}
 	if (m_resourceManager)
 	{
 		delete m_resourceManager;
-		m_resourceManager = NULL;
+		m_resourceManager = nullptr;
 	}
 	if (m_input)
 	{
 		delete m_input;
-		m_input = NULL;
+		m_input = nullptr;
 	}
 	if (m_global)
 	{
 		delete m_global;
-		m_global = NULL;
+		m_global = nullptr;
 	}
 	if (m_gameComponent)
 	{
 	//	delete m_gameComponent;
-		m_gameComponent = NULL;
+		m_gameComponent = nullptr;
 	}
 	Font::ReleaseFonts();
 	lua::Close();
@@ -76,15 +74,15 @@ Engine::Engine(void)
 {
 #pragma region
 	m_gamePaused      = FALSE;
-	m_graphics        = NULL;
-	m_rendererManager = NULL;
-	m_camera          = NULL;
-	m_resourceManager = NULL;
-	m_input           = NULL;
-	m_gameComponent   = NULL;
-	m_global          = NULL;
-	m_framework       = NULL;
-	m_lua             = NULL;
+	m_graphics        = nullptr;
+	m_rendererManager = nullptr;
+	m_camera          = nullptr;
+	m_resourceManager = nullptr;
+	m_input           = nullptr;
+	m_gameComponent   = nullptr;
+	m_global          = nullptr;
+	m_framework       = nullptr;
+	m_lua             = nullptr;
 #pragma endregion
 }
 
@@ -145,6 +143,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	lua_callback::InitializeGraphics();
 
+	SuperModel::InitializeTextures();
+
 	
 
 	if(m_gameComponent!=NULL)
@@ -159,8 +159,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	else
 	{
-		SetConsoleTextAttribute(hConsole, 12);
-		cout << "Engine : No Game Component" << endl;
+		Onion::Console::Println("No game component!", Onion::TextColors::RED);
 	}
 	
 	
@@ -172,13 +171,13 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 namespace
 {
 	clock_t deltaTime = 0;
-	unsigned int frames = 0;
+	uint32_t frames = 0;
 	double  frameRate = 30;
 	double  averageFrameTimeMilliseconds = 33.333;
 
 	extern "C"
 	{
-		double clockToMilliseconds(clock_t ticks) _NOEXCEPT {
+		double clockToMilliseconds(clock_t ticks) noexcept {
 			// units/(units/time) => time (seconds) * 1000 = milliseconds
 			return (ticks / (double)CLOCKS_PER_SEC)*1000.0;
 		}
@@ -190,6 +189,7 @@ void Engine::Run()
 	clock_t beginFrame = clock();
 	Update();
 	Render();
+	lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
 	clock_t endFrame = clock();
 
 	deltaTime += endFrame - beginFrame;

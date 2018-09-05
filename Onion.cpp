@@ -71,6 +71,11 @@ void Onion::Console::Println(float number)
 	GetInstance()->__Println(number);
 }
 
+void Onion::Console::Println(uint32_t number)
+{
+	GetInstance()->__Println(number);
+}
+
 void Onion::Console::Print(std::string text)
 {
 	GetInstance()->__Print(text);
@@ -136,6 +141,11 @@ Onion::__Console::~__Console(void)
 void Onion::__Console::__Println(float number)
 {
 	printf("%f\n",number);
+}
+
+void Onion::__Console::__Println(uint32_t number)
+{
+	printf("%u\n", number);
 }
 
 void Onion::__Console::__Print(std::string text)

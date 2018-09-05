@@ -152,36 +152,13 @@ bool Task::Update()
 
 
 
-//
-//bool TaskAttack::Update()
-//{
-//	return false;
-//}
-//
-
-//
-//bool TaskFleeFromUnit::Update()
-//{
-//	return false;
-//}
-//
-//bool TaskFleeFromPoint::Update()
-//{
-//	return false;
-//}
-//
-//bool TaskDefendUnit::Update()
-//{
-//	return false;
-//}
 
 bool TaskGotoPoint::Update()
 {
 
 	XMFLOAT3 position = object->GetPosition();
-	Model* model = object->m_model;
 
-	if (model->m_flags[4])
+	if (object->m_flags[4])
 	{
 		return false;
 	}
@@ -195,12 +172,12 @@ bool TaskGotoPoint::Update()
 			{
 			case Unit::WalkingStance::RUN:
 			{
-				model->SetAnimation(SpriteModel::ModelStance::RUN);
+				object->SetAnimation(SpriteModel::ModelStance::RUN);
 				break;
 			}
 			case Unit::WalkingStance::WALK:
 			{
-				model->SetAnimation(SpriteModel::ModelStance::WALK);
+				object->SetAnimation(SpriteModel::ModelStance::WALK);
 				break;
 			}
 			}
@@ -208,16 +185,16 @@ bool TaskGotoPoint::Update()
 			rotation += 180.0f;
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle
-			model->SetRotation((int)rotation);
+			object->SetRotation((int)rotation);
 			FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-			model->SetVelocity(f3.x, f3.y, f3.z);
+			object->SetVelocity(f3.x, f3.y, f3.z);
 			return true;
 
 		}
 		else
 		{
-			model->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-			model->SetVelocity(0.0f);
+			object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
+			object->SetVelocity(0.0f);
 			return false;
 		}
 	}
@@ -230,12 +207,12 @@ bool TaskGotoPoint::Update()
 				{
 				case Unit::WalkingStance::RUN:
 				{
-					model->SetAnimation(SpriteModel::ModelStance::RUN);
+					object->SetAnimation(SpriteModel::ModelStance::RUN);
 					break;
 				}
 				case Unit::WalkingStance::WALK:
 				{
-					model->SetAnimation(SpriteModel::ModelStance::WALK);
+					object->SetAnimation(SpriteModel::ModelStance::WALK);
 					break;
 				}
 				}
@@ -243,16 +220,16 @@ bool TaskGotoPoint::Update()
 				rotation += 180.0f;
 				rotation /= 22.5f;
 				rotation = 20 - rotation;//to handle
-				model->SetRotation((int)rotation);
+				object->SetRotation((int)rotation);
 				FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-				model->SetVelocity(f3.x, f3.y, f3.z);
+				object->SetVelocity(f3.x, f3.y, f3.z);
 				return true;
 			
 		}
 		else
 		{
-			model->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-			model->SetVelocity(0.0f);
+			object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
+			object->SetVelocity(0.0f);
 			return false;
 		}
 }
@@ -278,17 +255,16 @@ bool TaskPatrol::Update()
 	}
 	if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 	{
-		Model* model = object->m_model;
 		switch (object->GetWalkingStance())
 		{
 		case Unit::WalkingStance::RUN:
 		{
-			model->SetAnimation(SpriteModel::ModelStance::RUN);
+			object->SetAnimation(SpriteModel::ModelStance::RUN);
 			break;
 		}
 		case Unit::WalkingStance::WALK:
 		{
-			model->SetAnimation(SpriteModel::ModelStance::WALK);
+			object->SetAnimation(SpriteModel::ModelStance::WALK);
 			break;
 		}
 		}
@@ -296,9 +272,9 @@ bool TaskPatrol::Update()
 		rotation += 180.0f;
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
-		model->SetRotation((int)rotation);
+		object->SetRotation((int)rotation);
 		FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-		model->SetVelocity(f3.x, f3.y, f3.z);
+		object->SetVelocity(f3.x, f3.y, f3.z);
 		return true;
 	}
 	else
@@ -314,17 +290,16 @@ bool TaskFollow::Update()
 	XMFLOAT3 destination = target.load()->GetPosition();
 	if (DistanceBetweenXMFLOAT3(position, destination) > 200.0f)
 	{
-		Model* model = object->m_model;
 		switch (object->GetWalkingStance())
 		{
 		case Unit::WalkingStance::RUN:
 		{
-			model->SetAnimation(SpriteModel::ModelStance::RUN);
+			object->SetAnimation(SpriteModel::ModelStance::RUN);
 			break;
 		}
 		case Unit::WalkingStance::WALK:
 		{
-			model->SetAnimation(SpriteModel::ModelStance::WALK);
+			object->SetAnimation(SpriteModel::ModelStance::WALK);
 			break;
 		}
 		}
@@ -332,15 +307,14 @@ bool TaskFollow::Update()
 		rotation += 180.0f;
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
-		model->SetRotation((int)rotation);
+		object->SetRotation((int)rotation);
 		FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-		model->SetVelocity(f3.x, f3.y, f3.z);
+		object->SetVelocity(f3.x, f3.y, f3.z);
 		return true;
 	}
 	else
 	{
-		Model* model = object->m_model;
-		model->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-		model->SetVelocity(0.0f);
+		object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
+		object->SetVelocity(0.0f);
 	}
 }

@@ -43,7 +43,7 @@ public:
 	 void Update(XMVECTOR cameraPosition);
 	 void SetScene(Type scene,Shader* shader);
 	 void SetScene(unsigned int scene, Shader* shader);
-	 static void GetMousePosition(int &X, int &Y);
+	 static void GetMousePosition(int16_t &X, int16_t &Y);
 
 	Interface m_interface;
 	Type      m_type;

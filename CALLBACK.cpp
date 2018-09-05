@@ -198,6 +198,12 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int __GetMousePressed(lua_State* state)
+	{
+		lua_pushboolean(state,m_input->GetMousePressed((int32_t)lua_tointeger(state,1)));
+		return 1;
+	}
+
 	static int CreateUnit(lua_State* state)
 	{
 		Unit* unit = new Unit();
@@ -207,11 +213,11 @@ namespace lua_callback
 
 	static int GetMousePosition(lua_State* state)
 	{
-		int xm, ym;
+		int16_t xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
 		m_global->m_lastPoint = XMFLOAT3((float)xm,(float)ym, 0.0f);
-		lua_pushinteger(state, xm);
-		lua_pushinteger(state, ym);
+		lua_pushinteger(state, (int32_t)xm);
+		lua_pushinteger(state, (int32_t)ym);
 		return 2;
 	}
 
@@ -400,6 +406,41 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int GetUnitsInRange(lua_State* state)
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		float range = LUA_FLOAT(state, 1);
+		if (unit)
+		{
+			m_global->m_stack = UnitsVector::GetUnitsInRange(unit, range);
+			m_global->m_size = (uint32_t)m_global->m_stack.size();
+			return 0;
+		}
+		return 0;
+	}
+
+	static int PopGroup(lua_State* state)
+	{
+		
+		if (m_global->m_stack.empty())
+		{
+			lua_pushboolean(state, false);
+		}
+		else
+		{
+			m_global->m_lastPickedUnit = m_global->m_stack.top();
+			m_global->m_stack.pop();
+			lua_pushboolean(state, true);
+		}
+		return 1;
+	}
+
+	static int GetSize(lua_State* state)
+	{
+		lua_pushinteger(state, (int)m_global->m_size);
+		return 1;
+	}
+
 	static int SetUnitRotations(lua_State* state)
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
@@ -512,6 +553,7 @@ namespace lua_callback
 		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
 		lua_register(m_lua, "IsKeyPressed", lua_callback::__IsKeyPressed);
 		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
+		lua_register(m_lua, "GetMousePressed", lua_callback::__GetMousePressed);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
@@ -529,6 +571,9 @@ namespace lua_callback
 		lua_register(m_lua,"GetUnitPosition", lua_callback::GetUnitPosition);
 		lua_register(m_lua,"AddModelPaths", lua_callback::AddModelPaths);
 		lua_register(m_lua, "SetUnitPosition", lua_callback::SetUnitPosition);
+		lua_register(m_lua, "GetUnitsInRange", lua_callback::GetUnitsInRange);
+		lua_register(m_lua, "GetSize", lua_callback::GetSize);
+		lua_register(m_lua, "PopGroup", lua_callback::PopGroup);
 		//RendererManager
 		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);

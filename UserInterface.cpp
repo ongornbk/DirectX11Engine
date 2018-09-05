@@ -126,12 +126,12 @@ void UserInterface::SetScene(unsigned int scene, Shader * shader)
 	}
 }
 
-void UserInterface::GetMousePosition(int & X, int & Y)
+void UserInterface::GetMousePosition(int16_t & X, int16_t & Y)
 {
 	switch (m_instance->m_type)
 	{
 	case GAME:
-		m_instance->m_interface.m_game->GetMousePosition(X,Y);
+		m_instance->m_interface.m_game->GetMousePosition(X, Y);
 		break;
 	case MAINMENU:
 		m_instance->m_interface.m_mainMenu->GetMousePosition(X, Y);

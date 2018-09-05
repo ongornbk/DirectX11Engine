@@ -4,6 +4,7 @@
 #include "Defines.h"
 #include <future>
 #include <mutex>
+#include <stack>
 
 using Onion::Timer;
 using std::mutex;
@@ -20,6 +21,8 @@ namespace
 	static XMVECTOR     m_cameraPosition;
 	static float        m_ranges[2];
 	static atomic<int>  m_coord[2];
+	atomic<uint8_t>     m_async;
+	static UnitsVector  g_units;
 }
 
 RendererManager::RendererManager(Engine* engine,Shader* shader)
@@ -41,7 +44,7 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 
 RendererManager::~RendererManager()
 {
-	RemoveAllObjects();
+	g_units.Clear();
 	if (m_ui)
 	{
 		delete m_ui;
@@ -54,34 +57,16 @@ RendererManager::~RendererManager()
 	}
 }
 
-void RendererManager::PushModel(Model * model)
-{
-	//RenderObject object;
-	//object.SetRenderType(MODEL);
-	//object.m_model = model;
-	//m_objects.push_back(model);
-}
 
-void RendererManager::PushBox(CollisionBox * box)
-{
-	//RenderObject object;
-	//object.SetRenderType(BOX);
-	//object.m_box = box;
-	//m_objects.push_back(object);
-}
 
 void RendererManager::PushUnit(Unit * unit)
 {
-	//RenderObject object;
-	//object.SetRenderType(UNIT);
-	//object.m_unit = unit;
-	m_objects.push_back(unit);
+	g_units.Push(unit);
 }
 
 extern "C"
 {
-
-	struct SortByY {
+	struct __SortByY {
 		bool operator()(Unit* a, Unit* b) const noexcept {
 
 			float ax = 0.0f, ay = 0.0f;
@@ -91,85 +76,76 @@ extern "C"
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
-			
-				if (a->m_model->m_flags[0])
-				{
-					ax = a->m_model->Center.x;
-					ay = a->m_model->Center.y;
-					radius = a->m_model->Radius;
-				}
-			
-				if (b->m_model->m_flags[0])
-				{
-					bx = b->m_model->Center.x;
-					by = b->m_model->Center.y;
-					radius += b->m_model->Radius;
-				}
-				else return true;
-			
+
+
+			if (a->m_flags[0])
+			{
+				ax = a->Center.x;
+				ay = a->Center.y;
+				radius = a->Radius;
+			}
+
+			if (b->m_flags[0])
+			{
+				bx = b->Center.x;
+				by = b->Center.y;
+				radius += b->Radius;
+			}
+
+
 			distanceX = ax - bx;
 			distanceY = ay - by;
 			distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 			if (distance < radius)
 			{
 				collision = distance - radius;
-				if (a->m_model->m_flags[2])
+				if (a->m_flags[2])
 				{
-					if (b->m_model->m_flags[2])
+					if (b->m_flags[2])
 					{
 						collision /= 2.0f;
 						if (ax < bx)
 						{
-							a->m_model->Center.x += collision;
-								b->m_model->Center.x -= collision;
+							a->Center.x += collision;
+							b->Center.x -= collision;
 						}
 						else
 						{
-							a->m_model->Center.x -= collision;
-							a->m_model->Center.x += collision;
+							a->Center.x -= collision;
+							a->Center.x += collision;
 
 						}
-						a->m_model->UpdatePosition();
-						b->m_model->UpdatePosition();
+						a->UpdatePosition();
+						b->UpdatePosition();
 					}
 					else
 					{
-						if (ax < bx) a->m_model->Center.x += collision;
-						else         a->m_model->Center.x -= collision;
+						if (ax < bx) a->Center.x += collision;
+						else         a->Center.x -= collision;
 
-						a->m_model->UpdatePosition();
+						a->UpdatePosition();
 					}
 				}
 				else
 				{
-					if (b->m_model->m_flags[2])
+					if (b->m_flags[2])
 					{
-						if (ax < bx) b->m_model->Center.x -= collision;
-						else         b->m_model->Center.x += collision;
+						if (ax < bx) b->Center.x -= collision;
+						else         b->Center.x += collision;
 
 
-						b->m_model->UpdatePosition();
+						b->UpdatePosition();
 					}
-					else
-					{
 
-					//	a.GoBack();
-					//	b.GoBack();
-					}
 				}
-			//	a.Block();
-			//	b.Block();
+
 			}
-			else
-			{
-				//a.Block(false);
-				//b.Block(false);
-			}
+
 			return ay > by;
 		}
 	};
 
-	struct SortByX {
+	struct __SortByX {
 		bool operator()(Unit *a, Unit *b) const noexcept {
 
 			float ax = 0.0f, ay = 0.0f;
@@ -179,58 +155,57 @@ extern "C"
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
-			
-				if (a->m_model->m_flags[0])
-				{
-					ax = a->m_model->Center.x;
-					ay = a->m_model->Center.y;
-					radius = a->m_model->Radius;
-				}
-				
-				if (b->m_model->m_flags[0])
-				{
-					bx = b->m_model->Center.x;
-					by = b->m_model->Center.y;
-					radius += b->m_model->Radius;
-				}
-				
+
+
+			if (a->m_flags[0])
+			{
+				ax = a->Center.x;
+				ay = a->Center.y;
+				radius = a->Radius;
+			}
+
+			if (b->m_flags[0])
+			{
+				bx = b->Center.x;
+				by = b->Center.y;
+				radius += b->Radius;
+			}
+
 			distanceX = ax - bx;
 			distanceY = ay - by;
 			distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 			if (distance < radius)
 			{
 				collision = distance - radius;
-				if (a->m_model->m_flags[2])
+				if (a->m_flags[2])
 				{
-					if (b->m_model->m_flags[2])
+					if (b->m_flags[2])
 					{
 						collision /= 2.0f;
 						if (ay < by)
 						{
-							a->m_model->Center.y += collision;
-							b->m_model->Center.y -= collision;
-
+							a->Center.y += collision;
+							b->Center.y -= collision;
 						}
 						else
 						{
-							a->m_model->Center.y -= collision;
-							b->m_model->Center.y += collision;
-
+							a->Center.y -= collision;
+							b->Center.y += collision;
 						}
 					}
 					else
 					{
-						if (ay < by) a->m_model->Center.y += collision;
-						else         a->m_model->Center.y -= collision;
+						if (ay < by) a->Center.y += collision;
+						else         a->Center.y -= collision;
 
 					}
 				}
 				else
 				{
-					if (b->m_model->m_flags[2])
+					if (b->m_flags[2])
 					{
-						if (ay < by) b->m_model->Center.y -= collision;
-						else         b->m_model->Center.y += collision;
+						if (ay < by) b->Center.y -= collision;
+						else         b->Center.y += collision;
 					}
 
 				}
@@ -240,6 +215,25 @@ extern "C"
 			return ax > bx;
 		}
 	};
+
+	void _stdcall SortByY(std::vector<Unit*> &vec) noexcept
+	{
+		std::sort(vec.begin(), vec.end(), __SortByY());
+		//m_async--;
+	}
+
+	void _stdcall SortByX(std::vector<Unit*> &vec) noexcept
+	{
+		std::sort(vec.begin(), vec.end(), __SortByX());
+		//m_async--;
+	}
+
+	inline void DoNothing() noexcept
+	{
+
+	}
+
+
 
 	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept
 	{
@@ -256,14 +250,11 @@ extern "C"
 	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 	{
 		
-
+		
 		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
 		m_shader->Begin(deviceContext);
 		GRAPHICS EnableAlphaBlending(true);
-		for (auto &&object : m_objects)
-		{
-					object->GetModel()->Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
-		}
+		g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
 		m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
 
@@ -276,62 +267,15 @@ m_shader->End(deviceContext);
 
 		void _vectorcall UpdatePart(std::vector<Unit*> vec,float dt) noexcept
 		{
-			int mousePosition[2];
-			UserInterface::GetMousePosition(mousePosition[0],mousePosition[1]);
-			FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
-			for (auto unit : vec)
+			Unit** m_array = vec.data();
+			for (uint32_t i = 0u; i < vec.size(); ++i)
 			{
-
-						
-						Model* model = unit->GetModel();
-						unit->Update();
-						model->Update(dt);
-						model->SetRenderingStance(validateRendering(model->GetPosition()));
-						if (model->Contains(point))
-						{
-							model->GoBack();
-							if (model->Contains(point))
-							{
-								model->m_flags[4] = true;
-								model->m_flags[1] = true;
-								GLOBAL m_lastSelectedUnit = unit;
-							}
-							else
-							{
-								model->m_flags[4] = false;
-								model->m_flags[1] = false;
-							}
-						}
-						else
-						{
-							model->m_flags[4] = false;
-							model->m_flags[1] = false;
-						}
-						if (TileMap::CollisionAt(model->Center))
-						{
-							model->GoBack();
-							if (TileMap::CollisionAt(model->Center))
-							{
-								model->m_flags[4] = true;
-								model->m_flags[1] = true;
-							}
-							else
-							{
-								model->m_flags[4] = false;
-								model->m_flags[1] = false;
-							}
-						}
-						else
-						{
-							model->m_flags[4] = false;
-							model->m_flags[1] = false;
-						}
-						
-					}
+				m_array[i]->Update(dt);
+			}
 
 
-				}
-				}
+		}
+	}
 
 void RendererManager::Update()
 {
@@ -348,28 +292,15 @@ void RendererManager::Update()
 
 	if (m_engine->GetGameStance() == false)
 	{
-		std::reverse(m_objects.begin(), m_objects.end());
-		UpdatePart(m_objects, dt);
+		g_units.Update(dt);
 	}
 
 			
-
-		sort(m_objects.begin(), m_objects.end(), SortByX());
-		sort(m_objects.begin(), m_objects.end(), SortByY());
-
-	
+	g_units.Sort();	
 
 }
 
-void RendererManager::RemoveAllObjects()
-{
-	for (auto &&object : m_objects)
-	{
-			delete object;
-			object = nullptr;
-	}
-	m_objects.clear();
-}
+
 
 void RendererManager::SetRenderingStyle(RenderingStyle render)
 {
@@ -401,4 +332,103 @@ RendererManager * RendererManager::GetInstance()
 	return m_instance;
 }
 
+void UnitsVector::Update(float dt)
+{
+	UpdatePart(m_objects, dt);
+}
+
+void UnitsVector::Sort()
+{
+	//m_async = 2u;
+	//std::async(std::launch::async,SortByX,(m_objectsX));
+	//std::async(std::launch::async,SortByY,(m_objectsX));
+	//while (m_async)
+	//{
+	//	DoNothing();
+	//}
+	SortByX(m_objects);
+	SortByY(m_objects);
+}
+
+static uint32_t sizeg = 0u;
+
+void UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+{
+	Unit** objects = m_objects.data();
+	sizeg = (uint32_t)m_objects.size();
+	for (uint32_t i = 0; i < sizeg; i++)
+	{
+		objects[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		objects[i]->m_index = i;
+	}
+}
+
+void UnitsVector::Clear()
+{
+	for (auto &&object : m_objects)
+	{
+		if (object)
+		{
+			delete object;
+			object = nullptr;
+		}
+	}
+	m_objects.clear();
+
+}
+
+void UnitsVector::Push(Unit * unit)
+{
+	m_objects.push_back(unit);
+
+}
+
+bool CheckDistance(Unit* a, Unit* b, float range)
+{
+float distanceX = a->Center.x - b->Center.x;
+float distanceY = a->Center.y - b->Center.y;
+float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
+if (distance < range)
+	return true; else return false;
+}
+
+std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
+{
+	//Whoops::Stack units;
+	std::stack<Unit*> units;
+
+	for (uint32_t i = object->m_index+1; i < sizeg; i++)
+	{
+		Unit* ele = g_units.m_objects[i];
+		if (ele)
+		{
+			if (CheckDistance(object, ele, range))
+			{
+				units.push(ele);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	for (uint32_t i = object->m_index - 1; i >=0; i--)
+	{
+		Unit* ele = g_units.m_objects[i];
+		if (ele)
+		{
+			if (CheckDistance(object, ele, range))
+			{
+				units.push(ele);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+			return units;
+
+	
+}
 

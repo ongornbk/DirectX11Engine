@@ -146,13 +146,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h" />
+    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h" />
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
-    <ClInclude Include="CollisionBox.h" />
+    <ClInclude Include="CollisionCircle.h" />
     <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Defines.h" />
@@ -180,7 +182,6 @@
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RendererManager.h" />
-    <ClInclude Include="RenderModel.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceShader.h" />
     <ClInclude Include="ResourceSound.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteModel.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="SuperModel.h" />
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
@@ -211,12 +213,14 @@
     <ClInclude Include="WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
+    <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="CALLBACK.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="Canals.cpp" />
-    <ClCompile Include="CollisionBox.cpp" />
+    <ClCompile Include="CollisionCircle.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
     <ClCompile Include="DXManager.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -237,7 +241,6 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Onion.cpp" />
     <ClCompile Include="RendererManager.cpp" />
-    <ClCompile Include="RenderModel.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />
     <ClCompile Include="ResourceSound.cpp" />
@@ -248,6 +251,7 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteModel.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="SuperModel.cpp" />
     <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -264,6 +268,10 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VulcanManager.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CudaVector.cu" />
+    <None Include="CudaVector2.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

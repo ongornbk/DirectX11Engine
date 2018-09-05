@@ -100,6 +100,7 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 bool __cdecl Input::Update()
 {
 	memcpy(m_prevKeys, m_keys, sizeof(bool)*s_NumKeys);
+	memcpy(m_prevMouseState, m_mouseState.rgbButtons, sizeof(BYTE) * 4);
 	bool result;
 	result = ReadKeyboard();
 	if (!result)return false;
@@ -252,6 +253,11 @@ void Input::ProcessInput()
 BYTE Input::GetMouseState(int index)
 {
 	return m_mouseState.rgbButtons[index];
+}
+
+bool Input::GetMousePressed(int32_t index)
+{
+	return m_mouseState.rgbButtons[index] && !m_prevMouseState[index];
 }
 
 void Input::Release()
