@@ -258,6 +258,18 @@
     <ClInclude Include="VariablesManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -377,9 +389,6 @@
     <ClCompile Include="LUAManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CALLBACK.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="S_ModelPaths.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -426,6 +435,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VariablesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

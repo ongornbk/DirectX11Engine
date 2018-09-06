@@ -70,22 +70,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\enet-1.3.13\include;C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\enet-1.3.13;C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\enet-1.3.13\include;C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
-    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\enet-1.3.13;C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\enet-1.3.13\include;C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\enet-1.3.13;C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\enet-1.3.13\include;C:\mysql-connector-c++-8.0.12-winx64\include;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\include;C:\VulkanSDK\1.0.65.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\enet-1.3.13;C:\mysql-connector-c++-8.0.12-winx64\lib64;C:\Users\Szymon\Documents\Visual Studio 2017\Projects\USiA\SFML-2.4.2\lib;C:\VulkanSDK\1.0.65.1\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -157,10 +157,12 @@
     <ClInclude Include="CollisionCircle.h" />
     <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Enet.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -177,6 +179,7 @@
     <ClInclude Include="LUAManager.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="Onion.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlatformHelper.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="ResourceShader.h" />
     <ClInclude Include="ResourceSound.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="Server.h" />
     <ClInclude Include="SettingsC.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
@@ -217,7 +221,9 @@
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
-    <ClCompile Include="CALLBACK.cpp" />
+    <ClCompile Include="Connection.cpp" />
+    <ClCompile Include="Enet.cpp" />
+    <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="Canals.cpp" />
@@ -240,12 +246,14 @@
     <ClCompile Include="LUAManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="Onion.cpp" />
     <ClCompile Include="RendererManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />
     <ClCompile Include="ResourceSound.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="Server.cpp" />
     <ClCompile Include="SettingsC.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sound.cpp" />

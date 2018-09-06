@@ -3,9 +3,10 @@
 #include "Onion.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
-#include "CALLBACK.cpp"
+#include "LuaCallback.cpp"
 #include "S_ModelPaths.h"
 #include "Font.h"
+#include "Network.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -67,6 +68,7 @@ Engine::~Engine(void)
 		m_gameComponent = nullptr;
 	}
 	Font::ReleaseFonts();
+	Network::Release();
 	lua::Close();
 }
 
@@ -105,6 +107,10 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 #define END );
 #pragma endregion
 	//NEWS
+	if (!Network::Initialize())
+	{
+		return false;
+	}
 	m_global = new Global();
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();

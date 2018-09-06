@@ -6,6 +6,7 @@
 #include "Global.h"
 #include "GameScene.h"
 #include "Onion.h"
+#include "Network.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -154,9 +155,15 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int StartServer(lua_State* state) //EXPORTED
+	{
+		Network::StartServer((uint16_t)lua_tointeger(state, 1));
+		return 0;
+	}
+
 	static int __PostQuitMessage(lua_State* state) //EXPORTED
 	{
-		PostQuitMessage((int)lua_tointeger(state,1));
+		PostQuitMessage((int)lua_tointeger(state, 1));
 		return 0;
 	}
 
@@ -614,6 +621,8 @@ namespace lua_callback
 		//Console
 		lua_register(m_lua, "GetInput", lua_callback::GetInput);
 		lua_register(m_lua, "Println", lua_callback::Println);
+		//Network
+		lua_register(m_lua, "StartServer", lua_callback::StartServer);
 	}
 
 }

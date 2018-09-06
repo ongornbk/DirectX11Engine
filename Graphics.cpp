@@ -1,7 +1,7 @@
 #include "Graphics.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
-#include "CALLBACK.cpp"
+#include "LuaCallback.cpp"
 
 Graphics::Graphics(void)
 {
