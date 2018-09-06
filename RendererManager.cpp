@@ -37,8 +37,8 @@ RendererManager::RendererManager(Engine* engine,Shader* shader)
 	TileMap::SetCurrentTileMap(m_map);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
-	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+100.0f;
-	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 100.0f;
+	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+300.0f;
+	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 300.0f;
 }
 
 
@@ -115,15 +115,15 @@ extern "C"
 							a->Center.x += collision;
 
 						}
-						a->UpdatePosition();
-						b->UpdatePosition();
+						//a->UpdatePosition();
+						//b->UpdatePosition();
 					}
 					else
 					{
 						if (ax < bx) a->Center.x += collision;
 						else         a->Center.x -= collision;
 
-						a->UpdatePosition();
+						//a->UpdatePosition();
 					}
 				}
 				else
@@ -134,7 +134,7 @@ extern "C"
 						else         b->Center.x += collision;
 
 
-						b->UpdatePosition();
+						//b->UpdatePosition();
 					}
 
 				}
@@ -219,13 +219,13 @@ extern "C"
 	void _stdcall SortByY(std::vector<Unit*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByY());
-		//m_async--;
+		m_async--;
 	}
 
 	void _stdcall SortByX(std::vector<Unit*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByX());
-		//m_async--;
+		m_async--;
 	}
 
 	inline void DoNothing() noexcept
@@ -339,13 +339,13 @@ void UnitsVector::Update(float dt)
 
 void UnitsVector::Sort()
 {
-	//m_async = 2u;
-	//std::async(std::launch::async,SortByX,(m_objectsX));
-	//std::async(std::launch::async,SortByY,(m_objectsX));
-	//while (m_async)
-	//{
-	//	DoNothing();
-	//}
+	m_async = 2u;
+	std::async(std::launch::async,SortByX,(m_objects));
+	std::async(std::launch::async,SortByY,(m_objects));
+	while (m_async)
+	{
+		DoNothing();
+	}
 	SortByX(m_objects);
 	SortByY(m_objects);
 }
@@ -383,7 +383,7 @@ void UnitsVector::Push(Unit * unit)
 
 }
 
-bool CheckDistance(Unit* a, Unit* b, float range)
+bool _stdcall CheckDistance(Unit* a, Unit* b, float range) noexcept
 {
 float distanceX = a->Center.x - b->Center.x;
 float distanceY = a->Center.y - b->Center.y;
@@ -392,46 +392,72 @@ if (distance < range)
 	return true; else return false;
 }
 
+void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*>* sa,Unit* object, float range)
+{
+	for (auto unit : *vec)
+	{
+		if (unit&&unit != object)
+		{
+			if (CheckDistance(unit, object, range))
+			{
+				sa->load()->push(unit);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	m_async--;
+}
+
 std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 {
 	//Whoops::Stack units;
 	std::stack<Unit*> units;
+	atomic<std::stack<Unit*>*> sa = &units;
 	std::vector<Unit*>* upv = &g_units.m_objects;
 	size_t index = (size_t)object->m_index;
 	
 	std::vector<Unit*> fv(upv->begin(), upv->begin() + index);
 	std::reverse(fv.begin(), fv.end());
 	std::vector<Unit*> sv(upv->begin() + index, upv->end());
-
-	for (auto unit : fv)
+	m_async = 2;
+	std::async(std::launch::async, PushUnitsInRange, &fv, &sa, object, range);
+	std::async(std::launch::async, PushUnitsInRange, &sv, &sa, object, range);
+	while (m_async)
 	{
-		if (unit&&unit != object)
-		{
-			if(CheckDistance(unit, object, range))
-			{
-				units.push(unit);
-			}
-			else
-			{
-				break;
-			}
-		}
+		DoNothing();
 	}
-
-	for (auto unit : sv)
-	{
-		if (unit&&unit!=object)
-		{
-			if (CheckDistance(unit, object, range))
-			{
-				units.push(unit);
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
+	//for (auto unit : fv)
+	//{
+	//	if (unit&&unit != object)
+	//	{
+	//		if(CheckDistance(unit, object, range))
+	//		{
+	//			sa.load()->push(unit);
+	//		}
+	//		else
+	//		{
+	//			break;
+	//		}
+	//	}
+	//}
+	//
+	//for (auto unit : sv)
+	//{
+	//	if (unit&&unit!=object)
+	//	{
+	//		if (CheckDistance(unit, object, range))
+	//		{
+	//			sa.load()->push(unit);
+	//		}
+	//		else
+	//		{
+	//			break;
+	//		}
+	//	}
+	//}
 
 			return units;
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Unit.h"
 #include "Stack.h"
+#include "VariablesManager.h"
 #include <stack>
 
 class Global
@@ -15,6 +16,7 @@ public:
 	static Global* GetInstance();
 	XMFLOAT3 m_lastPoint;
 	std::stack<Unit*> m_stack;
+	VariablesManager  m_variables;
 	uint32_t      m_size;
 
 };

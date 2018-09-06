@@ -1,17 +1,17 @@
 #include "GameScene.h"
 #include "TextureShader.h"
-#include "GlobalUtilities.h"
+//#include "GlobalUtilities.h"
 //#include <thr\threads.h>
 #include "Defines.h"
 #include "LUAManager.h"
 
-using GlobalUtilities::random;
+//using GlobalUtilities::random;
 
-namespace
-{
-	float j = 0;
-	static Unit*         m_hero;
-}
+//namespace
+//{
+	//float j = 0;
+	//static Unit*         m_hero;
+//}
 
 GameScene::GameScene()
 {
@@ -20,7 +20,7 @@ GameScene::GameScene()
 	//memset(&m_entity, NULL, sizeof(m_entity));
 	//XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	//m_enemy = new Unit*[(*(Settings::get()->NUMBER_OF_UNITS))];
-	m_hero = NULL;
+	//m_hero = NULL;
 	//m_enemy = NULL;
 }
 
@@ -38,11 +38,11 @@ GameScene::~GameScene()
 		//m_background = NULL;
 	//}
 
-	if (m_hero)
-	{
-		delete m_hero;
-		m_hero = NULL;
-	}
+	//if (m_hero)
+	//{
+	//	delete m_hero;
+	//	m_hero = NULL;
+	//}
 
 }
 
@@ -56,7 +56,7 @@ bool GameScene::Initialize()
 	RendererManager*     _renderer = RendererManager::GetInstance();
 	if ((!shader) || (!_device) || (!_context) || (!_renderer)) INITIALIZATION_FAILED
 #pragma endregion
-		m_hero = new Unit();
+		//m_hero = new Unit();
 		lua::Execute(lua::LUA_LOCATION_GAMESCENE_INITIALIZATION);
 
 
@@ -335,8 +335,8 @@ void GameScene::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatri
 {
 }
 
-Unit* GameScene::GetHero()
-{
-	return m_hero;
-}
+//Unit* GameScene::GetHero()
+//{
+//	return m_hero;
+//}
 

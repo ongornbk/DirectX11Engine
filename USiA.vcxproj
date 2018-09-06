@@ -207,6 +207,7 @@
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
     <ClInclude Include="UserInterfaceMainMenu.h" />
+    <ClInclude Include="VariablesManager.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VulcanManager.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceGameMenu.cpp" />
     <ClCompile Include="UserInterfaceMainMenu.cpp" />
+    <ClCompile Include="VariablesManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VulcanManager.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />

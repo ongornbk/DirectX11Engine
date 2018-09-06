@@ -1,7 +1,7 @@
 #pragma once
 #define DEBUGG_DEV_MODE
 #define DIRECTSOUND_VERSION  0x0800
-#define GAME_NAME_VERSION "RPG ENGINE"
+#define GAME_NAME_VERSION "ONGORNBK"
 
 	static const int SCREEN_WIDTH = 1920;
 	static const int SCREEN_HEIGHT = 1080;

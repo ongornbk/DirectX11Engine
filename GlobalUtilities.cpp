@@ -14,7 +14,7 @@
 	{
 		assert(max > min);
 		float random = ((float)rand()) / (float)RAND_MAX;
-		float range = max - min;
-		return (random*range) + min;
+		float range = 2;
+		return ((((float)rand()) / (float)RAND_MAX)*2) - 1;
 	}
 

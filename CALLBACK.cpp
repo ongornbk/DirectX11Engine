@@ -221,19 +221,19 @@ namespace lua_callback
 		return 2;
 	}
 
-	static int PickHero(lua_State*)
-	{
-		Unit* unit = GameScene::GetHero();
-		if (unit)
-		{
-			m_global->m_lastPickedUnit = unit;
-		}
-		else
-		{
-			Onion::Console::Println("PickHero : Hero == nullptr");
-		}
-		return 0;
-	}
+	//static int PickHero(lua_State*)
+	//{
+	//	Unit* unit = GameScene::GetHero();
+	//	if (unit)
+	//	{
+	//		m_global->m_lastPickedUnit = unit;
+	//	}
+	//	else
+	//	{
+	//		Onion::Console::Println("PickHero : Hero == nullptr");
+	//	}
+	//	return 0;
+	//}
 
 	static int PickLastSelectedUnit(lua_State*)
 	{
@@ -381,6 +381,28 @@ namespace lua_callback
 			unit->SetSpeed((float)lua_tointeger(state,1));
 		}
 		return 0;
+	}
+
+	static int PushUnitVariable(lua_State* state)
+	{
+		std::string name = LUA_STRING(state, 1);
+		bool result = m_global->m_variables.PushUnit(name, m_global->m_lastPickedUnit);
+		lua_pushboolean(state, result);
+		return 1;
+	}
+
+	static int GetUnitVariable(lua_State* state)
+	{
+		std::string name = LUA_STRING(state, 1);
+		Unit* unit = m_global->m_variables.GetUnit(name);
+		if (unit)
+		{
+			m_global->m_lastPickedUnit = unit;
+			lua_pushboolean(state, true);
+		}
+		else
+		lua_pushboolean(state, false);
+		return 1;
 	}
 
 	static int SetUnitPosition(lua_State* state)
@@ -563,7 +585,7 @@ namespace lua_callback
 		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
-		lua_register(m_lua,"PickHero", lua_callback::PickHero);
+		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);
@@ -576,6 +598,8 @@ namespace lua_callback
 		lua_register(m_lua, "GetSize", lua_callback::GetSize);
 		lua_register(m_lua, "PopGroup", lua_callback::PopGroup);
 		lua_register(m_lua, "GetUnitPosition", lua_callback::GetUnitPosition);
+		lua_register(m_lua, "PushUnitVariable", lua_callback::PushUnitVariable);
+		lua_register(m_lua, "GetUnitVariable", lua_callback::GetUnitVariable);
 		//RendererManager
 		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);

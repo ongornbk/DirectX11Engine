@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "S_ModelPaths.h"
 #include "RendererManager.h"
+#include "Onion.h"
 
 Unit::Unit() : Model()
 {
@@ -20,6 +21,8 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	Model::InitializeSpriteModel(device, deviceContext, shader, ptr, modelsize);
 	Model::Radius = collision;
 	Model::Center = position;
+	Model::Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	Model::Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	m_wanderingFlag = wander;
 }
 
