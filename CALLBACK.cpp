@@ -270,7 +270,8 @@ namespace lua_callback
 		{
 			Task* task = new Task();
 			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination = XMFLOAT3(LUA_FLOAT(state, 1), LUA_FLOAT(state, 2), 0.0f);
+			tgtp->destination.x = LUA_FLOAT(state, 1);
+			tgtp->destination.y = LUA_FLOAT(state, 2);
 			tgtp->object = unit;
 			task->m_content.taskGotoPoint = tgtp;
 			task->m_type = Task::Type::TASKGOTOPOINT;
@@ -398,7 +399,7 @@ namespace lua_callback
 		if (unit)
 		{
 			XMFLOAT3 position;
-			position = unit->GetPosition();
+			position = unit->Center;
 			lua_pushinteger(state,(int)position.x);
 			lua_pushinteger(state,(int)position.y);
 			return 2;

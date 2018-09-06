@@ -396,15 +396,20 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 {
 	//Whoops::Stack units;
 	std::stack<Unit*> units;
+	std::vector<Unit*>* upv = &g_units.m_objects;
+	size_t index = (size_t)object->m_index;
+	
+	std::vector<Unit*> fv(upv->begin(), upv->begin() + index);
+	std::reverse(fv.begin(), fv.end());
+	std::vector<Unit*> sv(upv->begin() + index, upv->end());
 
-	for (uint32_t i = object->m_index+1; i < sizeg; i++)
+	for (auto unit : fv)
 	{
-		Unit* ele = g_units.m_objects[i];
-		if (ele)
+		if (unit&&unit != object)
 		{
-			if (CheckDistance(object, ele, range))
+			if(CheckDistance(unit, object, range))
 			{
-				units.push(ele);
+				units.push(unit);
 			}
 			else
 			{
@@ -412,15 +417,14 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 			}
 		}
 	}
-	if(object->m_index>1)
-	for (uint32_t i = object->m_index - 1; i >=0; i--)
+
+	for (auto unit : sv)
 	{
-		Unit* ele = g_units.m_objects[i];
-		if (ele)
+		if (unit&&unit!=object)
 		{
-			if (CheckDistance(object, ele, range))
+			if (CheckDistance(unit, object, range))
 			{
-				units.push(ele);
+				units.push(unit);
 			}
 			else
 			{
@@ -428,6 +432,7 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 			}
 		}
 	}
+
 			return units;
 
 	
