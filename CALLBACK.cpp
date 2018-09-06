@@ -574,6 +574,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetUnitsInRange", lua_callback::GetUnitsInRange);
 		lua_register(m_lua, "GetSize", lua_callback::GetSize);
 		lua_register(m_lua, "PopGroup", lua_callback::PopGroup);
+		lua_register(m_lua, "GetUnitPosition", lua_callback::GetUnitPosition);
 		//RendererManager
 		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);

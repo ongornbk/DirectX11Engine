@@ -412,6 +412,7 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 			}
 		}
 	}
+	if(object->m_index>1)
 	for (uint32_t i = object->m_index - 1; i >=0; i--)
 	{
 		Unit* ele = g_units.m_objects[i];
