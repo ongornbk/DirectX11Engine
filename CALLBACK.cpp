@@ -270,7 +270,7 @@ namespace lua_callback
 		{
 			Task* task = new Task();
 			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination = m_global->m_lastPoint;
+			tgtp->destination = XMFLOAT3(LUA_FLOAT(state, 1), LUA_FLOAT(state, 2), 0.0f);
 			tgtp->object = unit;
 			task->m_content.taskGotoPoint = tgtp;
 			task->m_type = Task::Type::TASKGOTOPOINT;

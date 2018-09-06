@@ -129,6 +129,14 @@ Tile::Tile(AnimatedTile * tile)
 	m_collision = false;
 }
 
+Tile::Tile(Tile * tile)
+{
+	m_position = tile->m_position;
+	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
+	m_index = tile->m_index;
+	m_collision = false;
+}
+
 
 Tile::~Tile()
 {
@@ -368,9 +376,9 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 	{
 		if (map[index.i][index.j]->m_type == Tile::Type::ANIMATEDTILE)
 		{
-			AnimatedTile* atile = dynamic_cast<AnimatedTile*>(map[index.i][index.j]);
-			Tile* tilep = new Tile(atile);
-			delete atile;
+			
+			Tile* tilep = new Tile((AnimatedTile*)map[index.i][index.j]);
+			delete (AnimatedTile*)map[index.i][index.j];
 			map[index.i][index.j] = tilep;
 			map[index.i][index.j]->m_type = Tile::Type::TILE;
 			map[index.i][index.j]->m_collision = false;

@@ -63,6 +63,7 @@ public:
 	Tile(float x,float y,int ix,int iy);
 	Tile(XMFLOAT2 position,INDEX2 index);
 	explicit Tile(AnimatedTile* tile);
+	explicit Tile(Tile* tile);
 	virtual ~Tile();
 
 	static void SetGlobals(ID3D11Device* device, Shader* shader,RendererManager* renderer);
