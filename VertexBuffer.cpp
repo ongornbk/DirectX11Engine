@@ -33,6 +33,7 @@ VertexBuffer::~VertexBuffer()
 		(void)(m_indexBuffer->Release());
 		m_indexBuffer = nullptr;
 	}
+
 }
 
 bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size[2], bool writeable)
@@ -46,7 +47,7 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 	m_vertexCount = 4;
 	m_indexCount = 6;
 
-	m_vertices = new VertexType[m_vertexCount];
+	m_vertices = new SpriteVertexType[m_vertexCount];
 	indices = new uint32_t[m_indexCount];
 	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
 
@@ -66,7 +67,7 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 	m_vertices[3].uv = XMFLOAT2(1.0f, 1.0f);
 
 	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType)*m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -117,7 +118,7 @@ bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float 
 	m_vertexCount = 4;
 	m_indexCount = 6;
 
-	m_vertices = new VertexType[m_vertexCount];
+	m_vertices = new SpriteVertexType[m_vertexCount];
 	indices = new uint32_t[m_indexCount];
 	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
 
@@ -146,7 +147,7 @@ bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float 
 
 
 	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType)*m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -191,7 +192,7 @@ void VertexBuffer::Render(ID3D11DeviceContext * deviceContext)
 	//m_shader->Begin(deviceContext, 0);
 	uint32_t stride, offset;
 
-	stride = sizeof(VertexType);
+	stride = sizeof(SpriteVertexType);
 	offset = 0u;
 	
 
@@ -212,7 +213,7 @@ bool VertexBuffer::ResizeTexture(ID3D11Device * device, float size, bool writeab
 	m_vertexCount = 4;
 	m_indexCount = 6;
 
-	m_vertices = new VertexType[m_vertexCount];
+	m_vertices = new SpriteVertexType[m_vertexCount];
 	indices = new unsigned long[m_indexCount];
 
 	float halfSize = size / 2.0f;
@@ -237,7 +238,7 @@ bool VertexBuffer::ResizeTexture(ID3D11Device * device, float size, bool writeab
 	indices[5] = 3;
 
 	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType)*m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -280,7 +281,7 @@ bool VertexBuffer::ResizeTexture(ID3D11Device * device, float size, bool writeab
 	return true;
 }
 
-VertexBuffer::VertexType * VertexBuffer::GetVertices()
+SpriteVertexType * VertexBuffer::GetVertices()
 {
 	return m_vertices;
 }

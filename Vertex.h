@@ -1,8 +1,19 @@
 #pragma once
-class Vertex
+#include <DirectXMath.h>
+
+struct SimpleVertexType
 {
-public:
-	Vertex();
-	~Vertex();
+	DirectX::XMFLOAT3 position;
+};
+
+struct SpriteVertexType : public SimpleVertexType
+{
+	DirectX::XMFLOAT2 uv;
+};
+
+struct UnitVertexType : public SpriteVertexType
+{
+	DirectX::XMFLOAT4 color;
+	//float             light;
 };
 

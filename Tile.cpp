@@ -483,7 +483,7 @@ void TileMap::Update(float dt)
 	if (m_currentFrame == m_previousFrame) return;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	VertexBuffer::VertexType* vertices = m_animatedVertexBuffer->GetVertices();
+	SpriteVertexType* vertices = m_animatedVertexBuffer->GetVertices();
 
 	vertices[0].uv.x = m_currentFrame / m_maxFrames;
 	vertices[0].uv.y = 1.0f;
@@ -503,8 +503,8 @@ void TileMap::Update(float dt)
 		return;
 	}
 
-	VertexBuffer::VertexType* verticesPtr = (VertexBuffer::VertexType*)mappedResource.pData;
-	memcpy(verticesPtr, (void*)vertices, sizeof(VertexBuffer::VertexType) * m_animatedVertexBuffer->GetVertexCount());
+	SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+	memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_animatedVertexBuffer->GetVertexCount());
 
 	m_deviceContext->Unmap(m_animatedVertexBuffer->GetVertexBuffer(), 0);
 

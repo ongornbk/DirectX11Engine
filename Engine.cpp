@@ -30,6 +30,10 @@ namespace
 }
 
 
+
+
+
+
 Engine::~Engine(void)
 {
 	if (m_graphics)
@@ -85,6 +89,7 @@ Engine::Engine(void)
 	m_global          = nullptr;
 	m_framework       = nullptr;
 	m_lua             = nullptr;
+	m_listener = nullptr;
 #pragma endregion
 }
 

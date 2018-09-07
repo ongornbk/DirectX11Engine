@@ -41,6 +41,8 @@ void Sprite::Initialize(ID3D11Device * device, Shader * shader, WCHAR* textureFi
 		string tmp1 = string(tmp0.begin(), tmp0.end());
 		m_texture = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
+
+	
 }
 
 void Sprite::InitializeRotated(ID3D11Device * device, Shader * shader, WCHAR * textureFileName, bool isWriteable)

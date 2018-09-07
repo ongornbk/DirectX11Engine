@@ -398,6 +398,14 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int EraseUnitVariable(lua_State* state)
+	{
+		std::string name = LUA_STRING(state, 1);
+		bool result = m_global->m_variables.EraseUnit(name);
+		lua_pushboolean(state, result);
+		return 1;
+	}
+
 	static int GetUnitVariable(lua_State* state)
 	{
 		std::string name = LUA_STRING(state, 1);
@@ -607,6 +615,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetUnitPosition", lua_callback::GetUnitPosition);
 		lua_register(m_lua, "PushUnitVariable", lua_callback::PushUnitVariable);
 		lua_register(m_lua, "GetUnitVariable", lua_callback::GetUnitVariable);
+		lua_register(m_lua, "EraseUnitVariable", lua_callback::EraseUnitVariable);
 		//RendererManager
 		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);

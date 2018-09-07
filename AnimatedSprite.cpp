@@ -60,7 +60,7 @@ void AnimatedSprite::Update()
 	if (m_currentFrame == m_previousFrame) return;
 	
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	VertexBuffer::VertexType* vertices = m_vertexBuffer->GetVertices();
+	SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 	vertices[0].uv.x = m_currentFrame / m_maxFrames;
 	vertices[0].uv.y = 1.0f;
@@ -80,8 +80,8 @@ void AnimatedSprite::Update()
 		return;
 	}
 
-	VertexBuffer::VertexType* verticesPtr = (VertexBuffer::VertexType*)mappedResource.pData;
-	memcpy(verticesPtr, (void*)vertices, sizeof(VertexBuffer::VertexType) * m_vertexBuffer->GetVertexCount());
+	SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+	memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
 
 	m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 

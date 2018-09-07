@@ -9,7 +9,7 @@ using Onion::System::GetScreenHeight;
 using Onion::System::GetScreenWidth;
 using Onion::Console;
 
-LRESULT CALLBACK WndProc(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);
 
 namespace
 {
@@ -154,7 +154,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 
 
 
-LRESULT CALLBACK WndProc(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;

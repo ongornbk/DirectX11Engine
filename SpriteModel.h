@@ -9,24 +9,7 @@ class SpriteModel
 public:
 #define STANDARDSTANCE 4
 
-	struct MCoord
-	{
-		MCoord()
-		{
-
-		}
-		MCoord(float tx, float ty, float w, float h)
-		{
-			this->tx = tx;
-			this->ty = ty;
-			this->w = w;
-			this->h = h;
-		}
-		float tx;
-		float ty;
-		float w;
-		float h;
-	};
+	
 
 	enum ModelStance
 	{

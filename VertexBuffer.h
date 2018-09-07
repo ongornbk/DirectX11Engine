@@ -1,15 +1,11 @@
 #pragma once
 #include "Shader.h"
-
+#include "Vertex.h"
 
 class VertexBuffer
 {
 public:
-	struct VertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 uv;
-	};
+	
 
 	VertexBuffer(void);
 	~VertexBuffer(void);
@@ -19,17 +15,18 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext);
 	bool ResizeTexture(ID3D11Device * device, float size, bool writeable = false);
 
-	VertexType* GetVertices();
+	SpriteVertexType* GetVertices();
 	ID3D11Buffer* GetVertexBuffer();
 	int GetIndexCount();
 	int GetVertexCount();
 protected:
-private:
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
 	int m_vertexCount;
 	int m_indexCount;
-	VertexType* m_vertices;
 	Shader* m_shader;
+private:
+
+	SpriteVertexType* m_vertices;
 };
 

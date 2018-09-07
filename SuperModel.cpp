@@ -115,7 +115,7 @@ void SuperModel::Update(float dt)
 
 
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			VertexBuffer::VertexType* vertices = m_vertexBuffer->GetVertices();
+			SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 			vertices[0].uv.x = m_currentFrame / framesCount;
 			vertices[0].uv.y = (m_rotation + 1.0f) / m_rotations;
@@ -137,8 +137,8 @@ void SuperModel::Update(float dt)
 				return;
 			}
 
-			VertexBuffer::VertexType* verticesPtr = (VertexBuffer::VertexType*)mappedResource.pData;
-			memcpy(verticesPtr, (void*)vertices, sizeof(VertexBuffer::VertexType) * m_vertexBuffer->GetVertexCount());
+			SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+			memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
 			m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 
 			m_previousFrame = m_currentFrame;
