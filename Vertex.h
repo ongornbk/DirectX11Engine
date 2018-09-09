@@ -11,9 +11,8 @@ struct SpriteVertexType : public SimpleVertexType
 	DirectX::XMFLOAT2 uv;
 };
 
-struct UnitVertexType : public SpriteVertexType
+struct ColorVertexType : public SimpleVertexType
 {
-	DirectX::XMFLOAT4 color;
-	//float             light;
+	DirectX::XMFLOAT3 color;
 };
 
