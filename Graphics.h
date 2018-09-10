@@ -1,6 +1,7 @@
 #pragma once
 #include "VulcanManager.h"
 #include "DXManager.h"
+#include "2D/Direct2D.h"
 #include "Defines.h"
 
 
@@ -13,6 +14,7 @@ public:
 
 	bool InitializeDX(HWND hwnd);
 	bool InitializeVulcan(HWND hwnd);
+	bool InitializeDirect2D();
 	void Initialize();
 	void BeginScene(float r, float g, float b, float a);
 	void BeginScene(float* color);
@@ -41,5 +43,6 @@ private:
 
 	DXManager*     m_dxManager;
 	VulcanManager* m_vulcanManager;
+	Direct2D*      m_direct2D;
 	HWND m_hwnd;
 };

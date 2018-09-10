@@ -73,7 +73,6 @@ void FrameWork::Run()
 bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int height)
 {
 	ShowCursor(false);
-	HWND hwnd;
 	WNDCLASSEX wc;
 	m_applicationName = windowTitle;
 	m_hInstance = GetModuleHandle(NULL);
@@ -120,9 +119,9 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 
 	int nStyle = WS_OVERLAPPED | WS_SYSMENU | WS_VISIBLE | WS_CAPTION | WS_MINIMIZEBOX;
 
-	hwnd = CreateWindowEx(WS_EX_APPWINDOW, windowTitle, windowTitle,nStyle,x,y,screenWidth,screenHeight,NULL,NULL,m_hInstance,NULL);
+	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, windowTitle, windowTitle,nStyle,x,y,screenWidth,screenHeight,NULL,NULL,m_hInstance,NULL);
 
-	if (hwnd == NULL)
+	if (m_hwnd == NULL)
 	{
 		MessageBox(NULL, "CreateWindowEx() failed", "Error", MB_OK);
 		Engine::GetEngine()->Release();
@@ -130,24 +129,24 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		return false;
 	}
 
-	m_hDC = GetDC(hwnd);
+	m_hDC = GetDC(m_hwnd);
 
-	if (!Engine::GetEngine()->InitializeGraphics(hwnd))
+	if (!Engine::GetEngine()->InitializeGraphics(m_hwnd))
 	{
-		MessageBox(hwnd, "Could not initialize DirectX 11", "Error", MB_OK);
+		MessageBox(m_hwnd, "Could not initialize DirectX 11", "Error", MB_OK);
 		Engine::GetEngine()->Release();
 		PostQuitMessage(0);
 		UnregisterClass(m_applicationName, m_hInstance);
 		m_hInstance = NULL;
-		DestroyWindow(hwnd);
+		DestroyWindow(m_hwnd);
 		return false;
 	}
 
-	Engine::GetEngine()->GetGraphics()->SetHwnd(hwnd);
+	Engine::GetEngine()->GetGraphics()->SetHwnd(m_hwnd);
 
-	ShowWindow(hwnd, SW_SHOW);
-	(void)SetForegroundWindow(hwnd);
-	(void)SetFocus(hwnd);
+	ShowWindow(m_hwnd, SW_SHOW);
+	(void)SetForegroundWindow(m_hwnd);
+	(void)SetFocus(m_hwnd);
 	Console::Println("FrameWork : Window has been created", Onion::LIGHTGREEN);
 	return true;
 }

@@ -170,6 +170,14 @@
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h" />
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h" />
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
+    <ClInclude Include="2D\Brushes.h" />
+    <ClInclude Include="2D\d2d1.h" />
+    <ClInclude Include="2D\Direct2D.h" />
+    <ClInclude Include="2D\Graphics2D.h" />
+    <ClInclude Include="2D\RenderTarget.h" />
+    <ClInclude Include="2D\TextFormat.h" />
+    <ClInclude Include="2D\TextSize.h" />
+    <ClInclude Include="2D\Types.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
@@ -180,6 +188,7 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="Direct2DCallback.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="DynamicArray.h" />
@@ -242,10 +251,18 @@
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VulcanManager.h" />
     <ClInclude Include="WICTextureLoader.h" />
+    <ClInclude Include="WindowHandle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.cpp" />
+    <ClCompile Include="2D\Brushes.cpp" />
+    <ClCompile Include="2D\Direct2D.cpp" />
+    <ClCompile Include="2D\Direct2DCallback.cpp" />
+    <ClCompile Include="2D\Graphics2D.cpp" />
+    <ClCompile Include="2D\RenderTarget.cpp" />
+    <ClCompile Include="2D\TextFormat.cpp" />
+    <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Enet.cpp" />
@@ -309,6 +326,7 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VulcanManager.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
+    <ClCompile Include="WindowHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CudaVector2.cu" />

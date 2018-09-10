@@ -1,10 +1,10 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
 #include "Engine.h"
+#include "WindowHandle.h"
 
 
-
-class FrameWork
+class FrameWork : WindowHandle
 {
 public:
 	FrameWork(void);

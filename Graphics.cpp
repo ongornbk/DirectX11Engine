@@ -7,6 +7,7 @@ Graphics::Graphics(void)
 {
 	m_dxManager = nullptr;
 	m_vulcanManager = nullptr;
+	m_direct2D = nullptr;
 	m_gfxEngine = DIRECTX11;
 }
 
@@ -29,6 +30,12 @@ bool Graphics::InitializeVulcan(HWND hwnd)
 {
 	m_vulcanManager = new VulcanManager();
 	return m_vulcanManager->Initialize(*(Settings::get()->REALRESOLUTION_X), *(Settings::get()->REALRESOLUTION_Y), FULL_SCREEN, hwnd, VSYNC_ENABLED);
+}
+
+bool Graphics::InitializeDirect2D()
+{
+	m_direct2D = new Direct2D();
+	return (bool)m_direct2D->CreateFactory();
 }
 
 void Graphics::Initialize()
@@ -66,6 +73,8 @@ void Graphics::Release()
 	m_dxManager->Release();
 	if(m_vulcanManager)
 	m_vulcanManager->Release();
+	if (m_direct2D)
+		delete m_direct2D;
 }
 
 
