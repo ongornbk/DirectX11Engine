@@ -21,7 +21,11 @@ using Onion::Math::SquashInt32Array;
 
 #define ANIMATEDTILE_FRAME_COUNT 4.0f
 
-
+struct TileType
+{
+	uint8_t tile_type : 5u;
+	uint8_t tile_sub  : 3u;
+};
 
 extern "C"
 {
@@ -44,6 +48,7 @@ static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
 static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
+static uint8_t tilesub[32] ={2u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u};
 
 	}
 
@@ -93,13 +98,13 @@ namespace
 	static Shader*              m_tileShader;
 	static VertexBuffer*        m_vertexBuffer;
 	static VertexBuffer*        m_animatedVertexBuffer;
-	static Texture*             m_texture[TILE_NUMBER_OF_TEXTURES];
+	static Texture*             m_texture[32][8];
 	static float   m_size[2];
 	static ID3D11DeviceContext* m_deviceContext;
 	static XMFLOAT4X4 m_viewMatrix;
 	static XMFLOAT4X4 m_projectionMatrix;
-	static unsigned char m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
-	static unsigned char current = 0u;
+	static TileType m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
+	static TileType current = {0u,0u};
 	static RendererManager*     m_renderer;
 	static TileMap*              m_currentTileMap;
 }
@@ -186,7 +191,7 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 	for (int i = 0; i < TILE_MAP_SIZE; ++i)
 		for (int j = 0; j < TILE_MAP_SIZE; ++j)
 		{
-			m_tile[i][j] = 0;
+			m_tile[i][j].tile_type = 0u;
 		}
 	m_tileShader = shader;
 	m_device = device;
@@ -194,15 +199,17 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 	(void)m_vertexBuffer->Initialize(device, shader, m_size, true);
 	m_animatedVertexBuffer = new VertexBuffer();
 	(void)m_animatedVertexBuffer->Initialize(device, shader, m_size, true);
-	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");
-	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("dirt");
-	m_texture[2] = ResourceManager::GetInstance()->GetTextureByName("rock");
-	m_texture[3] = ResourceManager::GetInstance()->GetTextureByName("leaves");
-	m_texture[4] = ResourceManager::GetInstance()->GetTextureByName("paving");
-	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("paving2");
-	m_texture[6] = ResourceManager::GetInstance()->GetTextureByName("dust");
-	m_texture[7] = ResourceManager::GetInstance()->GetTextureByName("water");
-	m_texture[8] = ResourceManager::GetInstance()->GetTextureByName("sand");
+	m_texture[0][0] = ResourceManager::GetInstance()->GetTextureByName("grass0");
+	m_texture[0][1] = ResourceManager::GetInstance()->GetTextureByName("grass1");
+	m_texture[0][2] = ResourceManager::GetInstance()->GetTextureByName("grass2");
+	m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt");
+	m_texture[2][0] = ResourceManager::GetInstance()->GetTextureByName("rock");
+	m_texture[3][0] = ResourceManager::GetInstance()->GetTextureByName("leaves");
+	m_texture[4][0] = ResourceManager::GetInstance()->GetTextureByName("paving");
+	m_texture[5][0] = ResourceManager::GetInstance()->GetTextureByName("paving2");
+	m_texture[6][0] = ResourceManager::GetInstance()->GetTextureByName("dust");
+	m_texture[7][0] = ResourceManager::GetInstance()->GetTextureByName("water");
+	m_texture[8][0] = ResourceManager::GetInstance()->GetTextureByName("sand0");
 
 }
 
@@ -215,8 +222,8 @@ void Tile::SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix
 {
 	m_viewMatrix = viewMatrix;
 	m_projectionMatrix = projectionMatrix;
-	current = 0u;
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current]->GetTexture());
+	current.tile_type = 0u;
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
 }
 
 
@@ -224,7 +231,7 @@ void Tile::SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix
 void Tile::LoadTexture()
 {
 	current = m_tile[m_index.i][m_index.j];
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current]->GetTexture());
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
 
 }
 
@@ -234,7 +241,7 @@ void Tile::Update()
 
 void Tile::Render()
 {
-	if (current != m_tile[m_index.i][m_index.j])
+	if (current.tile_type != m_tile[m_index.i][m_index.j].tile_type||current.tile_sub != m_tile[m_index.i][m_index.j].tile_sub)
 	{
 		LoadTexture();
 	}
@@ -353,14 +360,15 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 void TileMap::SetTile(INDEX2 index, int32_t tile)
 {
 	SquashInt32(tile, 0, 8);
-	m_tile[index.i][index.j] = (unsigned char)tile;
+	m_tile[index.i][index.j].tile_type = (uint8_t)tile;
+	m_tile[index.i][index.j].tile_sub = Onion::Math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);
 	if (tile == 7)
 	{
 
 		if (map[index.i][index.j]->m_type == Tile::Type::TILE)
 		{
 
-			AnimatedTile* tilep = new AnimatedTile(map[index.i][index.j], m_texture[tile]);
+			AnimatedTile* tilep = new AnimatedTile(map[index.i][index.j], m_texture[tile][Onion::Math::RandomUint8(0u, tile::tilesub[tile])]);
 			delete map[index.i][index.j];
 			map[index.i][index.j] = (Tile*)tilep;
 			map[index.i][index.j]->m_type = Tile::Type::ANIMATEDTILE;
@@ -369,7 +377,7 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 		}
 		else
 		{
-			((AnimatedTile*)map[index.i][index.j])->SetTexture(m_texture[tile]);
+			((AnimatedTile*)map[index.i][index.j])->SetTexture(m_texture[tile][Onion::Math::RandomUint8(0u,tile::tilesub[tile])]);
 		}
 	}
 	else
@@ -396,7 +404,7 @@ void TileMap::SaveToFile(std::string filename)
 	{
 		for (uint16_t j = 0u; j < TILE_MAP_SIZE; ++j)
 		{
-			myfile << m_tile[i][j];
+			myfile << m_tile[i][j].tile_type;
 		}
 		myfile << '\n';
 	}
@@ -447,11 +455,11 @@ void TileMap::SetCurrentTileMap(TileMap* tilemap)
 
 void TileMap::Update(float dt)
 {
-	for (int j = renderInts[2]; j <renderInts[3]; j++)
+	for (int32_t j = renderInts[2]; j <renderInts[3]; j++)
 	{
-		for (int i = renderInts[0]; i < renderInts[1]; i++)
+		for (int32_t i = renderInts[0]; i < renderInts[1]; i++)
 		{
-			int sum = i + j;
+			int32_t sum = i + j;
 			if ((sum >(renderInts[4])) || (sum < (renderInts[5])))
 				continue;
 			map[j][i]->Update();
@@ -538,7 +546,7 @@ void AnimatedTile::Update(float dt)
 
 void AnimatedTile::Render()
 {
-	if (current != m_tile[m_index.i][m_index.j])
+	if (current.tile_type != m_tile[m_index.i][m_index.j].tile_type)
 	{
 		LoadTexture();
 	}

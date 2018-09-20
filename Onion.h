@@ -48,9 +48,10 @@ namespace Onion
 		float Acos(float degrees);
 		float Atan(float degrees);
 		float Atan2(float y, float x);
-		void SquashInt32(int &value, int min, int max) noexcept;
-		bool CheckInt32(int &value, int min, int max) noexcept;
-		void SquashInt32Array(int* value, int size,int min,int max) noexcept;
+		void SquashInt32(int32_t &value, int32_t min, int32_t max) noexcept;
+		bool CheckInt32(int32_t &value, int32_t min, int32_t max) noexcept;
+		void SquashInt32Array(int32_t* value, int32_t size,int32_t min,int32_t max) noexcept;
+		uint8_t _cdecl RandomUint8(uint8_t min, uint8_t max) noexcept;
 	}
 
 	namespace System

@@ -29,10 +29,10 @@ struct UnitsVector
 
 	void Update(float dt);
 	void Sort();
-	void Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader);
+	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) noexcept;
 	void Clear();
 	void Push(Unit* unit);
-	static std::stack<Unit*> GetUnitsInRange(Unit* object, float range);
+	static  std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
 
 };
 

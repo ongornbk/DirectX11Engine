@@ -237,12 +237,17 @@ extern "C"
 
 	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept
 	{
-		float f[2];
-		f[0] = abs((object.x) - (m_cameraPosition.m128_f32[0]));
-		f[1] = abs((object.y) - (m_cameraPosition.m128_f32[1]));
-		if ((f[0] > m_ranges[0])||(f[1] > m_ranges[1]))
+		float f[2] = { abs((object.x) - (m_cameraPosition.m128_f32[0])),abs((object.y) - (m_cameraPosition.m128_f32[1])) };
+
+		if ((f[0] > m_ranges[0]) || (f[1] > m_ranges[1]))
+		{
 			return false;
-		else return true;
+		}
+		else
+		{
+			return true;
+		}
+
 	}
 
 }
@@ -352,11 +357,10 @@ void UnitsVector::Sort()
 
 static uint32_t sizeg = 0u;
 
-void UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+void _vectorcall UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
 {
 	Unit** objects = m_objects.data();
-	sizeg = (uint32_t)m_objects.size();
-	for (uint32_t i = 0; i < sizeg; i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objects.size(); i++)
 	{
 		objects[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects[i]->m_index = i;
@@ -380,7 +384,6 @@ void UnitsVector::Clear()
 void UnitsVector::Push(Unit * unit)
 {
 	m_objects.push_back(unit);
-
 }
 
 Boolean _stdcall CheckDistance(Unit* a, Unit* b, float range) noexcept
@@ -400,7 +403,7 @@ else
 }
 }
 
-void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*>* sa,Unit* object, float range)
+void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*>* sa,Unit* object, float range) noexcept
 {
 	for (auto unit : *vec)
 	{
@@ -416,15 +419,6 @@ void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*
 			case 0:
 				goto ENDLOOP;
 			}
-
-			//if (CheckDistance(unit, object, range))
-			//{
-			//	sa->load()->push(unit);
-			//}
-			//else
-			//{
-			//	break;
-			//}
 		}
 	}
 	ENDLOOP:
@@ -432,9 +426,8 @@ void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*
 	return;
 }
 
-std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
+std::stack<Unit*> _vectorcall UnitsVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
-	//Whoops::Stack units;
 	std::stack<Unit*> units;
 	atomic<std::stack<Unit*>*> sa = &units;
 	std::vector<Unit*>* upv = &g_units.m_objects;
@@ -450,9 +443,6 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 	{
 		DoNothing();
 	}
-
 			return units;
-
-	
 }
 

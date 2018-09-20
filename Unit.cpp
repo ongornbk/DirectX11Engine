@@ -21,8 +21,8 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	Model::InitializeSpriteModel(device, deviceContext, shader, ptr, modelsize);
 	Model::Radius = collision;
 	Model::Center = position;
-	Model::Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
-	Model::Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	Model::Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
+	Model::Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 	m_wanderingFlag = wander;
 }
 

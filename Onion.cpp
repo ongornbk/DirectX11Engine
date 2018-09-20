@@ -318,6 +318,11 @@ void Onion::Math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int
 		return;
 }
 
+uint8_t _cdecl Onion::Math::RandomUint8(uint8_t min, uint8_t max) noexcept
+{
+	return min + (rand() % int32_t(max - min + 1));
+}
+
 int Onion::System::GetScreenWidth() noexcept
 {
 	return GetSystemMetrics(SM_CXSCREEN);
