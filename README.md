@@ -1,8 +1,8 @@
 # DirectX11Engine
 
- Features\
- -Collision (up to 50000 objects)\
+ Features:\
+ -Collision (up to 50000 units)\
  -Blending\
- -Lua\
+ -Lua
 
-![Screenshot](screen.png)
+![Screenshot](screen1.png)
