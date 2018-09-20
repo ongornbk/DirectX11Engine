@@ -383,13 +383,21 @@ void UnitsVector::Push(Unit * unit)
 
 }
 
-bool _stdcall CheckDistance(Unit* a, Unit* b, float range) noexcept
+Boolean _stdcall CheckDistance(Unit* a, Unit* b, float range) noexcept
 {
 float distanceX = a->Center.x - b->Center.x;
 float distanceY = a->Center.y - b->Center.y;
 float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 if (distance < range)
-	return true; else return false;
+{
+	return 2;
+}
+else
+{
+	if (distanceY < range)
+		return 1; 
+	else return 0;
+}
 }
 
 void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*>* sa,Unit* object, float range)
@@ -398,17 +406,30 @@ void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*
 	{
 		if (unit&&unit != object)
 		{
-			if (CheckDistance(unit, object, range))
+			switch (CheckDistance(unit, object, range))
 			{
+			case 2:
 				sa->load()->push(unit);
-			}
-			else
-			{
 				break;
+			case 1:
+				break;
+			case 0:
+				goto ENDLOOP;
 			}
+
+			//if (CheckDistance(unit, object, range))
+			//{
+			//	sa->load()->push(unit);
+			//}
+			//else
+			//{
+			//	break;
+			//}
 		}
 	}
+	ENDLOOP:
 	m_async--;
+	return;
 }
 
 std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
@@ -429,35 +450,6 @@ std::stack<Unit*> UnitsVector::GetUnitsInRange(Unit* object, float range)
 	{
 		DoNothing();
 	}
-	//for (auto unit : fv)
-	//{
-	//	if (unit&&unit != object)
-	//	{
-	//		if(CheckDistance(unit, object, range))
-	//		{
-	//			sa.load()->push(unit);
-	//		}
-	//		else
-	//		{
-	//			break;
-	//		}
-	//	}
-	//}
-	//
-	//for (auto unit : sv)
-	//{
-	//	if (unit&&unit!=object)
-	//	{
-	//		if (CheckDistance(unit, object, range))
-	//		{
-	//			sa.load()->push(unit);
-	//		}
-	//		else
-	//		{
-	//			break;
-	//		}
-	//	}
-	//}
 
 			return units;
 
