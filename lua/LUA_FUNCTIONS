@@ -1,0 +1,12 @@
+function LoadTexture takes String name returns nothing
+function LoadSound takes String returns nothing
+function InitializeProjectionMatrix takes Real,Real,Real return nothing
+function InitializeOrthoMatrix takes Real,Real returns nothing
+function SetCameraPosition takes Real,Real,Real returns nothing
+function AddMusic takes String Real,Boolean
+function AddModelPaths takes String returns nothing
+function PlayMusic takes String returns nothing
+function PostQuitMessage takes Integer returns nothing
+function SetTilesMultiplier takes Real returns nothing
+function IsKeyHit takes Integer returns Boolean
+function IsKeyPressed takes Integer returns Boolean

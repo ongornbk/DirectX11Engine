@@ -48,7 +48,11 @@ static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
 static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
-static uint8_t tilesub[32] ={2u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u};
+static uint8_t tilesub[32] ={
+	3u,//GRASS
+	2u,//DIRT
+	0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u
+};
 
 	}
 
@@ -202,7 +206,10 @@ void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* ren
 	m_texture[0][0] = ResourceManager::GetInstance()->GetTextureByName("grass0");
 	m_texture[0][1] = ResourceManager::GetInstance()->GetTextureByName("grass1");
 	m_texture[0][2] = ResourceManager::GetInstance()->GetTextureByName("grass2");
-	m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt");
+	m_texture[0][3] = ResourceManager::GetInstance()->GetTextureByName("grass3");
+	m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt0");
+	m_texture[1][1] = ResourceManager::GetInstance()->GetTextureByName("dirt1");
+	m_texture[1][2] = ResourceManager::GetInstance()->GetTextureByName("dirt2");
 	m_texture[2][0] = ResourceManager::GetInstance()->GetTextureByName("rock");
 	m_texture[3][0] = ResourceManager::GetInstance()->GetTextureByName("leaves");
 	m_texture[4][0] = ResourceManager::GetInstance()->GetTextureByName("paving");
