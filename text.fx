@@ -10,6 +10,13 @@ matrix viewMatrix;
 matrix projectionMatrix;
 };
 
+cbuffer CameraBuffer
+{
+float cameraX;
+float cameraY;
+float cameraZ;
+float globalLight;
+};
 
 struct VertexInputType
 {
@@ -42,11 +49,6 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 {
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
-float xd;
-float yd;
-xd = 960.0f - abs(input.position[0]-960.0f);
-yd = 590.0f - abs(input.position[1]-590.0f);
-textureColor = mul(yd/450.0f,textureColor);
-return mul(xd/800.0f,textureColor);
+return mul(1.5f,textureColor);
 
 }

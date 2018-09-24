@@ -172,32 +172,7 @@ bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11Shad
 	return true;
 }
 
-bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, float cameraX, float cameraY,float cameraZ,float light)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	CameraBufferType* dataPtr;
 
-	result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		return false;
-	}
-
-	dataPtr = (CameraBufferType*)mappedResource.pData;
-	dataPtr->cameraX = cameraX;
-	dataPtr->cameraY = cameraY;
-	dataPtr->cameraZ = cameraZ;
-	dataPtr->globalLight = light;
-
-	deviceContext->Unmap(m_cameraBuffer, 0);
-
-
-	deviceContext->VSSetConstantBuffers(1, 1, &m_cameraBuffer);
-
-
-	return true;
-}
 
 bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
@@ -366,19 +341,6 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	matrixBufferDesc.StructureByteStride = 0;
 
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
-	if (FAILED(result))
-	{
-		return false;
-	}
-
-	cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
-	cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	cameraBufferDesc.MiscFlags = 0;
-	cameraBufferDesc.StructureByteStride = 1;
-
-	result = device->CreateBuffer(&cameraBufferDesc, NULL, &m_cameraBuffer);
 	if (FAILED(result))
 	{
 		return false;

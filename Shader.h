@@ -19,13 +19,6 @@ private:
 	XMMATRIX viewMatrix;
 	XMMATRIX projectionMatrix;
 	};
-	struct CameraBufferType
-	{
-		float cameraX;
-		float cameraY;
-		float cameraZ;
-		float globalLight;
-	};
 public:
 	Shader(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
 	Shader(Shader &shader);
@@ -36,7 +29,6 @@ public:
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* texture);
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, UINT index);
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
-	bool SetShaderParameters(ID3D11DeviceContext * deviceContext, float cameraX, float cameraY,float cameraZ,float light);
 
 
 	string GetName();
