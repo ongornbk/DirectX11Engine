@@ -61,6 +61,11 @@ static uint8_t tilesub[32] ={
 		m_cellMultiplier = multiplier/100.0f;
 	}
 
+	void LoadTilesResourceFromFile(std::string filename)
+	{
+
+	}
+
 }
 
 extern "C++"

@@ -40,10 +40,7 @@ bool Network::StartServer(uint16_t port)
 	{
 		return false;
 	}
-	else
-	{
-		m_server = new Server(port);
-	}
+		return m_server = new Server(port);
 }
 
 Network::Network()

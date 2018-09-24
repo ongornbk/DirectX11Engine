@@ -123,7 +123,7 @@ void Onion::Console::SetTitle(std::string title)
 
 std::string Onion::Console::GetInput()
 {
-	return GetInstance()->GetInput();
+	return GetInstance()->__GetInput();
 }
 
 

@@ -52,10 +52,8 @@ bool TaskQueue::Update()
 			m_tasks.pop();
 		}
 	}
-	else
-	{
 		return false;
-	}
+
 }
 void TaskQueue::SetTask(Task* task)
 {

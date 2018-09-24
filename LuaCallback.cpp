@@ -80,7 +80,7 @@ namespace lua_callback
 		m_input = input;
 	}
 
-	static int LoadTexture(lua_State* state) //EXPORTED
+	static int LoadTexture(lua_State* state)
 	{
 #pragma warning(disable : 4996)
 			string str = LUA_STRING(state,1);
@@ -92,7 +92,7 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int LoadSound(lua_State* state) //EXPORTED
+	static int LoadSound(lua_State* state)
 	{
 #pragma warning(disable : 4996)
 		string str = LUA_STRING(state, 1);
@@ -106,19 +106,19 @@ namespace lua_callback
 	}
 
 
-	static int InitializeProjectionMatrix(lua_State* state) //EXPORTED
+	static int InitializeProjectionMatrix(lua_State* state)
 	{
 		m_camera->InitializeProjectionMatrix((float)XM_PI / LUA_FLOAT(state, 1), Settings::GetAspectRatio(),1.0f / LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
 		return 0;
 	}
 
-	static int InitializeOrthoMatrix(lua_State* state) //EXPORTED
+	static int InitializeOrthoMatrix(lua_State* state)
 	{
 		m_camera->InitializeOrthoMatrix(*(Settings::get()->RESOLUTION_X), *(Settings::get()->RESOLUTION_Y), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
 		return 0;
 	}
 
-	static int SetCameraPosition(lua_State* state) //EXPORTED
+	static int SetCameraPosition(lua_State* state)
 	{
 		XMVECTOR position;
 		position.m128_f32[0] = LUA_FLOAT(state, 1);
@@ -128,21 +128,21 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int AddMusic(lua_State* state) //EXPORTED
+	static int AddMusic(lua_State* state)
 	{
 		string str = LUA_STRING(state, 1);
 		m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
 		return 0;
 	}
 
-	static int AddModelPaths(lua_State* state) //EXPORTED
+	static int AddModelPaths(lua_State* state)
 	{
 		string str = LUA_STRING(state, 1);
 		m_engine->AddModelPaths(str);
 		return 0;
 	}
 
-	static int PlayMusic(lua_State* state) //EXPORTED
+	static int32_t PlayMusic(lua_State* state) noexcept
 	{
 #pragma warning(disable : 4996)
 		string str = LUA_STRING(state, 1);
@@ -155,19 +155,19 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int StartServer(lua_State* state) //EXPORTED
+	static int32_t StartServer(lua_State* state) noexcept
 	{
 		Network::StartServer((uint16_t)lua_tointeger(state, 1));
 		return 0;
 	}
 
-	static int __PostQuitMessage(lua_State* state) //EXPORTED
+	static int32_t __PostQuitMessage(lua_State* state) noexcept
 	{
 		PostQuitMessage((int)lua_tointeger(state, 1));
 		return 0;
 	}
 
-	static int __IsKeyHit(lua_State* state) //EXPORTED
+	static int32_t __IsKeyHit(lua_State* state) noexcept
 	{
 		if (m_input->IsKeyHit((unsigned int)lua_tointeger(state,1)))
 		{
@@ -179,9 +179,9 @@ namespace lua_callback
 		}
 		return 1;
 	}
-	static int __IsKeyPressed(lua_State* state) //EXPORTED
+	static int32_t __IsKeyPressed(lua_State* state) noexcept
 	{
-		if (m_input->IsKeyDown((unsigned int)lua_tointeger(state, 1)))
+		if (m_input->IsKeyDown((uint32_t)lua_tointeger(state, 1)))
 		{
 			lua_pushboolean(state, true);
 		}
@@ -192,9 +192,9 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int __GetMouseState(lua_State* state) //EXPORTED
+	static int32_t __GetMouseState(lua_State* state) noexcept
 	{
-		if (m_input->GetMouseState((unsigned int)lua_tointeger(state, 1)))
+		if (m_input->GetMouseState((uint32_t)lua_tointeger(state, 1)))
 		{
 			lua_pushboolean(state,true);
 		}
@@ -205,20 +205,20 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int __GetMousePressed(lua_State* state)
+	static int32_t __GetMousePressed(lua_State* state) noexcept
 	{
 		lua_pushboolean(state,m_input->GetMousePressed((int32_t)lua_tointeger(state,1)));
 		return 1;
 	}
 
-	static int CreateUnit(lua_State* state)
+	static int CreateUnit(lua_State* state) noexcept
 	{
 		Unit* unit = new Unit();
 		m_global->m_lastCreatedUnit = unit;
 		return 0;
 	}
 
-	static int GetMousePosition(lua_State* state)
+	static int32_t GetMousePosition(lua_State* state) noexcept
 	{
 		int16_t xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
@@ -228,49 +228,27 @@ namespace lua_callback
 		return 2;
 	}
 
-	//static int PickHero(lua_State*)
-	//{
-	//	Unit* unit = GameScene::GetHero();
-	//	if (unit)
-	//	{
-	//		m_global->m_lastPickedUnit = unit;
-	//	}
-	//	else
-	//	{
-	//		Onion::Console::Println("PickHero : Hero == nullptr");
-	//	}
-	//	return 0;
-	//}
-
-	static int PickLastSelectedUnit(lua_State*)
+	static int32_t PickLastSelectedUnit(lua_State*) noexcept
 	{
 		Unit* unit = m_global->m_lastSelectedUnit;
 		if (unit)
 		{
 			m_global->m_lastPickedUnit = unit;
 		}
-		else
-		{
-			Onion::Console::Println("PickLastSelectedUnit : Unit == nullptr");
-		}
 		return 0;
 	}
 
-	static int PickLastCreatedUnit(lua_State*)
+	static int32_t PickLastCreatedUnit(lua_State*) noexcept
 	{
 		Unit* unit = m_global->m_lastCreatedUnit;
 		if (unit)
 		{
 			m_global->m_lastPickedUnit = unit;
 		}
-		else
-		{
-			Onion::Console::Println("PickLastCreatedUnit : Unit == nullptr");
-		}
 		return 0;
 	}
 
-	static int GiveTaskGotoPoint(lua_State* state)
+	static int32_t GiveTaskGotoPoint(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -284,14 +262,10 @@ namespace lua_callback
 			task->m_type = Task::Type::TASKGOTOPOINT;
 			unit->GiveTask(task);
 		}
-		else
-		{
-			Onion::Console::Println("GiveTaskGotoPoint : Unit == nullptr");
-		}
 			return 0;
 	}
 
-	static int SetTaskGotoPoint(lua_State* state)
+	static int32_t SetTaskGotoPoint(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -304,35 +278,27 @@ namespace lua_callback
 			task->m_type = Task::Type::TASKGOTOPOINT;
 			unit->SetTask(task);
 		}
-		else
-		{
-			Onion::Console::Println("SetTaskGotoPoint : Unit == nullptr");
-		}
 		return 0;
 	}
 
-	static int CleanTasks(lua_State* state)
+	static int32_t CleanTasks(lua_State* state) noexcept
 	{
 
 		m_global->m_lastPickedUnit->DiscardTasks();
 		return 0;
 	}
 
-	static int LockCameraOnUnit(lua_State* state)
+	static int32_t LockCameraOnUnit(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
 		}
-		else
-		{
-			Onion::Console::Println("LockCameraOnUnit : Unit == nullptr ERROR !!!");
-		}
 		return 0;
 	}
 
-	static int InitializeUnit(lua_State* state)
+	static int32_t InitializeUnit(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -357,7 +323,7 @@ namespace lua_callback
 		
 	}
 
-	static int SetWalkingStance(lua_State* state)
+	static int32_t SetWalkingStance(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 			Unit::WalkingStance ws;
@@ -374,13 +340,13 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int ChangeWalkingStance(lua_State* state)
+	static int32_t ChangeWalkingStance(lua_State* state) noexcept
 	{
 		m_global->m_lastPickedUnit->ChangeWalkingStance();
 		return 0;
 	}
 
-	static int SetUnitSpeed(lua_State* state)
+	static int32_t SetUnitSpeed(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -390,7 +356,7 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int PushUnitVariable(lua_State* state)
+	static int32_t PushUnitVariable(lua_State* state) noexcept
 	{
 		std::string name = LUA_STRING(state, 1);
 		bool result = m_global->m_variables.PushUnit(name, m_global->m_lastPickedUnit);
@@ -529,9 +495,15 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int SetTilesMultiplier(lua_State* state) //EXPORTED
+	static int32_t SetTilesMultiplier(lua_State* state) noexcept
 	{
 		SetCellMultiplier(LUA_FLOAT(state, 1));
+		return 0;
+	}
+
+	static int32_t __LoadTilesResourceFromFile(lua_State* state)
+	{
+		LoadTilesResourceFromFile(lua_tostring(state, 1));
 		return 0;
 	}
 
@@ -627,6 +599,7 @@ namespace lua_callback
 		//Tiles
 		lua_register(m_lua, "SetTilesMultiplier", lua_callback::SetTilesMultiplier);
 		lua_register(m_lua, "SetTile", lua_callback::SetTile);
+		lua_register(m_lua, "LoadTilesResourceFromFile", lua_callback::__LoadTilesResourceFromFile);
 		//Console
 		lua_register(m_lua, "GetInput", lua_callback::GetInput);
 		lua_register(m_lua, "Println", lua_callback::Println);

@@ -183,10 +183,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 		break;
 	}break;
 	
-	default:
-	{
-		
 	}
+
 	return DefWindowProc(hwnd, message, wParam, lParam);
-	}
+
 }

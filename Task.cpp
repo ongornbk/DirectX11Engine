@@ -281,6 +281,7 @@ bool TaskPatrol::Update()
 	{
 		m_target = false;
 	}
+	return false;
 }
 
 bool TaskFollow::Update()
@@ -317,4 +318,5 @@ bool TaskFollow::Update()
 		object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
 		object->SetVelocity(0.0f);
 	}
+	return false;
 }

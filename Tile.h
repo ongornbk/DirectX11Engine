@@ -11,7 +11,7 @@ extern "C"
 {
 	//extern void _vectorcall InitializeTemplates();
 	extern void SetCellMultiplier(float multiplier = 1.0f);
-	
+	extern void LoadTilesResourceFromFile(std::string filename);
 }
 
 extern "C++"
