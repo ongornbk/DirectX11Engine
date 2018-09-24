@@ -44,9 +44,11 @@ float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
 float xd;
 float yd;
-xd = 960.0f - abs(input.position[0]-960.0f);
-yd = 590.0f - abs(input.position[1]-590.0f);
-textureColor = mul(yd/450.0f,textureColor);
-return mul(xd/800.0f,textureColor);
+xd = (960.0f - abs(input.position[0]-960.0f))/960.0f;
+yd = (590.0f - abs(input.position[1]-590.0f))/590.0f;
+float distance = mul(yd,xd);
+distance = mul(distance,3.8f);
+distance = clamp(distance,0.15f,1.1f);
+return mul(distance,textureColor);
 
 }
