@@ -48,7 +48,7 @@ xd = (960.0f - abs(input.position[0]-960.0f))/960.0f;
 yd = (590.0f - abs(input.position[1]-590.0f))/590.0f;
 float distance = mul(yd,xd);
 distance = mul(distance,3.8f);
-distance = clamp(distance,0.15f,1.1f);
+distance = clamp(distance,0.18f,1.1f);
 return mul(distance,textureColor);
 
 }

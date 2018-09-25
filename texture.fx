@@ -42,5 +42,6 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 {
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
-return textureColor;
+
+return mul(1.05f,textureColor);
 }
