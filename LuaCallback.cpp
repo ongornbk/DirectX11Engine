@@ -473,7 +473,7 @@ namespace lua_callback
 
 	static int SetInterface(lua_State* state)
 	{
-		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("ui.fx"));
+		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
 		return 0;
 	}
 

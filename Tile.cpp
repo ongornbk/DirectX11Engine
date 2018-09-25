@@ -17,9 +17,6 @@
 
 #define ANIMATEDTILE_FRAME_COUNT 4.0f
 
-#define TILE_COLLISION_OFF      0u
-#define TILE_COLLISION_ON       1u
-#define TILE_COLLISION_EXTERNAL 2u
 
 struct TileType
 {
@@ -124,7 +121,7 @@ Tile::Tile(float x,float y,int ix,int iy)
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y, CELL_ZERO_Z));
 	m_index.i = ix;
 	m_index.j = iy;
-	m_collision = TILE_COLLISION_OFF;
+	m_collision = false;
 }
 
 Tile::Tile(XMFLOAT2 position,INDEX2 index)
@@ -132,7 +129,7 @@ Tile::Tile(XMFLOAT2 position,INDEX2 index)
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
 	m_index.i = index.i;
 	m_index.j = index.j;
-	m_collision = TILE_COLLISION_OFF;
+	m_collision = false;
 }
 
 Tile::Tile(AnimatedTile * tile)
@@ -140,7 +137,7 @@ Tile::Tile(AnimatedTile * tile)
 	m_position = tile->m_position;
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 	m_index = tile->m_index;
-	m_collision = TILE_COLLISION_OFF;
+	m_collision = false;
 }
 
 Tile::Tile(Tile * tile)
@@ -148,7 +145,7 @@ Tile::Tile(Tile * tile)
 	m_position = tile->m_position;
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 	m_index = tile->m_index;
-	m_collision = TILE_COLLISION_OFF;
+	m_collision = false;
 }
 
 
@@ -384,7 +381,7 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 			delete map[index.i][index.j];
 			map[index.i][index.j] = (Tile*)tilep;
 			map[index.i][index.j]->m_type = Tile::Type::ANIMATEDTILE;
-			map[index.i][index.j]->m_collision = TILE_COLLISION_ON;
+			map[index.i][index.j]->m_collision = true;
 
 		}
 		else
@@ -401,7 +398,7 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 			delete (AnimatedTile*)map[index.i][index.j];
 			map[index.i][index.j] = tilep;
 			map[index.i][index.j]->m_type = Tile::Type::TILE;
-			map[index.i][index.j]->m_collision = TILE_COLLISION_OFF;
+			map[index.i][index.j]->m_collision = false;
 		}
 	}
 }

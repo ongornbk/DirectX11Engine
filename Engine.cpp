@@ -134,12 +134,11 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	// END LUA EXECUTE
 
 #pragma region
-	LOADSHADER  L"../Shaders/units.fx"                              END
-	LOADSHADER  L"../Shaders/tile.fx"                               END
-	LOADSHADER  L"../Shaders/ui.fx"                                 END
-	TextureShader* unitsShader = GETSHADER "units.fx"               END
-	TextureShader* uiShader    = GETSHADER "ui.fx"                  END
-	TextureShader* tileShader  = GETSHADER "tile.fx"                END
+	LOADSHADER  L"../Shaders/texture.fx"                              END
+	LOADSHADER  L"../Shaders/tile.fx"                                 END
+	LOADSHADER  L"../Shaders/units.fx"                                END
+	TextureShader* uiShader  = GETSHADER "texture.fx"                END
+	TextureShader* unitsShader = GETSHADER "units.fx"                END
 #pragma endregion
 
 	
@@ -147,7 +146,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
 	lua_callback::SetInput(m_input);
 //	InitializeTemplates();
-	m_rendererManager = new RendererManager(this, unitsShader,tileShader,uiShader);
+	m_rendererManager = new RendererManager(this, unitsShader,uiShader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);

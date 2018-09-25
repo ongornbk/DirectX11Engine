@@ -22,15 +22,19 @@ namespace
 	static UnitsVector  g_units;
 }
 
-RendererManager::RendererManager(Engine* engine,Shader* units,Shader* tile,Shader* ui)
+RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui)
 {
 	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
 	this->m_unitsShader = units;
-	this->m_uiShader = ui;
+	this->m_shader = ui;
+
+
+
+
 	m_instance = this;
 	
-	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), tile,this);
+	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
 	m_map->Initialize();
 	TileMap::SetCurrentTileMap(m_map);
@@ -38,6 +42,7 @@ RendererManager::RendererManager(Engine* engine,Shader* units,Shader* tile,Shade
 	m_ui = new UserInterface();
 	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+300.0f;
 	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 300.0f;
+
 }
 
 
@@ -254,23 +259,26 @@ extern "C"
 	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 	{
 		
-		//MAP
-		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
 
-		//UNITS
-		m_unitsShader->Begin(deviceContext);
-		GRAPHICS EnableAlphaBlending(true);
-		g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_unitsShader);
-        GRAPHICS EnableAlphaBlending(false);
-        m_unitsShader->End(deviceContext);
+			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
-		//UI
-        m_uiShader->Begin(deviceContext);
-        GRAPHICS EnableAlphaBlending(true);
-        m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
-        GRAPHICS EnableAlphaBlending(false);
-        m_uiShader->End(deviceContext);
+			GRAPHICS EnableAlphaBlending(true);
 
+			m_unitsShader->Begin(deviceContext);
+			
+			g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_unitsShader);
+			
+			m_unitsShader->End(deviceContext);
+
+
+			m_shader->Begin(deviceContext);
+
+			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
+
+
+			m_shader->End(deviceContext);
+
+			GRAPHICS EnableAlphaBlending(false);
 }
 
 	extern "C"

@@ -90,7 +90,7 @@ protected:
 
 public:
 
-	uint8_t m_collision;
+	bool m_collision;
 
 };
 

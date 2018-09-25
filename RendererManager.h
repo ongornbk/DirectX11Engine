@@ -49,7 +49,7 @@ public:
 		REVERSE = 1
 	};
 
-	RendererManager(Engine* engine,Shader* units,Shader* tile,Shader* ui);
+	RendererManager(Engine* engine,Shader* units,Shader* ui);
 	~RendererManager();
 
 
@@ -68,8 +68,9 @@ private:
 	
 
 	Engine* m_engine;
+	Shader* m_shader;
 	Shader* m_unitsShader;
-	Shader* m_uiShader;
+
 
 
 	RenderingStyle m_renderingStyle;
