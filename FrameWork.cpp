@@ -1,13 +1,8 @@
 #include "FrameWork.h"
 #include "Defines.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "GlobalUtilities.h"
 #include "SettingsC.h"
-
-using Onion::Timer;
-using Onion::System::GetScreenHeight;
-using Onion::System::GetScreenWidth;
-using Onion::Console;
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);
 
@@ -64,7 +59,7 @@ void FrameWork::Run()
 		}
 		else
 		{
-			Timer::Update();
+			ipp::Timer::Update();
 			Engine::GetEngine()->Run();
 		}
 	}
@@ -96,8 +91,8 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		return false;
 	}
 
-	int screenWidth = GetScreenWidth();
-	int screenHeight = GetScreenHeight();
+	int screenWidth = ipp::System::GetScreenWidth();
+	int screenHeight = ipp::System::GetScreenHeight();
 
 	if (FULL_SCREEN)
 	{
@@ -147,7 +142,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	ShowWindow(m_hwnd, SW_SHOW);
 	(void)SetForegroundWindow(m_hwnd);
 	(void)SetFocus(m_hwnd);
-	Console::Println("FrameWork : Window has been created", Onion::LIGHTGREEN);
+	ipp::Console::Println("FrameWork : Window has been created", ipp::LIGHTGREEN);
 	return true;
 }
 

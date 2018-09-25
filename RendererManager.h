@@ -49,7 +49,7 @@ public:
 		REVERSE = 1
 	};
 
-	RendererManager(Engine* engine,Shader* shader);
+	RendererManager(Engine* engine,Shader* units,Shader* tile,Shader* ui);
 	~RendererManager();
 
 
@@ -57,7 +57,7 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
 	void SetRenderingStyle(RenderingStyle render);
-	void SetInterface(unsigned int type, Shader* shader);
+	void SetInterface(uint32_t type, Shader* shader);
 	void SetTile(XMFLOAT2 position, int32_t tile);
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
@@ -68,8 +68,8 @@ private:
 	
 
 	Engine* m_engine;
-	Shader* m_shader;
-
+	Shader* m_unitsShader;
+	Shader* m_uiShader;
 
 
 	RenderingStyle m_renderingStyle;

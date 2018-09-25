@@ -1,13 +1,13 @@
 #include "ResourceManager.h"
 #include "GlobalUtilities.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <map>
 #include <urlmon.h>
 #include <sstream>
 #include <fstream>
 #include <streambuf>
 
-using Onion::Console;
+using ipp::Console;
 
 #pragma region
 #define TEXTURES_LOCATION   "../../content/textures/"
@@ -65,7 +65,7 @@ ResourceManager::ResourceManager()
 	{
 		if (FAILED(GetItemByUrl(RESOURCES_URL,RESOURCES_LOCATION)))
 		{
-				Console::Println(("Download Failed : " + string(RESOURCES_URL)),Onion::RED);
+				Console::Println(("Download Failed : " + string(RESOURCES_URL)),ipp::RED);
 			return;
 		}
 		else
@@ -132,7 +132,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 			if (!resourceShader->Load(m_device,hwnd, shaderFileName))
 			{
 				delete resourceShader;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
 				return;
 			}
 			else
@@ -144,7 +144,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 		else
 		{
 			delete resourceShader;
-			Console::Println("Load Failed : ",wstring(shaderFileName), Onion::RED);
+			Console::Println("Load Failed : ",wstring(shaderFileName), ipp::RED);
 			return;
 		}
 	}
@@ -159,7 +159,7 @@ void ResourceManager::LoadShaderResource(Shader * shader)
 	if (!resourceShader->Load(shader))
 	{
 		delete resourceShader;
-		Console::Println("Unable to load shader!", Onion::RED);
+		Console::Println("Unable to load shader!", ipp::RED);
 		return;
 	}
 	m_shaders.push_back(resourceShader);
@@ -179,7 +179,7 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 			if (!resourceTexture->Load(m_device, textureFileName))
 			{
 				delete resourceTexture;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
 				return;
 			}
 			else
@@ -191,7 +191,7 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 		else
 		{
 			delete resourceTexture;
-            Console::Println(("Load Failed : " + string(m_resourcesURLS[str])), Onion::RED);
+            Console::Println(("Load Failed : " + string(m_resourcesURLS[str])), ipp::RED);
 			return;
 		}
 	}
@@ -211,7 +211,7 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 			if (!resourceSound->Load(soundFileName))
 			{
 				delete resourceSound;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), Onion::RED);
+				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
 				return;
 			}
 			else
@@ -223,7 +223,7 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 		else
 		{
 			delete resourceSound;
-			Console::Println("Load Failed : ", wstring(soundFileName), Onion::RED);
+			Console::Println("Load Failed : ", wstring(soundFileName), ipp::RED);
 			return;
 		}
 	}
@@ -232,9 +232,8 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 
 void ResourceManager::PrintOutTextures()
 {
-	using namespace Onion;
 
-	Console::SetTextColor(Onion::GOLDEN);
+	Console::SetTextColor(ipp::GOLDEN);
 	Console::Print((int)m_textures.size());
 	Console::Println(" Textures found ...");
 

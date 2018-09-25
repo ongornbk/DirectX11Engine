@@ -2,7 +2,7 @@
 #include "Engine.h"
 #include "S_ModelPaths.h"
 #include "RendererManager.h"
-#include "Onion.h"
+#include "IPP.h"
 
 Unit::Unit() : Model()
 {

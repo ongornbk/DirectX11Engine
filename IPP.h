@@ -3,13 +3,8 @@
 #include <Windows.h>
 #include <atomic>
 
-namespace Onion
+namespace ipp
 {
-
-#define SQR(x)						((x) * (x))
-#define ABS(x) ((x)<0 ? -(x) : (x))
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
 
 	constexpr double     PI_extended = 3.14159265358979323844;
 	constexpr float      PI = 3.14159f;
@@ -39,8 +34,11 @@ namespace Onion
 		return *(returntype*)(obj);
 	}
 
-	namespace Math
+	namespace math
 	{
+
+
+
 		float Sin(float degrees);
 		float Cos(float degrees);
 		float Tan(float degrees);
@@ -48,8 +46,9 @@ namespace Onion
 		float Acos(float degrees);
 		float Atan(float degrees);
 		float Atan2(float y, float x);
-		void SquashInt32(int32_t &value, int32_t min, int32_t max) noexcept;
-		bool CheckInt32(int32_t &value, int32_t min, int32_t max) noexcept;
+		void clamp(int32_t &value, int32_t min, int32_t max);
+		bool range(int32_t &value, int32_t min, int32_t max);
+
 		void SquashInt32Array(int32_t* value, int32_t size,int32_t min,int32_t max) noexcept;
 		uint8_t _cdecl RandomUint8(uint8_t min, uint8_t max) noexcept;
 	}
@@ -59,7 +58,7 @@ namespace Onion
 		int _stdcall GetScreenWidth() noexcept;
 		int _stdcall GetScreenHeight() noexcept;
 		std::string _stdcall GetFileName(const std::string &s) noexcept;
-		void _stdcall Exit(const int return_value = 0) noexcept;
+		void _stdcall Exit(const int32_t return_value = 0) noexcept;
 	}
 
 	class __Console

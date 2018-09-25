@@ -5,7 +5,7 @@
 #include "Engine.h"
 #include "Global.h"
 #include "GameScene.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "Network.h"
 
 #ifdef __cplusplus
@@ -473,7 +473,7 @@ namespace lua_callback
 
 	static int SetInterface(lua_State* state)
 	{
-		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
+		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("ui.fx"));
 		return 0;
 	}
 
@@ -530,13 +530,13 @@ namespace lua_callback
 
 	static int GetInput(lua_State* state)
 	{
-		lua_pushstring(state, (Onion::Console::GetInput().c_str()));
+		lua_pushstring(state, (ipp::Console::GetInput().c_str()));
 		return 1;
 	}
 
 	static int Println(lua_State* state)
 	{
-		Onion::Console::Println(lua_tostring(state, 1));
+		ipp::Console::Println(lua_tostring(state, 1));
 		return 0;
 	}
 

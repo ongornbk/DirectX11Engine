@@ -90,7 +90,8 @@ protected:
 
 public:
 
-	bool m_collision;
+	uint8_t m_collision;
+
 };
 
 class AnimatedTile : Tile

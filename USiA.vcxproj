@@ -209,7 +209,7 @@
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Network.h" />
-    <ClInclude Include="Onion.h" />
+    <ClInclude Include="IPP.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleVertexBuffer.h" />
     <ClInclude Include="pch.h" />
@@ -289,7 +289,7 @@
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Network.cpp" />
-    <ClCompile Include="Onion.cpp" />
+    <ClCompile Include="IPP.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleVertexBuffer.cpp" />
     <ClCompile Include="Region.cpp" />

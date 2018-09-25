@@ -1,10 +1,9 @@
 #include "Input.h"
 #include <iostream>
 #include "GlobalUtilities.h"
-#include "Onion.h"
+#include "IPP.h"
 
 using GlobalUtilities::Unacquire;
-using Onion::Console;
 
 Input::DeviceReadingState Input::m_readingState = Input::DeviceReadingState::READ_KEYBOARDANDMOUSE;
 
@@ -93,7 +92,7 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 	{
 		return false;
 	}
-	Console::Println("DirectInput Initialized Successfully!", Onion::LIGHTGREEN);
+	ipp::Console::Println("DirectInput Initialized Successfully!", ipp::LIGHTGREEN);
 	return true;
 }
 

@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 #include "Font.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -9,8 +9,6 @@
 
 
 #define FONTPATH "../../content/Textures/font/"
-
-using Onion::Console;
 
 namespace
 {
@@ -58,8 +56,8 @@ void Font::LoadFontFromFile(std::string filename,float width,float height)
 	ifstream stream(filename);
 	if (!stream.good())
 	{
-		Console::SetTextColor(Onion::RED);
-		Console::Println("Bad stream : " + filename);
+		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::Println("Bad stream : " + filename);
 	}
 	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 	istringstream ss(BUFFER);

@@ -3,16 +3,12 @@
 #include "GlobalUtilities.h"
 #include "Camera.h"
 #include "RendererManager.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <array>
 #include <fstream>
 #include <string>
 #include <streambuf>
 #include <sstream>
-
-
-using Onion::Math::SquashInt32;
-using Onion::Math::SquashInt32Array;
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
 
@@ -20,6 +16,10 @@ using Onion::Math::SquashInt32Array;
 #define TILE_NUMBER_OF_TEXTURES 13
 
 #define ANIMATEDTILE_FRAME_COUNT 4.0f
+
+#define TILE_COLLISION_OFF      0u
+#define TILE_COLLISION_ON       1u
+#define TILE_COLLISION_EXTERNAL 2u
 
 struct TileType
 {
@@ -80,7 +80,7 @@ extern "C++"
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
 		_i[0] = (int)_f[0];
 		_i[1] = (int)_f[1];
-		SquashInt32Array(_i, 2, 0, TILE_MAP_RANGE);
+		ipp::math::SquashInt32Array(_i, 2, 0, TILE_MAP_RANGE);
 		INDEX2 index(_i[0], _i[1]);
 		return index;
 	}
@@ -95,7 +95,7 @@ extern "C++"
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
 		_i[0] = (int)_f[0];
 		_i[1] = (int)_f[1];
-		SquashInt32Array(_i, 2, 0, TILE_MAP_RANGE);
+		ipp::math::SquashInt32Array(_i, 2, 0, TILE_MAP_RANGE);
 		INDEX2 index(_i[0], _i[1]);
 		return index;
 	}
@@ -124,7 +124,7 @@ Tile::Tile(float x,float y,int ix,int iy)
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y, CELL_ZERO_Z));
 	m_index.i = ix;
 	m_index.j = iy;
-	m_collision = false;
+	m_collision = TILE_COLLISION_OFF;
 }
 
 Tile::Tile(XMFLOAT2 position,INDEX2 index)
@@ -132,7 +132,7 @@ Tile::Tile(XMFLOAT2 position,INDEX2 index)
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
 	m_index.i = index.i;
 	m_index.j = index.j;
-	m_collision = false;
+	m_collision = TILE_COLLISION_OFF;
 }
 
 Tile::Tile(AnimatedTile * tile)
@@ -140,7 +140,7 @@ Tile::Tile(AnimatedTile * tile)
 	m_position = tile->m_position;
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 	m_index = tile->m_index;
-	m_collision = false;
+	m_collision = TILE_COLLISION_OFF;
 }
 
 Tile::Tile(Tile * tile)
@@ -148,7 +148,7 @@ Tile::Tile(Tile * tile)
 	m_position = tile->m_position;
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 	m_index = tile->m_index;
-	m_collision = false;
+	m_collision = TILE_COLLISION_OFF;
 }
 
 
@@ -336,7 +336,7 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	renderInts[1] = (int)_f[0] + tile::CAMERA_TILE_VIEW;
 	int tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	int tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
-	SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
+	ipp::math::SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
 	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
 	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
@@ -371,25 +371,25 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 
 void TileMap::SetTile(INDEX2 index, int32_t tile)
 {
-	SquashInt32(tile, 0, 8);
+	ipp::math::clamp(tile, 0, 8);
 	m_tile[index.i][index.j].tile_type = (uint8_t)tile;
-	m_tile[index.i][index.j].tile_sub = Onion::Math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);
+	m_tile[index.i][index.j].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);
 	if (tile == 7)
 	{
 
 		if (map[index.i][index.j]->m_type == Tile::Type::TILE)
 		{
 
-			AnimatedTile* tilep = new AnimatedTile(map[index.i][index.j], m_texture[tile][Onion::Math::RandomUint8(0u, tile::tilesub[tile])]);
+			AnimatedTile* tilep = new AnimatedTile(map[index.i][index.j], m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);
 			delete map[index.i][index.j];
 			map[index.i][index.j] = (Tile*)tilep;
 			map[index.i][index.j]->m_type = Tile::Type::ANIMATEDTILE;
-			map[index.i][index.j]->m_collision = true;
+			map[index.i][index.j]->m_collision = TILE_COLLISION_ON;
 
 		}
 		else
 		{
-			((AnimatedTile*)map[index.i][index.j])->SetTexture(m_texture[tile][Onion::Math::RandomUint8(0u,tile::tilesub[tile])]);
+			((AnimatedTile*)map[index.i][index.j])->SetTexture(m_texture[tile][ipp::math::RandomUint8(0u,tile::tilesub[tile])]);
 		}
 	}
 	else
@@ -401,7 +401,7 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 			delete (AnimatedTile*)map[index.i][index.j];
 			map[index.i][index.j] = tilep;
 			map[index.i][index.j]->m_type = Tile::Type::TILE;
-			map[index.i][index.j]->m_collision = false;
+			map[index.i][index.j]->m_collision = TILE_COLLISION_OFF;
 		}
 	}
 }

@@ -1,8 +1,8 @@
 #include "AnimatedSprite.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "Engine.h"
 
-using Onion::Timer;
+using ipp::Timer;
 
 AnimatedSprite::AnimatedSprite(float size, float framesPerSecond, float animationSpeed, bool isLooping) : Sprite(size)
 {

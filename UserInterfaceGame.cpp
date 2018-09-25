@@ -1,7 +1,7 @@
 #include "UserInterfaceGame.h"
 #include "SettingsC.h"
 #include "LetterSprite.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "Defines.h"
 #include <sstream>
 

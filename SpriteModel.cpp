@@ -1,8 +1,6 @@
 #include "SpriteModel.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "Engine.h"
-
-using Onion::Timer;
 
 #define SPRITEMODEL_DEFAULT_ROTATION       0.0f
 #define SPRITEMODEL_DEFAULT_ROTATION_SPEED 0.01f

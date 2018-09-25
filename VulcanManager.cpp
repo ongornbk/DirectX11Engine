@@ -1,5 +1,5 @@
 #include "VulcanManager.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <vector>
 
 VulcanManager::VulcanManager()
@@ -25,9 +25,9 @@ bool VulcanManager::Initialize(int screenWidth, int screenHeight, bool fullscree
 	auto ret = vkCreateInstance(&instanceCreateInfo, nullptr,&m_instance);
 	if (ret != VK_SUCCESS)
 	{
-		Onion::Console::SetTextColor(Onion::TextColors::RED);
-		Onion::Console::Println("CRTITICAL_ERROR vkInstanceCreateInfo");
-		Onion::System::Exit(-1);
+		ipp::Console::SetTextColor(ipp::TextColors::RED);
+		ipp::Console::Println("CRTITICAL_ERROR vkInstanceCreateInfo");
+		ipp::System::Exit(-1);
 	}
 
 	{
@@ -54,9 +54,9 @@ bool VulcanManager::Initialize(int screenWidth, int screenHeight, bool fullscree
 		}
 		if (found == VK_FALSE)
 		{
-			Onion::Console::SetTextColor(Onion::TextColors::RED);
-			Onion::Console::Println("CRITICAL_ERROR VK_QUEUE_GRAPHICS_BIT not found");
-			Onion::System::Exit(-1);
+			ipp::Console::SetTextColor(ipp::TextColors::RED);
+			ipp::Console::Println("CRITICAL_ERROR VK_QUEUE_GRAPHICS_BIT not found");
+			ipp::System::Exit(-1);
 		}
 
 	}
@@ -75,9 +75,9 @@ bool VulcanManager::Initialize(int screenWidth, int screenHeight, bool fullscree
 	VkResult err = vkCreateDevice(m_gpu,&device_create_info, nullptr, &m_device);
 	if (VK_SUCCESS != err)
 	{
-		Onion::Console::SetTextColor(Onion::TextColors::RED);
-		Onion::Console::Println("CRITICAL_ERROR vkCreateDevice");
-		Onion::System::Exit(-1);
+		ipp::Console::SetTextColor(ipp::TextColors::RED);
+		ipp::Console::Println("CRITICAL_ERROR vkCreateDevice");
+		ipp::System::Exit(-1);
 	}
 	return true;
 }

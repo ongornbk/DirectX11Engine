@@ -1,7 +1,7 @@
 #include "FrameWork.h"
 #include "GameScene.h"
 #include "SettingsC.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -33,8 +33,8 @@ void main(int argc,char** argv)
 	ifstream stream(SETTINGS_LOCATION);
 	if (!stream.good())
 	{
-		Onion::Console::SetTextColor(Onion::RED);
-		Onion::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
+		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
 	}
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
 	istringstream ss(BUFFER);

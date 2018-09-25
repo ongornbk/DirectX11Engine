@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include "GlobalUtilities.h"
-#include "Onion.h"
+#include "IPP.h"
 #include <d3dcompilerW.h>
 #include "Defines.h"
 
@@ -251,7 +251,6 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
-	D3D11_BUFFER_DESC cameraBufferDesc;
 
 	result = D3DCompileFromFile(shaderFileName, NULL,NULL,"VSMain", "vs_4_0",D3DCOMPILE_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))

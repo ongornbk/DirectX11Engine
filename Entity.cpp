@@ -1,9 +1,7 @@
 #include "Entity.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "Engine.h"
 #include "GlobalUtilities.h"
-
-using Onion::Timer;
 
 Entity::Entity()
 {
@@ -40,7 +38,7 @@ void Entity::InitializeAnimatedSprite(ID3D11Device * device, ID3D11DeviceContext
 void Entity::Update()
 {
 
-	float dt = Timer::GetDeltaTime();
+	float dt = ipp::Timer::GetDeltaTime();
 	m_position += m_velocity * dt;
 	m_velocity *= 0.99f;
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_position.m128_f32[0], m_position.m128_f32[1], m_position.m128_f32[2]));

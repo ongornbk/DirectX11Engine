@@ -1,13 +1,10 @@
 #include "RendererManager.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "SettingsC.h"
 #include "Defines.h"
 #include <future>
 #include <mutex>
 #include <stack>
-
-using Onion::Timer;
-using std::mutex;
 
 #pragma region
 class Unit;
@@ -25,13 +22,15 @@ namespace
 	static UnitsVector  g_units;
 }
 
-RendererManager::RendererManager(Engine* engine,Shader* shader)
+RendererManager::RendererManager(Engine* engine,Shader* units,Shader* tile,Shader* ui)
 {
 	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
+	this->m_unitsShader = units;
+	this->m_uiShader = ui;
 	m_instance = this;
-	this->m_shader = shader;
-	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
+	
+	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), tile,this);
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
 	m_map->Initialize();
 	TileMap::SetCurrentTileMap(m_map);
@@ -255,16 +254,23 @@ extern "C"
 	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 	{
 		
-		
+		//MAP
 		m_map->Render(deviceContext, viewMatrix, projectionMatrix,m_cameraPosition);
-		m_shader->Begin(deviceContext);
+
+		//UNITS
+		m_unitsShader->Begin(deviceContext);
 		GRAPHICS EnableAlphaBlending(true);
-		g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_shader);
-		m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
+		g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_unitsShader);
+        GRAPHICS EnableAlphaBlending(false);
+        m_unitsShader->End(deviceContext);
 
+		//UI
+        m_uiShader->Begin(deviceContext);
+        GRAPHICS EnableAlphaBlending(true);
+        m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
+        GRAPHICS EnableAlphaBlending(false);
+        m_uiShader->End(deviceContext);
 
-GRAPHICS EnableAlphaBlending(false);
-m_shader->End(deviceContext);
 }
 
 	extern "C"
@@ -292,7 +298,7 @@ void RendererManager::Update()
 #pragma endregion
 	m_cameraPosition = CAMERA GetPosition();
 	m_ui->Update(m_cameraPosition);
-	float dt = Timer::GetDeltaTime();
+	float dt = ipp::Timer::GetDeltaTime();
 	m_map->Update(dt);
 
 	if (m_engine->GetGameStance() == false)
@@ -312,7 +318,7 @@ void RendererManager::SetRenderingStyle(RenderingStyle render)
 	m_renderingStyle = render;
 }
 
-void RendererManager::SetInterface(unsigned int type,Shader* shader)
+void RendererManager::SetInterface(uint32_t type,Shader* shader)
 {
 	m_ui->SetScene(type, shader);
 }

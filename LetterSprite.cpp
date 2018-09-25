@@ -1,6 +1,6 @@
 #include "LetterSprite.h"
 #include "ResourceManager.h"
-#include "Onion.h"
+#include "IPP.h"
 
 
 LetterSprite::LetterSprite(Font * font,char letter, float size,Shader* shader)

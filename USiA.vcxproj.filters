@@ -216,9 +216,6 @@
     <ClInclude Include="UserInterfaceGameMenu.h">
       <Filter>Header Files\Graphics\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Onion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -313,6 +310,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -443,9 +443,6 @@
     <ClCompile Include="UserInterfaceGameMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Onion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -534,6 +531,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IPP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

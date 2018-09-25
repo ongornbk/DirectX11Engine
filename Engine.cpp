@@ -1,6 +1,6 @@
 
 #include "Engine.h"
-#include "Onion.h"
+#include "IPP.h"
 #include "SettingsC.h"
 #include "LUAManager.h"
 #include "LuaCallback.cpp"
@@ -13,8 +13,6 @@
 #include <istream>
 #include <sstream>
 #include <stack>
-
-using namespace Onion;
 
 Engine* Engine::m_instance = NULL;
 
@@ -136,9 +134,12 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	// END LUA EXECUTE
 
 #pragma region
-	LOADSHADER  L"../Shaders/texture.fx"                            END //HANDLED
-	LOADSHADER  L"../Shaders/tile.fx"                               END //HANDLED
-	TextureShader* shader = GETSHADER "texture.fx"                  END //HANDLED
+	LOADSHADER  L"../Shaders/units.fx"                              END
+	LOADSHADER  L"../Shaders/tile.fx"                               END
+	LOADSHADER  L"../Shaders/ui.fx"                                 END
+	TextureShader* unitsShader = GETSHADER "units.fx"               END
+	TextureShader* uiShader    = GETSHADER "ui.fx"                  END
+	TextureShader* tileShader  = GETSHADER "tile.fx"                END
 #pragma endregion
 
 	
@@ -146,7 +147,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
 	lua_callback::SetInput(m_input);
 //	InitializeTemplates();
-	m_rendererManager = new RendererManager(this, shader);
+	m_rendererManager = new RendererManager(this, unitsShader,tileShader,uiShader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);
@@ -170,7 +171,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	else
 	{
-		Onion::Console::Println("No game component!", Onion::TextColors::RED);
+		ipp::Console::Println("No game component!", ipp::TextColors::RED);
 	}
 	
 	
@@ -378,7 +379,7 @@ void Engine::Update()
 		{
 			m_gameComponent->Update();
 		}
-	float dt = Timer::GetDeltaTime();
+	float dt = ipp::Timer::GetDeltaTime();
 	m_cameraControl.Update(dt);
 	m_rendererManager->Update();
 	(void)m_input->Update();

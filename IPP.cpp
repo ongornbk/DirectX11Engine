@@ -1,33 +1,32 @@
-
-#include "Onion.h"
-#include <atomic>
+#include "IPP.h"
 #include <mutex>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 
-__int64 Onion::Timer::m_prevFrame = 0;
-__int64 Onion::Timer::m_currentFrame = 0;
-__int64 Onion::Timer::m_freq = 0;
-float Onion::Timer::m_deltaTime = 0.0f;
+__int64 ipp::Timer::m_prevFrame = 0;
+__int64 ipp::Timer::m_currentFrame = 0;
+__int64 ipp::Timer::m_freq = 0;
+float ipp::Timer::m_deltaTime = 0.0f;
 
 
 namespace
 {
-	static Onion::Console* m_instance = nullptr;
+	static ipp::Console* m_instance = nullptr;
 	static std::mutex m_consoleMutex;
 }
 
-Onion::Console::~Console(void)
+ipp::Console::~Console(void)
 {
 }
 
-Onion::Console::Console(void) : __Console()
+ipp::Console::Console(void) : __Console()
 {
 
 }
 
-Onion::Console* Onion::Console::GetInstance()
+ipp::Console* ipp::Console::GetInstance()
 {
 	std::lock_guard<std::mutex> guard(m_consoleMutex);
 	if (m_instance)
@@ -37,7 +36,7 @@ Onion::Console* Onion::Console::GetInstance()
 	else return new Console();
 }
 
-void Onion::Console::Release()
+void ipp::Console::Release()
 {
 	if (m_instance)
 	{
@@ -46,147 +45,147 @@ void Onion::Console::Release()
 	}
 }
 
-void Onion::Console::Println(std::string text)
+void ipp::Console::Println(std::string text)
 {
 	GetInstance()->__Print(text + "\n");
 }
 
-void Onion::Console::Println(std::string text, TextColors color)
+void ipp::Console::Println(std::string text, TextColors color)
 {
 	GetInstance()->__Print(text + "\n", color);
 }
 
-void Onion::Console::Println(std::string text, std::wstring wide, TextColors color)
+void ipp::Console::Println(std::string text, std::wstring wide, TextColors color)
 {
 	GetInstance()->__Print(text, wide, color);
 }
 
-void Onion::Console::Println(std::string text, const int value)
+void ipp::Console::Println(std::string text, const int value)
 {
 	GetInstance()->__Print(text+ "\n", value);
 }
 
-void Onion::Console::Println(float number)
+void ipp::Console::Println(float number)
 {
 	GetInstance()->__Println(number);
 }
 
-void Onion::Console::Println(uint32_t number)
+void ipp::Console::Println(uint32_t number)
 {
 	GetInstance()->__Println(number);
 }
 
-void Onion::Console::Print(std::string text)
+void ipp::Console::Print(std::string text)
 {
 	GetInstance()->__Print(text);
 }
 
-void Onion::Console::Print(float number)
+void ipp::Console::Print(float number)
 {
 	GetInstance()->__Print(number);
 }
 
-void Onion::Console::Print(int number)
+void ipp::Console::Print(int number)
 {
 	GetInstance()->__Print(number);
 }
 
-void Onion::Console::Print(void * address)
+void ipp::Console::Print(void * address)
 {
 	GetInstance()->__Print(address);
 }
 
-void Onion::Console::Flush()
+void ipp::Console::Flush()
 {
 	GetInstance()->__Flush();
 }
 
-void Onion::Console::SetCursorPosition(int16_t x, int16_t y)
+void ipp::Console::SetCursorPosition(int16_t x, int16_t y)
 {
 	GetInstance()->__SetCursorPosition(x, y);
 }
 
-void Onion::Console::SetTextColor(TextColors color)
+void ipp::Console::SetTextColor(TextColors color)
 {
 	GetInstance()->__SetTextColor(color);
 }
 
-void Onion::Console::SetTextColor(uint16_t color)
+void ipp::Console::SetTextColor(uint16_t color)
 {
 	GetInstance()->__SetTextColor(color);
 }
 
-void Onion::Console::SetTitle(std::string title)
+void ipp::Console::SetTitle(std::string title)
 {
 	SetConsoleTitle(title.c_str());
 }
 
-std::string Onion::Console::GetInput()
+std::string ipp::Console::GetInput()
 {
 	return GetInstance()->__GetInput();
 }
 
 
 
-Onion::__Console::__Console(void)
+ipp::__Console::__Console(void)
 {
 	m_outputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(m_outputHandle, &m_screenBuffer);
 }
 
-Onion::__Console::~__Console(void)
+ipp::__Console::~__Console(void)
 {
 }
 
-void Onion::__Console::__Println(float number)
+void ipp::__Console::__Println(float number)
 {
 	printf("%f\n",number);
 }
 
-void Onion::__Console::__Println(uint32_t number)
+void ipp::__Console::__Println(uint32_t number)
 {
 	printf("%u\n", number);
 }
 
-void Onion::__Console::__Print(std::string text)
+void ipp::__Console::__Print(std::string text)
 {
 	printf("%s", text.c_str());
 }
 
-void Onion::__Console::__Print(std::string text, TextColors color)
+void ipp::__Console::__Print(std::string text, TextColors color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 	printf("%s", text.c_str());
 }
 
-void Onion::__Console::__Print(std::string text, std::wstring wide, TextColors color)
+void ipp::__Console::__Print(std::string text, std::wstring wide, TextColors color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 	printf("%s", text.c_str());
 	wprintf(L"%s", wide.c_str());
 }
 
-void Onion::__Console::__Print(std::string text, const int32_t value)
+void ipp::__Console::__Print(std::string text, const int32_t value)
 {
 	printf("%s%d", text.c_str(),value);
 }
 
-void Onion::__Console::__Print(float number)
+void ipp::__Console::__Print(float number)
 {
 	printf("%f", number);
 }
 
-void Onion::__Console::__Print(int32_t number)
+void ipp::__Console::__Print(int32_t number)
 {
 	printf("%d", number);
 }
 
-void Onion::__Console::__Print(void * address)
+void ipp::__Console::__Print(void * address)
 {
 	printf("%p", address);
 }
 
-void Onion::__Console::__Flush()
+void ipp::__Console::__Flush()
 {
 	DWORD written;
 	FillConsoleOutputCharacterA(m_outputHandle, ' ', m_screenBuffer.dwSize.X * m_screenBuffer.dwSize.Y, { 0,0 }, &written);
@@ -194,29 +193,29 @@ void Onion::__Console::__Flush()
 	__SetCursorPosition(0u, 0u);
 }
 
-void Onion::__Console::__SetCursorPosition(int16_t x, int16_t y)
+void ipp::__Console::__SetCursorPosition(int16_t x, int16_t y)
 {
 	SetConsoleCursorPosition(m_outputHandle, { x,y });
 }
 
-void Onion::__Console::__SetTextColor(TextColors color)
+void ipp::__Console::__SetTextColor(TextColors color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 }
 
-void Onion::__Console::__SetTextColor(uint16_t color)
+void ipp::__Console::__SetTextColor(uint16_t color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 }
 
-std::string Onion::__Console::__GetInput()
+std::string ipp::__Console::__GetInput()
 {
 	std::string input{};
 	std::getline(std::cin,input);
 	return input;
 }
 
-void Onion::Timer::Update()
+void ipp::Timer::Update()
 {
 	m_deltaTime = 0.0f;
 	QueryPerformanceFrequency((LARGE_INTEGER*)&m_freq);
@@ -226,7 +225,7 @@ void Onion::Timer::Update()
 	m_prevFrame = m_currentFrame;
 }
 
-float Onion::Timer::GetDeltaTime()
+float ipp::Timer::GetDeltaTime()
 {
 	float dt = m_deltaTime;
 	if (dt <= 0.0f || dt > 1.0f)
@@ -237,7 +236,7 @@ float Onion::Timer::GetDeltaTime()
 	return dt;
 }
 
-void Onion::Timer::GetDeltaTime(float & dt)
+void ipp::Timer::GetDeltaTime(float & dt)
 {
 	dt = m_deltaTime;
 	if (dt <= 0.0f || dt > 1.0f)
@@ -246,42 +245,43 @@ void Onion::Timer::GetDeltaTime(float & dt)
 	}
 }
 
-float Onion::Math::Sin(float degrees)
+float ipp::math::Sin(float degrees)
 {
-	return sin(degrees * (Onion::PI / 180.0f));
+	return sin(degrees * (ipp::PI / 180.0f));
 }
 
-float Onion::Math::Cos(float degrees)
+float ipp::math::Cos(float degrees)
 {
-	return cos(degrees * (Onion::PI / 180.0f));
+	return cos(degrees * (ipp::PI / 180.0f));
 }
 
-float Onion::Math::Tan(float degrees)
+float ipp::math::Tan(float degrees)
 {
-	return tan(degrees * (Onion::PI / 180.0f));
+	return tan(degrees * (ipp::PI / 180.0f));
 }
 
-float Onion::Math::Asin(float degrees)
+float ipp::math::Asin(float degrees)
 {
-	return asin(degrees) * (180.0f / Onion::PI);
+	return asin(degrees) * (180.0f / ipp::PI);
 }
 
-float Onion::Math::Acos(float degrees)
+float ipp::math::Acos(float degrees)
 {
-	return acos(degrees) * (180.0f / Onion::PI);
+	return acos(degrees) * (180.0f / ipp::PI);
 }
 
-float Onion::Math::Atan(float degrees)
+float ipp::math::Atan(float degrees)
 {
-	return atan(degrees) * (180.0f / Onion::PI);
+	return atan(degrees) * (180.0f / ipp::PI);
 }
 
-float Onion::Math::Atan2(float y, float x)
+float ipp::math::Atan2(float y, float x)
 {
-	return atan2(y, x) * (180.0f / Onion::PI);
+	return atan2(y, x) * (180.0f / ipp::PI);
 }
 
-void Onion::Math::SquashInt32(int32_t & value, int32_t min, int32_t max) noexcept
+
+void ipp::math::clamp(int32_t & value, int32_t min, int32_t max)
 {
 		if (value > max)
 		{
@@ -295,7 +295,7 @@ void Onion::Math::SquashInt32(int32_t & value, int32_t min, int32_t max) noexcep
 		}
 }
 
-bool Onion::Math::CheckInt32(int32_t & value, int32_t min, int32_t max) noexcept
+bool ipp::math::range(int32_t &value, int32_t min, int32_t max)
 {
 		if (value > max)
 		{
@@ -308,7 +308,7 @@ bool Onion::Math::CheckInt32(int32_t & value, int32_t min, int32_t max) noexcept
 		return true;
 }
 
-void Onion::Math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32_t max) noexcept
+void ipp::math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32_t max) noexcept
 {
 		for (char i = 0; i < size; i++)
 		{
@@ -318,22 +318,22 @@ void Onion::Math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int
 		return;
 }
 
-uint8_t _cdecl Onion::Math::RandomUint8(uint8_t min, uint8_t max) noexcept
+uint8_t _cdecl ipp::math::RandomUint8(uint8_t min, uint8_t max) noexcept
 {
 	return min + (rand() % int32_t(max - min + 1));
 }
 
-int Onion::System::GetScreenWidth() noexcept
+int ipp::System::GetScreenWidth() noexcept
 {
 	return GetSystemMetrics(SM_CXSCREEN);
 }
 
-int Onion::System::GetScreenHeight() noexcept
+int ipp::System::GetScreenHeight() noexcept
 {
 	return GetSystemMetrics(SM_CYSCREEN);
 }
 
-std::string Onion::System::GetFileName(const std::string & s) noexcept
+std::string ipp::System::GetFileName(const std::string & s) noexcept
 {
 	char sep = '/';
 
@@ -350,9 +350,10 @@ std::string Onion::System::GetFileName(const std::string & s) noexcept
 	return ("");
 }
 
-void Onion::System::Exit(const int32_t return_value) noexcept
+
+void _stdcall ipp::System::Exit(const int32_t return_value) noexcept
 {
 	if (return_value)
-		Onion::Console::Println("System::Exit Code : ",return_value);
+		ipp::Console::Println("System::Exit Code : ",return_value);
 	std::exit(return_value);
 }

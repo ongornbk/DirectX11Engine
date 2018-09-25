@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 #include "GlobalUtilities.h"
-#include "Onion.h"
+#include "IPP.h"
 
 namespace
 {
