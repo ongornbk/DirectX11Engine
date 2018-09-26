@@ -83,37 +83,39 @@ extern "C"
 	struct __SortByY {
 		bool operator()(RenderContainer* a, RenderContainer* b) const noexcept {
 
+			BoundingSphere* bsa = a->GetBoundingSphere();
+			BoundingSphere* bsb = b->GetBoundingSphere();
+
+			float radius[3];
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
-			float radius = 0.0f;
+			radius[0] = bsa->Radius;
+			radius[1] = bsb->Radius;
+			ax = bsa->Center.x;
+			ay = bsa->Center.y;
+
+			bx = bsb->Center.x;
+			by = bsb->Center.y;
+			if (radius[0] == 0.0f||radius[1] == 0.0f) goto RETURN;
+			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
-			BoundingSphere* bsa = a->GetBoundingSphere();
-			BoundingSphere* bsb = b->GetBoundingSphere();
 
-			if (a->Flag(0u))
-			{
-				ax = bsa->Center.x;
-				ay = bsa->Center.y;
-				radius = bsa->Radius;
-			}
 
-			if (b->Flag(0u))
-			{
-				bx = bsb->Center.x;
-				by = bsb->Center.y;
-				radius += bsb->Radius;
-			}
+
+
+				
+
 
 
 			distanceX = ax - bx;
 			distanceY = ay - by;
 			distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
-			if (distance < radius)
+			if (distance < radius[2])
 			{
-				collision = distance - radius;
+				collision = distance - radius[2];
 				if (a->Flag(2u))
 				{
 					if (b->Flag(2u))
@@ -155,7 +157,7 @@ extern "C"
 				}
 
 			}
-
+			RETURN:
 			return ay > by;
 		}
 	};
@@ -163,36 +165,31 @@ extern "C"
 	struct __SortByX {
 		bool operator()(RenderContainer *a, RenderContainer *b) const noexcept {
 
+			BoundingSphere* bsa = a->GetBoundingSphere();
+			BoundingSphere* bsb = b->GetBoundingSphere();
+
+			float radius[3];
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
-			float radius = 0.0f;
+			radius[0] = bsa->Radius;
+			radius[1] = bsb->Radius;
+			ax = bsa->Center.x;
+			ay = bsa->Center.y;
+
+			bx = bsb->Center.x;
+			by = bsb->Center.y;
+			if (radius[0] == 0.0f|| radius[1] == 0.0f) goto RETURN;
+			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
-			BoundingSphere* bsa = a->GetBoundingSphere();
-			BoundingSphere* bsb = b->GetBoundingSphere();
-
-			if (a->Flag(0u))
-			{
-				ax = bsa->Center.x;
-				ay = bsa->Center.y;
-				radius = bsa->Radius;
-			}
-
-			if (b->Flag(0u))
-			{
-				bx = bsb->Center.x;
-				by = bsb->Center.y;
-				radius += bsb->Radius;
-			}
-
 			distanceX = ax - bx;
 			distanceY = ay - by;
 			distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
-			if (distance < radius)
+			if (distance < radius[2])
 			{
-				collision = distance - radius;
+				collision = distance - radius[2];
 				if (a->Flag(2u))
 				{
 					if (b->Flag(2u))
@@ -227,7 +224,7 @@ extern "C"
 				}
 
 			}
-
+			RETURN:
 			return ax > bx;
 		}
 	};
