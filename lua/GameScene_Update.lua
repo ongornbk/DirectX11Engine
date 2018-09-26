@@ -87,7 +87,7 @@ then
 Println("sdsdsds")
 local x,y = GetMousePosition()
 CreateAnimatedDoodads()
-InitializeAnimatedDoodads("fire0",100,17,x,y,0,true)
+InitializeAnimatedDoodads("fire0",100,0,x,y,0,true)
 end
 if GetMouseState(0) == true
 then
