@@ -188,6 +188,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Direct2DCallback.h" />
     <ClInclude Include="DirectXHelpers.h" />
+    <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Enet.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RendererManager.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceShader.h" />
@@ -263,6 +265,7 @@
     <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Connection.cpp" />
+    <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
@@ -293,6 +296,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleVertexBuffer.cpp" />
     <ClCompile Include="Region.cpp" />
+    <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RendererManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />

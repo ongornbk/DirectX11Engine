@@ -154,7 +154,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	lua_callback::InitializeGraphics();
 
-	SuperModel::InitializeTextures();
+	//SuperModel::InitializeTextures();
 
 	
 

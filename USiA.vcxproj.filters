@@ -315,6 +315,12 @@
     <ClInclude Include="IPP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Doodads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -534,6 +540,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IPP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Doodads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

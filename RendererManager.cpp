@@ -68,10 +68,15 @@ void RendererManager::PushUnit(Unit * unit)
 	g_units.Push(unit);
 }
 
+void RendererManager::PushDoodads(Doodads * doodads)
+{
+	g_units.Push(doodads);
+}
+
 extern "C"
 {
 	struct __SortByY {
-		bool operator()(Unit* a, Unit* b) const noexcept {
+		bool operator()(RenderContainer* a, RenderContainer* b) const noexcept {
 
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
@@ -80,20 +85,21 @@ extern "C"
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
+			BoundingSphere* bsa = a->GetBoundingSphere();
+			BoundingSphere* bsb = b->GetBoundingSphere();
 
-
-			if (a->m_flags[0])
+			if (a->Flag(0u))
 			{
-				ax = a->Center.x;
-				ay = a->Center.y;
-				radius = a->Radius;
+				ax = bsa->Center.x;
+				ay = bsa->Center.y;
+				radius = bsa->Radius;
 			}
 
-			if (b->m_flags[0])
+			if (b->Flag(0u))
 			{
-				bx = b->Center.x;
-				by = b->Center.y;
-				radius += b->Radius;
+				bx = bsb->Center.x;
+				by = bsb->Center.y;
+				radius += bsb->Radius;
 			}
 
 
@@ -103,20 +109,20 @@ extern "C"
 			if (distance < radius)
 			{
 				collision = distance - radius;
-				if (a->m_flags[2])
+				if (a->Flag(2u))
 				{
-					if (b->m_flags[2])
+					if (b->Flag(2u))
 					{
 						collision /= 2.0f;
 						if (ax < bx)
 						{
-							a->Center.x += collision;
-							b->Center.x -= collision;
+							bsa->Center.x += collision;
+							bsb->Center.x -= collision;
 						}
 						else
 						{
-							a->Center.x -= collision;
-							a->Center.x += collision;
+							bsa->Center.x -= collision;
+							bsa->Center.x += collision;
 
 						}
 						//a->UpdatePosition();
@@ -124,18 +130,18 @@ extern "C"
 					}
 					else
 					{
-						if (ax < bx) a->Center.x += collision;
-						else         a->Center.x -= collision;
+						if (ax < bx) bsa->Center.x += collision;
+						else         bsa->Center.x -= collision;
 
 						//a->UpdatePosition();
 					}
 				}
 				else
 				{
-					if (b->m_flags[2])
+					if (b->Flag(2u))
 					{
-						if (ax < bx) b->Center.x -= collision;
-						else         b->Center.x += collision;
+						if (ax < bx) bsb->Center.x -= collision;
+						else         bsb->Center.x += collision;
 
 
 						//b->UpdatePosition();
@@ -150,7 +156,7 @@ extern "C"
 	};
 
 	struct __SortByX {
-		bool operator()(Unit *a, Unit *b) const noexcept {
+		bool operator()(RenderContainer *a, RenderContainer *b) const noexcept {
 
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
@@ -159,20 +165,21 @@ extern "C"
 			float distanceX = 0.0f, distanceY = 0.0f;
 			float collision = 0.0f;
 
+			BoundingSphere* bsa = a->GetBoundingSphere();
+			BoundingSphere* bsb = b->GetBoundingSphere();
 
-
-			if (a->m_flags[0])
+			if (a->Flag(0u))
 			{
-				ax = a->Center.x;
-				ay = a->Center.y;
-				radius = a->Radius;
+				ax = bsa->Center.x;
+				ay = bsa->Center.y;
+				radius = bsa->Radius;
 			}
 
-			if (b->m_flags[0])
+			if (b->Flag(0u))
 			{
-				bx = b->Center.x;
-				by = b->Center.y;
-				radius += b->Radius;
+				bx = bsb->Center.x;
+				by = bsb->Center.y;
+				radius += bsb->Radius;
 			}
 
 			distanceX = ax - bx;
@@ -181,35 +188,35 @@ extern "C"
 			if (distance < radius)
 			{
 				collision = distance - radius;
-				if (a->m_flags[2])
+				if (a->Flag(2u))
 				{
-					if (b->m_flags[2])
+					if (b->Flag(2u))
 					{
 						collision /= 2.0f;
 						if (ay < by)
 						{
-							a->Center.y += collision;
-							b->Center.y -= collision;
+							bsa->Center.y += collision;
+							bsb->Center.y -= collision;
 						}
 						else
 						{
-							a->Center.y -= collision;
-							b->Center.y += collision;
+							bsa->Center.y -= collision;
+							bsb->Center.y += collision;
 						}
 					}
 					else
 					{
-						if (ay < by) a->Center.y += collision;
-						else         a->Center.y -= collision;
+						if (ay < by) bsa->Center.y += collision;
+						else         bsa->Center.y -= collision;
 
 					}
 				}
 				else
 				{
-					if (b->m_flags[2])
+					if (b->Flag(2u))
 					{
-						if (ay < by) b->Center.y -= collision;
-						else         b->Center.y += collision;
+						if (ay < by) bsb->Center.y -= collision;
+						else         bsb->Center.y += collision;
 					}
 
 				}
@@ -220,13 +227,13 @@ extern "C"
 		}
 	};
 
-	void _stdcall SortByY(std::vector<Unit*> &vec) noexcept
+	void _stdcall SortByY(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByY());
 		m_async--;
 	}
 
-	void _stdcall SortByX(std::vector<Unit*> &vec) noexcept
+	void _stdcall SortByX(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByX());
 		m_async--;
@@ -284,9 +291,9 @@ extern "C"
 	extern "C"
 	{
 
-		void _vectorcall UpdatePart(std::vector<Unit*> vec,float dt) noexcept
+		void _vectorcall UpdatePart(std::vector<RenderContainer*> vec,float dt) noexcept
 		{
-			Unit** m_array = vec.data();
+			RenderContainer** m_array = vec.data();
 			for (uint32_t i = 0u; i < vec.size(); ++i)
 			{
 				m_array[i]->Update(dt);
@@ -358,13 +365,13 @@ void UnitsVector::Update(float dt)
 
 void UnitsVector::Sort()
 {
-	m_async = 2u;
-	std::async(std::launch::async,SortByX,(m_objects));
-	std::async(std::launch::async,SortByY,(m_objects));
-	while (m_async)
-	{
-		DoNothing();
-	}
+	//m_async = 2u;
+	//std::async(std::launch::async,SortByX,(m_objects));
+	//std::async(std::launch::async,SortByY,(m_objects));
+	//while (m_async)
+	//{
+	//	DoNothing();
+	//}
 	SortByX(m_objects);
 	SortByY(m_objects);
 }
@@ -373,7 +380,7 @@ static uint32_t sizeg = 0u;
 
 void _vectorcall UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
 {
-	Unit** objects = m_objects.data();
+	RenderContainer** objects = m_objects.data();
 	for (uint32_t i = 0; i < (uint32_t)m_objects.size(); i++)
 	{
 		objects[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
@@ -387,7 +394,8 @@ void UnitsVector::Clear()
 	{
 		if (object)
 		{
-			delete object;
+		//	delete object;
+			object->Release();
 			object = nullptr;
 		}
 	}
@@ -400,10 +408,19 @@ void UnitsVector::Push(Unit * unit)
 	m_objects.push_back(unit);
 }
 
-Boolean _stdcall CheckDistance(Unit* a, Unit* b, float range) noexcept
+void UnitsVector::Push(Doodads * doodads)
 {
-float distanceX = a->Center.x - b->Center.x;
-float distanceY = a->Center.y - b->Center.y;
+	m_objects.push_back(doodads);
+}
+
+Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float range) noexcept
+{
+
+	BoundingSphere* bsa = a->GetBoundingSphere();
+	BoundingSphere* bsb = b->GetBoundingSphere();
+
+float distanceX = bsa->Center.x - bsb->Center.x;
+float distanceY = bsa->Center.y - bsb->Center.y;
 float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 if (distance < range)
 {
@@ -417,16 +434,16 @@ else
 }
 }
 
-void _stdcall PushUnitsInRange(std::vector<Unit*>* vec,atomic<std::stack<Unit*>*>* sa,Unit* object, float range) noexcept
+void _stdcall PushUnitsInRange(std::vector<RenderContainer*>* vec,atomic<std::stack<Unit*>*>* sa, RenderContainer* object, float range) noexcept
 {
 	for (auto unit : *vec)
 	{
-		if (unit&&unit != object)
+		if (unit&&unit != object&&(unit->m_type == RenderContainer::RenderContainerType::UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
 			case 2:
-				sa->load()->push(unit);
+				sa->load()->push((Unit*)unit);
 				break;
 			case 1:
 				break;
@@ -444,12 +461,12 @@ std::stack<Unit*> _vectorcall UnitsVector::GetUnitsInRange(Unit* object, float r
 {
 	std::stack<Unit*> units;
 	atomic<std::stack<Unit*>*> sa = &units;
-	std::vector<Unit*>* upv = &g_units.m_objects;
+	std::vector<RenderContainer*>* upv = &g_units.m_objects;
 	size_t index = (size_t)object->m_index;
 	
-	std::vector<Unit*> fv(upv->begin(), upv->begin() + index);
+	std::vector<RenderContainer*> fv(upv->begin(), upv->begin() + index);
 	std::reverse(fv.begin(), fv.end());
-	std::vector<Unit*> sv(upv->begin() + index, upv->end());
+	std::vector<RenderContainer*> sv(upv->begin() + index, upv->end());
 	m_async = 2;
 	std::async(std::launch::async, PushUnitsInRange, &fv, &sa, object, range);
 	std::async(std::launch::async, PushUnitsInRange, &sv, &sa, object, range);

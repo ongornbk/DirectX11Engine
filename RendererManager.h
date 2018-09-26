@@ -5,12 +5,14 @@
 #include "UserInterfaceGame.h"
 #include "UserInterface.h"
 #include "Stack.h"
+#include "Doodads.h"
 #include <stack>
 
 #pragma region
 class Engine;
 class Model;
 class Unit;
+class Doodads;
 class UserInterfaceGame;
 class UserInterfaceGameMenu;
 class UserInterfaceMainMenu;
@@ -25,13 +27,14 @@ extern "C"
 
 struct UnitsVector
 {
-	vector<Unit*> m_objects;
+	vector<RenderContainer*> m_objects;
 
 	void Update(float dt);
 	void Sort();
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) noexcept;
 	void Clear();
 	void Push(Unit* unit);
+	void Push(Doodads* doodads);
 	static  std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
 
 };
@@ -54,6 +57,7 @@ public:
 
 
 	void PushUnit(Unit* unit);
+	void PushDoodads(Doodads* doodads);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
 	void SetRenderingStyle(RenderingStyle render);

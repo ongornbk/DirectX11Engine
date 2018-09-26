@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include "Stack.h"
 #include "VariablesManager.h"
+#include "Doodads.h"
 #include <stack>
 
 class Global
@@ -9,9 +10,10 @@ class Global
 public:
 	Global(void);
 	~Global(void);
-	Unit* m_lastPickedUnit;
-	Unit* m_lastSelectedUnit;
-	Unit* m_lastCreatedUnit;
+	Unit*    m_lastPickedUnit;
+	Unit*    m_lastSelectedUnit;
+	Unit*    m_lastCreatedUnit;
+	Doodads* m_lastCreatedDoodads;
 	Task* m_lastTask;
 	static Global* GetInstance();
 	XMFLOAT3 m_lastPoint;

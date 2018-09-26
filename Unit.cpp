@@ -24,6 +24,12 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	Model::Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 	Model::Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 	m_wanderingFlag = wander;
+	m_type = RenderContainer::RenderContainerType::UNIT;
+}
+
+void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+{
+	Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader);
 }
 
 
@@ -32,16 +38,18 @@ void Unit::Update(float dt)
 {
 	if (!m_tasks.Update())if(m_wanderingFlag)m_tasks.Wander(this);
 
+	Model::SetRenderingStance(validateRendering(Model::Center));
+
 	Model::Update(dt);
 
-	Model::SetRenderingStance(validateRendering(Model::Center));
+	
 
 	int16_t mousePosition[2];
 	UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
 	FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
 	if (Model::BoundingSphere::Contains(point))
 	{
-		Model::GoBack();
+		//Model::GoBack();
 		if (Model::BoundingSphere::Contains(point))
 		{
 			Model::m_flags[4] = true;
@@ -91,6 +99,21 @@ void Unit::GiveTask(Task * task)
 	m_tasks.QueueTask(task);
 }
 
+void Unit::Release()
+{
+	delete this;
+}
+
+bool Unit::Flag(uint8_t index)
+{
+	return m_flags[index];
+}
+
+void Unit::Flag(uint8_t index, bool boolean)
+{
+	m_flags[index] = boolean;
+}
+
 
 
 
@@ -98,6 +121,11 @@ void Unit::GiveTask(Task * task)
 float Unit::GetCollisionRadius()
 {
 	return Model::Radius;
+}
+
+BoundingSphere* Unit::GetBoundingSphere()
+{
+	return (BoundingSphere*)(this);
 }
 
 XMFLOAT3 Unit::GetPosition()

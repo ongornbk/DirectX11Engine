@@ -25,7 +25,7 @@ public:
 	void Update(float dt);
 	void UpdatePosition();
 
-	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader);
+	void __Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader);
 
 	void SetCollisionRadius(float radius = COLLISION_DISABLED_OR_NULL);
 	void SetPosition(float x = POSITION_ZERO_POINT_X, float y = POSITION_ZERO_POINT_Y,float z = POSITION_ZERO_POINT_Z);

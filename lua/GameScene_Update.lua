@@ -70,6 +70,12 @@ PickLastSelectedUnit()
 PushUnitVariable("hero")
 --LockCameraOnUnit()
 end
+if IsKeyPressed(24) == true
+then
+local x,y = GetMousePosition()
+CreateDoodads()
+InitializeDoodads("grass0",100,18,x,y,0,false)
+end
 if GetMouseState(0) == true
 then
 GetUnitVariable("hero")

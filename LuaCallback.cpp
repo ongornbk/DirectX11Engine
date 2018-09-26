@@ -218,6 +218,13 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int CreateDoodads(lua_State* state) noexcept
+	{
+		Doodads* doodads = new Doodads();
+		m_global->m_lastCreatedDoodads = doodads;
+		return 0;
+	}
+
 	static int32_t GetMousePosition(lua_State* state) noexcept
 	{
 		int16_t xm, ym;
@@ -321,6 +328,31 @@ namespace lua_callback
 		}
 		return 0;
 		
+	}
+
+	static int32_t InitializeDoodads(lua_State* state) noexcept
+	{
+		Doodads* doodads = m_global->m_lastCreatedDoodads;
+		if (doodads)
+		{
+			string str = lua_tostring(state, 1);
+			float size = (float)lua_tointeger(state, 2);
+			float collision = (float)lua_tointeger(state, 3);
+			float p_x = (float)lua_tointeger(state, 4);
+			float p_y = (float)lua_tointeger(state, 5);
+			float p_z = (float)lua_tointeger(state, 6);
+			bool pushable = lua_toboolean(state, 7);
+			XMFLOAT3 pos(p_x, p_y, p_z);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+
+
+			doodads->Initialize(m_device, m_deviceContext, m_shader, wide_string, size, collision, pos, pushable);
+			m_renderer->PushDoodads(doodads);
+		}
+		return 0;
+
 	}
 
 	static int32_t SetWalkingStance(lua_State* state) noexcept
@@ -572,6 +604,9 @@ namespace lua_callback
 		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
+		//Doodads
+		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
+		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);

@@ -1,14 +1,11 @@
 #pragma once
-#include "Model.h"
-#include "SuperModel.h"
-#include "TaskQueue.h"
-#include "Types.h"
+#include "RenderContainer.h"
 
 #pragma region
 
 #pragma endregion
 
-class Unit : public Model
+class Unit : public Model, public RenderContainer
 {
 public:
 #pragma region
@@ -20,11 +17,21 @@ public:
 #pragma endregion
 	Unit();
 	~Unit();
+
 	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths,float size, float collision, XMFLOAT3 position,bool wander = true);
-	void Update(float dt);
+
+	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) override;
+	void Update(float dt) override;
+	BoundingSphere* GetBoundingSphere() override;
+	void Release() override;
+	bool Flag(uint8_t index) override;
+	void Flag(uint8_t index, bool boolean) override;
+
 	void SetTask(Task* task);
 	void GiveTask(Task* task);
+
 	float    GetCollisionRadius();
+
 	XMFLOAT3 GetPosition();
 	float    GetSpeed();
 	void SetSpeed(float speed = 0.0f);
@@ -49,7 +56,6 @@ public:
 
 private:
 
-    uint32_t      m_index;
 	float         m_speed[2];
 	WalkingStance m_walkingStance;
 	TaskQueue     m_tasks;

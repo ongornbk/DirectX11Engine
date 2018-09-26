@@ -92,16 +92,16 @@ void Model::UpdatePosition()
 	//}
 }
 
-void Model::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader)
+void Model::__Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader)
 {
 	if (m_spriteModel&&m_flags[0])
 	{
 
 		m_spriteModel->Render(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix,shader);
-		if (m_flags[1])
-		{
-			m_spriteModel->DrawRectangle(deviceContext, shader,1);
-		}
+		//if (m_flags[1])
+		//{
+		//	m_spriteModel->DrawRectangle(deviceContext, shader,1);
+		//}
 	}
 }
 
