@@ -41,7 +41,7 @@ namespace lua_callback
 		static Global*              m_global;
 		static ID3D11Device*        m_device;
 		static ID3D11DeviceContext* m_deviceContext;
-		static TextureShader*       m_shader;
+		static TextureShader*       m_unitsShader;
 		static RendererManager*     m_renderer;
 
 	}
@@ -65,7 +65,7 @@ namespace lua_callback
 	{
 		m_device = m_engine->GetGraphics()->GetDevice();
 		m_deviceContext = m_engine->GetGraphics()->GetDeviceContext();
-		m_shader = (TextureShader*)m_resources->GetShaderByName("texture.fx");
+		m_unitsShader = (TextureShader*)m_resources->GetShaderByName("units.fx");
 	}
 
 	static void Initialize(Engine* engine)
@@ -323,7 +323,7 @@ namespace lua_callback
 		wcscpy(wide_string, ws.c_str());
 
 
-			unit->Initialize(m_device, m_deviceContext, m_shader, wide_string, size, collision, pos, wander);
+			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, wander);
 			m_renderer->PushUnit(unit);
 		}
 		return 0;
@@ -348,7 +348,7 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_shader, wide_string, size, collision, pos, pushable);
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
 			m_renderer->PushDoodads(doodads);
 		}
 		return 0;

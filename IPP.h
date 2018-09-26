@@ -68,12 +68,15 @@ namespace ipp
 		~__Console(void);
 		void __Println(float number);
 		void __Println(uint32_t number);
+		void __Println(uint64_t number);
 		void __Print(std::string text);
+		void __Print(const char* text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
 		void __Print(std::string text,const int32_t value);
 		void __Print(float number);
 		void __Print(int32_t number);
+		
 		void __Print(void* address);
 		void __Flush();
 		void __SetCursorPosition(int16_t x, int16_t y);
@@ -100,7 +103,9 @@ namespace ipp
 		static void Println(std::string text, const int value);
 		static void Println(float number);
 		static void Println(uint32_t number);
+		static void Println(uint64_t number);
 		static void Print(std::string text);
+		static void Print(const char* text);
 		static void Print(float number);
 		static void Print(int number);
 		static void Print(void* address);

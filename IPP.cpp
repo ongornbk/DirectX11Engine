@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include <inttypes.h>
 
 __int64 ipp::Timer::m_prevFrame = 0;
 __int64 ipp::Timer::m_currentFrame = 0;
@@ -75,7 +75,17 @@ void ipp::Console::Println(uint32_t number)
 	GetInstance()->__Println(number);
 }
 
+void ipp::Console::Println(uint64_t number)
+{
+	GetInstance()->__Println(number);
+}
+
 void ipp::Console::Print(std::string text)
+{
+	GetInstance()->__Print(text);
+}
+
+void ipp::Console::Print(const char * text)
 {
 	GetInstance()->__Print(text);
 }
@@ -152,6 +162,11 @@ void ipp::__Console::__Print(std::string text)
 	printf("%s", text.c_str());
 }
 
+void ipp::__Console::__Print(const char * text)
+{
+	printf("%s", text);
+}
+
 void ipp::__Console::__Print(std::string text, TextColors color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
@@ -178,6 +193,11 @@ void ipp::__Console::__Print(float number)
 void ipp::__Console::__Print(int32_t number)
 {
 	printf("%d", number);
+}
+
+void ipp::__Console::__Println(uint64_t number)
+{
+	printf("%" PRIu64, number);
 }
 
 void ipp::__Console::__Print(void * address)

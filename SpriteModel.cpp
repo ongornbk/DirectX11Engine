@@ -205,8 +205,8 @@ void SpriteModel::Resize(ID3D11Device * device, Shader * shader, float resize)
 void SpriteModel::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader)
 {
 
-		shader->SetShaderParameters(deviceContext, m_modelVariant.GetTexture(),0u);
-		shader->SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, 0u);
+		shader->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
+		shader->SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
 
 }

@@ -2,7 +2,7 @@
 #include "RendererManager.h"
 #include "IPP.h"
 
-
+using ipp::memory_cast;
 
 Doodads::Doodads()
 {
@@ -32,6 +32,9 @@ Doodads::~Doodads()
 void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR * paths, float size, float collision, XMFLOAT3 position,bool pushable)
 {
 
+	m_size = size;
+
+
 	m_vertexBuffer = new VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
@@ -45,45 +48,56 @@ void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceCont
 	
 	m_deviceContext = deviceContext;
 
-	m_size = size;
-
+	
 	m_flags[2] = pushable;
 
 	Radius = collision;
 	Center = position;
-	//Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
-	//Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
+	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
+	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 
 	m_type = RenderContainer::RenderContainerType::DOODADS;
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
+	//D3D11_MAPPED_SUBRESOURCE mappedResource;
+	//SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
+	//
+	//vertices[0].uv.x = 0.0f;
+	//vertices[0].uv.y = 1.0f;
+	//
+	//vertices[1].uv.x = 0.0f;
+	//vertices[1].uv.y = 0.0f;
+	//
+	//vertices[2].uv.x = 1.0f;
+	//vertices[2].uv.y = 0.0f;
+	//
+	//vertices[3].uv.x = 1.0f;
+	//vertices[3].uv.y = 1.0f;
+	//
+	//
+	//
+	//HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	//if (FAILED(result))
+	//{
+	//	return;
+	//}
+	//
+	//SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+	//memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
+	//m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 	
-	vertices[0].uv.x = 0.0f;
-	vertices[0].uv.y = 1.0f;
-	
-	vertices[1].uv.x = 0.0f;
-	vertices[1].uv.y = 0.0f;
-	
-	vertices[2].uv.x = 1.0f;
-	vertices[2].uv.y = 0.0f;
-	
-	vertices[3].uv.x = 1.0f;
-	vertices[3].uv.y = 1.0f;
-	
-	
-	
-	HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		return;
-	}
-	
-	SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
-	memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
-	m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
-	
-	//ipp::Console::Println((uint32_t)ipp::memory_cast<uint64_t>(m_texture));
+	//ipp::Console::Println("");
+	//ipp::Console::Print("gfx Texture    ");
+	//ipp::Console::Println(memory_cast<uint64_t>(m_texture));
+	//ipp::Console::Println("");
+	//ipp::Console::Print("Texture       ");
+	//ipp::Console::Println(memory_cast<uint64_t>(m_texture->GetTexture()));
+	//ipp::Console::Println("");
+	//ipp::Console::Print("VertexBuffer  ");
+	//ipp::Console::Println(memory_cast<uint64_t>(m_vertexBuffer));
+	//ipp::Console::Println("");
+	//ipp::Console::Print("DeviceContent ");
+	//ipp::Console::Println(memory_cast<uint64_t>(m_deviceContext));
+	//ipp::Console::Println("");
 
 }
 
@@ -104,28 +118,28 @@ void Doodads::Update(float dt)
 	m_flags[0] = validateRendering(Center);
 	if (m_flags[0])
 	{
-	XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y, Center.z));
+		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
 	}
 
-	if (TileMap::CollisionAt(Center))
-	{
-		Center = m_lastPosition;
-		if (TileMap::CollisionAt(Center))
-		{
-			m_flags[4] = true;
-			m_flags[1] = true;
-		}
-		else
-		{
-			m_flags[4] = false;
-			m_flags[1] = false;
-		}
-	}
-	else
-	{
-		m_flags[4] = false;
-		m_flags[1] = false;
-	}
+	//if (TileMap::CollisionAt(Center))
+	//{
+	//	Center = m_lastPosition;
+	//	if (TileMap::CollisionAt(Center))
+	//	{
+	//		m_flags[4] = true;
+	//		m_flags[1] = true;
+	//	}
+	//	else
+	//	{
+	//		m_flags[4] = false;
+	//		m_flags[1] = false;
+	//	}
+	//}
+	//else
+	//{
+	//	m_flags[4] = false;
+	//	m_flags[1] = false;
+	//}
 }
 
 BoundingSphere * Doodads::GetBoundingSphere()
