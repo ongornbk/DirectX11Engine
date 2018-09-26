@@ -24,9 +24,11 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	Font* font = Font::GetFontByName("ExocetLight");
 
 	m_fpsText.Initialize(device, deviceContext, shader, font);
+	m_fpsText.SetText("FPS ");
 	m_mainText.Initialize(device, deviceContext, shader, font);
-	m_fpsText.SetText("");
 	m_mainText.SetText(string(GAME_NAME_VERSION));
+	m_objectsText.Initialize(device, deviceContext, shader, font);
+	m_objectsText.SetText("OBJECTS ");
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
@@ -47,6 +49,7 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	m_objectsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
 }
@@ -62,15 +65,19 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	m_mousePosition.i = (SINDEX)(cameraPosition.m128_f32[0] + xm);
 	m_mousePosition.j = (SINDEX)(cameraPosition.m128_f32[1] - ym);
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition.i, m_mousePosition.j,cameraPosition.m128_f32[2]));
-	stringstream ss;
-	ss << m_fps;
-	string sss = ss.str();
-	string fps = "FPS " + string(ss.str());
+	stringstream ssfps,ssobj;
+	ssfps << m_fps;
+	string fps = "FPS " + string(ssfps.str());
 	m_fpsText.SetText(fps);
+	ssobj << (uint64_t)RendererManager::GetNumberOfObjects();
+	string objn = "OBJECTS " + string(ssobj.str());
+	m_objectsText.SetText(objn);
 	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
 	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
+	m_objectsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*2.0f)), cameraPosition.m128_f32[2]));
 	m_fpsText.Update();
 	m_mainText.Update();
+	m_objectsText.Update();
 }
 
 

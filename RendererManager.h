@@ -75,6 +75,8 @@ public:
 	void LoadInstanceToFile(std::string filename);
 
 	static RendererManager* GetInstance();
+	static size_t GetNumberOfObjects();
+
 private:
 
 	

@@ -107,6 +107,76 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 	return true;
 }
 
+bool VertexBuffer::InitializeAnchorBottom(ID3D11Device * device, Shader * shader, float size[2], bool writeable)
+{
+	m_shader = shader;
+	uint32_t* indices;
+	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	HRESULT result;
+
+	m_vertexCount = 4;
+	m_indexCount = 6;
+
+	m_vertices = new SpriteVertexType[m_vertexCount];
+	indices = new uint32_t[m_indexCount];
+	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
+
+	float halfSizex = size[0] / 2.0f;
+
+	m_vertices[0].position = XMFLOAT3(-halfSizex, 0.0f, 0.0f);
+	m_vertices[0].uv = XMFLOAT2(0.0f, 1.0f);
+
+	m_vertices[1].position = XMFLOAT3(-halfSizex, size[1], 0.0f);
+	m_vertices[1].uv = XMFLOAT2(0.0f, 0.0f);
+
+	m_vertices[2].position = XMFLOAT3(halfSizex, size[1], 0.0f);
+	m_vertices[2].uv = XMFLOAT2(1.0f, 0.0f);
+
+	m_vertices[3].position = XMFLOAT3(halfSizex, 0.0f, 0.0f);
+	m_vertices[3].uv = XMFLOAT2(1.0f, 1.0f);
+
+	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	vertexData.pSysMem = m_vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	delete[] indices;
+
+
+
+	return true;
+}
+
 bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float size[2], float coords[6], bool writeable)
 {
 	m_shader = shader;

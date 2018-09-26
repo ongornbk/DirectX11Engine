@@ -28,6 +28,7 @@ private:
 
 	ASINDEX2 m_mousePosition;
 	Text     m_fpsText;
+	Text     m_objectsText;
 	Text     m_mainText;
 	Engine*  m_engine;
 	Input*   m_input;

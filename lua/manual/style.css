@@ -1,4 +1,13 @@
 table, th, td {
-    border: 1px solid black;
+    border: 2px solid black;
     border-collapse: collapse;
+	text-align: left;
+	padding: 20px;
+	max-width: 600px;
+	margin: auto;
+}
+
+tr:hover 
+{
+	background-color: #f5e5e5;
 }

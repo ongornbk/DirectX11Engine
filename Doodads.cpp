@@ -79,7 +79,7 @@ void Doodads::Update(float dt)
 	m_flags[0] = validateRendering(Center);
 	if (m_flags[0])
 	{
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y,Center.z));
+		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
 	}
 
 	//if (TileMap::CollisionAt(Center))

@@ -86,7 +86,7 @@ void RendererManager::PushTree(Tree * doodads)
 extern "C"
 {
 	struct __SortByY {
-		bool operator()(RenderContainer* a, RenderContainer* b) const noexcept {
+		bool _stdcall operator()(RenderContainer* a, RenderContainer* b) const noexcept {
 
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
@@ -175,8 +175,8 @@ extern "C"
 		}
 	};
 
-	struct __SortByX {
-		bool operator()(RenderContainer *a, RenderContainer *b) const noexcept {
+	struct  __SortByX {
+		bool _stdcall operator()(RenderContainer *a, RenderContainer *b) const noexcept {
 
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
@@ -381,6 +381,11 @@ RendererManager * RendererManager::GetInstance()
 	return m_instance;
 }
 
+size_t RendererManager::GetNumberOfObjects()
+{
+	return g_units.m_objects.size();
+}
+
 void UnitsVector::Update(float dt)
 {
 	UpdatePart(m_objects, dt);
@@ -395,8 +400,10 @@ void UnitsVector::Sort()
 	//{
 	//	DoNothing();
 	//}
-	SortByX(m_objects);
-	SortByY(m_objects);
+	//SortByX(m_objects);
+	//SortByY(m_objects);
+	std::sort(m_objects.begin(), m_objects.end(), __SortByX());
+	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
 }
 
 static uint32_t sizeg = 0u;

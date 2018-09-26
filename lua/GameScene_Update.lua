@@ -76,7 +76,7 @@ local x,y = GetMousePosition()
 CreateDoodads()
 InitializeDoodads("well0",125,50,x,y,0,false)
 end
-if IsKeyHit(25) == true
+if IsKeyPressed(25) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
@@ -94,8 +94,14 @@ if IsKeyHit(27) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
-InitializeDoodads("cow_corpse0",125,0,x,y,0,false)
+InitializeDoodads("cow_corpse0",120,0,x,y,false)
 SetZ(1)
+end
+if IsKeyHit(28) == true
+then
+local x,y = GetMousePosition()
+CreateTree()
+InitializeTree("tree0",400,20,x,y,0,false)
 end
 if GetMouseState(0) == true
 then

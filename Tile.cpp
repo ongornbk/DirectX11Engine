@@ -96,6 +96,22 @@ extern "C++"
 		INDEX2 index(_i[0], _i[1]);
 		return index;
 	}
+
+	bool _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(XMFLOAT3 floats,INDEX2* index) noexcept
+	{
+		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
+		int   _i[2] = { 0 };
+		_f[0] -= floats.x / tile::CELL_WIDTH;
+		_f[0] -= floats.y / tile::CELL_HEIGHT;
+		_f[1] += floats.x / tile::CELL_WIDTH;
+		_f[1] -= floats.y / tile::CELL_HEIGHT;
+		_i[0] = (int)_f[0];
+		_i[1] = (int)_f[1];
+		bool out = ipp::math::SquashInt32ArrayWithCheck(_i, 2, 0, TILE_MAP_RANGE);
+		index->i = _i[0];
+		index->j = _i[1];
+		return out;
+	}
 }
 
 namespace
@@ -446,7 +462,9 @@ void TileMap::LoadFromFile(std::string filename)
 
 bool TileMap::CollisionAt(XMFLOAT3 position)
 {
-	INDEX2 index = TransformXMFLOAT3ToTileMapINDEX2(position);
+	INDEX2 index;
+	bool out = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,&index);
+	if (out)return true;
 	Tile* tilep = m_currentTileMap->map[index.i][index.j];
 	if (tilep)
 	{

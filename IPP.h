@@ -50,6 +50,7 @@ namespace ipp
 		bool range(int32_t &value, int32_t min, int32_t max);
 
 		void SquashInt32Array(int32_t* value, int32_t size,int32_t min,int32_t max) noexcept;
+		bool SquashInt32ArrayWithCheck(int32_t* value, int32_t size, int32_t min, int32_t max) noexcept;
 		uint8_t _cdecl RandomUint8(uint8_t min, uint8_t max) noexcept;
 	}
 

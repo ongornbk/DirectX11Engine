@@ -338,6 +338,25 @@ void ipp::math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32
 		return;
 }
 
+bool ipp::math::SquashInt32ArrayWithCheck(int32_t * value, int32_t size, int32_t min, int32_t max) noexcept
+{
+	bool out = false;
+	for (char i = 0; i < size; i++)
+	{
+		if (value[i] > max)
+		{
+			value[i] = max;
+			out = true;
+		}
+		else if (value[i] <= min)
+		{
+			value[i] = min;
+			out = true;
+		}
+	}
+	return out;
+}
+
 uint8_t _cdecl ipp::math::RandomUint8(uint8_t min, uint8_t max) noexcept
 {
 	return min + (rand() % int32_t(max - min + 1));

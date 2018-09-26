@@ -35,7 +35,7 @@ void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	m_vertexBuffer = new VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+	(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{
@@ -54,7 +54,8 @@ void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 
-
+	//Center.y -= ((float)(m_size) / 2.0f);
+	//Center.y += Radius;
 	m_type = RenderContainer::RenderContainerType::TREE;
 }
 

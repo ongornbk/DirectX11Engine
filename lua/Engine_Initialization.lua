@@ -53,6 +53,7 @@ LoadTexture("../../content/Textures/doodads/well0.png")
 LoadTexture("../../content/Textures/doodads/barell0.png")
 LoadTexture("../../content/Textures/doodads/fire0.png")
 LoadTexture("../../content/Textures/doodads/cow_corpse0.png")
+LoadTexture("../../content/Textures/doodads/tree0.png")
 
 LoadSound("../../content/Music/lakeland.ogg")
 InitializeProjectionMatrix(4,10,1000)
