@@ -48,6 +48,11 @@ LoadTexture("../../content/Textures/tiles/dust.png")
 LoadTexture("../../content/Textures/tiles/water.png")
 LoadTexture("../../content/Textures/tiles/sand0.png")
 LoadTexture("../../content/Textures/font/ExocetLight.png")
+
+LoadTexture("../../content/Textures/doodads/well0.png")
+LoadTexture("../../content/Textures/doodads/barell0.png")
+LoadTexture("../../content/Textures/doodads/fire0.png")
+
 LoadSound("../../content/Music/lakeland.ogg")
 InitializeProjectionMatrix(4,10,1000)
 InitializeOrthoMatrix(10,1000)

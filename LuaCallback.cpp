@@ -214,21 +214,21 @@ namespace lua_callback
 	static int32_t CreateUnit(lua_State* state) noexcept
 	{
 		Unit* unit = new Unit();
-		m_global->m_lastCreatedUnit = unit;
+		m_global->m_lastCreatedRenderContainer = unit;
 		return 0;
 	}
 
 	static int32_t CreateDoodads(lua_State* state) noexcept
 	{
 		Doodads* doodads = new Doodads();
-		m_global->m_lastCreatedDoodads = doodads;
+		m_global->m_lastCreatedRenderContainer = doodads;
 		return 0;
 	}
 
 	static int32_t CreateAnimatedDoodads(lua_State* state) noexcept
 	{
 		AnimatedDoodads* doodads = new AnimatedDoodads();
-		m_global->m_lastCreatedAnimatedDoodads = doodads;
+		m_global->m_lastCreatedRenderContainer = doodads;
 		return 0;
 	}
 
@@ -254,7 +254,7 @@ namespace lua_callback
 
 	static int32_t PickLastCreatedUnit(lua_State*) noexcept
 	{
-		Unit* unit = m_global->m_lastCreatedUnit;
+		Unit* unit = (Unit*)m_global->m_lastCreatedRenderContainer;
 		if (unit)
 		{
 			m_global->m_lastPickedUnit = unit;
@@ -339,7 +339,7 @@ namespace lua_callback
 
 	static int32_t InitializeDoodads(lua_State* state) noexcept
 	{
-		Doodads* doodads = m_global->m_lastCreatedDoodads;
+		Doodads* doodads = (Doodads*)m_global->m_lastCreatedRenderContainer;
 		if (doodads)
 		{
 			string str = lua_tostring(state, 1);
@@ -364,7 +364,7 @@ namespace lua_callback
 
 	static int32_t InitializeAnimatedDoodads(lua_State* state) noexcept
 	{
-		AnimatedDoodads* doodads = m_global->m_lastCreatedAnimatedDoodads;
+		AnimatedDoodads* doodads = (AnimatedDoodads*)m_global->m_lastCreatedRenderContainer;
 		if (doodads)
 		{
 			string str = lua_tostring(state, 1);
@@ -385,6 +385,27 @@ namespace lua_callback
 		}
 		return 0;
 
+	}
+
+	static int32_t SetRenderContainerFlag(lua_State* state) noexcept
+	{
+		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
+		if (rc)
+		{
+			rc->Flag((uint8_t)lua_tointeger(state, 1), lua_toboolean(state, 2));
+		}
+		return 0;
+	}
+
+	static int32_t GetRenderContainerFlag(lua_State* state) noexcept
+	{
+		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
+		if (rc)
+		{
+			bool rt = rc->Flag((uint8_t)lua_tointeger(state, 1));
+			lua_pushboolean(state, rt);
+		}
+		return 1;
 	}
 
 	static int32_t SetWalkingStance(lua_State* state) noexcept
@@ -629,6 +650,9 @@ namespace lua_callback
 		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
 		lua_register(m_lua, "GetMousePressed", lua_callback::__GetMousePressed);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
+		//RenderContainer
+		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
+		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua,"InitializeUnit", lua_callback::InitializeUnit);

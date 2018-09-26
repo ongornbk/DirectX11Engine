@@ -13,9 +13,7 @@ public:
 	~Global(void);
 	Unit*            m_lastPickedUnit;
 	Unit*            m_lastSelectedUnit;
-	Unit*            m_lastCreatedUnit;
-	Doodads*         m_lastCreatedDoodads;
-	AnimatedDoodads* m_lastCreatedAnimatedDoodads;
+	RenderContainer* m_lastCreatedRenderContainer;
 	Task*            m_lastTask;
 	static Global* GetInstance();
 	XMFLOAT3 m_lastPoint;

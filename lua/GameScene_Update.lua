@@ -70,11 +70,24 @@ PickLastSelectedUnit()
 PushUnitVariable("hero")
 --LockCameraOnUnit()
 end
-if IsKeyPressed(24) == true
+if IsKeyHit(24) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
-InitializeDoodads("grass0",100,18,x,y,0,false)
+InitializeDoodads("well0",125,50,x,y,0,false)
+end
+if IsKeyPressed(25) == true
+then
+local x,y = GetMousePosition()
+CreateDoodads()
+InitializeDoodads("barell0",105,17,x,y,0,true)
+end
+if IsKeyPressed(26) == true
+then
+Println("sdsdsds")
+local x,y = GetMousePosition()
+CreateAnimatedDoodads()
+InitializeAnimatedDoodads("fire0",100,17,x,y,0,true)
 end
 if GetMouseState(0) == true
 then
