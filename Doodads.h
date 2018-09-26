@@ -12,6 +12,7 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) override;
 	void Update(float dt) override;
+	void SetZ(float z = 0.0f) override;
 	BoundingSphere* GetBoundingSphere() override;
 	void Release() override;
 	bool Flag(uint8_t index) override;

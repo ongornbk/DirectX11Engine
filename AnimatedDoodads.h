@@ -12,10 +12,13 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) override;
 	void Update(float dt) override;
+	void SetZ(float z = 0.0f) override;
 	BoundingSphere* GetBoundingSphere() override;
 	void Release() override;
 	bool Flag(uint8_t index) override;
 	void Flag(uint8_t index, bool boolean) override;
+
+	void SetNumberOfFrames(float frames);
 
 private:
 
@@ -39,6 +42,7 @@ private:
 
 	float m_currentFrame;
 	float m_previousFrame;
+	float m_maxFrames;
 
 
 	float         m_animationSpeed;

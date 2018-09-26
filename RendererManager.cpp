@@ -89,13 +89,17 @@ extern "C"
 			float radius[3];
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
+			float az = 0.0f, bz = 0.0f;
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
 			ax = bsa->Center.x;
 			ay = bsa->Center.y;
+			az = bsa->Center.z;
 
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
+			bz = bsb->Center.z;
+
 			if (radius[0] == 0.0f||radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
@@ -157,7 +161,11 @@ extern "C"
 				}
 
 			}
-			RETURN:
+		RETURN:
+			if (az != bz)
+			{
+				return az > bz;
+			}
 			return ay > by;
 		}
 	};
@@ -171,13 +179,17 @@ extern "C"
 			float radius[3];
 			float ax = 0.0f, ay = 0.0f;
 			float bx = 0.0f, by = 0.0f;
+			float az = 0.0f, bz = 0.0f;
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
 			ax = bsa->Center.x;
 			ay = bsa->Center.y;
+			az = bsa->Center.z;
 
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
+			bz = bsb->Center.z;
+
 			if (radius[0] == 0.0f|| radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
@@ -224,7 +236,11 @@ extern "C"
 				}
 
 			}
-			RETURN:
+		RETURN:
+			if (az != bz)
+			{
+				return az > bz;
+			}
 			return ax > bx;
 		}
 	};

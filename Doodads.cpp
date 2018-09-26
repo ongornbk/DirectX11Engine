@@ -102,6 +102,11 @@ void Doodads::Update(float dt)
 	//}
 }
 
+void Doodads::SetZ(float z)
+{
+	Center.z = z;
+}
+
 BoundingSphere * Doodads::GetBoundingSphere()
 {
 	return (BoundingSphere*)(this);

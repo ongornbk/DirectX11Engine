@@ -89,6 +89,11 @@ void Unit::Update(float dt)
 	
 }
 
+void Unit::SetZ(float z)
+{
+	Center.z = z;
+}
+
 void Unit::SetTask(Task* task)
 {
 	m_tasks.SetTask(task);

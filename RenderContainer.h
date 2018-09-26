@@ -9,6 +9,7 @@ class RenderContainer
 public:
 
 	virtual void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader) = 0;
+	virtual void SetZ(float z = 0.0f) = 0;
 	virtual void Update(float dt) = 0;
 	virtual void Release() = 0;
 	virtual bool Flag(uint8_t) = 0;

@@ -2,10 +2,12 @@
 #include "RendererManager.h"
 #include "IPP.h"
 
+#define STANDARD_FRAMES 1.0f
 
 AnimatedDoodads::AnimatedDoodads()
 {
-	
+	m_maxFrames = STANDARD_FRAMES;
+
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
@@ -144,6 +146,11 @@ void AnimatedDoodads::Update(float dt)
 
 }
 
+void AnimatedDoodads::SetZ(float z)
+{
+	Center.z = z;
+}
+
 BoundingSphere * AnimatedDoodads::GetBoundingSphere()
 {
 	return (BoundingSphere*)(this);
@@ -162,4 +169,9 @@ bool AnimatedDoodads::Flag(uint8_t index)
 void AnimatedDoodads::Flag(uint8_t index, bool boolean)
 {
 	m_flags[index] = boolean;
+}
+
+void AnimatedDoodads::SetNumberOfFrames(float frames)
+{
+	m_maxFrames = frames;
 }

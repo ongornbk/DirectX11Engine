@@ -232,6 +232,17 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32_t SetZ(lua_State* state) noexcept
+	{
+		
+		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
+		if (rc)
+		{
+			rc->SetZ(LUA_FLOAT(state, 1));
+		}
+		return 0;
+	}
+
 	static int32_t GetMousePosition(lua_State* state) noexcept
 	{
 		int16_t xm, ym;
@@ -406,6 +417,16 @@ namespace lua_callback
 			lua_pushboolean(state, rt);
 		}
 		return 1;
+	}
+
+	static int32_t SetNumberOfFrames(lua_State* state) noexcept
+	{
+		AnimatedDoodads* ad = (AnimatedDoodads*)m_global->m_lastCreatedRenderContainer;
+		if (ad)
+		{
+			ad->SetNumberOfFrames(LUA_FLOAT(state, 1));
+		}
+		return 0;
 	}
 
 	static int32_t SetWalkingStance(lua_State* state) noexcept
@@ -653,6 +674,7 @@ namespace lua_callback
 		//RenderContainer
 		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
+		lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua,"InitializeUnit", lua_callback::InitializeUnit);
@@ -666,6 +688,7 @@ namespace lua_callback
 		//Animated Doodads
 		lua_register(m_lua, "CreateAnimatedDoodads", lua_callback::CreateAnimatedDoodads);
 		lua_register(m_lua, "InitializeAnimatedDoodads", lua_callback::InitializeAnimatedDoodads);
+		lua_register(m_lua, "SetNumberOfFrames", lua_callback::SetNumberOfFrames);
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);
