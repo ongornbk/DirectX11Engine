@@ -211,17 +211,24 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int CreateUnit(lua_State* state) noexcept
+	static int32_t CreateUnit(lua_State* state) noexcept
 	{
 		Unit* unit = new Unit();
 		m_global->m_lastCreatedUnit = unit;
 		return 0;
 	}
 
-	static int CreateDoodads(lua_State* state) noexcept
+	static int32_t CreateDoodads(lua_State* state) noexcept
 	{
 		Doodads* doodads = new Doodads();
 		m_global->m_lastCreatedDoodads = doodads;
+		return 0;
+	}
+
+	static int32_t CreateAnimatedDoodads(lua_State* state) noexcept
+	{
+		AnimatedDoodads* doodads = new AnimatedDoodads();
+		m_global->m_lastCreatedAnimatedDoodads = doodads;
 		return 0;
 	}
 
@@ -350,6 +357,31 @@ namespace lua_callback
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
 			m_renderer->PushDoodads(doodads);
+		}
+		return 0;
+
+	}
+
+	static int32_t InitializeAnimatedDoodads(lua_State* state) noexcept
+	{
+		AnimatedDoodads* doodads = m_global->m_lastCreatedAnimatedDoodads;
+		if (doodads)
+		{
+			string str = lua_tostring(state, 1);
+			float size = (float)lua_tointeger(state, 2);
+			float collision = (float)lua_tointeger(state, 3);
+			float p_x = (float)lua_tointeger(state, 4);
+			float p_y = (float)lua_tointeger(state, 5);
+			float p_z = (float)lua_tointeger(state, 6);
+			bool pushable = lua_toboolean(state, 7);
+			XMFLOAT3 pos(p_x, p_y, p_z);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+
+
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
+			m_renderer->PushAnimatedDoodads(doodads);
 		}
 		return 0;
 
@@ -607,6 +639,9 @@ namespace lua_callback
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);
+		//Animated Doodads
+		lua_register(m_lua, "CreateAnimatedDoodads", lua_callback::CreateAnimatedDoodads);
+		lua_register(m_lua, "InitializeAnimatedDoodads", lua_callback::InitializeAnimatedDoodads);
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);

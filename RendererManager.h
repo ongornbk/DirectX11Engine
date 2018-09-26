@@ -6,6 +6,7 @@
 #include "UserInterface.h"
 #include "Stack.h"
 #include "Doodads.h"
+#include "AnimatedDoodads.h"
 #include <stack>
 
 #pragma region
@@ -13,6 +14,7 @@ class Engine;
 class Model;
 class Unit;
 class Doodads;
+class AnimatedDoodads;
 class UserInterfaceGame;
 class UserInterfaceGameMenu;
 class UserInterfaceMainMenu;
@@ -35,6 +37,7 @@ struct UnitsVector
 	void Clear();
 	void Push(Unit* unit);
 	void Push(Doodads* doodads);
+	void Push(AnimatedDoodads* animated);
 	static  std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
 
 };
@@ -58,6 +61,7 @@ public:
 
 	void PushUnit(Unit* unit);
 	void PushDoodads(Doodads* doodads);
+	void PushAnimatedDoodads(AnimatedDoodads* doodads);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
 	void SetRenderingStyle(RenderingStyle render);

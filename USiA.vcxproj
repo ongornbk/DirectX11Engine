@@ -176,6 +176,7 @@
     <ClInclude Include="2D\TextFormat.h" />
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
+    <ClInclude Include="AnimatedDoodads.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="2D\RenderTarget.cpp" />
     <ClCompile Include="2D\TextFormat.cpp" />
     <ClCompile Include="2D\TextSize.cpp" />
+    <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Doodads.cpp" />

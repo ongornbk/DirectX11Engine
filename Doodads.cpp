@@ -58,46 +58,7 @@ void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceCont
 
 	m_type = RenderContainer::RenderContainerType::DOODADS;
 
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
-	//
-	//vertices[0].uv.x = 0.0f;
-	//vertices[0].uv.y = 1.0f;
-	//
-	//vertices[1].uv.x = 0.0f;
-	//vertices[1].uv.y = 0.0f;
-	//
-	//vertices[2].uv.x = 1.0f;
-	//vertices[2].uv.y = 0.0f;
-	//
-	//vertices[3].uv.x = 1.0f;
-	//vertices[3].uv.y = 1.0f;
-	//
-	//
-	//
-	//HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	//if (FAILED(result))
-	//{
-	//	return;
-	//}
-	//
-	//SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
-	//memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
-	//m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 	
-	//ipp::Console::Println("");
-	//ipp::Console::Print("gfx Texture    ");
-	//ipp::Console::Println(memory_cast<uint64_t>(m_texture));
-	//ipp::Console::Println("");
-	//ipp::Console::Print("Texture       ");
-	//ipp::Console::Println(memory_cast<uint64_t>(m_texture->GetTexture()));
-	//ipp::Console::Println("");
-	//ipp::Console::Print("VertexBuffer  ");
-	//ipp::Console::Println(memory_cast<uint64_t>(m_vertexBuffer));
-	//ipp::Console::Println("");
-	//ipp::Console::Print("DeviceContent ");
-	//ipp::Console::Println(memory_cast<uint64_t>(m_deviceContext));
-	//ipp::Console::Println("");
 
 }
 
@@ -108,7 +69,6 @@ void Doodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix,
 		shader->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
-		//ipp::Console::Print("#");
 	}
 }
 

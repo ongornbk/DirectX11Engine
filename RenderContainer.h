@@ -20,7 +20,8 @@ public:
 	enum RenderContainerType
 	{
 		UNIT,
-		DOODADS
+		DOODADS,
+		ANIMATED_DOODADS
 	} m_type;
 };
 

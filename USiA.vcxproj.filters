@@ -321,6 +321,9 @@
     <ClInclude Include="RenderContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AnimatedDoodads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -546,6 +549,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedDoodads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

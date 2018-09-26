@@ -13,6 +13,7 @@ Global::Global()
 	m_lastTask = nullptr;
 	m_instance = this;
 	m_lastCreatedDoodads = nullptr;
+	m_lastCreatedAnimatedDoodads = nullptr;
 	m_lastPoint = XMFLOAT3(0.0F, 0.0F, 0.0F);
 }
 
