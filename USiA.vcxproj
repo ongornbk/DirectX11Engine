@@ -240,6 +240,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Tree.h" />
     <ClInclude Include="TriggersManager.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Unit.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TriggersManager.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UserInterface.cpp" />

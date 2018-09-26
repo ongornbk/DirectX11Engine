@@ -78,6 +78,11 @@ void RendererManager::PushAnimatedDoodads(AnimatedDoodads * doodads)
 	g_units.Push(doodads);
 }
 
+void RendererManager::PushTree(Tree * doodads)
+{
+	g_units.Push(doodads);
+}
+
 extern "C"
 {
 	struct __SortByY {
@@ -434,6 +439,11 @@ void UnitsVector::Push(Doodads * doodads)
 void UnitsVector::Push(AnimatedDoodads* animated)
 {
 	m_objects.push_back(animated);
+}
+
+void UnitsVector::Push(Tree * tree)
+{
+	m_objects.push_back(tree);
 }
 
 Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float range) noexcept

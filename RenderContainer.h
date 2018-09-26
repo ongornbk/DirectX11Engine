@@ -22,7 +22,8 @@ public:
 	{
 		UNIT,
 		DOODADS,
-		ANIMATED_DOODADS
+		ANIMATED_DOODADS,
+		TREE
 	} m_type;
 };
 

@@ -232,6 +232,13 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32_t CreateTree(lua_State* state) noexcept
+	{
+		Tree* doodads = new Tree();
+		m_global->m_lastCreatedRenderContainer = doodads;
+		return 0;
+	}
+
 	static int32_t SetZ(lua_State* state) noexcept
 	{
 		
@@ -393,6 +400,31 @@ namespace lua_callback
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
 			m_renderer->PushAnimatedDoodads(doodads);
+		}
+		return 0;
+
+	}
+
+	static int32_t InitializeTree(lua_State* state) noexcept
+	{
+		Tree* doodads = (Tree*)m_global->m_lastCreatedRenderContainer;
+		if (doodads)
+		{
+			string str = lua_tostring(state, 1);
+			float size = (float)lua_tointeger(state, 2);
+			float collision = (float)lua_tointeger(state, 3);
+			float p_x = (float)lua_tointeger(state, 4);
+			float p_y = (float)lua_tointeger(state, 5);
+			float p_z = (float)lua_tointeger(state, 6);
+			bool pushable = lua_toboolean(state, 7);
+			XMFLOAT3 pos(p_x, p_y, p_z);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+
+
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
+			m_renderer->PushTree(doodads);
 		}
 		return 0;
 
@@ -689,6 +721,9 @@ namespace lua_callback
 		lua_register(m_lua, "CreateAnimatedDoodads", lua_callback::CreateAnimatedDoodads);
 		lua_register(m_lua, "InitializeAnimatedDoodads", lua_callback::InitializeAnimatedDoodads);
 		lua_register(m_lua, "SetNumberOfFrames", lua_callback::SetNumberOfFrames);
+		//Trees
+		lua_register(m_lua, "CreateTree", lua_callback::CreateTree);
+		lua_register(m_lua, "InitializeTree", lua_callback::InitializeTree);
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);
