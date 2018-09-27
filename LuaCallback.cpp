@@ -554,7 +554,7 @@ namespace lua_callback
 		float range = LUA_FLOAT(state, 1);
 		if (unit)
 		{
-			m_global->m_stack = UnitsVector::GetUnitsInRange(unit, range);
+			m_global->m_stack = RenderContainerVector::GetUnitsInRange(unit, range);
 			m_global->m_size = (uint32_t)m_global->m_stack.size();
 			return 0;
 		}

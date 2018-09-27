@@ -29,10 +29,10 @@ extern "C"
 	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept;
 }
 
-struct UnitsVector
+struct RenderContainerVector
 {
 
-	UnitsVector();
+	RenderContainerVector();
 
 	vector<RenderContainer*> m_objects;
 

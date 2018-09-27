@@ -13,13 +13,13 @@ class Unit;
 
 namespace
 {
-	RendererManager*    m_instance;
-	Engine*             m_engine;
-	static XMVECTOR     m_cameraPosition;
-	static float        m_ranges[2];
-	static atomic<int>  m_coord[2];
-	atomic<uint8_t>     m_async;
-	static UnitsVector  g_units;
+	RendererManager*              m_instance;
+	Engine*                       m_engine;
+	static XMVECTOR               m_cameraPosition;
+	static float                  m_ranges[2];
+	static atomic<int>            m_coord[2];
+	atomic<uint8_t>               m_async;
+	static RenderContainerVector  g_units;
 }
 
 RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui)
@@ -391,12 +391,12 @@ size_t RendererManager::GetNumberOfObjects()
 	return g_units.m_objects.size();
 }
 
-UnitsVector::UnitsVector()
+RenderContainerVector::RenderContainerVector()
 {
 	m_objects.reserve(20000u);
 }
 
-void UnitsVector::Update(float dt)
+void RenderContainerVector::Update(float dt)
 {
 	//m_async = 4u;
 	//size_t middle = m_objects.size() / 4u;
@@ -429,7 +429,7 @@ void UnitsVector::Update(float dt)
 	UpdatePart(m_objects, dt);
 }
 
-void UnitsVector::Sort()
+void RenderContainerVector::Sort()
 {
 	//m_async = 2u;
 	//std::async(std::launch::async,SortByX,(m_objects));
@@ -447,7 +447,7 @@ void UnitsVector::Sort()
 
 static uint32_t sizeg = 0u;
 
-void _vectorcall UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
+void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
 {
 	RenderContainer** objects = m_objects.data();
 	for (uint32_t i = 0; i < (uint32_t)m_objects.size(); i++)
@@ -457,7 +457,7 @@ void _vectorcall UnitsVector::Render(ID3D11DeviceContext * deviceContext, XMFLOA
 	}
 }
 
-void UnitsVector::Clear()
+void RenderContainerVector::Clear()
 {
 	for (auto &&object : m_objects)
 	{
@@ -472,22 +472,22 @@ void UnitsVector::Clear()
 
 }
 
-void UnitsVector::Push(Unit * unit)
+void RenderContainerVector::Push(Unit * unit)
 {
 	m_objects.push_back(unit);
 }
 
-void UnitsVector::Push(Doodads * doodads)
+void RenderContainerVector::Push(Doodads * doodads)
 {
 	m_objects.push_back(doodads);
 }
 
-void UnitsVector::Push(AnimatedDoodads* animated)
+void RenderContainerVector::Push(AnimatedDoodads* animated)
 {
 	m_objects.push_back(animated);
 }
 
-void UnitsVector::Push(Tree * tree)
+void RenderContainerVector::Push(Tree * tree)
 {
 	m_objects.push_back(tree);
 }
@@ -536,7 +536,7 @@ void _stdcall PushUnitsInRange(std::vector<RenderContainer*>* vec,atomic<std::st
 	return;
 }
 
-std::stack<Unit*> _vectorcall UnitsVector::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	std::stack<Unit*> units;
 	atomic<std::stack<Unit*>*> sa = &units;
