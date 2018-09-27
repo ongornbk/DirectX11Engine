@@ -91,10 +91,12 @@ extern "C"
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
 
+			bool af2 = a->Flag(2u);
+			bool bf2 = b->Flag(2u);
+
 			float radius[3];
-			float ax = 0.0f, ay = 0.0f;
-			float bx = 0.0f, by = 0.0f;
-			float az = 0.0f, bz = 0.0f;
+			float ax, ay, bx, by, az, bz;
+
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
 			ax = bsa->Center.x;
@@ -125,9 +127,9 @@ extern "C"
 			if (distance < radius[2])
 			{
 				collision = distance - radius[2];
-				if (a->Flag(2u))
+				if (af2)
 				{
-					if (b->Flag(2u))
+					if (bf2)
 					{
 						collision /= 2.0f;
 						if (ax < bx)
@@ -154,7 +156,7 @@ extern "C"
 				}
 				else
 				{
-					if (b->Flag(2u))
+					if (bf2)
 					{
 						if (ax < bx) bsb->Center.x -= collision;
 						else         bsb->Center.x += collision;
@@ -181,12 +183,15 @@ extern "C"
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
 
+			bool af2 = a->Flag(2u);
+			bool bf2 = b->Flag(2u);
+
 			float radius[3];
-			float ax = 0.0f, ay = 0.0f;
-			float bx = 0.0f, by = 0.0f;
-			float az = 0.0f, bz = 0.0f;
+			float ax, ay, bx, by, az, bz;
+
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
+
 			ax = bsa->Center.x;
 			ay = bsa->Center.y;
 			az = bsa->Center.z;
@@ -207,9 +212,9 @@ extern "C"
 			if (distance < radius[2])
 			{
 				collision = distance - radius[2];
-				if (a->Flag(2u))
+				if (af2)
 				{
-					if (b->Flag(2u))
+					if (bf2)
 					{
 						collision /= 2.0f;
 						if (ay < by)
@@ -232,7 +237,7 @@ extern "C"
 				}
 				else
 				{
-					if (b->Flag(2u))
+					if (bf2)
 					{
 						if (ay < by) bsb->Center.y -= collision;
 						else         bsb->Center.y += collision;
@@ -321,7 +326,7 @@ extern "C"
 			{
 				m_array[i]->Update(dt);
 			}
-
+			m_async--;
 
 		}
 	}
@@ -388,22 +393,43 @@ size_t RendererManager::GetNumberOfObjects()
 
 void UnitsVector::Update(float dt)
 {
-	UpdatePart(m_objects, dt);
+	m_async = 4u;
+	size_t middle = m_objects.size() / 4u;
+	vector<RenderContainer*>::const_iterator onefour(m_objects.cbegin());
+	vector<RenderContainer*>::const_iterator twofour(m_objects.cbegin());
+	vector<RenderContainer*>::const_iterator threefour(m_objects.cbegin());
+	advance(onefour, middle);
+	advance(twofour, middle * 2u);
+	advance(threefour, middle * 3u);
+	vector<RenderContainer*> t1(m_objects.cbegin(), onefour);
+	vector<RenderContainer*> t2(onefour, twofour);
+	vector<RenderContainer*> t3(twofour, threefour);
+	vector<RenderContainer*> t4(threefour, m_objects.cend());
+	async(launch::async, UpdatePart, t1, dt);
+	async(launch::async, UpdatePart, t2, dt);
+	async(launch::async, UpdatePart, t3, dt);
+	async(launch::async, UpdatePart, t4, dt);
+	while (m_async)
+	{
+		DoNothing();
+	}
+	//UpdatePart(m_objects, dt);
 }
 
 void UnitsVector::Sort()
 {
-	//m_async = 2u;
+	m_async = 2u;
 	//std::async(std::launch::async,SortByX,(m_objects));
 	//std::async(std::launch::async,SortByY,(m_objects));
-	//while (m_async)
-	//{
-	//	DoNothing();
-	//}
-	//SortByX(m_objects);
-	//SortByY(m_objects);
-	std::sort(m_objects.begin(), m_objects.end(), __SortByX());
-	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
+	SortByX(m_objects);
+    SortByY(m_objects);
+	while (m_async)
+	{
+		DoNothing();
+	}
+
+	//std::sort(m_objects.begin(), m_objects.end(), __SortByX());
+//	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
 }
 
 static uint32_t sizeg = 0u;

@@ -39,7 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct tn {
 	struct tn*    left;
 	struct tn*    right;
-	long          item;
+	int32_t       item;
 } treeNode;
 
 
