@@ -58,6 +58,9 @@
     <Filter Include="Header Files\LUA">
       <UniqueIdentifier>{1843190f-f5aa-4970-8e70-8c61db8ef461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\C">
+      <UniqueIdentifier>{0ba4ff76-b48f-4643-a0e1-23f04a7c9d4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -327,6 +330,9 @@
     <ClInclude Include="Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -558,6 +564,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryTree.c">
+      <Filter>Source Files\C</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

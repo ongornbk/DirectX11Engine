@@ -243,6 +243,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TriggersManager.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="BinaryTree.c" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
@@ -324,6 +326,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TriggersManager.cpp" />
