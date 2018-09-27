@@ -20,7 +20,7 @@ public:
 		float m_top;
 		float m_right;
 		float m_bottom;
-	} m_char[255u];
+	} m_char[256u];
 
 ~Font();
 
