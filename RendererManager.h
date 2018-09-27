@@ -31,6 +31,9 @@ extern "C"
 
 struct UnitsVector
 {
+
+	UnitsVector();
+
 	vector<RenderContainer*> m_objects;
 
 	void Update(float dt);

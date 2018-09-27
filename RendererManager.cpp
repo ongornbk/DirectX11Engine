@@ -86,7 +86,7 @@ void RendererManager::PushTree(Tree * doodads)
 extern "C"
 {
 	struct __SortByY {
-		bool _stdcall operator()(RenderContainer* a, RenderContainer* b) const noexcept {
+		bool operator()(RenderContainer* a, RenderContainer* b) const noexcept {
 
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
@@ -178,7 +178,7 @@ extern "C"
 	};
 
 	struct  __SortByX {
-		bool _stdcall operator()(RenderContainer *a, RenderContainer *b) const noexcept {
+		bool operator()(RenderContainer *a, RenderContainer *b) const noexcept {
 
 			BoundingSphere* bsa = a->GetBoundingSphere();
 			BoundingSphere* bsb = b->GetBoundingSphere();
@@ -255,13 +255,13 @@ extern "C"
 		}
 	};
 
-	void _stdcall SortByY(std::vector<RenderContainer*> &vec) noexcept
+	void SortByY(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByY());
 		m_async--;
 	}
 
-	void _stdcall SortByX(std::vector<RenderContainer*> &vec) noexcept
+	void SortByX(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByX());
 		m_async--;
@@ -269,7 +269,7 @@ extern "C"
 
 	inline void DoNothing() noexcept
 	{
-
+		//ipp::Console::Print("!");
 	}
 
 
@@ -391,45 +391,58 @@ size_t RendererManager::GetNumberOfObjects()
 	return g_units.m_objects.size();
 }
 
+UnitsVector::UnitsVector()
+{
+	m_objects.reserve(20000u);
+}
+
 void UnitsVector::Update(float dt)
 {
-	m_async = 4u;
-	size_t middle = m_objects.size() / 4u;
-	vector<RenderContainer*>::const_iterator onefour(m_objects.cbegin());
-	vector<RenderContainer*>::const_iterator twofour(m_objects.cbegin());
-	vector<RenderContainer*>::const_iterator threefour(m_objects.cbegin());
-	advance(onefour, middle);
-	advance(twofour, middle * 2u);
-	advance(threefour, middle * 3u);
-	vector<RenderContainer*> t1(m_objects.cbegin(), onefour);
-	vector<RenderContainer*> t2(onefour, twofour);
-	vector<RenderContainer*> t3(twofour, threefour);
-	vector<RenderContainer*> t4(threefour, m_objects.cend());
-	async(launch::async, UpdatePart, t1, dt);
-	async(launch::async, UpdatePart, t2, dt);
-	async(launch::async, UpdatePart, t3, dt);
-	async(launch::async, UpdatePart, t4, dt);
-	while (m_async)
-	{
-		DoNothing();
-	}
-	//UpdatePart(m_objects, dt);
+	//m_async = 4u;
+	//size_t middle = m_objects.size() / 4u;
+	//vector<RenderContainer*>::const_iterator onefour(m_objects.cbegin());
+	//vector<RenderContainer*>::const_iterator twofour(m_objects.cbegin());
+	//vector<RenderContainer*>::const_iterator threefour(m_objects.cbegin());
+	//advance(onefour, middle);
+	//advance(twofour, middle * 2u);
+	//advance(threefour, middle * 3u);
+	//vector<RenderContainer*> t1(m_objects.cbegin(), onefour);
+	//vector<RenderContainer*> t2(onefour, twofour);
+	//vector<RenderContainer*> t3(twofour, threefour);
+	//vector<RenderContainer*> t4(threefour, m_objects.cend());
+	//thread tt1(UpdatePart, t1, dt);
+	//thread tt2(UpdatePart, t2, dt);
+	//thread tt3(UpdatePart, t3, dt);
+	//thread tt4(UpdatePart, t4, dt);
+	////async(launch::async, UpdatePart, t1, dt);
+	////async(launch::async, UpdatePart, t2, dt);
+	////async(launch::async, UpdatePart, t3, dt);
+	////async(launch::async, UpdatePart, t4, dt);
+	////while (m_async)
+	////{
+	////	DoNothing();
+	////}
+	//tt1.join();
+	//tt2.join();
+	//tt3.join();
+	//tt4.join();
+	UpdatePart(m_objects, dt);
 }
 
 void UnitsVector::Sort()
 {
-	m_async = 2u;
+	//m_async = 2u;
 	//std::async(std::launch::async,SortByX,(m_objects));
 	//std::async(std::launch::async,SortByY,(m_objects));
-	SortByX(m_objects);
-    SortByY(m_objects);
-	while (m_async)
-	{
-		DoNothing();
-	}
+	//SortByX(m_objects);
+   // SortByY(m_objects);
+	//while (m_async)
+	//{
+	//	DoNothing();
+	//}
 
-	//std::sort(m_objects.begin(), m_objects.end(), __SortByX());
-//	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
+	std::sort(m_objects.begin(), m_objects.end(), __SortByX());
+	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
 }
 
 static uint32_t sizeg = 0u;
