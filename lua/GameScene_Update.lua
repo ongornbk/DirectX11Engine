@@ -103,6 +103,12 @@ local x,y = GetMousePosition()
 CreateTree()
 InitializeTree("tree0",400,20,x,y,0,false)
 end
+if IsKeyHit(29) == true
+then
+local x,y = GetMousePosition()
+CreateTree()
+InitializeTree("fountain0",250,70,x,y,0,false)
+end
 if GetMouseState(0) == true
 then
 GetUnitVariable("hero")
