@@ -390,7 +390,8 @@ namespace lua_callback
 			float collision = (float)lua_tointeger(state, 3);
 			float p_x = (float)lua_tointeger(state, 4);
 			float p_y = (float)lua_tointeger(state, 5);
-			float p_z = (float)lua_tointeger(state, 6);
+			int8_t z = (int8_t)lua_tointeger(state, 6);
+			float p_z = (float)z;
 			bool pushable = lua_toboolean(state, 7);
 			XMFLOAT3 pos(p_x, p_y, p_z);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -399,7 +400,7 @@ namespace lua_callback
 
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
-			m_renderer->PushAnimatedDoodads(doodads, (int8_t)p_z);
+			m_renderer->PushAnimatedDoodads(doodads,z);
 		}
 		return 0;
 

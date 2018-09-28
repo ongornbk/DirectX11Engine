@@ -567,60 +567,19 @@ RenderZMap::~RenderZMap()
 	m_zVectors.clear();
 }
 
-void _stdcall UpdateZVectorT(RenderContainerVector* vec,float dt) noexcept
-{
-	float delta = dt;
-	vec->Update(delta);
-}
-
-void _stdcall SortZVectorT(RenderContainerVector* vec) noexcept
-{
-	vec->Sort();
-}
-
 void RenderZMap::Update(float dt)
 {
-	std::vector<std::thread*> threads;
-	threads.reserve(256u);
 	for (auto vector : m_zVectors)
 	{
-		std::thread* t = new std::thread(UpdateZVectorT,vector.second, dt);
-		//vector.second->Update(dt);
-		threads.push_back(t);
+		vector.second->Update(dt);
 	}
-
-	for (auto && thread : threads)
-	{
-		thread->join();
-		if (thread)
-		{
-			delete thread;
-			thread = nullptr;
-		}
-	}
-
-	threads.clear();
 }
 
 void RenderZMap::Sort()
 {
-	std::vector<std::thread*> threads;
-	threads.reserve(256u);
 	for (auto vector : m_zVectors)
 	{
-		std::thread* t = new std::thread(SortZVectorT, vector.second);
-		//vector.second->Update(dt);
-		threads.push_back(t);
-	}
-
-	for (auto && thread : threads)
-	{
-		thread->join();
-		if (thread)
-		{
-			delete thread;
-			thread = nullptr;
-		}
+		vector.second->Sort();
 	}
 }
 
