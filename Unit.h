@@ -35,6 +35,7 @@ public:
 
 	XMFLOAT3 GetPosition();
 	float    GetSpeed();
+	float GetZ();
 	void SetSpeed(float speed = 0.0f);
 	WalkingStance GetWalkingStance();
 	void SetWalkingStance(WalkingStance stance);

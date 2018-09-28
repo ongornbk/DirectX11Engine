@@ -239,16 +239,16 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t SetZ(lua_State* state) noexcept
-	{
-		
-		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
-		if (rc)
-		{
-			rc->SetZ(LUA_FLOAT(state, 1));
-		}
-		return 0;
-	}
+	//static int32_t SetZ(lua_State* state) noexcept
+	//{
+	//	
+	//	RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
+	//	if (rc)
+	//	{
+	//		rc->SetZ(LUA_FLOAT(state, 1));
+	//	}
+	//	return 0;
+	//}
 
 	static int32_t GetMousePosition(lua_State* state) noexcept
 	{
@@ -349,7 +349,7 @@ namespace lua_callback
 
 
 			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, wander);
-			m_renderer->PushUnit(unit);
+			m_renderer->PushUnit(unit,(int8_t)p_z);
 		}
 		return 0;
 		
@@ -374,7 +374,7 @@ namespace lua_callback
 
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
-			m_renderer->PushDoodads(doodads);
+			m_renderer->PushDoodads(doodads, (int8_t)p_z);
 		}
 		return 0;
 
@@ -399,7 +399,7 @@ namespace lua_callback
 
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
-			m_renderer->PushAnimatedDoodads(doodads);
+			m_renderer->PushAnimatedDoodads(doodads, (int8_t)p_z);
 		}
 		return 0;
 
@@ -424,7 +424,7 @@ namespace lua_callback
 
 
 			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, pushable);
-			m_renderer->PushTree(doodads);
+			m_renderer->PushTree(doodads, (int8_t)p_z);
 		}
 		return 0;
 
@@ -554,9 +554,8 @@ namespace lua_callback
 		float range = LUA_FLOAT(state, 1);
 		if (unit)
 		{
-			m_global->m_stack = RenderContainerVector::GetUnitsInRange(unit, range);
+			m_global->m_stack = m_renderer->GetUnitsInRange(unit, range);
 			m_global->m_size = (uint32_t)m_global->m_stack.size();
-			return 0;
 		}
 		return 0;
 	}
@@ -706,7 +705,7 @@ namespace lua_callback
 		//RenderContainer
 		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
-		lua_register(m_lua, "SetZ", lua_callback::SetZ);
+		//lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua,"InitializeUnit", lua_callback::InitializeUnit);

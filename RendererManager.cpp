@@ -19,7 +19,7 @@ namespace
 	static float                  m_ranges[2];
 	static atomic<int>            m_coord[2];
 	atomic<uint8_t>               m_async;
-	static RenderContainerVector  g_units;
+	static RenderZMap             g_units;
 }
 
 RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui)
@@ -63,24 +63,24 @@ RendererManager::~RendererManager()
 
 
 
-void RendererManager::PushUnit(Unit * unit)
+void RendererManager::PushUnit(Unit * unit,int8_t z)
 {
-	g_units.Push(unit);
+	g_units.Push(unit,z);
 }
 
-void RendererManager::PushDoodads(Doodads * doodads)
+void RendererManager::PushDoodads(Doodads * doodads, int8_t z)
 {
-	g_units.Push(doodads);
+	g_units.Push(doodads,z);
 }
 
-void RendererManager::PushAnimatedDoodads(AnimatedDoodads * doodads)
+void RendererManager::PushAnimatedDoodads(AnimatedDoodads * doodads, int8_t z)
 {
-	g_units.Push(doodads);
+	g_units.Push(doodads,z);
 }
 
-void RendererManager::PushTree(Tree * doodads)
+void RendererManager::PushTree(Tree * doodads, int8_t z)
 {
-	g_units.Push(doodads);
+	g_units.Push(doodads,z);
 }
 
 extern "C"
@@ -95,17 +95,15 @@ extern "C"
 			bool bf2 = b->Flag(2u);
 
 			float radius[3];
-			float ax, ay, bx, by, az, bz;
+			float ax, ay, bx, by;
 
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
 			ax = bsa->Center.x;
 			ay = bsa->Center.y;
-			az = bsa->Center.z;
 
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
-			bz = bsb->Center.z;
 
 			if (radius[0] == 0.0f||radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
@@ -169,10 +167,7 @@ extern "C"
 
 			}
 		RETURN:
-			if (az != bz)
-			{
-				return az > bz;
-			}
+
 			return ay > by;
 		}
 	};
@@ -187,18 +182,16 @@ extern "C"
 			bool bf2 = b->Flag(2u);
 
 			float radius[3];
-			float ax, ay, bx, by, az, bz;
+			float ax, ay, bx, by;
 
 			radius[0] = bsa->Radius;
 			radius[1] = bsb->Radius;
 
 			ax = bsa->Center.x;
 			ay = bsa->Center.y;
-			az = bsa->Center.z;
 
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
-			bz = bsb->Center.z;
 
 			if (radius[0] == 0.0f|| radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
@@ -247,10 +240,7 @@ extern "C"
 
 			}
 		RETURN:
-			if (az != bz)
-			{
-				return az > bz;
-			}
+
 			return ax > bx;
 		}
 	};
@@ -258,13 +248,13 @@ extern "C"
 	void SortByY(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByY());
-		m_async--;
+		//m_async--;
 	}
 
 	void SortByX(std::vector<RenderContainer*> &vec) noexcept
 	{
 		std::sort(vec.begin(), vec.end(), __SortByX());
-		m_async--;
+		//m_async--;
 	}
 
 	inline void DoNothing() noexcept
@@ -381,6 +371,11 @@ void RendererManager::LoadInstanceToFile(std::string filename)
 	m_map->LoadFromFile(filename);
 }
 
+std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(Unit * object, float range) noexcept
+{
+	return g_units.GetUnitsInRange(object, range);
+}
+
 RendererManager * RendererManager::GetInstance()
 {
 	return m_instance;
@@ -388,7 +383,7 @@ RendererManager * RendererManager::GetInstance()
 
 size_t RendererManager::GetNumberOfObjects()
 {
-	return g_units.m_objects.size();
+	return g_units.GetSize();
 }
 
 RenderContainerVector::RenderContainerVector()
@@ -540,7 +535,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 {
 	std::stack<Unit*> units;
 	atomic<std::stack<Unit*>*> sa = &units;
-	std::vector<RenderContainer*>* upv = &g_units.m_objects;
+	std::vector<RenderContainer*>* upv = &g_units.m_zVectors[(int8_t)object->GetZ()]->m_objects;
 	size_t index = (size_t)object->m_index;
 	
 	std::vector<RenderContainer*> fv(upv->begin(), upv->begin() + index);
@@ -556,3 +551,168 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 			return units;
 }
 
+RenderZMap::RenderZMap()
+{
+	ZeroMemory(&m_zStance, sizeof(bool) * 256);
+}
+
+RenderZMap::~RenderZMap()
+{
+	for (auto vector : m_zVectors)
+	{
+		vector.second->Clear();
+		delete vector.second;
+		m_zStance[vector.first] = false;
+	}
+	m_zVectors.clear();
+}
+
+void _stdcall UpdateZVectorT(RenderContainerVector* vec,float dt) noexcept
+{
+	float delta = dt;
+	vec->Update(delta);
+}
+
+void _stdcall SortZVectorT(RenderContainerVector* vec) noexcept
+{
+	vec->Sort();
+}
+
+void RenderZMap::Update(float dt)
+{
+	std::vector<std::thread*> threads;
+	threads.reserve(256u);
+	for (auto vector : m_zVectors)
+	{
+		std::thread* t = new std::thread(UpdateZVectorT,vector.second, dt);
+		//vector.second->Update(dt);
+		threads.push_back(t);
+	}
+
+	for (auto && thread : threads)
+	{
+		thread->join();
+		if (thread)
+		{
+			delete thread;
+			thread = nullptr;
+		}
+	}
+
+	threads.clear();
+}
+
+void RenderZMap::Sort()
+{
+	std::vector<std::thread*> threads;
+	threads.reserve(256u);
+	for (auto vector : m_zVectors)
+	{
+		std::thread* t = new std::thread(SortZVectorT, vector.second);
+		//vector.second->Update(dt);
+		threads.push_back(t);
+	}
+
+	for (auto && thread : threads)
+	{
+		thread->join();
+		if (thread)
+		{
+			delete thread;
+			thread = nullptr;
+		}
+	}
+}
+
+void _vectorcall RenderZMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
+{
+	for (auto vector : m_zVectors)
+	{
+		vector.second->Render(deviceContext,viewMatrix,projectionMatrix,shader);
+	}
+}
+
+void RenderZMap::Clear()
+{
+	for (auto vector : m_zVectors)
+	{
+		vector.second->Clear();
+	}
+}
+
+void RenderZMap::Push(Unit * unit,int8_t z)
+{
+	if (m_zStance[z])
+	{
+		m_zVectors[z]->Push(unit);
+	}
+	else
+	{
+		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z]->Push(unit);
+		m_zStance[z] = true;
+	}
+}
+
+void RenderZMap::Push(Doodads * doodads, int8_t z)
+{
+	if (m_zStance[z])
+	{
+		m_zVectors[z]->Push(doodads);
+	}
+	else
+	{
+		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z]->Push(doodads);
+		m_zStance[z] = true;
+	}
+}
+
+void RenderZMap::Push(AnimatedDoodads * animated, int8_t z)
+{
+	if (m_zStance[z])
+	{
+		m_zVectors[z]->Push(animated);
+	}
+	else
+	{
+		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z]->Push(animated);
+		m_zStance[z] = true;
+	}
+}
+
+void RenderZMap::Push(Tree * tree, int8_t z)
+{
+	if (m_zStance[z])
+	{
+		m_zVectors[z]->Push(tree);
+	}
+	else
+	{
+		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z]->Push(tree);
+		m_zStance[z] = true;
+	}
+}
+
+uint32_t RenderZMap::GetSize()
+{
+	uint32_t size = 0u;
+	for (auto vector : m_zVectors)
+	{
+		size += (uint32_t)vector.second->m_objects.size();
+	}
+	return size;
+}
+
+std::stack<Unit*> _vectorcall RenderZMap::GetUnitsInRange(Unit * object, float range)
+{
+	if (object)
+	{
+		int8_t z = (int8_t)object->GetZ();
+		return m_zVectors[z]->GetUnitsInRange(object, range);
+	}
+	std::stack<Unit*> m_elseStack;
+	return m_elseStack;
+}

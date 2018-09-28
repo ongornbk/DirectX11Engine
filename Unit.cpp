@@ -143,6 +143,11 @@ float Unit::GetSpeed()
 	return m_speed[0];
 }
 
+float Unit::GetZ()
+{
+	return Center.z;
+}
+
 void Unit::SetSpeed(float speed)
 {
 	m_speed[0] = speed;
