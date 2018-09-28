@@ -134,7 +134,7 @@ void SpriteModel::Update(float dt)
 	if (m_currentFrame < m_modelVariant.GetMaxFrames())
 	{
 		m_currentSpeed += m_animationSpeed + dt;
-
+			
 		if (m_currentSpeed > m_framesPerSecond)
 		{
 			m_currentFrame++;

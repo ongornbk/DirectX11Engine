@@ -6,6 +6,7 @@
 #include <mutex>
 #include <stack>
 
+
 #pragma region
 class Unit;
 #define UnitPtr Unit*;
@@ -20,6 +21,7 @@ namespace
 	static atomic<int>            m_coord[2];
 	atomic<uint8_t>               m_async;
 	static RenderZMap             g_units;
+	//std::mutex                    m_validateMutex;
 }
 
 RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui)
@@ -85,6 +87,12 @@ void RendererManager::PushTree(Tree * doodads, int8_t z)
 
 extern "C"
 {
+
+	//bool Intersects(RenderContainer* a, RenderContainer* b)
+	//{
+	//	return a->GetBoundingSphere()->Intersects(*b->GetBoundingSphere());
+	//}
+
 	struct __SortByY {
 		bool operator()(RenderContainer* a, RenderContainer* b) const noexcept {
 
@@ -105,7 +113,7 @@ extern "C"
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
 
-			if (radius[0] == 0.0f||radius[1] == 0.0f) goto RETURN;
+			//if (radius[0] == 0.0f||radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
 			float distanceX = 0.0f, distanceY = 0.0f;
@@ -113,7 +121,7 @@ extern "C"
 
 
 
-
+			
 
 				
 
@@ -166,7 +174,7 @@ extern "C"
 				}
 
 			}
-		RETURN:
+		//RETURN:
 
 			return ay > by;
 		}
@@ -193,7 +201,7 @@ extern "C"
 			bx = bsb->Center.x;
 			by = bsb->Center.y;
 
-			if (radius[0] == 0.0f|| radius[1] == 0.0f) goto RETURN;
+			//if (radius[0] == 0.0f|| radius[1] == 0.0f) goto RETURN;
 			radius[2] = radius[0] + radius[1];
 			float distance = 0.0f;
 			float distanceX = 0.0f, distanceY = 0.0f;
@@ -239,11 +247,113 @@ extern "C"
 				}
 
 			}
-		RETURN:
+		//RETURN:
 
 			return ax > bx;
 		}
 	};
+
+	bool _cdecl CollisionSortingXY  (RenderContainer* a,RenderContainer* b) noexcept
+	{
+
+		BoundingSphere* bsa = a->GetBoundingSphere();
+		BoundingSphere* bsb = b->GetBoundingSphere();
+
+		bool af2 = a->Flag(2u);
+		bool bf2 = b->Flag(2u);
+
+		float radius[3];
+		float ax, ay, bx, by;
+
+		radius[0] = bsa->Radius;
+		radius[1] = bsb->Radius;
+		ax = bsa->Center.x;
+		ay = bsa->Center.y;
+
+		bx = bsb->Center.x;
+		by = bsb->Center.y;
+
+		if (radius[0] == 0.0f || radius[1] == 0.0f) goto RETURN;
+		radius[2] = radius[0] + radius[1];
+		float distance = 0.0f;
+		float distanceX = 0.0f, distanceY = 0.0f;
+		float collision = 0.0f;
+
+
+
+
+
+
+
+
+
+		distanceX = ax - bx;
+		distanceY = ay - by;
+
+		//float xratio = distanceX / distanceY;
+		//float yratio = distanceY / distanceX;
+
+		distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
+		if (distance < radius[2])
+		{
+			collision = distance - radius[2];
+			if (af2)
+			{
+				if (bf2)
+				{
+					collision /= 2.0f;
+					if (ax < bx)
+					{
+						bsa->Center.x += collision;// *xratio;
+						bsb->Center.x -= collision;// *xratio;
+					}
+					else
+					{
+						bsa->Center.x -= collision;// *xratio;
+						bsa->Center.x += collision;// *xratio;
+					}
+					//if (ay < by)
+					//{
+					//	a->m_yOffset += collision;// *yratio;
+					//	a->m_yOffset -= collision;// *yratio;
+					//}
+					//else
+					//{
+					//	a->m_yOffset -= collision;// *yratio;
+					//	a->m_yOffset += collision;// *yratio;
+					//}
+					//a->UpdatePosition();
+					//b->UpdatePosition();
+				}
+				else
+				{
+					if (ax < bx) bsa->Center.x += collision;// *xratio;
+					else         bsa->Center.x -= collision;// *xratio;
+					//if (ay < by) a->m_yOffset += collision;// *yratio;
+				//	else         a->m_yOffset -= collision;;// *yratio;
+
+					}
+				}
+			}
+			else
+			{
+				if (bf2)
+				{
+					if (ax < bx) bsb->Center.x -= collision;// *xratio;
+					else         bsb->Center.x += collision;// *xratio;
+				//	if (ay < by) a->m_yOffset -= collision;
+				//	else         a->m_yOffset += collision;
+
+					//b->UpdatePosition();
+				}
+
+			}
+
+		
+	RETURN:
+
+		return ay > by;
+	}
 
 	void SortByY(std::vector<RenderContainer*> &vec) noexcept
 	{
@@ -316,7 +426,7 @@ extern "C"
 			{
 				m_array[i]->Update(dt);
 			}
-			m_async--;
+			//m_async--;
 
 		}
 	}
@@ -393,20 +503,20 @@ RenderContainerVector::RenderContainerVector()
 
 void RenderContainerVector::Update(float dt)
 {
-	//m_async = 4u;
-	//size_t middle = m_objects.size() / 4u;
-	//vector<RenderContainer*>::const_iterator onefour(m_objects.cbegin());
+	//m_async = 2u;
+//	size_t middle = m_objects.size() / 2u;
+//	vector<RenderContainer*>::const_iterator middle_iter(m_objects.cbegin());
 	//vector<RenderContainer*>::const_iterator twofour(m_objects.cbegin());
 	//vector<RenderContainer*>::const_iterator threefour(m_objects.cbegin());
-	//advance(onefour, middle);
+//	advance(middle_iter, middle);
 	//advance(twofour, middle * 2u);
 	//advance(threefour, middle * 3u);
-	//vector<RenderContainer*> t1(m_objects.cbegin(), onefour);
-	//vector<RenderContainer*> t2(onefour, twofour);
+	//vector<RenderContainer*> t1(m_objects.cbegin(), middle_iter);
+	//vector<RenderContainer*> t2(middle_iter, m_objects.cend());
 	//vector<RenderContainer*> t3(twofour, threefour);
 	//vector<RenderContainer*> t4(threefour, m_objects.cend());
 	//thread tt1(UpdatePart, t1, dt);
-	//thread tt2(UpdatePart, t2, dt);
+//	thread tt2(UpdatePart, t2, dt);
 	//thread tt3(UpdatePart, t3, dt);
 	//thread tt4(UpdatePart, t4, dt);
 	////async(launch::async, UpdatePart, t1, dt);
@@ -438,6 +548,11 @@ void RenderContainerVector::Sort()
 
 	std::sort(m_objects.begin(), m_objects.end(), __SortByX());
 	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
+
+	//int (_cdecl)
+	//std::qsort(m_objects.data(), m_objects.size(), sizeof(RenderContainer*), CollisionSortingXY);
+
+	//std::sort(m_objects.begin(), m_objects.end(), CollisionSortingXY);
 }
 
 static uint32_t sizeg = 0u;

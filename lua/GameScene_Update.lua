@@ -82,20 +82,20 @@ local x,y = GetMousePosition()
 CreateDoodads()
 InitializeDoodads("barell0",105,17,x,y,0,true)
 end
-if IsKeyHit(26) == true
+if IsKeyPressed(26) == true
 then
 Println("sdsdsds")
 local x,y = GetMousePosition()
 CreateAnimatedDoodads()
-InitializeAnimatedDoodads("fire0",100,0,x,y,0,false)
+InitializeAnimatedDoodads("fire0",math.random(80,120),0,x,y,0,false)
 SetNumberOfFrames(24)
 end
 if IsKeyHit(27) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
-InitializeDoodads("cow_corpse0",120,0,x,y,false)
-SetZ(1)
+InitializeDoodads("cow_corpse0",120,0,x,y,-1,false)
+--SetZ(1)
 end
 if IsKeyHit(28) == true
 then

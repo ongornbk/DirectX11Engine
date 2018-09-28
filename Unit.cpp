@@ -6,6 +6,7 @@
 
 Unit::Unit() : Model()
 {
+	//m_yOffset = 0.0f;
 }
 
 
@@ -30,12 +31,19 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
 {
 	Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader);
+
 }
 
 
 
 void Unit::Update(float dt)
 {
+	//if (m_yOffset > 0.0f)
+	//	Center.y += m_yOffset;
+	//else
+	//	Center.y -= m_yOffset;
+	//m_yOffset = 0.0f;
+
 	if (!m_tasks.Update())if(m_wanderingFlag)m_tasks.Wander(this);
 
 	Model::SetRenderingStance(validateRendering(Model::Center));

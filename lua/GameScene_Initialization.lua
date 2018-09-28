@@ -2,7 +2,6 @@ LoadInstance("../saves/map.save")
 tileSelected = 0
 SetInterface(1)
 ResumeGame()
-
 CreateUnit()
 PickLastCreatedUnit()
 PushUnitVariable("hero")

@@ -18,6 +18,7 @@ public:
 
 public:
 	uint32_t      m_index;
+	//float         m_yOffset;
 	enum RenderContainerType
 	{
 		UNIT,
