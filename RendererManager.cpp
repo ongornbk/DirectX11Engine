@@ -431,7 +431,7 @@ extern "C"
 		//m_async--;
 	}
 
-	void SortByX(std::vector<RenderContainer*> &vec) noexcept
+	void SortByX(std::vector<RenderContainer*> vec[4], std::vector<RenderContainer*> vecG) noexcept
 	{
 	//	std::sort(vec.begin(), vec.end(), __SortByX());
 		//m_async--;
@@ -445,43 +445,48 @@ extern "C"
 		constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f) * 40.0f;
         constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f) * -40.0f;
 
-		std::vector<RenderContainer*> vec0;
-		std::vector<RenderContainer*> vec1;
-		std::vector<RenderContainer*> vec2;
-		std::vector<RenderContainer*> vec3;
-		for (auto && RC : vec)
+		vec[0].clear();
+		vec[1].clear();
+		vec[2].clear();
+		vec[3].clear();
+
+		//std::vector<RenderContainer*> vec0;
+		//std::vector<RenderContainer*> vec1;
+		//std::vector<RenderContainer*> vec2;
+		//std::vector<RenderContainer*> vec3;
+		for (auto && RC : vecG)
 		{
 			if (RC->GetBoundingSphere()->Center.x < 0.0f)
 			{
 				if (RC->GetBoundingSphere()->Center.x < MAP_YBEGd2)
 				{
-					vec0.push_back(RC);
+					vec[0].push_back(RC);
 				}
 				else
 				{
-					vec1.push_back(RC);
+					vec[1].push_back(RC);
 				}
 			}
 			else
 			{
 				if (RC->GetBoundingSphere()->Center.x < MAP_YENDd2)
 				{
-					vec2.push_back(RC);
+					vec[2].push_back(RC);
 				}
 				else
 				{
-					vec3.push_back(RC);
+					vec[3].push_back(RC);
 				}
 			}
 		}
-		vec.clear();
+		//ve.clear();
 		//std::sort(vec.begin(), vec.end(), __SortByY());
 		//std::atomic<uint32_t> threads = 4u;
 
-		std::thread t0(sortPx, vec0.begin(), vec0.end());
-		std::thread t1(sortPx, vec1.begin(), vec1.end());
-		std::thread t2(sortPx, vec2.begin(), vec2.end());
-		std::thread t3(sortPx, vec3.begin(), vec3.end());
+		std::thread t0(sortPx, vec[0].begin(), vec[0].end());
+		std::thread t1(sortPx, vec[1].begin(), vec[1].end());
+		std::thread t2(sortPx, vec[2].begin(), vec[2].end());
+		std::thread t3(sortPx, vec[3].begin(), vec[3].end());
 
 
 
@@ -490,15 +495,15 @@ extern "C"
 		t2.join();
 		t3.join();
 
-		vec.insert(vec.end(), vec0.begin(), vec0.end());
-		vec.insert(vec.end(), vec1.begin(), vec1.end());
-		vec.insert(vec.end(), vec2.begin(), vec2.end());
-		vec.insert(vec.end(), vec3.begin(), vec3.end());
-
-		vec0.clear();
-		vec1.clear();
-		vec2.clear();
-		vec3.clear();
+		//vec.insert(vec.end(), vec0.begin(), vec0.end());
+		//vec.insert(vec.end(), vec1.begin(), vec1.end());
+		//vec.insert(vec.end(), vec2.begin(), vec2.end());
+		//vec.insert(vec.end(), vec3.begin(), vec3.end());
+		//
+		//vec0.clear();
+		//vec1.clear();
+		//vec2.clear();
+		//vec3.clear();
 	}
 
 	inline void DoNothing() noexcept
@@ -630,9 +635,18 @@ size_t RendererManager::GetNumberOfObjects()
 	return g_units.GetSize();
 }
 
+__m128 RendererManager::GetNumberOfObjectsX4()
+{
+	return g_units.GetSizeX4();
+}
+
 RenderContainerVector::RenderContainerVector()
 {
-	m_objects.reserve(20000u);
+	m_objectsX[0].reserve(5000u);
+	m_objectsX[1].reserve(5000u);
+	m_objectsX[2].reserve(5000u);
+	m_objectsX[3].reserve(5000u);
+	m_objectsY.reserve(20000u);
 }
 
 void RenderContainerVector::Update(float dt)
@@ -665,7 +679,8 @@ void RenderContainerVector::Update(float dt)
 	//tt2.join();
 	//tt3.join();
 	//tt4.join();
-	UpdatePart(m_objects, dt);
+	//UpdatePart(m_objectsX, dt);
+	UpdatePart(m_objectsY, dt);
 }
 
 void RenderContainerVector::Sort()
@@ -673,15 +688,15 @@ void RenderContainerVector::Sort()
 	//m_async = 2u;
 	//std::async(std::launch::async,SortByX,(m_objects));
 	//std::async(std::launch::async,SortByY,(m_objects));
-	//SortByX(m_objects);
-   // SortByY(m_objects);
+	SortByX(m_objectsX, m_objectsY);
+   SortByY(m_objectsY);
 	//while (m_async)
 	//{
 	//	DoNothing();
 	//}
 
-	std::sort(m_objects.begin(), m_objects.end(), __SortByX());
-	std::sort(m_objects.begin(), m_objects.end(), __SortByY());
+	//std::sort(m_objectsX.begin(), m_objectsX.end(), __SortByX());
+	//std::sort(m_objectsY.begin(), m_objectsY.end(), __SortByY());
 
 	//int (_cdecl)
 	//std::qsort(m_objects.data(), m_objects.size(), sizeof(RenderContainer*), CollisionSortingXY);
@@ -693,8 +708,8 @@ static uint32_t sizeg = 0u;
 
 void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
 {
-	RenderContainer** objects = m_objects.data();
-	for (uint32_t i = 0; i < (uint32_t)m_objects.size(); i++)
+	RenderContainer** objects = m_objectsY.data();
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY.size(); i++)
 	{
 		objects[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects[i]->m_index = i;
@@ -703,7 +718,7 @@ void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceConte
 
 void RenderContainerVector::Clear()
 {
-	for (auto &&object : m_objects)
+	for (auto &&object : m_objectsY)
 	{
 		if (object)
 		{
@@ -712,28 +727,36 @@ void RenderContainerVector::Clear()
 			object = nullptr;
 		}
 	}
-	m_objects.clear();
+	m_objectsX[0].clear();
+	m_objectsX[1].clear();
+	m_objectsX[2].clear();
+	m_objectsX[3].clear();
+	m_objectsY.clear();
 
 }
 
 void RenderContainerVector::Push(Unit * unit)
 {
-	m_objects.push_back(unit);
+	//m_objectsX[0].push_back(unit);
+	m_objectsY.push_back(unit);
 }
 
 void RenderContainerVector::Push(Doodads * doodads)
 {
-	m_objects.push_back(doodads);
+	//m_objectsX[0].push_back(doodads);
+	m_objectsY.push_back(doodads);
 }
 
 void RenderContainerVector::Push(AnimatedDoodads* animated)
 {
-	m_objects.push_back(animated);
+	//m_objectsX[0].push_back(animated);
+	m_objectsY.push_back(animated);
 }
 
 void RenderContainerVector::Push(Tree * tree)
 {
-	m_objects.push_back(tree);
+	//m_objectsX[0].push_back(tree);
+	m_objectsY.push_back(tree);
 }
 
 Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float range) noexcept
@@ -784,7 +807,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 {
 	std::stack<Unit*> units;
 	atomic<std::stack<Unit*>*> sa = &units;
-	std::vector<RenderContainer*>* upv = &g_units.m_zVectors[(int8_t)object->GetZ()]->m_objects;
+	std::vector<RenderContainer*>* upv = &g_units.m_zVectors[(int8_t)object->GetZ()]->m_objectsY;
 	size_t index = (size_t)object->m_index;
 	
 	std::vector<RenderContainer*> fv(upv->begin(), upv->begin() + index);
@@ -909,7 +932,20 @@ uint32_t RenderZMap::GetSize()
 	uint32_t size = 0u;
 	for (auto vector : m_zVectors)
 	{
-		size += (uint32_t)vector.second->m_objects.size();
+		size += (uint32_t)vector.second->m_objectsY.size();
+	}
+	return size;
+}
+
+__m128 RenderZMap::GetSizeX4()
+{
+	__m128 size{};
+	for (auto vector : m_zVectors)
+	{
+		size.m128_u32[0] += (uint32_t)vector.second->m_objectsX[0].size();
+		size.m128_u32[1] += (uint32_t)vector.second->m_objectsX[1].size();
+		size.m128_u32[2] += (uint32_t)vector.second->m_objectsX[2].size();
+		size.m128_u32[3] += (uint32_t)vector.second->m_objectsX[3].size();
 	}
 	return size;
 }

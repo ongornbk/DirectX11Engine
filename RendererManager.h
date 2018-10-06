@@ -31,6 +31,7 @@ extern "C"
 	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept;
 }
 
+
 struct RenderZMap
 {
 
@@ -51,6 +52,7 @@ struct RenderZMap
 	void Push(AnimatedDoodads* animated, int8_t z);
 	void Push(Tree* tree, int8_t z);
 	uint32_t GetSize();
+	__m128 GetSizeX4();
 	std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range);
 
 };
@@ -60,7 +62,8 @@ struct RenderContainerVector
 
 	RenderContainerVector();
 
-	vector<RenderContainer*> m_objects;
+	vector<RenderContainer*> m_objectsX[4];
+	vector<RenderContainer*> m_objectsY;
 
 	void Update(float dt);
 	void Sort();
@@ -107,6 +110,7 @@ public:
 
 	static RendererManager* GetInstance();
 	static size_t GetNumberOfObjects();
+	static __m128 GetNumberOfObjectsX4();
 
 private:
 
