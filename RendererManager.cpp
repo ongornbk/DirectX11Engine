@@ -360,6 +360,11 @@ extern "C"
 		std::sort(begin, end, __SortByY());
 	}
 
+	void _cdecl sortPx(std::vector<RenderContainer*>::iterator begin, std::vector<RenderContainer*>::iterator end)
+	{
+		std::sort(begin, end, __SortByX());
+	}
+
 	void SortByY(std::vector<RenderContainer*> &vec) noexcept
 	{
 		constexpr float MAP_XEND = (TILE_MAP_SIZE / 2.0f) * 160.0f;
@@ -398,7 +403,8 @@ extern "C"
 				}
 			}
 		}
-		std::sort(vec.begin(), vec.end(), __SortByY());
+		vec.clear();
+		//std::sort(vec.begin(), vec.end(), __SortByY());
 		//std::atomic<uint32_t> threads = 4u;
 		
 		std::thread t0(sortPy, vec0.begin(), vec0.end());
@@ -406,11 +412,17 @@ extern "C"
 		std::thread t2(sortPy, vec2.begin(), vec2.end());
 		std::thread t3(sortPy, vec3.begin(), vec3.end());
 
+
+
 		t0.join();
 		t1.join();
 		t2.join();
 		t3.join();
 
+		vec.insert(vec.end(), vec0.begin(), vec0.end());
+		vec.insert(vec.end(), vec1.begin(), vec1.end());
+		vec.insert(vec.end(), vec2.begin(), vec2.end());
+		vec.insert(vec.end(), vec3.begin(), vec3.end());
 
 		vec0.clear();
 		vec1.clear();
@@ -421,8 +433,72 @@ extern "C"
 
 	void SortByX(std::vector<RenderContainer*> &vec) noexcept
 	{
-		std::sort(vec.begin(), vec.end(), __SortByX());
+	//	std::sort(vec.begin(), vec.end(), __SortByX());
 		//m_async--;
+
+		//constexpr float MAP_XEND = (TILE_MAP_SIZE / 2.0f) * 160.0f;
+		//constexpr float MAP_XBEG = (TILE_MAP_SIZE / 2.0f) * -160.0f;
+		//constexpr float MAP_XENDd2 = (TILE_MAP_SIZE / 2.0f) * 80.0f;
+		//constexpr float MAP_XBEGd2 = (TILE_MAP_SIZE / 2.0f) * -80.0f;
+		constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f) * 80.0f;
+		constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f) * -80.0f;
+		constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f) * 40.0f;
+        constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f) * -40.0f;
+
+		std::vector<RenderContainer*> vec0;
+		std::vector<RenderContainer*> vec1;
+		std::vector<RenderContainer*> vec2;
+		std::vector<RenderContainer*> vec3;
+		for (auto && RC : vec)
+		{
+			if (RC->GetBoundingSphere()->Center.x < 0.0f)
+			{
+				if (RC->GetBoundingSphere()->Center.x < MAP_YBEGd2)
+				{
+					vec0.push_back(RC);
+				}
+				else
+				{
+					vec1.push_back(RC);
+				}
+			}
+			else
+			{
+				if (RC->GetBoundingSphere()->Center.x < MAP_YENDd2)
+				{
+					vec2.push_back(RC);
+				}
+				else
+				{
+					vec3.push_back(RC);
+				}
+			}
+		}
+		vec.clear();
+		//std::sort(vec.begin(), vec.end(), __SortByY());
+		//std::atomic<uint32_t> threads = 4u;
+
+		std::thread t0(sortPx, vec0.begin(), vec0.end());
+		std::thread t1(sortPx, vec1.begin(), vec1.end());
+		std::thread t2(sortPx, vec2.begin(), vec2.end());
+		std::thread t3(sortPx, vec3.begin(), vec3.end());
+
+
+
+		t0.join();
+		t1.join();
+		t2.join();
+		t3.join();
+
+		vec.insert(vec.end(), vec0.begin(), vec0.end());
+		vec.insert(vec.end(), vec1.begin(), vec1.end());
+		vec.insert(vec.end(), vec2.begin(), vec2.end());
+		vec.insert(vec.end(), vec3.begin(), vec3.end());
+
+		vec0.clear();
+		vec1.clear();
+		vec2.clear();
+		vec3.clear();
 	}
 
 	inline void DoNothing() noexcept
