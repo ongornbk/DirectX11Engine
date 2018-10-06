@@ -29,7 +29,7 @@ namespace ipp
 		WHITE = 15
 	};
 
-	template <class returntype, class type> inline returntype memory_cast(type obj)
+	template <class _Out_ ReturnType, class _In_ Type> inline ReturnType memory_cast(Type obj)
 	{
 		return *(returntype*)(obj);
 	}
