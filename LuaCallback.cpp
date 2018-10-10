@@ -285,13 +285,10 @@ namespace lua_callback
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
-			Task* task = new Task();
-			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination.x = LUA_FLOAT(state, 1);
-			tgtp->destination.y = LUA_FLOAT(state, 2);
-			tgtp->object = unit;
-			task->m_content.taskGotoPoint = tgtp;
-			task->m_type = Task::Type::TASKGOTOPOINT;
+			TaskGotoPoint* task = new TaskGotoPoint();
+			task->destination.x = LUA_FLOAT(state, 1);
+			task->destination.y = LUA_FLOAT(state, 2);
+			task->object = unit;
 			unit->GiveTask(task);
 		}
 			return 0;
@@ -302,12 +299,9 @@ namespace lua_callback
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
-			Task* task = new Task();
-			TaskGotoPoint* tgtp = new TaskGotoPoint();
-			tgtp->destination = m_global->m_lastPoint;
-			tgtp->object = unit;
-			task->m_content.taskGotoPoint = tgtp;
-			task->m_type = Task::Type::TASKGOTOPOINT;
+			TaskGotoPoint* task = new TaskGotoPoint();
+			task->destination = m_global->m_lastPoint;
+			task->object = unit;
 			unit->SetTask(task);
 		}
 		return 0;

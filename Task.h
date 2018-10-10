@@ -10,21 +10,33 @@ using namespace DirectX;
 class  Unit;
 #pragma endregion
 
-struct TaskGotoPoint // works correctly ;)
+class Task
+{
+
+public:
+
+virtual bool Update() = 0;
+
+};
+
+class TaskGotoPoint : public Task
 {
 public:
-	TaskGotoPoint() = default;
+	TaskGotoPoint();
 	~TaskGotoPoint() = default;
-	bool     Update();
+
+	bool     Update() override;
 	Unit*    object;
 	XMFLOAT3 destination;
 };
 
-struct TaskPatrol  //aint workin correctly
+class TaskPatrol : public Task
 {
+public:
 	TaskPatrol();
 	~TaskPatrol() = default;
-	bool     Update();
+
+	bool     Update() override;
 	Unit*    object;
 	XMFLOAT3 pointA;
 	XMFLOAT3 pointB;
@@ -32,46 +44,17 @@ private:
 	bool m_target;
 };
 
-struct TaskFollow
+class TaskFollow : public Task
 {
+public:
+
+	TaskFollow();
+	~TaskFollow() = default;
 #define FOLLOWDISTANCE 200.0f
-	bool          Update();
+
+	bool          Update() override;
 	Unit*         object;
 	atomic<Unit*> target;
 };
 
 
-struct Task
-{
-	Task() = default;
-	~Task();
-
-#pragma region
-		union Content
-		{
-			TaskGotoPoint*     taskGotoPoint;
-			TaskPatrol*        taskPatrol;
-			TaskFollow*        taskFollow;
-			//TaskAttack*        taskAttack;
-			//TaskFleeFromUnit*  taskFleeFromUnit;
-			//TaskFleeFromPoint* taskFleeFromPoint;
-			//TaskDefendUnit*    taskDefendUnit;
-		};
-	
-		enum Type
-		{
-			TASKGOTOPOINT = 0,
-			TASKPATROL = 1,
-			TASKFOLLOW = 2,
-			TASKATTACK = 3,
-			TASKFLEEFROMUNIT = 4,
-			TASKFLEEFROMPOINT = 5,
-			TASKDEFENDUNIT = 6
-		};
-	
-		Type    m_type;
-		Content m_content;
-#pragma endregion
-
-	bool Update();
-};

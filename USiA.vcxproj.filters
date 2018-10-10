@@ -144,9 +144,6 @@
     <ClInclude Include="PlatformHelper.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Engine\Items</Filter>
-    </ClInclude>
     <ClInclude Include="SettingsC.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -331,6 +328,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderZMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContainerVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sorting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -572,11 +578,14 @@
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CudaVector2.cu" />
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="cuda.cu" />
+    <ClCompile Include="RenderZMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContainerVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sorting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

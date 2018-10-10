@@ -2,6 +2,8 @@
 #include "TextureShader.h"
 //#include "GlobalUtilities.h"
 //#include <thr\threads.h>
+#include "ResourceManager.h"
+#include "Engine.h"
 #include "Defines.h"
 #include "LUAManager.h"
 

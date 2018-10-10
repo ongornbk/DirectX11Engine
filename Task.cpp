@@ -14,73 +14,6 @@ struct FLOAT3
 	float z;
 };
 
-//
-
-//
-//struct TaskAttack
-//{
-//	bool          Update();
-//	Unit*         object;
-//	atomic<Unit*> target;
-//};
-//
-
-//
-//struct TaskFleeFromUnit
-//{
-//	bool          Update();
-//	Unit*         object;
-//	atomic<Unit*> target;
-//};
-//
-//struct TaskFleeFromPoint
-//{
-//	bool     Update();
-//	Unit*    object;
-//	XMFLOAT3 pointA;
-//};
-//
-//struct TaskDefendUnit
-//{
-//	bool          Update();
-//	Unit*         object;
-//	atomic<Unit*> target;
-//};
-//
-//
-//struct Task
-//{
-//	union Content
-//	{
-//		TaskGotoPoint*     taskGotoPoint;
-//		TaskPatrol*        taskPatrol;
-//		TaskFollow*        taskFollow;
-//		TaskAttack*        taskAttack;
-//		TaskWander*        taskWander;
-//		TaskFleeFromUnit*  taskFleeFromUnit;
-//		TaskFleeFromPoint* taskFleeFromPoint;
-//		TaskDefendUnit*    taskDefendUnit;
-//	};
-//
-//	enum Type
-//	{
-//		TASKGOTOPOINT = 0,
-//		TASKPATROL = 1,
-//		TASKFOLLOW = 2,
-//		TASKATTACK = 3,
-//		TASKWANDER = 4,
-//		TASKFLEEFROMUNIT = 5,
-//		TASKFLEEFROMPOINT = 6,
-//		TASKDEFENDUNIT = 7
-//	};
-//
-//	Type    m_type;
-//	Content m_content;
-//
-//	bool Update();
-//};
-//
-//
 extern "C"
 {
 
@@ -101,57 +34,16 @@ extern "C"
 	}
 
 }
-Task::~Task()
+
+
+
+
+
+
+
+TaskGotoPoint::TaskGotoPoint()
 {
-	switch(m_type)
-	{
-	case Task::Type::TASKGOTOPOINT:
-	{
-		if(m_content.taskGotoPoint)
-		delete m_content.taskGotoPoint;
-		break;
-	}
-	case Task::Type::TASKPATROL:
-	{
-		if (m_content.taskPatrol)
-			delete m_content.taskPatrol;
-		break;
-	}
-		case Task::Type::TASKFOLLOW:
-		{
-		if (m_content.taskFollow)
-			delete m_content.taskFollow;
-		break;
-	}
-
-	}
 }
-bool Task::Update()
-{
-	switch (m_type)
-	{
-	case Task::Type::TASKGOTOPOINT:
-	{
-		return m_content.taskGotoPoint->Update();
-		break;
-	}
-	case Task::Type::TASKPATROL:
-	{
-		return m_content.taskPatrol->Update();
-		break;
-	}
-		case Task::Type::TASKFOLLOW:
-	{
-		return m_content.taskFollow->Update();
-		break;
-	}
-	}
-	return false;
-}
-
-
-
-
 
 bool TaskGotoPoint::Update()
 {
@@ -239,6 +131,10 @@ TaskPatrol::TaskPatrol()
 	m_target = true;
 }
 
+TaskPatrol::~TaskPatrol()
+{
+}
+
 bool TaskPatrol::Update()
 {
 #define angle 3.14f / 8
@@ -282,6 +178,10 @@ bool TaskPatrol::Update()
 		m_target = false;
 	}
 	return false;
+}
+
+TaskFollow::TaskFollow()
+{
 }
 
 bool TaskFollow::Update()

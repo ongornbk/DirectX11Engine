@@ -45,10 +45,10 @@ public:
 	void SetPosition(XMFLOAT3 position);
 
 #pragma region
-	friend struct Task;
-	friend struct TaskGotoPoint;
-	friend struct TaskPatrol;
-	friend struct TaskFollow;
+	friend class Task;
+	friend class TaskGotoPoint;
+	friend class TaskPatrol;
+	friend class TaskFollow;
 	friend struct RenderObject;
 	friend struct SortByX;
 	friend struct SortByY;

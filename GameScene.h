@@ -1,7 +1,6 @@
 #pragma once
 #include "GameComponent.h"
 #include "Model.h"
-#include "Player.h"
 #include "SettingsC.h"
 
 
