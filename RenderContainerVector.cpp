@@ -1,5 +1,6 @@
 #include "RenderContainerVector.h"
 #include "Sorting.h"
+#include <thread>
 
 typedef int32_t Boolean;
 
@@ -17,6 +18,11 @@ void _vectorcall UpdatePart(std::vector<RenderContainer*> vec, float dt) noexcep
 	}
 }
 
+void _cdecl UpdatePartP(std::vector<RenderContainer*> vec, float dt)
+{
+	UpdatePart(vec, dt);
+}
+
 void RenderContainerVector::Update(float dt)
 {
 
@@ -24,6 +30,16 @@ void RenderContainerVector::Update(float dt)
 	UpdatePart(m_objectsY[1], dt);
 	UpdatePart(m_objectsY[2], dt);
 	UpdatePart(m_objectsY[3], dt);
+
+	//std::thread t0(UpdatePartP, m_objectsY[0], dt);
+	//std::thread t1(UpdatePartP, m_objectsY[1], dt);
+	//std::thread t2(UpdatePartP, m_objectsY[2], dt);
+	//std::thread t3(UpdatePartP, m_objectsY[3], dt);
+	//
+	//t0.join();
+	//t1.join();
+	//t2.join();
+	//t3.join();
 }
 
 void RenderContainerVector::Sort()
