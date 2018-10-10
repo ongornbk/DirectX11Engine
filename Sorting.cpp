@@ -4,7 +4,31 @@
 
 using std::thread;
 
+namespace
+{
+	DirectX::BoundingBox playableMapArea(DirectX::XMFLOAT3(0.0f,0.0f,0.0f),DirectX::XMFLOAT3((TILE_MAP_SIZE/2)*80.0f, TILE_MAP_SIZE / 2*80.0f,0.0f));
+}
 
+void ValidateSpherePosition(BoundingSphere* &sphere)
+{
+	if (sphere->Center.x < (playableMapArea.Center.x - playableMapArea.Extents.x))
+	{
+		sphere->Center.x = (playableMapArea.Center.x - playableMapArea.Extents.x);
+	}
+	else if (sphere->Center.x > (playableMapArea.Center.x + playableMapArea.Extents.x))
+	{
+		sphere->Center.x = (playableMapArea.Center.x + playableMapArea.Extents.x);
+	}
+
+	if (sphere->Center.y < (playableMapArea.Center.y - playableMapArea.Extents.y))
+	{
+		sphere->Center.y = (playableMapArea.Center.y - playableMapArea.Extents.y);
+	}
+	else if (sphere->Center.y > (playableMapArea.Center.y + playableMapArea.Extents.y))
+	{
+		sphere->Center.y = (playableMapArea.Center.y + playableMapArea.Extents.y);
+	}
+}
 
 bool __sort__SortByY::operator()(RenderContainer * a, RenderContainer * b) const noexcept
 {
@@ -161,12 +185,17 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[4], std::vector<Rende
 
 	for (uint32_t i = 0u; i < 4; i++)
 	{
-
 		for (auto && RC : vecG[i])
 		{
-			if (RC->GetBoundingSphere()->Center.y < 0.0f)
+			BoundingSphere* sphere = RC->GetBoundingSphere();
+
+			if (!playableMapArea.Contains(*sphere))
 			{
-				if (RC->GetBoundingSphere()->Center.y < MAP_YBEGd2)
+				ValidateSpherePosition(sphere);
+			}
+			if (sphere->Center.y < 0.0f)
+			{
+				if (sphere->Center.y < MAP_YBEGd2)
 				{
 					vec[0].push_back(RC);
 				}
@@ -177,7 +206,7 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[4], std::vector<Rende
 			}
 			else
 			{
-				if (RC->GetBoundingSphere()->Center.y < MAP_YENDd2)
+				if (sphere->Center.y < MAP_YENDd2)
 				{
 					vec[2].push_back(RC);
 				}
@@ -215,30 +244,37 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[4], std::vector<Rende
 	{
 		for (auto && RC : vecG[i])
 		{
-			if (RC->GetBoundingSphere()->Center.x < 0.0f)
+			BoundingSphere* sphere = RC->GetBoundingSphere();
+			if (!playableMapArea.Contains(*sphere))
 			{
-				if (RC->GetBoundingSphere()->Center.x < MAP_YBEGd2)
+				ValidateSpherePosition(sphere);
+			}
+				if (sphere->Center.x < 0.0f)
 				{
-					vec[0].push_back(RC);
+					if (sphere->Center.x < MAP_YBEGd2)
+					{
+						vec[0].push_back(RC);
+					}
+					else
+					{
+						vec[1].push_back(RC);
+					}
 				}
 				else
 				{
-					vec[1].push_back(RC);
+					if (sphere->Center.x < MAP_YENDd2)
+					{
+						vec[2].push_back(RC);
+					}
+					else
+					{
+						vec[3].push_back(RC);
+					}
 				}
 			}
-			else
-			{
-				if (RC->GetBoundingSphere()->Center.x < MAP_YENDd2)
-				{
-					vec[2].push_back(RC);
-				}
-				else
-				{
-					vec[3].push_back(RC);
-				}
-			}
+
+				
 		}
-	}
 
 	std::thread t0(sortPx, vec[0].begin(), vec[0].end());
 	std::thread t1(sortPx, vec[1].begin(), vec[1].end());

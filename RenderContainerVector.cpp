@@ -1,12 +1,12 @@
 #include "RenderContainerVector.h"
 #include "Sorting.h"
+#include "Defines.h"
 #include <thread>
 
 typedef int32_t Boolean;
 
 RenderContainerVector::RenderContainerVector()
 {
-
 }
 
 void _vectorcall UpdatePart(std::vector<RenderContainer*> vec, float dt) noexcept
@@ -30,6 +30,7 @@ void RenderContainerVector::Update(float dt)
 	UpdatePart(m_objectsY[1], dt);
 	UpdatePart(m_objectsY[2], dt);
 	UpdatePart(m_objectsY[3], dt);
+
 
 	//std::thread t0(UpdatePartP, m_objectsY[0], dt);
 	//std::thread t1(UpdatePartP, m_objectsY[1], dt);
@@ -57,25 +58,25 @@ void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceConte
 	RenderContainer** objects2 = m_objectsY[2].data();
 	RenderContainer** objects3 = m_objectsY[3].data();
 
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[0].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[3].size(); i++)
 	{
-		objects0[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects0[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[1].size(); i++)
-	{
-		objects1[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects1[i]->m_index = i;
+		objects3[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		objects3[i]->m_index = i;
 	}
 	for (uint32_t i = 0; i < (uint32_t)m_objectsY[2].size(); i++)
 	{
 		objects2[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects2[i]->m_index = i;
 	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[3].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[1].size(); i++)
 	{
-		objects3[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects3[i]->m_index = i;
+		objects1[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		objects1[i]->m_index = i;
+	}
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[0].size(); i++)
+	{
+		objects0[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		objects0[i]->m_index = i;
 	}
 }
 
