@@ -43,6 +43,7 @@ extern "C"
 
 TaskGotoPoint::TaskGotoPoint()
 {
+	m_type = Type::TASKGOTOPOINT;
 }
 
 bool TaskGotoPoint::Update()
@@ -126,14 +127,18 @@ bool TaskGotoPoint::Update()
 		}
 }
 
+void TaskGotoPoint::Release()
+{
+	delete this;
+}
+
 TaskPatrol::TaskPatrol()
 {
 	m_target = true;
+	m_type = Type::TASKPATROL;
 }
 
-TaskPatrol::~TaskPatrol()
-{
-}
+
 
 bool TaskPatrol::Update()
 {
@@ -180,15 +185,21 @@ bool TaskPatrol::Update()
 	return false;
 }
 
+void TaskPatrol::Release()
+{
+	delete this;
+}
+
 TaskFollow::TaskFollow()
 {
+	m_type = Type::TASKFOLLOW;
 }
 
 bool TaskFollow::Update()
 {
 #define angle 3.14f / 8
 	XMFLOAT3 position = object->GetPosition();
-	XMFLOAT3 destination = target.load()->GetPosition();
+	XMFLOAT3 destination = target->GetPosition();
 	if (DistanceBetweenXMFLOAT3(position, destination) > 200.0f)
 	{
 		switch (object->GetWalkingStance())
@@ -219,4 +230,9 @@ bool TaskFollow::Update()
 		object->SetVelocity(0.0f);
 	}
 	return false;
+}
+
+void TaskFollow::Release()
+{
+	delete this;
 }

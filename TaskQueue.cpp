@@ -23,7 +23,7 @@ TaskQueue::~TaskQueue()
 {
 	while (!m_tasks.empty())
 	{
-		delete m_tasks.front();
+		m_tasks.front()->Release();
 		m_tasks.pop();
 }
 }
@@ -48,7 +48,7 @@ bool TaskQueue::Update()
 		}
 		else
 		{
-			delete m_tasks.front();
+			m_tasks.front()->Release();
 			m_tasks.pop();
 		}
 	}
@@ -66,12 +66,9 @@ void TaskQueue::QueueTask(Task * task)
 }
 void TaskQueue::Wander(Unit * unit)
 {
-	Task* task = new Task();
-	TaskGotoPoint* tgtp = new TaskGotoPoint();
-	tgtp->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
-	tgtp->object = unit;
-	task->m_content.taskGotoPoint = tgtp;
-	task->m_type = Task::Type::TASKGOTOPOINT;
+	TaskGotoPoint* task = new TaskGotoPoint();
+	task->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
+	task->object = unit;
 	SetTask(task);
 }
 //

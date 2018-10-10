@@ -16,6 +16,14 @@ class Task
 public:
 
 virtual bool Update() = 0;
+virtual void Release() = 0;
+
+enum Type
+{
+	TASKGOTOPOINT,
+	TASKPATROL,
+	TASKFOLLOW
+} m_type;
 
 };
 
@@ -26,6 +34,7 @@ public:
 	~TaskGotoPoint() = default;
 
 	bool     Update() override;
+	void     Release() override;
 	Unit*    object;
 	XMFLOAT3 destination;
 };
@@ -37,6 +46,7 @@ public:
 	~TaskPatrol() = default;
 
 	bool     Update() override;
+	void     Release() override;
 	Unit*    object;
 	XMFLOAT3 pointA;
 	XMFLOAT3 pointB;
@@ -53,8 +63,9 @@ public:
 #define FOLLOWDISTANCE 200.0f
 
 	bool          Update() override;
+	void          Release() override;
 	Unit*         object;
-	atomic<Unit*> target;
+	Unit*         target;
 };
 
 
