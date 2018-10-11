@@ -382,6 +382,22 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 	SetTile(TransformXMFLOAT2ToTileMapINDEX2(position),tile);
 }
 
+void _vectorcall TileMap::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush)
+{
+	INDEX2 pos = TransformXMFLOAT2ToTileMapINDEX2(position);
+	for (int32_t x = 0; x < brush; x++)
+	{
+		for (int32_t y = 0; y < brush; y++)
+		{
+			if (x + y < brush)
+			{
+				SetTile(INDEX2(pos.i + x,pos.j + y), tile);
+			}
+
+		}
+	}
+}
+
 void TileMap::SetTile(INDEX2 index, int32_t tile)
 {
 	ipp::math::clamp(tile, 0, 8);

@@ -32,6 +32,7 @@ struct TileMap
 	void Initialize();
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile);
+	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile,int32_t brush);
 	void _vectorcall SetTile(INDEX2 index, int32_t tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);

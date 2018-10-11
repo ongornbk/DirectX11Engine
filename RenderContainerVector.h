@@ -11,8 +11,8 @@ struct RenderContainerVector
 
 	RenderContainerVector();
 
-	vector<RenderContainer*> m_objectsX[4];
-	vector<RenderContainer*> m_objectsY[4];
+	vector<RenderContainer*> m_objectsX[8];
+	vector<RenderContainer*> m_objectsY[8];
 
 	void Update(float dt);
 	void Sort();

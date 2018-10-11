@@ -58,6 +58,7 @@ public:
 	void SetRenderingStyle(RenderingStyle render);
 	void SetInterface(uint32_t type, Shader* shader);
 	void SetTile(XMFLOAT2 position, int32_t tile);
+	void SetTile(XMFLOAT2 position, int32_t tile,int32_t brush);
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
 

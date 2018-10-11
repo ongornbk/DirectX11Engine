@@ -281,6 +281,12 @@ void RendererManager::SetTile(XMFLOAT2 position, int32_t tile)
 	m_map->SetTile(position, tile);
 }
 
+void RendererManager::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush)
+{
+	if(brush)
+	m_map->SetTile(position, tile,brush);
+}
+
 void RendererManager::SaveInstanceToFile(std::string filename)
 {
 	m_map->SaveToFile(filename);

@@ -1,34 +1,9 @@
 #include "Sorting.h"
 #include "Defines.h"
+#include "IPP.h"
 #include <thread>
 
 using std::thread;
-
-namespace
-{
-	DirectX::BoundingBox playableMapArea(DirectX::XMFLOAT3(0.0f,0.0f,0.0f),DirectX::XMFLOAT3((TILE_MAP_SIZE/2)*80.0f, TILE_MAP_SIZE / 2*80.0f,0.0f));
-}
-
-void ValidateSpherePosition(BoundingSphere* &sphere)
-{
-	if (sphere->Center.x < (playableMapArea.Center.x - playableMapArea.Extents.x))
-	{
-		sphere->Center.x = (playableMapArea.Center.x - playableMapArea.Extents.x);
-	}
-	else if (sphere->Center.x > (playableMapArea.Center.x + playableMapArea.Extents.x))
-	{
-		sphere->Center.x = (playableMapArea.Center.x + playableMapArea.Extents.x);
-	}
-
-	if (sphere->Center.y < (playableMapArea.Center.y - playableMapArea.Extents.y))
-	{
-		sphere->Center.y = (playableMapArea.Center.y - playableMapArea.Extents.y);
-	}
-	else if (sphere->Center.y > (playableMapArea.Center.y + playableMapArea.Extents.y))
-	{
-		sphere->Center.y = (playableMapArea.Center.y + playableMapArea.Extents.y);
-	}
-}
 
 bool __sort__SortByY::operator()(RenderContainer * a, RenderContainer * b) const noexcept
 {
@@ -173,85 +148,30 @@ void _cdecl sortPx(std::vector<RenderContainer*>::iterator begin, std::vector<Re
 	std::sort(begin, end, __sort__SortByX());
 }
 
-void _vectorcall SortByY(std::vector<RenderContainer*> vec[4], std::vector<RenderContainer*> vecG[4]) noexcept
+void _vectorcall SortByY(std::vector<RenderContainer*> vec[8], std::vector<RenderContainer*> vecG[8]) noexcept
 {
 	constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f) * 80.0f;
 	constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f) * -80.0f;
 	constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f) * 40.0f;
 	constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f) * -40.0f;
+	constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * 60.0f;
+	constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * -60.0f;
+	constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * 20.0f;
+	constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * -20.0f;
 
-	for (uint32_t i = 0u; i < 4; i++)
+	for (uint32_t i = 0u; i < 8u; i++)
 		vec[i].clear();
 
-	for (uint32_t i = 0u; i < 4; i++)
+	for (uint32_t i = 0u; i < 8u; i++)
 	{
 		for (auto && RC : vecG[i])
 		{
 			BoundingSphere* sphere = RC->GetBoundingSphere();
-
-			if (!playableMapArea.Contains(*sphere))
-			{
-				ValidateSpherePosition(sphere);
-			}
 			if (sphere->Center.y < 0.0f)
 			{
 				if (sphere->Center.y < MAP_YBEGd2)
 				{
-					vec[0].push_back(RC);
-				}
-				else
-				{
-					vec[1].push_back(RC);
-				}
-			}
-			else
-			{
-				if (sphere->Center.y < MAP_YENDd2)
-				{
-					vec[2].push_back(RC);
-				}
-				else
-				{
-					vec[3].push_back(RC);
-				}
-			}
-		}
-	}
-	std::thread t0(sortPy, vec[0].begin(), vec[0].end());
-	std::thread t1(sortPy, vec[1].begin(), vec[1].end());
-	std::thread t2(sortPy, vec[2].begin(), vec[2].end());
-	std::thread t3(sortPy, vec[3].begin(), vec[3].end());
-
-	t0.join();
-	t1.join();
-	t2.join();
-	t3.join();
-}
-
-void _vectorcall SortByX(std::vector<RenderContainer*> vec[4], std::vector<RenderContainer*> vecG[4]) noexcept
-{
-	constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f) * 80.0f;
-	constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f) * -80.0f;
-	constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f) * 40.0f;
-	constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f) * -40.0f;
-
-	vec[0].clear();
-	vec[1].clear();
-	vec[2].clear();
-	vec[3].clear();
-
-	for (uint32_t i = 0u; i < 4; i++)
-	{
-		for (auto && RC : vecG[i])
-		{
-			BoundingSphere* sphere = RC->GetBoundingSphere();
-			if (!playableMapArea.Contains(*sphere))
-			{
-				ValidateSpherePosition(sphere);
-			}
-				if (sphere->Center.x < 0.0f)
-				{
-					if (sphere->Center.x < MAP_YBEGd2)
+					if (sphere->Center.y < MAP_YBEGd34)
 					{
 						vec[0].push_back(RC);
 					}
@@ -262,7 +182,98 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[4], std::vector<Rende
 				}
 				else
 				{
-					if (sphere->Center.x < MAP_YENDd2)
+					if (sphere->Center.y < MAP_YBEGd14)
+					{
+						vec[2].push_back(RC);
+					}
+					else
+					{
+						vec[3].push_back(RC);
+					}
+				} 
+			}
+			else
+			{
+				if (sphere->Center.y < MAP_YENDd2)
+				{
+					if (sphere->Center.y < MAP_YENDd34)
+					{
+						vec[4].push_back(RC);
+					}
+					else
+					{
+						vec[5].push_back(RC);
+					}
+				}
+				else
+				{
+					if (sphere->Center.y < MAP_YENDd14)
+					{
+						vec[6].push_back(RC);
+					}
+					else
+					{
+						vec[7].push_back(RC);
+					}
+				}
+			}
+		}
+	}
+
+	std::thread t0(sortPy, vec[0].begin(), vec[0].end());
+	std::thread t1(sortPy, vec[1].begin(), vec[1].end());
+	std::thread t2(sortPy, vec[2].begin(), vec[2].end());
+	std::thread t3(sortPy, vec[3].begin(), vec[3].end());
+	std::thread t4(sortPy, vec[4].begin(), vec[4].end());
+	std::thread t5(sortPy, vec[5].begin(), vec[5].end());
+	std::thread t6(sortPy, vec[6].begin(), vec[6].end());
+	std::thread t7(sortPy, vec[7].begin(), vec[7].end());
+
+	t0.join();
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
+	t5.join();
+	t6.join();
+	t7.join();
+}
+
+void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<RenderContainer*> vecG[8]) noexcept
+{
+	constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f) * 80.0f;
+	constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f) * -80.0f;
+	constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f) * 40.0f;
+	constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f) * -40.0f;
+	constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * 60.0f;
+	constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * -60.0f;
+	constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * 20.0f;
+	constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * -20.0f;
+
+	for (uint32_t i = 0u; i < 8u; i++)
+	vec[i].clear();
+
+	for (uint32_t i = 0u; i < 8u; i++)
+	{
+		for (auto && RC : vecG[i])
+		{
+			BoundingSphere* sphere = RC->GetBoundingSphere();
+			if (sphere->Center.y < 0.0f)
+			{
+				if (sphere->Center.x < MAP_YBEGd2)
+				{
+					if (sphere->Center.x < MAP_YBEGd34)
+					{
+						vec[0].push_back(RC);
+					}
+					else
+					{
+						vec[1].push_back(RC);
+					}
+				}
+				else
+				{
+					if (sphere->Center.x < MAP_YBEGd14)
 					{
 						vec[2].push_back(RC);
 					}
@@ -272,6 +283,32 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[4], std::vector<Rende
 					}
 				}
 			}
+			else
+			{
+				if (sphere->Center.x < MAP_YENDd2)
+				{
+					if (sphere->Center.x < MAP_YENDd34)
+					{
+						vec[4].push_back(RC);
+					}
+					else
+					{
+						vec[5].push_back(RC);
+					}
+				}
+				else
+				{
+					if (sphere->Center.x < MAP_YENDd14)
+					{
+						vec[6].push_back(RC);
+					}
+					else
+					{
+						vec[7].push_back(RC);
+					}
+				}
+			}
+			}
 
 				
 		}
@@ -280,11 +317,19 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[4], std::vector<Rende
 	std::thread t1(sortPx, vec[1].begin(), vec[1].end());
 	std::thread t2(sortPx, vec[2].begin(), vec[2].end());
 	std::thread t3(sortPx, vec[3].begin(), vec[3].end());
+	std::thread t4(sortPx, vec[4].begin(), vec[4].end());
+	std::thread t5(sortPx, vec[5].begin(), vec[5].end());
+	std::thread t6(sortPx, vec[6].begin(), vec[6].end());
+	std::thread t7(sortPx, vec[7].begin(), vec[7].end());
 
 	t0.join();
 	t1.join();
 	t2.join();
 	t3.join();
+	t4.join();
+	t5.join();
+	t6.join();
+	t7.join();
 }
 
 
