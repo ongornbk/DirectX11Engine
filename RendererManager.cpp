@@ -317,6 +317,11 @@ __m128 RendererManager::GetNumberOfObjectsX4()
 	return g_units.GetSizeX4();
 }
 
+std::vector<uint32_t> RendererManager::GetNumberOfObjectsVector()
+{
+	return g_units.GetSizeVector();
+}
+
 
 
 

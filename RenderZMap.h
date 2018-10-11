@@ -30,6 +30,7 @@ struct RenderZMap
 	void Push(Tree* tree, int8_t z);
 	uint32_t GetSize();
 	__m128 GetSizeX4();
+	std::vector<uint32_t> GetSizeVector();
 	std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range);
 
 };

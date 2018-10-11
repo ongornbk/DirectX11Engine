@@ -127,6 +127,19 @@ __m128 RenderZMap::GetSizeX4()
 	return size;
 }
 
+std::vector<uint32_t> RenderZMap::GetSizeVector()
+{
+	std::vector<uint32_t> mv;
+	for (auto vector : m_zVectors)
+	{
+		for (uint32_t i = 0u; i < 8u; i++)
+		{
+			mv.push_back((uint32_t)vector.second->m_objectsX[i].size());
+		}
+	}
+	return mv;
+}
+
 std::stack<Unit*> _vectorcall RenderZMap::GetUnitsInRange(Unit * object, float range)
 {
 	if (object)

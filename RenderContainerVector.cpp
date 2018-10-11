@@ -26,15 +26,8 @@ void _cdecl UpdatePartP(std::vector<RenderContainer*> vec, float dt)
 void RenderContainerVector::Update(float dt)
 {
 
-
-	UpdatePart(m_objectsY[0], dt);
-	UpdatePart(m_objectsY[1], dt);
-	UpdatePart(m_objectsY[2], dt);
-	UpdatePart(m_objectsY[3], dt);
-	UpdatePart(m_objectsY[4], dt);
-	UpdatePart(m_objectsY[5], dt);
-	UpdatePart(m_objectsY[6], dt);
-	UpdatePart(m_objectsY[7], dt);
+	for (uint32_t i = 0u; i < 8u; i++)
+	UpdatePart(m_objectsY[i], dt);
 
 
 	//std::thread t0(UpdatePartP, m_objectsY[0], dt);
@@ -67,22 +60,22 @@ void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceConte
 	RenderContainer** objects6 = m_objectsY[6].data();
 	RenderContainer** objects7 = m_objectsY[7].data();
 
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[3].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[7].size(); i++)
 	{
 		objects7[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects7[i]->m_index = i;
 	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[2].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[6].size(); i++)
 	{
 		objects6[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects6[i]->m_index = i;
 	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[1].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[5].size(); i++)
 	{
 		objects5[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects5[i]->m_index = i;
 	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[0].size(); i++)
+	for (uint32_t i = 0; i < (uint32_t)m_objectsY[4].size(); i++)
 	{
 		objects4[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
 		objects4[i]->m_index = i;

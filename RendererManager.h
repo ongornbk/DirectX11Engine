@@ -67,6 +67,7 @@ public:
 	static RendererManager* GetInstance();
 	static size_t GetNumberOfObjects();
 	static __m128 GetNumberOfObjectsX4();
+	static std::vector<uint32_t> GetNumberOfObjectsVector();
 
 private:
 

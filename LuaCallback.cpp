@@ -644,7 +644,7 @@ namespace lua_callback
 		XMFLOAT2 position;
 		position.x= m_global->m_lastPoint.x;
 		position.y = m_global->m_lastPoint.y;
-		m_renderer->SetTile(position,(int32_t)lua_tointeger(state, 1), lua_tointeger(state, 2));
+		m_renderer->SetTile(position,(int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2));
 		return 0;
 	}
 
