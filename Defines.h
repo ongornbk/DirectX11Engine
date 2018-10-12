@@ -12,6 +12,7 @@ const bool FULL_SCREEN = true;
 const bool VSYNC_ENABLED = true;
 
 #define TILE_MAP_SIZE 512
+#define RENDER_CELLS_RANGE 1
 
 #pragma region
 #define SETTINGS Settings::get()->

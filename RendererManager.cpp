@@ -18,7 +18,7 @@ namespace
 	Engine*                       m_engine;
 	static XMVECTOR               m_cameraPosition;
 	static float                  m_ranges[2];
-	static atomic<int>            m_coord[2];
+	static atomic<int32_t>            m_coord[2];
 	atomic<uint8_t>               m_async;
 	static RenderZMap             g_units;
 	//std::mutex                    m_validateMutex;
