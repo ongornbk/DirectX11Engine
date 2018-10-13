@@ -21,14 +21,23 @@ namespace
 //constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f  * ipp::SQRT2);
 //constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f * ipp::SQRT2);
 
-constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (80.0f );
-constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f)    * (-80.0f);
-constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (40.0f );
-constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-40.0f);
-constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (60.0f );
-constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-60.0f);
-constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f );
-constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f);
+constexpr float MAP_XEND = (TILE_MAP_SIZE / 2.0f)    * (80.0f );
+constexpr float MAP_XBEG = (TILE_MAP_SIZE / 2.0f)    * (-80.0f);
+constexpr float MAP_XENDd2 = (TILE_MAP_SIZE / 2.0f)  * (40.0f );
+constexpr float MAP_XBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-40.0f);
+constexpr float MAP_XENDd34 = (TILE_MAP_SIZE / 2.0f) * (60.0f );
+constexpr float MAP_XBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-60.0f);
+constexpr float MAP_XENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f );
+constexpr float MAP_XBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f);
+
+constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (40.0f);
+constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f)    * (-40.0f);
+constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (20.0f);
+constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-20.0f);
+constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (30.0f);
+constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-30.0f);
+constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (10.0f);
+constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-10.0f);
 
 void __intersect_test__()
 {
@@ -40,9 +49,9 @@ void __intersect_test__()
 
 	if (pvx.m128_f32[0] < 0.0f)
 	{
-		if (pvx.m128_f32[0] < MAP_YBEGd2)
+		if (pvx.m128_f32[0] < MAP_XBEGd2)
 		{
-			if (pvx.m128_f32[0] < MAP_YBEGd34)
+			if (pvx.m128_f32[0] < MAP_XBEGd34)
 			{
 				xp = 0;
 			}
@@ -53,7 +62,7 @@ void __intersect_test__()
 		}
 		else
 		{
-			if (pvx.m128_f32[0] < MAP_YBEGd14)
+			if (pvx.m128_f32[0] < MAP_XBEGd14)
 			{
 				xp = 2;
 			}
@@ -67,7 +76,7 @@ void __intersect_test__()
 	{
 		if (pvx.m128_f32[0] < MAP_YENDd2)
 		{
-			if (pvx.m128_f32[0] < MAP_YENDd34)
+			if (pvx.m128_f32[0] < MAP_YENDd14)
 			{
 				xp = 4;
 			}
@@ -78,7 +87,7 @@ void __intersect_test__()
 		}
 		else
 		{
-			if (pvx.m128_f32[0] < MAP_YENDd14)
+			if (pvx.m128_f32[0] < MAP_YENDd34)
 			{
 				xp = 6;
 			}
@@ -118,7 +127,7 @@ void __intersect_test__()
 	{
 		if (pvx.m128_f32[1] < MAP_YENDd2)
 		{
-			if (pvx.m128_f32[1] < MAP_YENDd34)
+			if (pvx.m128_f32[1] < MAP_YENDd14)
 			{
 				yp = 4;
 			}
@@ -129,7 +138,7 @@ void __intersect_test__()
 		}
 		else
 		{
-			if (pvx.m128_f32[1] < MAP_YENDd14)
+			if (pvx.m128_f32[1] < MAP_YENDd34)
 			{
 				yp = 6;
 			}
@@ -329,7 +338,7 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[8], std::vector<Rende
 			{
 				if (sphere->Center.y < MAP_YENDd2)
 				{
-					if (sphere->Center.y < MAP_YENDd34)
+					if (sphere->Center.y < MAP_YENDd14)
 					{
 						vec[4].push_back(RC);
 					}
@@ -340,7 +349,7 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[8], std::vector<Rende
 				}
 				else
 				{
-					if (sphere->Center.y < MAP_YENDd14)
+					if (sphere->Center.y < MAP_YENDd34)
 					{
 						vec[6].push_back(RC);
 					}
@@ -386,9 +395,9 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<Rende
 			BoundingSphere* sphere = RC->GetBoundingSphere();
 			if (sphere->Center.y < 0.0f)
 			{
-				if (sphere->Center.x < MAP_YBEGd2)
+				if (sphere->Center.x < MAP_XBEGd2)
 				{
-					if (sphere->Center.x < MAP_YBEGd34)
+					if (sphere->Center.x < MAP_XBEGd34)
 					{
 						vec[0].push_back(RC);
 					}
@@ -399,7 +408,7 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<Rende
 				}
 				else
 				{
-					if (sphere->Center.x < MAP_YBEGd14)
+					if (sphere->Center.x < MAP_XBEGd14)
 					{
 						vec[2].push_back(RC);
 					}
@@ -411,9 +420,9 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<Rende
 			}
 			else
 			{
-				if (sphere->Center.x < MAP_YENDd2)
+				if (sphere->Center.x < MAP_XENDd2)
 				{
-					if (sphere->Center.x < MAP_YENDd34)
+					if (sphere->Center.x < MAP_XENDd14)
 					{
 						vec[4].push_back(RC);
 					}
@@ -424,7 +433,7 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<Rende
 				}
 				else
 				{
-					if (sphere->Center.x < MAP_YENDd14)
+					if (sphere->Center.x < MAP_XENDd34)
 					{
 						vec[6].push_back(RC);
 					}
