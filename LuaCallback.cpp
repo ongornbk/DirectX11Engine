@@ -7,7 +7,6 @@
 #include "GameScene.h"
 #include "IPP.h"
 #include "Network.h"
-#include "GlobalVariables.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -675,7 +674,7 @@ namespace lua_callback
 
 	static int GameChatMessageFront(lua_State* state)
 	{
-		GameChat* gc = gv::g_gameChat;
+		GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			std::string str = lua_tostring(state, 1);
@@ -691,7 +690,7 @@ namespace lua_callback
 
 	static int GameChatMessageBack(lua_State* state)
 	{
-		GameChat* gc = gv::g_gameChat;
+		GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			std::string str = lua_tostring(state, 1);
@@ -707,7 +706,7 @@ namespace lua_callback
 
 	static int ClearGameChat(lua_State* state)
 	{
-		GameChat* gc = gv::g_gameChat;
+		GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			gc->ClearQueue();

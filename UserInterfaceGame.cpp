@@ -14,6 +14,7 @@
 namespace
 {
 	static int m_fps = 0;
+	static GameChat* m_gameChat = nullptr;
 	//static std::string msq[16]
 	//{
 	//	"1st",
@@ -50,12 +51,10 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_mainText.Initialize(device, deviceContext, shader, font);
 	m_mainText.SetText(string(GAME_NAME_VERSION));
 
-	gv::g_context = deviceContext;
-	gv::g_device = device;
-	gv::g_textShader = shader;
-	m_chat.SetFont(font);
-	m_chat.SetTextsLimit(5u);
-	gv::g_gameChat = &m_chat;
+	m_gameChat = new GameChat();
+	m_gameChat->SetGlobals(device, deviceContext, shader);
+	m_gameChat->SetFont(font);
+	m_gameChat->SetTextsLimit(5u);
 
 	//for (uint32_t i = 0u; i < 16u; i++)
 	//{
@@ -94,7 +93,7 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 	//	vec->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	//}
 
-	m_chat.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	m_gameChat->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
 	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
@@ -129,13 +128,13 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	//	m_objectsText[i]->SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*(3.0f+float(i)))), cameraPosition.m128_f32[2]));
 	//}
 	
-	m_chat.SetTextPosition({ cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT,cameraPosition.m128_f32[1] + (float)yr - TEXT_MARGIN_TOP });
+	m_gameChat->SetTextPosition(XMFLOAT3( cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT,cameraPosition.m128_f32[1] + (float)yr - 800.0f ,cameraPosition.m128_f32[2]));
 
 	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
 	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
 
 
-	m_chat.Update();
+	m_gameChat->Update();
 	m_fpsText.Update();
 	m_mainText.Update();
 	//for (uint32_t i = 0u; i < 16u; i++)
@@ -157,6 +156,11 @@ UserInterfaceGame::~UserInterfaceGame()
 		delete m_ui;
 		m_ui = NULL;
 	}
+	if (m_gameChat)
+	{
+		delete m_gameChat;
+		m_gameChat = nullptr;
+	}
 	//for (auto && text : m_objectsText)
 	//{
 	//	if (text)
@@ -177,4 +181,13 @@ void UserInterfaceGame::GetMousePosition(int16_t & x,int16_t & y)
 {
 	x =(m_mousePosition.i);
 	y =(m_mousePosition.j);
+}
+
+GameChat * UserInterfaceGame::GetGameChat()
+{
+	if (m_gameChat)
+	{
+		return m_gameChat;
+	}
+	else return m_gameChat = new GameChat();
 }

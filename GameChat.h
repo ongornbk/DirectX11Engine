@@ -15,42 +15,42 @@ public:
 		GODOWN
 	};
 
-	void _cdecl SetTextsLimit(uint8_t _In_ limit = 5u) noexcept;
+	void SetTextsLimit(uint8_t limit) noexcept;
 
-	void _cdecl PushText(std::string _In_ text) noexcept;
+	void PushText(std::string  text) noexcept;
 
-	void _cdecl PushTextFront(std::string _In_ text) noexcept;
+	void PushTextFront(std::string  text) noexcept;
 
-	void _cdecl SetFont(Font* _In_ font) noexcept;
+	void SetFont(Font* font) noexcept;
 
-	void _cdecl ClearQueue() noexcept;
+	void ClearQueue() noexcept;
 
-	void _cdecl Update() noexcept;
+	void Update() noexcept;
 
-	void _vectorcall Render(ID3D11DeviceContext* _In_ deviceContext,XMFLOAT4X4 _In_ worldMatrix, XMFLOAT4X4 _In_ viewMatrix, XMFLOAT4X4 _In_ projectionMatrix) noexcept;
+	void  Render(ID3D11DeviceContext* deviceContext,XMFLOAT4X4  worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix) noexcept;
 
-	void _vectorcall SetTextPosition(DirectX::XMFLOAT2 _In_ pos) noexcept;
+	void  SetTextPosition(DirectX::XMFLOAT3 pos) noexcept;
 
+	void  SetGlobals(ID3D11Device*  device, ID3D11DeviceContext*  context, Shader* shader) noexcept;
 
-	auto _cdecl begin() noexcept;
+	auto  begin() noexcept;
 
-	auto _cdecl end() noexcept;
+	auto  end() noexcept;
 
 protected:
 
-	std::list<Text> m_texts;
+	std::list<Text*> m_texts;
 
 	uint8_t                   m_size;
 	uint8_t                   m_textsLimit;
-	DirectX::XMFLOAT2         m_pos;
-
+	DirectX::XMFLOAT3         m_pos;
 	Font*                     m_font;
 
 	PrintingStyle             m_printingStyle;
 
 private:
 
-	Text CreateTextFromString(std::string _In_ text) noexcept;
+	Text* CreateTextFromString(std::string  text) noexcept;
 
 	void CheckSize() noexcept;
 };

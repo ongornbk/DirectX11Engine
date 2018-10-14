@@ -49,7 +49,7 @@ void Text::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 void Text::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
-	for (auto letter : m_letters)
+	for (auto&& letter : m_letters)
 	{
 		letter->m_sprite->Render(deviceContext, letter->m_world, viewMatrix, projectionMatrix);
 	}
@@ -61,6 +61,9 @@ void Text::SetPosition(XMFLOAT3 position)
 	for (auto && letter : m_letters)
 	{
 		XMStoreFloat4x4(&letter->m_world, XMMatrixTranslation((position.x+sumup),position.y,0.0f));
+		if(letter->m_char==' ')
+		sumup += ((m_font->GetWidthOfLetter('o'))*0.6f);
+		else
 		sumup += ((m_font->GetWidthOfLetter(letter->m_char))*0.6f);
 	}
 }
