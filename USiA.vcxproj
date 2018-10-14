@@ -203,10 +203,12 @@
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FrameWork.h" />
+    <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GlobalUtilities.h" />
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsManager.h" />
     <ClInclude Include="Input.h" />
@@ -279,6 +281,8 @@
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
     <ClCompile Include="EventListener.cpp" />
+    <ClCompile Include="GameChat.cpp" />
+    <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />

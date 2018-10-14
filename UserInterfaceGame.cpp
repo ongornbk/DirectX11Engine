@@ -3,6 +3,7 @@
 #include "LetterSprite.h"
 #include "IPP.h"
 #include "Defines.h"
+#include "GlobalVariables.h"
 #include <sstream>
 
 #define UIG_HEIGHT 120.0F
@@ -13,17 +14,25 @@
 namespace
 {
 	static int m_fps = 0;
-	static std::string msq[8]
-	{
-		"first square",
-		"second square",
-		"third square",
-		"fourth square",
-		"fifth square",
-		"sixth square",
-		"seventh square",
-		"eight square"
-	};
+	//static std::string msq[16]
+	//{
+	//	"1st",
+	//	"2nd",
+	//	"3th",
+	//	"4th",
+	//	"5th",
+	//	"6th",
+	//	"7th",
+	//	"8th",
+	//	"9st",
+	//	"10nd",
+	//	"11th",
+	//	"12th",
+	//	"13th",
+	//	"14th",
+	//	"15th",
+	//	"16th"
+	//};
 }
 
 
@@ -40,14 +49,25 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_fpsText.SetText("FPS ");
 	m_mainText.Initialize(device, deviceContext, shader, font);
 	m_mainText.SetText(string(GAME_NAME_VERSION));
-	for (uint32_t i = 0u; i < 8u; i++)
-	{
-		Text* text = new Text();
-		
-		text->Initialize(device, deviceContext, shader, font);
-		text->SetText(msq[i]);
-		m_objectsText.push_back(text);
-	}
+
+	gv::g_context = deviceContext;
+	gv::g_device = device;
+	gv::g_textShader = shader;
+	m_chat.SetFont(font);
+	m_chat.SetTextsLimit(5u);
+	gv::g_gameChat = &m_chat;
+
+	//for (uint32_t i = 0u; i < 16u; i++)
+	//{
+	//	Text* text = new Text();
+	//	
+	//	text->Initialize(device, deviceContext, shader, font);
+	//	text->SetText(msq[i]);
+	//	m_objectsText.push_back(text);
+	//}
+
+	
+
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
@@ -69,10 +89,12 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
-	for (auto&& vec : m_objectsText)
-	{
-		vec->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
-	}
+	//for (auto&& vec : m_objectsText)
+	//{
+	//	vec->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	//}
+
+	m_chat.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
 	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
@@ -98,27 +120,28 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 
 	std::vector<uint32_t> ts = RendererManager::GetNumberOfObjectsVector();
 
-	for (uint32_t i = 0u; i < 8u; i++)
-	{
-		stringstream ssobj;
-		ssobj << ts[i];
-		string objn = msq[i] + string(ssobj.str());
-		m_objectsText[i]->SetText(objn);
-		m_objectsText[i]->SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*(3.0f+float(i)))), cameraPosition.m128_f32[2]));
-	}
+	//for (uint32_t i = 0u; i < 16u; i++)
+	//{
+	//	stringstream ssobj;
+	//	ssobj << ts[i];
+	//	string objn = msq[i] + string(ssobj.str());
+	//	m_objectsText[i]->SetText(objn);
+	//	m_objectsText[i]->SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*(3.0f+float(i)))), cameraPosition.m128_f32[2]));
+	//}
 	
+	m_chat.SetTextPosition({ cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT,cameraPosition.m128_f32[1] + (float)yr - TEXT_MARGIN_TOP });
 
 	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
 	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
 
 
-
+	m_chat.Update();
 	m_fpsText.Update();
 	m_mainText.Update();
-	for (uint32_t i = 0u; i < 8u; i++)
-	{
-		m_objectsText[i]->Update();
-	}
+	//for (uint32_t i = 0u; i < 16u; i++)
+	//{
+	//	m_objectsText[i]->Update();
+	//}
 }
 
 
@@ -134,15 +157,15 @@ UserInterfaceGame::~UserInterfaceGame()
 		delete m_ui;
 		m_ui = NULL;
 	}
-	for (auto && text : m_objectsText)
-	{
-		if (text)
-		{
-			delete text;
-			text = nullptr;
-		}
-	}
-	m_objectsText.clear();
+	//for (auto && text : m_objectsText)
+	//{
+	//	if (text)
+	//	{
+	//		delete text;
+	//		text = nullptr;
+	//	}
+	//}
+	//m_objectsText.clear();
 }
 
 void UserInterfaceGame::SetFPS(int fps)

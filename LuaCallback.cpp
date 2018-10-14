@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "IPP.h"
 #include "Network.h"
+#include "GlobalVariables.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -672,6 +673,48 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int GameChatMessageFront(lua_State* state)
+	{
+		GameChat* gc = gv::g_gameChat;
+		if (gc)
+		{
+			std::string str = lua_tostring(state, 1);
+			gc->PushTextFront(str);
+		}
+		else
+		{
+			ipp::Console::SetTextColor(ipp::TextColors::RED);
+			ipp::Console::Println("Game chat has not been initialized!");
+		}
+		return 0;
+	}
+
+	static int GameChatMessageBack(lua_State* state)
+	{
+		GameChat* gc = gv::g_gameChat;
+		if (gc)
+		{
+			std::string str = lua_tostring(state, 1);
+			gc->PushText(str);
+		}
+		else
+		{
+			ipp::Console::SetTextColor(ipp::TextColors::RED);
+			ipp::Console::Println("Game chat has not been initialized!");
+		}
+		return 0;
+	}
+
+	static int ClearGameChat(lua_State* state)
+	{
+		GameChat* gc = gv::g_gameChat;
+		if (gc)
+		{
+			gc->ClearQueue();
+		}
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 		lua_State* m_lua = lua::GetInstance();
@@ -751,6 +794,10 @@ namespace lua_callback
 		lua_register(m_lua, "Println", lua_callback::Println);
 		//Network
 		lua_register(m_lua, "StartServer", lua_callback::StartServer);
+		//GameChat
+		lua_register(m_lua, "GameCharClear", lua_callback::ClearGameChat);
+		lua_register(m_lua, "GameChatMessageBack", lua_callback::GameChatMessageBack);
+		lua_register(m_lua, "GameChatMessageFront", lua_callback::GameChatMessageFront);
 	}
 
 }

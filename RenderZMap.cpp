@@ -132,7 +132,7 @@ std::vector<uint32_t> RenderZMap::GetSizeVector()
 	std::vector<uint32_t> mv;
 	for (auto vector : m_zVectors)
 	{
-		for (uint32_t i = 0u; i < 8u; i++)
+		for (uint32_t i = 0u; i < 16u; i++)
 		{
 			mv.push_back((uint32_t)vector.second->m_objectsX[i].size());
 		}

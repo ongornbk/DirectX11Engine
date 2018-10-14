@@ -8,40 +8,42 @@
 
 using std::thread;
 
-namespace
-{
-	static int8_t yp{};
-	static int8_t xp{};
-}
-
-#define ABS(N) ((N<0)?(-N):(N))
-
-//constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (80.0f  * ipp::SQRT2);
-//constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f)    * (-80.0f * ipp::SQRT2);
-//constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (40.0f  * ipp::SQRT2);
-//constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-40.0f * ipp::SQRT2);
-//constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (60.0f  * ipp::SQRT2);
-//constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-60.0f * ipp::SQRT2);
-//constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f  * ipp::SQRT2);
-//constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f * ipp::SQRT2);
-
 constexpr float MAP_XEND = (TILE_MAP_SIZE / 2.0f)    * (80.0f * ipp::SQRT2);
 constexpr float MAP_XBEG = (TILE_MAP_SIZE / 2.0f)    * (-80.0f* ipp::SQRT2);
 constexpr float MAP_XENDd2 = (TILE_MAP_SIZE / 2.0f)  * (40.0f * ipp::SQRT2);
 constexpr float MAP_XBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-40.0f* ipp::SQRT2);
 constexpr float MAP_XENDd34 = (TILE_MAP_SIZE / 2.0f) * (60.0f * ipp::SQRT2);
 constexpr float MAP_XBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-60.0f* ipp::SQRT2);
-constexpr float MAP_XENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f* ipp::SQRT2);
+
+constexpr float MAP_XENDd78 = (TILE_MAP_SIZE / 2.0f) * (70.0f * ipp::SQRT2);
+constexpr float MAP_XBEGd78 = (TILE_MAP_SIZE / 2.0f) * (-70.0f* ipp::SQRT2);
+constexpr float MAP_XENDd58 = (TILE_MAP_SIZE / 2.0f) * (50.0f * ipp::SQRT2);
+constexpr float MAP_XBEGd58 = (TILE_MAP_SIZE / 2.0f) * (-50.0f* ipp::SQRT2);
+constexpr float MAP_XENDd38 = (TILE_MAP_SIZE / 2.0f) * (30.0f * ipp::SQRT2);
+constexpr float MAP_XBEGd38 = (TILE_MAP_SIZE / 2.0f) * (-30.0f* ipp::SQRT2);
+constexpr float MAP_XENDd18 = (TILE_MAP_SIZE / 2.0f) * (10.0f * ipp::SQRT2);
+constexpr float MAP_XBEGd18 = (TILE_MAP_SIZE / 2.0f) * (-10.0f* ipp::SQRT2);
+
+constexpr float MAP_XENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f* ipp::SQRT2 );
 constexpr float MAP_XBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f* ipp::SQRT2);
 
-constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (40.0f* ipp::SQRT2);
+constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (40.0f* ipp::SQRT2 );
 constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f)    * (-40.0f* ipp::SQRT2);
-constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (20.0f* ipp::SQRT2);
+constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (20.0f* ipp::SQRT2 );
 constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-20.0f* ipp::SQRT2);
-constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (30.0f* ipp::SQRT2);
+constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (30.0f* ipp::SQRT2 );
 constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-30.0f* ipp::SQRT2);
-constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (10.0f* ipp::SQRT2);
+constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (10.0f* ipp::SQRT2 );
 constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-10.0f* ipp::SQRT2);
+
+constexpr float MAP_YENDd78 = (TILE_MAP_SIZE / 2.0f) * (35.0f * ipp::SQRT2);
+constexpr float MAP_YBEGd78 = (TILE_MAP_SIZE / 2.0f) * (-35.0f* ipp::SQRT2);
+constexpr float MAP_YENDd58 = (TILE_MAP_SIZE / 2.0f) * (25.0f * ipp::SQRT2);
+constexpr float MAP_YBEGd58 = (TILE_MAP_SIZE / 2.0f) * (-25.0f* ipp::SQRT2);
+constexpr float MAP_YENDd38 = (TILE_MAP_SIZE / 2.0f) * (15.0f * ipp::SQRT2);
+constexpr float MAP_YBEGd38 = (TILE_MAP_SIZE / 2.0f) * (-15.0f* ipp::SQRT2);
+constexpr float MAP_YENDd18 = (TILE_MAP_SIZE / 2.0f) * (5.0f * ipp::SQRT2 );
+constexpr float MAP_YBEGd18 = (TILE_MAP_SIZE / 2.0f) * (-5.0f* ipp::SQRT2 );
 
 int8_t GetXCell(float x)
 {
@@ -52,22 +54,50 @@ int8_t GetXCell(float x)
 		{
 			if (x < MAP_XBEGd34)
 			{
-				r = 0;
+				if (x < MAP_XBEGd78)
+				{
+					r = 0;
+				}
+				else
+				{
+					r = 1;
+				}
 			}
 			else
 			{
-				r = 1;
+				if (x < MAP_XBEGd58)
+				{
+					r = 2;
+				}
+				else
+				{
+					r = 3;
+				}
 			}
 		}
 		else
 		{
 			if (x < MAP_XBEGd14)
 			{
-				r = 2;
+				if (x < MAP_XBEGd38)
+				{
+					r = 4;
+				}
+				else
+				{
+					r = 5;
+				}
 			}
 			else
 			{
-				r = 3;
+				if (x < MAP_XBEGd18)
+				{
+					r = 6;
+				}
+				else
+				{
+					r = 7;
+				}
 			}
 		}
 	}
@@ -77,22 +107,50 @@ int8_t GetXCell(float x)
 		{
 			if (x < MAP_XENDd14)
 			{
-				r = 4;
+				if (x < MAP_XENDd18)
+				{
+					r = 8;
+				}
+				else
+				{
+					r = 9;
+				}
 			}
 			else
 			{
-				r = 5;
+				if (x < MAP_XENDd38)
+				{
+					r = 10;
+				}
+				else
+				{
+					r = 11;
+				}
 			}
 		}
 		else
 		{
 			if (x < MAP_XENDd34)
 			{
-				r = 6;
+				if (x < MAP_XENDd58)
+				{
+					r = 12;
+				}
+				else
+				{
+					r = 13;
+				}
 			}
 			else
 			{
-				r = 7;
+				if (x < MAP_XENDd78)
+				{
+					r = 14;
+				}
+				else
+				{
+					r = 15;
+				}
 			}
 		}
 	}
@@ -108,22 +166,50 @@ int8_t GetYCell(float y)
 		{
 			if (y < MAP_YBEGd34)
 			{
-				r = 0;
+				if (y < MAP_YBEGd78)
+				{
+					r = 0;
+				}
+				else
+				{
+					r = 1;
+				}
 			}
 			else
 			{
-				r = 1;
+				if (y < MAP_YBEGd58)
+				{
+					r = 2;
+				}
+				else
+				{
+					r = 3;
+				}
 			}
 		}
 		else
 		{
 			if (y < MAP_YBEGd14)
 			{
-				r = 2;
+				if (y < MAP_YBEGd38)
+				{
+					r = 4;
+				}
+				else
+				{
+					r = 5;
+				}
 			}
 			else
 			{
-				r = 3;
+				if (y < MAP_YBEGd18)
+				{
+					r = 6;
+				}
+				else
+				{
+					r = 7;
+				}
 			}
 		}
 	}
@@ -133,39 +219,56 @@ int8_t GetYCell(float y)
 		{
 			if (y < MAP_YENDd14)
 			{
-				r = 4;
+				if (y < MAP_YENDd18)
+				{
+					r = 8;
+				}
+				else
+				{
+					r = 9;
+				}
 			}
 			else
 			{
-				r = 5;
+				if (y < MAP_YENDd38)
+				{
+					r = 10;
+				}
+				else
+				{
+					r = 11;
+				}
+				
 			}
 		}
 		else
 		{
 			if (y < MAP_YENDd34)
 			{
-				r = 6;
+				if (y < MAP_YENDd58)
+				{
+					r = 12;
+				}
+				else
+				{
+					r = 13;
+				}
 			}
 			else
 			{
-				r = 7;
+				if (y < MAP_YENDd78)
+				{
+					r = 14;
+				}
+				else
+				{
+					r = 15;
+				}
 			}
 		}
 	}
 
 	return r;
-}
-
-void __intersect_test__()
-{
-	Camera* cam = Camera::GetCurrentCamera();
-	DirectX::XMVECTOR pvx = cam->GetPosition();
-
-
-xp = GetXCell(pvx.m128_f32[0]);
-yp = GetYCell(pvx.m128_f32[1]);
-
-
 }
 
 template <class T>
@@ -195,6 +298,24 @@ bool __validate_Yrendering__(const T index) noexcept
 		return false;
 	}
 }
+
+void __intersect_test__()
+{
+	Camera* cam = Camera::GetCurrentCamera();
+	DirectX::XMVECTOR pvx = cam->GetPosition();
+
+
+xp = GetXCell(pvx.m128_f32[0]);
+yp = GetYCell(pvx.m128_f32[1]);
+
+for (uint16_t i = 0u; i < 16u; i++)
+{
+	xta[i] = __validate_Xrendering__(i);
+	yta[i] = __validate_Yrendering__(i);
+}
+}
+
+
 
 bool __sort__SortByY::operator()(RenderContainer * a, RenderContainer * b) const noexcept
 {
@@ -339,80 +460,26 @@ void _cdecl sortPx(std::vector<RenderContainer*>::iterator begin, std::vector<Re
 	std::sort(begin, end, __sort__SortByX());
 }
 
-void _vectorcall SortByY(std::vector<RenderContainer*> vec[8], std::vector<RenderContainer*> vecG[8]) noexcept
+void _vectorcall SortByY(std::vector<RenderContainer*> vec[16], std::vector<RenderContainer*> vecG[16]) noexcept
 {
 
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 		vec[i].clear();
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 	{
 		for (auto && RC : vecG[i])
 		{
-			//BoundingSphere* sphere = RC->GetBoundingSphere();
-			/*
-			if (sphere->Center.y < 0.0f)
-			{
-				if (sphere->Center.y < MAP_YBEGd2)
-				{
-					if (sphere->Center.y < MAP_YBEGd34)
-					{
-						vec[0].push_back(RC);
-					}
-					else
-					{
-						vec[1].push_back(RC);
-					}
-				}
-				else
-				{
-					if (sphere->Center.y < MAP_YBEGd14)
-					{
-						vec[2].push_back(RC);
-					}
-					else
-					{
-						vec[3].push_back(RC);
-					}
-				} 
-			}
-			else
-			{
-				if (sphere->Center.y < MAP_YENDd2)
-				{
-					if (sphere->Center.y < MAP_YENDd14)
-					{
-						vec[4].push_back(RC);
-					}
-					else
-					{
-						vec[5].push_back(RC);
-					}
-				}
-				else
-				{
-					if (sphere->Center.y < MAP_YENDd34)
-					{
-						vec[6].push_back(RC);
-					}
-					else
-					{
-						vec[7].push_back(RC);
-					}
-				}
-			}
-			*/
-
 			vec[GetYCell(RC->GetBoundingSphere()->Center.y)].push_back(RC);
 		}
 	}
 
 	std::vector<std::thread*> threads;
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 	{
-		if (__validate_Yrendering__(i))
+		if (yta[i])
 		{
 			std::thread* t = new thread(sortPy, vec[i].begin(), vec[i].end());
 			threads.push_back(t);
@@ -432,86 +499,28 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[8], std::vector<Rende
 	threads.clear();
 }
 
-void _vectorcall SortByX(std::vector<RenderContainer*> vec[8], std::vector<RenderContainer*> vecG[8]) noexcept
+void _vectorcall SortByX(std::vector<RenderContainer*> vec[16], std::vector<RenderContainer*> vecG[16]) noexcept
 {
 	__intersect_test__();
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 	vec[i].clear();
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 	{
 		for (auto && RC : vecG[i])
 		{
-
-			//BoundingSphere* sphere = RC->GetBoundingSphere();
-			/*
-			if (sphere->Center.y < 0.0f)
-			{
-				if (sphere->Center.x < MAP_XBEGd2)
-				{
-					if (sphere->Center.x < MAP_XBEGd34)
-					{
-						vec[0].push_back(RC);
-					}
-					else
-					{
-						vec[1].push_back(RC);
-					}
-				}
-				else
-				{
-					if (sphere->Center.x < MAP_XBEGd14)
-					{
-						vec[2].push_back(RC);
-					}
-					else
-					{
-						vec[3].push_back(RC);
-					}
-				}
-			}
-			else
-			{
-				if (sphere->Center.x < MAP_XENDd2)
-				{
-					if (sphere->Center.x < MAP_XENDd14)
-					{
-						vec[4].push_back(RC);
-					}
-					else
-					{
-						vec[5].push_back(RC);
-					}
-				}
-				else
-				{
-					if (sphere->Center.x < MAP_XENDd34)
-					{
-						vec[6].push_back(RC);
-					}
-					else
-					{
-						vec[7].push_back(RC);
-					}
-				}
-			}
-
-			*/
-
-			vec[GetXCell(RC->GetBoundingSphere()->Center.x)].push_back(RC);
-			}
-
-				
-		}
+		vec[GetXCell(RC->GetBoundingSphere()->Center.x)].push_back(RC);
+		}	
+	}
 
 
 
 	std::vector<std::thread*> threads;
 
-	for (uint32_t i = 0u; i < 8u; i++)
+	for (uint32_t i = 0u; i < 16u; i++)
 	{
-		if (__validate_Xrendering__(i))
+		if (xta[i])
 		{
 			std::thread* t = new thread(sortPx, vec[i].begin(), vec[i].end());
 			threads.push_back(t);

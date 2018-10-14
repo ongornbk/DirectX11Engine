@@ -26,19 +26,10 @@ void _cdecl UpdatePartP(std::vector<RenderContainer*> vec, float dt)
 void RenderContainerVector::Update(float dt)
 {
 
-	for (uint32_t i = 0u; i < 8u; i++)
-	UpdatePart(m_objectsY[i], dt);
-
-
-	//std::thread t0(UpdatePartP, m_objectsY[0], dt);
-	//std::thread t1(UpdatePartP, m_objectsY[1], dt);
-	//std::thread t2(UpdatePartP, m_objectsY[2], dt);
-	//std::thread t3(UpdatePartP, m_objectsY[3], dt);
-	//
-	//t0.join();
-	//t1.join();
-	//t2.join();
-	//t3.join();
+	for (uint32_t i = 0u; i < 16u; i++)
+	{
+			UpdatePart(m_objectsY[i], dt);
+	}
 }
 
 void RenderContainerVector::Sort()
@@ -49,63 +40,42 @@ void RenderContainerVector::Sort()
 
 static uint32_t sizeg = 0u;
 
+struct RenderContainerContainer
+{
+	uint32_t size;
+	RenderContainer** rc;
+};
+
 void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
 {
-	RenderContainer** objects0 = m_objectsY[0].data();
-	RenderContainer** objects1 = m_objectsY[1].data();
-	RenderContainer** objects2 = m_objectsY[2].data();
-	RenderContainer** objects3 = m_objectsY[3].data();
-	RenderContainer** objects4 = m_objectsY[4].data();
-	RenderContainer** objects5 = m_objectsY[5].data();
-	RenderContainer** objects6 = m_objectsY[6].data();
-	RenderContainer** objects7 = m_objectsY[7].data();
 
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[7].size(); i++)
+	std::vector<RenderContainerContainer> mvpp;
+	for (uint16_t i = 0u; i < 16u; i++)
 	{
-		objects7[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects7[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[6].size(); i++)
-	{
-		objects6[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects6[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[5].size(); i++)
-	{
-		objects5[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects5[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[4].size(); i++)
-	{
-		objects4[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects4[i]->m_index = i;
+			RenderContainerContainer rcc;
+			rcc.rc = m_objectsY[i].data();
+			rcc.size = m_objectsY[i].size();
+			mvpp.push_back(rcc);
 	}
 
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[3].size(); i++)
+	std::reverse(mvpp.begin(), mvpp.end());
+
+	for (auto && rc : mvpp)
 	{
-		objects3[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects3[i]->m_index = i;
+		for (uint32_t i = 0; i < rc.size; i++)
+{
+	rc.rc[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+	rc.rc[i]->m_index = i;
+}
 	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[2].size(); i++)
-	{
-		objects2[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects2[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[1].size(); i++)
-	{
-		objects1[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects1[i]->m_index = i;
-	}
-	for (uint32_t i = 0; i < (uint32_t)m_objectsY[0].size(); i++)
-	{
-		objects0[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		objects0[i]->m_index = i;
-	}
+
+	mvpp.clear();
+
 }
 
 void RenderContainerVector::Clear()
 {
-	for (uint32_t cv = 0u; cv < 8u; cv++)
+	for (uint32_t cv = 0u; cv < 16u; cv++)
 	{
 		for (auto &&object : m_objectsY[cv])
 		{

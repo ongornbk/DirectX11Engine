@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Engine.h"
 #include "Camera.h"
-#include "Text.h"
+#include "GameChat.h"
 
 class Engine;
 
@@ -27,8 +27,10 @@ private:
 	XMFLOAT4X4 m_uiMatrix;
 
 	ASINDEX2 m_mousePosition;
+	GameChat m_chat;
 	Text     m_fpsText;
-	std::vector<Text*> m_objectsText;
+	//std::vector<Text*> m_objectsText;
+	
 	Text     m_mainText;
 	Engine*  m_engine;
 	Input*   m_input;
