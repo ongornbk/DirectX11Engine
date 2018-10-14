@@ -128,7 +128,7 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	//	m_objectsText[i]->SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*(3.0f+float(i)))), cameraPosition.m128_f32[2]));
 	//}
 	
-	m_gameChat->SetTextPosition(XMFLOAT3( cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT,cameraPosition.m128_f32[1] + (float)yr - 800.0f ,cameraPosition.m128_f32[2]));
+	m_gameChat->SetTextPosition(XMFLOAT3( cameraPosition.m128_f32[0] - (float)xr + 30.0f,cameraPosition.m128_f32[1] + (float)yr - 700.0f ,cameraPosition.m128_f32[2]));
 
 	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
 	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));

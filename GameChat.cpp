@@ -62,7 +62,7 @@ void GameChat::ClearQueue() noexcept
 
 void GameChat::Update() noexcept
 {
-	constexpr float offsetY = 20.0f;
+	constexpr float offsetY = 30.0f;
 	float coY = 0.0f;
 	for (auto&& text : m_texts)
 	{
@@ -122,10 +122,22 @@ void GameChat::CheckSize() noexcept
 
 		if (m_printingStyle == PrintingStyle::GODOWN)
 		{
+			Text* text = m_texts.front();
+			if (text)
+			{
+				text;
+				text = nullptr;
+			}
 			m_texts.pop_front();
 		}
 		else
 		{
+			Text* text = m_texts.back();
+			if (text)
+			{
+				text;
+				text = nullptr;
+			}
 			m_texts.pop_back();
 		}
 	}
