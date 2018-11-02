@@ -186,8 +186,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
-    <ClInclude Include="CollisionCircle.h" />
-    <ClInclude Include="CollisionMap.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="Defines.h" />
@@ -245,6 +243,7 @@
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="TextArea.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -266,7 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
-    <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.cpp" />
     <ClCompile Include="2D\Brushes.cpp" />
     <ClCompile Include="2D\Direct2D.cpp" />
     <ClCompile Include="2D\Direct2DCallback.cpp" />
@@ -287,8 +285,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="Canals.cpp" />
-    <ClCompile Include="CollisionCircle.cpp" />
-    <ClCompile Include="CollisionMap.cpp" />
     <ClCompile Include="DXManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -333,6 +329,7 @@
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskQueue.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TextArea.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
