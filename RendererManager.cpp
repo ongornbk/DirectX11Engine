@@ -2,6 +2,7 @@
 #include "IPP.h"
 #include "SettingsC.h"
 #include "Defines.h"
+#include "ShadowShader.h"
 #include <future>
 #include <mutex>
 #include <stack>
@@ -24,12 +25,13 @@ namespace
 	//std::mutex                    m_validateMutex;
 }
 
-RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui)
+RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow)
 {
 	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
 	this->m_unitsShader = units;
 	this->m_shader = ui;
+	this->m_shadowShader = shadow;
 
 
 
@@ -230,6 +232,12 @@ extern "C"
 			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
 			GRAPHICS EnableAlphaBlending(true);
+
+			m_shadowShader->Begin(deviceContext);
+
+			g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_shadowShader);
+
+			m_shadowShader->End(deviceContext);
 
 			m_unitsShader->Begin(deviceContext);
 			

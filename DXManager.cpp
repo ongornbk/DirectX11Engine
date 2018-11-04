@@ -23,8 +23,6 @@ DXManager::~DXManager(void)
 	if (m_swapChain)
 	{
 		m_swapChain->SetFullscreenState(false, NULL);
-		//(void)m_swapChain->Release();
-		//m_swapChain = NULL;
 	}
 	if (m_alphaDisableBlendingState)
 	{
@@ -276,11 +274,7 @@ void DXManager::EndScene()
 
 void DXManager::EnableAlphaBlending(bool enable)
 {
-	float blendFactor[4];
-	blendFactor[0] = 0.0f;
-	blendFactor[1] = 0.0f;
-	blendFactor[2] = 0.0f;
-	blendFactor[3] = 0.0f;
+	float blendFactor[4]{};
 
 	if (enable)
 	{

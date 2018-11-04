@@ -1,8 +1,7 @@
 #pragma once
 #include "Sprite.h"
-#include "CollisionCircle.h"
 
-class SuperModel : public CollisionCircle
+class SuperModel
 {
 public:
 

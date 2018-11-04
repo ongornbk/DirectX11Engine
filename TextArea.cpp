@@ -1,6 +1,6 @@
-#include "TextArea.h"
 #include "Text.h"
-
+#include "TextArea.h"
+#include "Input.h"
 
 TextArea::TextArea()
 {
