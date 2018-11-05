@@ -68,12 +68,12 @@ void AnimatedDoodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * de
 	m_type = RenderContainer::RenderContainerType::ANIMATED_DOODADS;
 }
 
-void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
 	if (m_flags[0] && m_texture)
 	{
-		shader->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }

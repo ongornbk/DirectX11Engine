@@ -28,14 +28,17 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	m_type = RenderContainer::RenderContainerType::UNIT;
 }
 
-void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-
-
-
-
-
-	Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader);
+	if (m_flags[0])
+	{
+		//Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.shadow);
+		if (m_flags[1])
+		{
+			Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.select);
+		}
+		Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.standard);
+	}
 
 }
 

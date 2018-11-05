@@ -232,6 +232,7 @@
     <ClInclude Include="Server.h" />
     <ClInclude Include="SettingsC.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderPackage.h" />
     <ClInclude Include="ShadowShader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sorting.h" />
@@ -318,6 +319,7 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="SettingsC.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderPackage.cpp" />
     <ClCompile Include="ShadowShader.cpp" />
     <ClCompile Include="Sorting.cpp" />
     <ClCompile Include="Sound.cpp" />

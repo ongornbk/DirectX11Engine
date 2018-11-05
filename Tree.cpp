@@ -59,13 +59,17 @@ void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	m_type = RenderContainer::RenderContainerType::TREE;
 }
 
-void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader)
+void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
 	if (m_flags[0] && m_texture)
 	{
-		shader->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.shadow->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
+		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		m_vertexBuffer->Render(deviceContext);
+
 	}
 }
 

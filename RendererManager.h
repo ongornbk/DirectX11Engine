@@ -45,7 +45,7 @@ public:
 		REVERSE = 1
 	};
 
-	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow);
+	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select);
 	~RendererManager();
 
 
@@ -77,6 +77,7 @@ private:
 	Shader* m_shader;
 	Shader* m_unitsShader;
 	Shader* m_shadowShader;
+	Shader* m_selectShader;
 
 
 

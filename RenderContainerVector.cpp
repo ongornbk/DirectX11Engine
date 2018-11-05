@@ -46,7 +46,7 @@ struct RenderContainerContainer
 	RenderContainer** rc;
 };
 
-void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
+void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
 {
 
 	std::vector<RenderContainerContainer> mvpp;

@@ -32,7 +32,7 @@ void RenderZMap::Sort()
 	}
 }
 
-void _vectorcall RenderZMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader * shader) noexcept
+void _vectorcall RenderZMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
 {
 	for (auto vector : m_zVectors)
 	{
