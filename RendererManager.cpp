@@ -241,21 +241,6 @@ extern "C"
 
 			GRAPHICS EnableAlphaBlending(true);
 
-			//m_shadowShader->Begin(deviceContext);
-
-			//g_units.Render(deviceContext, viewMatrix, projectionMatrix, m_shadowShader);
-
-			//m_shadowShader->End(deviceContext);
-
-			//Unit* selected = Global::GetInstance()->m_lastSelectedUnit;
-			//if (selected)
-			//{
-			//	m_selectShader->Begin(deviceContext);
-//
-			//	selected->Render(deviceContext, viewMatrix, projectionMatrix, m_selectShader);
-
-			//	m_selectShader->End(deviceContext);
-			//}
 			m_unitsShader->Begin(deviceContext);
 			
 			g_units.Render(deviceContext, viewMatrix, projectionMatrix, pck);

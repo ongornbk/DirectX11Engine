@@ -32,7 +32,7 @@ private:
 	//std::vector<Text*> m_objectsText;
 
 
-	
+	Text     m_cpuText;
 	Text     m_mainText;
 	Engine*  m_engine;
 	Input*   m_input;

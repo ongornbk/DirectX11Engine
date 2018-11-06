@@ -6,7 +6,17 @@ struct SimpleVertexType
 	DirectX::XMFLOAT3 position;
 };
 
+struct ScreenVertexType
+{
+	DirectX::XMFLOAT2 position;
+};
+
 struct SpriteVertexType : public SimpleVertexType
+{
+	DirectX::XMFLOAT2 uv;
+};
+
+struct TextureVertexType : public ScreenVertexType
 {
 	DirectX::XMFLOAT2 uv;
 };

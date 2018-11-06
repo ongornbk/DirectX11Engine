@@ -8,6 +8,7 @@
 #include "Font.h"
 #include "Network.h"
 #include "ShadowShader.h"
+#include "CPU.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -102,14 +103,11 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
-#pragma region
 
+	Initialize_CPU();
 
-#pragma endregion
-#pragma region
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define END );
-#pragma endregion
 	//NEWS
 	if (!Network::Initialize())
 	{

@@ -33,9 +33,13 @@ void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 	if (m_flags[0])
 	{
 		//Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.shadow);
-		if (m_flags[1])
+		if (this==Global::GetInstance()->m_lastSelectedUnit)
 		{
+			shader.standard->End(deviceContext);
+			shader.select->Begin(deviceContext);
 			Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.select);
+			shader.select->End(deviceContext);
+			shader.standard->Begin(deviceContext);
 		}
 		Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.standard);
 	}

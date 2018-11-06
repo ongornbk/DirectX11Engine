@@ -4,36 +4,19 @@
 #include "IPP.h"
 #include "Defines.h"
 #include "GlobalVariables.h"
+#include "CPU.h"
 #include <sstream>
 
 #define UIG_HEIGHT 120.0F
 #define TEXT_MARGIN_LEFT 20.0f
 #define TEXT_MARGIN_TOP 20.0f
 #define TEXT_FPS_MARGIN 25.0f
+#define TEXT_CPU_MARGIN 50.0f
 
 namespace
 {
 	static int m_fps = 0;
 	static GameChat* m_gameChat = nullptr;
-	//static std::string msq[16]
-	//{
-	//	"1st",
-	//	"2nd",
-	//	"3th",
-	//	"4th",
-	//	"5th",
-	//	"6th",
-	//	"7th",
-	//	"8th",
-	//	"9st",
-	//	"10nd",
-	//	"11th",
-	//	"12th",
-	//	"13th",
-	//	"14th",
-	//	"15th",
-	//	"16th"
-	//};
 }
 
 
@@ -50,6 +33,8 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_fpsText.SetText("FPS ");
 	m_mainText.Initialize(device, deviceContext, shader, font);
 	m_mainText.SetText(string(GAME_NAME_VERSION));
+	m_cpuText.Initialize(device, deviceContext, shader, font);
+	m_cpuText.SetText("CPU ");
 
 	m_gameChat = new GameChat();
 	m_gameChat->SetGlobals(device, deviceContext, shader);
@@ -87,11 +72,7 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
-
-	//for (auto&& vec : m_objectsText)
-	//{
-	//	vec->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
-	//}
+	m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
 	m_gameChat->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
@@ -115,6 +96,11 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	string fps = "FPS " + string(ssfps.str());
 	m_fpsText.SetText(fps);
 
+	std::stringstream ss;
+	ss << ceilf(Get_CPU()*100);
+	std::string cpu = "CPU " + string(ss.str());
+	m_cpuText.SetText(cpu);
+
 
 
 	std::vector<uint32_t> ts = RendererManager::GetNumberOfObjectsVector();
@@ -132,11 +118,12 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 
 	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
 	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
-
+	m_cpuText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + TEXT_CPU_MARGIN), cameraPosition.m128_f32[2]));
 
 	m_gameChat->Update();
 	m_fpsText.Update();
 	m_mainText.Update();
+	m_cpuText.Update();
 	//for (uint32_t i = 0u; i < 16u; i++)
 	//{
 	//	m_objectsText[i]->Update();
