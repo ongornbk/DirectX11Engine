@@ -43,12 +43,8 @@ Shader::Shader(ID3D11Device * device, HWND hwnd,WCHAR* shaderFileName)
 	result = device->CreateSamplerState(&samplerDesc, &m_samplerState);
 
 	D3D11_BLEND_DESC omDesc;
-	ZeroMemory(&omDesc,
-
-		sizeof(D3D11_BLEND_DESC));
-	omDesc.RenderTarget[0].BlendEnable =
-
-		true;
+	ZeroMemory(&omDesc,sizeof(D3D11_BLEND_DESC));
+	omDesc.RenderTarget[0].BlendEnable = true;
 	omDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	omDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	omDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;

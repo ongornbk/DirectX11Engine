@@ -6,17 +6,20 @@
 #include "GlobalVariables.h"
 #include "CPU.h"
 #include <sstream>
+#include <list>
 
 #define UIG_HEIGHT 120.0F
 #define TEXT_MARGIN_LEFT 20.0f
 #define TEXT_MARGIN_TOP 20.0f
 #define TEXT_FPS_MARGIN 25.0f
 #define TEXT_CPU_MARGIN 50.0f
+#define CPU_MED 100
 
 namespace
 {
 	static int m_fps = 0;
 	static GameChat* m_gameChat = nullptr;
+	static std::list<double> cput;
 }
 
 
@@ -50,8 +53,10 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	//	m_objectsText.push_back(text);
 	//}
 
-	
-
+	for (uint32_t i = 0u; i < CPU_MED; i++)
+	{
+		cput.push_back(0.0);
+	}
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
@@ -96,8 +101,21 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	string fps = "FPS " + string(ssfps.str());
 	m_fpsText.SetText(fps);
 
+	double cputime = Get_CPU();
+	double med = 0.0;
+
+	cput.pop_front();
+	cput.push_back(cputime);
+
+	for (auto time : cput)
+	{
+		med += time;
+	}
+
+	med /= double(CPU_MED);
+
 	std::stringstream ss;
-	ss << ceilf(Get_CPU()*100);
+	ss << ceilf(med*100);
 	std::string cpu = "CPU " + string(ss.str());
 	m_cpuText.SetText(cpu);
 
