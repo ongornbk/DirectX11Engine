@@ -33,15 +33,54 @@ void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 	if (m_flags[0])
 	{
 		//Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.shadow);
-		if (this==Global::GetInstance()->m_lastSelectedUnit)
-		{
-			shader.standard->End(deviceContext);
-			shader.select->Begin(deviceContext);
-			Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.select);
-			shader.select->End(deviceContext);
-			shader.standard->Begin(deviceContext);
-		}
-		Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.standard);
+
+		//shader.standard->End(deviceContext);
+		//shader.shadow->Begin(deviceContext);
+		//
+		//auto cmm = Camera::GetCurrentCamera();
+		//auto cpp = cmm->GetPosition();
+		//
+		////auto cxvm = XMLoadFloat3(&Center);
+		//
+		////auto cxm = XMVector2AngleBetweenVectors(cpp, cxvm);
+		//
+		//__m128 dist{};
+		//dist.m128_f32[0] = cpp.m128_f32[1] - Center.y;
+		//dist.m128_f32[1] = cpp.m128_f32[0] - Center.x;
+		//
+		//auto rot = atan2(dist.m128_f32[0], dist.m128_f32[1]);
+		//
+		//auto wms = XMMatrixRotationZ(rot + XM_PIDIV2);
+		//
+		////	auto distL = XMVector2Length(dist).m128_f32[0];
+		//
+		//	//auto txscl = distL / 1000.0f;
+		//
+		//	//ipp::math::clamp(txscl, 0.0f, 3.0f);
+		//
+		////	auto scl = XMMatrixScaling(distL / 1000.0f, distL / 1000.0f, distL / 1000.0f);
+		//
+		//
+		//
+		//wms = wms * XMLoadFloat4x4(&m_worldMatrix);// * scl;
+		//XMFLOAT4X4 shadowMatrix;
+		//XMStoreFloat4x4(&shadowMatrix, wms);
+		//shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		//shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+		////m_vertexBuffer->Render(deviceContext);
+		//
+		//shader.shadow->End(deviceContext);
+		//shader.standard->Begin(deviceContext);
+
+		//if (this==Global::GetInstance()->m_lastSelectedUnit)
+		//{
+		//	shader.standard->End(deviceContext);
+		//	shader.select->Begin(deviceContext);
+		//	Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader.select);
+		//	shader.select->End(deviceContext);
+		//	shader.standard->Begin(deviceContext);
+		//}
+		Model::__Render(deviceContext, viewMatrix, projectionMatrix, shader);
 	}
 
 }

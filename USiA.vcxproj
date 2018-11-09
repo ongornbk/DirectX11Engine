@@ -214,6 +214,7 @@
     <ClInclude Include="LetterSprite.h" />
     <ClInclude Include="LUAManager.h" />
     <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="IPP.h" />
@@ -306,6 +307,7 @@
     <ClCompile Include="LetterSprite.cpp" />
     <ClCompile Include="LUAManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="Math.inl" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="IPP.cpp" />

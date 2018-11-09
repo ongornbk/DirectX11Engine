@@ -1,8 +1,8 @@
 #include "Task.h"
 #include "SettingsC.h"
-#include <cmath>
+#include "Math.h"
 #include "Unit.h"
-
+#include <cmath>
 #pragma region 
 
 #pragma endregion
@@ -74,7 +74,9 @@ bool TaskGotoPoint::Update()
 				break;
 			}
 			}
-			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
+			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / XM_PI;
+			//float rotation = XMVector2AngleBetweenVectors(XMLoadFloat3(&destination), XMLoadFloat3(&position)).m128_f32[0];
+			//float rotation = math::RadiansToDegrees(math::AngleBetween(destination, position));
 			rotation += 180.0f;
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle

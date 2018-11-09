@@ -315,6 +315,20 @@ void ipp::math::clamp(int32_t & value, int32_t min, int32_t max)
 		}
 }
 
+void ipp::math::clamp(float & value, float min, float max)
+{
+	if (value > max)
+	{
+		value = max;
+		return;
+	}
+	if (value < min)
+	{
+		value = min;
+		return;
+	}
+}
+
 bool ipp::math::range(int32_t &value, int32_t min, int32_t max)
 {
 		if (value > max)

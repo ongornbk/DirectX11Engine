@@ -1,6 +1,12 @@
 #include "Tree.h"
 #include "ResourceManager.h"
 #include "RendererManager.h"
+#include "IPP.h"
+
+namespace
+{
+	static Global* m_global = nullptr;
+}
 
 Tree::Tree()
 {
@@ -61,19 +67,45 @@ void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-	if (m_flags[0] && m_texture)
+	if (m_flags[0])
 	{
-		shader.standard->End(deviceContext);
-		shader.shadow->Begin(deviceContext);
-
-		//XMMatrixRotationZ()
-
-		shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.shadow->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
-		m_vertexBuffer->Render(deviceContext);
-
-		shader.shadow->End(deviceContext);
-		shader.standard->Begin(deviceContext);
+		//shader.standard->End(deviceContext);
+		//shader.shadow->Begin(deviceContext);
+		//
+		//auto cmm = Camera::GetCurrentCamera();
+		//auto cpp = cmm->GetPosition();
+		//
+		////auto cxvm = XMLoadFloat3(&Center);
+		//
+		////auto cxm = XMVector2AngleBetweenVectors(cpp, cxvm);
+		//
+		//__m128 dist{};
+		//dist.m128_f32[0] = cpp.m128_f32[1] - Center.y;
+		//dist.m128_f32[1] = cpp.m128_f32[0] - Center.x;
+		//
+		//auto rot = atan2(dist.m128_f32[0], dist.m128_f32[1]);
+		//
+		//auto wms = XMMatrixRotationZ(rot+XM_PIDIV2);
+		//
+	//	//auto distL = XMVector2Length(dist).m128_f32[0];
+		//
+		////auto txscl = distL / 1000.0f;
+		//
+		////ipp::math::clamp(txscl, 0.0f, 3.0f);
+		//
+	//	//auto scl = XMMatrixScaling(distL / 1000.0f, distL / 1000.0f, distL / 1000.0f);
+		//
+		//
+		//
+		//wms = wms * XMLoadFloat4x4(&m_worldMatrix);// * scl;
+		//XMFLOAT4X4 shadowMatrix;
+		//XMStoreFloat4x4(&shadowMatrix, wms);
+		//shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		//shader.shadow->SetShaderParameters(deviceContext,shadowMatrix , viewMatrix, projectionMatrix);
+		//m_vertexBuffer->Render(deviceContext);
+		//
+		//shader.shadow->End(deviceContext);
+		//shader.standard->Begin(deviceContext);
 
 		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -114,4 +146,9 @@ bool Tree::Flag(uint8_t index)
 void Tree::Flag(uint8_t index, bool boolean)
 {
 	m_flags[index] = boolean;
+}
+
+void Tree::SetGlobal(Global * global) noexcept
+{
+	m_global = global;
 }

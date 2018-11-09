@@ -48,6 +48,7 @@ namespace ipp
 		float Atan(float degrees);
 		float Atan2(float y, float x);
 		void clamp(int32_t &value, int32_t min, int32_t max);
+		void clamp(float &value, float min, float max);
 		bool range(int32_t &value, int32_t min, int32_t max);
 
 		void SquashInt32Array(int32_t* value, int32_t size,int32_t min,int32_t max) noexcept;

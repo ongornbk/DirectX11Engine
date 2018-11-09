@@ -61,6 +61,15 @@
     <Filter Include="Source Files\C">
       <UniqueIdentifier>{0ba4ff76-b48f-4643-a0e1-23f04a7c9d4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Clean">
+      <UniqueIdentifier>{9e1b43e8-f054-4768-8bae-26e2db319828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clean\Engine">
+      <UniqueIdentifier>{be1cdf9d-99a0-4cd4-b772-7e044887cbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clean\Engine\Math">
+      <UniqueIdentifier>{11377f74-5f05-4ef7-add8-912216beb3d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -354,6 +363,9 @@
     <ClInclude Include="CPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Clean\Engine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -613,6 +625,9 @@
     </ClCompile>
     <ClCompile Include="CPU.cpp">
       <Filter>Source Files\C</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.inl">
+      <Filter>Clean\Engine\Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

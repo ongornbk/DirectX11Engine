@@ -92,12 +92,49 @@ void Model::UpdatePosition()
 	//}
 }
 
-void Model::__Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,Shader* shader)
+void Model::__Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,ShaderPackage &shader)
 {
 	if (m_spriteModel&&m_flags[0])
 	{
 
-		m_spriteModel->Render(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix,shader);
+		//shader.standard->End(deviceContext);
+		//shader.shadow->Begin(deviceContext);
+		//
+		//auto cmm = Camera::GetCurrentCamera();
+		//auto cpp = cmm->GetPosition();
+		//
+		////auto cxvm = XMLoadFloat3(&Center);
+		//
+		////auto cxm = XMVector2AngleBetweenVectors(cpp, cxvm);
+		//
+		//__m128 dist{};
+		//dist.m128_f32[0] = cpp.m128_f32[1] - Center.y;
+		//dist.m128_f32[1] = cpp.m128_f32[0] - Center.x;
+		//
+		//auto rot = atan2(dist.m128_f32[0], dist.m128_f32[1]);
+		//
+		//auto wms = XMMatrixRotationZ(rot + XM_PIDIV2);
+		//
+		////	auto distL = XMVector2Length(dist).m128_f32[0];
+		//
+		//	//auto txscl = distL / 1000.0f;
+		//
+		//	//ipp::math::clamp(txscl, 0.0f, 3.0f);
+		//
+		////	auto scl = XMMatrixScaling(distL / 1000.0f, distL / 1000.0f, distL / 1000.0f);
+		//
+		//
+		//
+		//wms = wms * XMLoadFloat4x4(&m_worldMatrix);// * scl;
+		//XMFLOAT4X4 shadowMatrix;
+		//XMStoreFloat4x4(&shadowMatrix, wms);
+		//m_spriteModel->Render(deviceContext, shadowMatrix, viewMatrix, projectionMatrix, shader.shadow);
+		//
+		//shader.shadow->End(deviceContext);
+		//shader.standard->Begin(deviceContext);
+
+
+		m_spriteModel->Render(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix,shader.standard);
 		//if (m_flags[1])
 		//{
 		//	m_spriteModel->DrawRectangle(deviceContext, shader,1);

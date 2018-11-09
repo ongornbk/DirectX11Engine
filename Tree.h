@@ -1,6 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include "RenderContainer.h"
+#include "Global.h"
 
 class Tree : public RenderContainer, public BoundingSphere
 {
@@ -17,6 +18,8 @@ public:
 	void Release() override;
 	bool Flag(uint8_t index) override;
 	void Flag(uint8_t index, bool boolean) override;
+
+	static void SetGlobal(Global* global) noexcept;
 
 private:
 

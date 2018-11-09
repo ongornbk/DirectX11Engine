@@ -114,6 +114,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 		return false;
 	}
 	m_global = new Global();
+	Tree::SetGlobal(m_global);
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();
 	//LUA CALLBACK
