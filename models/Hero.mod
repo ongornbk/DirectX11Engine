@@ -1,0 +1,13 @@
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_run
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral
+barbarian_townneutral

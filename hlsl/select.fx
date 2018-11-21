@@ -27,13 +27,11 @@ PixelInputType VSMain(VertexInputType input)
 {
 PixelInputType output;
 
-input.position.w = 1.0f;
+input.position.w = 0.9f;
 
 output.position = mul(input.position, worldMatrix);
 output.position = mul(output.position,viewMatrix);
 output.position = mul(output.position,projectionMatrix);
-
-
 
 output.tex = input.tex;
 
@@ -44,10 +42,9 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 {
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
-float alpha = textureColor[3];
-textureColor[0] = 0.0f;
-textureColor[1] = 0.0f;
-textureColor[2] = 0.0f;
-textureColor[3] = mul(textureColor[3],0.33f);
+textureColor[0] = 1.0f;
+textureColor[1] = 1.0f;
+textureColor[2] = 1.0f;
+textureColor[3] = mul(textureColor[3],0.5f);
 return textureColor;
 }

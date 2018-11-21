@@ -1,3 +1,5 @@
+require "core/Unit"
+
 if IsKeyHit(1) == true
 then 
 SaveInstance("../saves/map.save")
@@ -42,16 +44,16 @@ end
 if IsKeyPressed(19) == true
 then
 GetMousePosition()
-SetTile(tileSelected)
+SetTile(tileSelected,2)
 end
 if IsKeyPressed(20) == true
 then
 local x,y = GetMousePosition()
-CreateUnit()
-PickLastCreatedUnit()
-SetWalkingStance(1)
-SetUnitSpeed(100)
-InitializeUnit("enemy.mod",100,18,x,y,0,false)
+local unit = Unit.new()
+Unit.Pick(unit)
+Unit.SetWalkingStance(1)
+Unit.SetSpeed(100)
+Unit.Initialize("enemy",100,18,x,y,0,false)
 end
 if IsKeyPressed(21) == true
 then
@@ -75,26 +77,29 @@ then
 local x,y = GetMousePosition()
 CreateDoodads()
 InitializeDoodads("well0",125,50,x,y,0,false)
+GameChatMessageBack("well0 Has Been Created!")
 end
 if IsKeyPressed(25) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
 InitializeDoodads("barell0",105,17,x,y,0,true)
+GameChatMessageBack("barell0 Has Been Created!")
 end
 if IsKeyPressed(26) == true
 then
-Println("sdsdsds")
 local x,y = GetMousePosition()
 CreateAnimatedDoodads()
 InitializeAnimatedDoodads("fire0",math.random(80,120),0,x,y,0,false)
 SetNumberOfFrames(24)
+GameChatMessageBack("fire0 Has Been Created!")
 end
 if IsKeyHit(27) == true
 then
 local x,y = GetMousePosition()
 CreateDoodads()
 InitializeDoodads("cow_corpse0",120,0,x,y,-1,false)
+GameChatMessageBack("cow_corpse0 Has Been Created!")
 --SetZ(1)
 end
 if IsKeyHit(28) == true
@@ -102,12 +107,14 @@ then
 local x,y = GetMousePosition()
 CreateTree()
 InitializeTree("tree0",400,20,x,y,0,false)
+GameChatMessageBack("tree0 Has Been Created!")
 end
 if IsKeyHit(29) == true
 then
 local x,y = GetMousePosition()
 CreateTree()
 InitializeTree("fountain0",250,70,x,y,0,false)
+GameChatMessageBack("fountain0 Has Been Created!")
 end
 if GetMouseState(0) == true
 then
@@ -121,6 +128,6 @@ GetUnitVariable("hero")
 local x,y = GetMousePosition()
 SetUnitPosition(x,y)
 end
-GetUnitVariable("hero")
-local x,y = GetUnitPosition()
-SetCameraPosition(x,y)
+
+Unit.Pick(hero)
+SetCameraPosition(Unit.GetPosition())

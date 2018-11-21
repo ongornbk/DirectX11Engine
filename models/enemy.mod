@@ -1,0 +1,13 @@
+NULL
+NULL
+NULL
+NULL
+NULL
+enemy_walk
+NULL
+NULL
+NULL
+NULL
+enemy_townneutral
+NULL
+enemy_walk

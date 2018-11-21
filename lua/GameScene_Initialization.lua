@@ -1,11 +1,12 @@
+require "core/Unit"
+
 LoadInstance("../saves/map.save")
 tileSelected = 0
 SetInterface(1)
 ResumeGame()
-CreateUnit()
-PickLastCreatedUnit()
-PushUnitVariable("hero")
-SetWalkingStance(1)
-SetUnitSpeed(250)
-InitializeUnit("barbarian.mod",100,20,100,100,0,false)
---LockCameraOnUnit()
+hero = Unit.new()
+Unit.Pick(hero)
+Unit.Register("hero")
+Unit.SetWalkingStance(1)
+Unit.SetSpeed(250)
+Unit.Initialize("barbarian",100,20,100,100,0,false)
