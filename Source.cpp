@@ -3,6 +3,7 @@
 #include "SettingsC.h"
 #include "IPP.h"
 #include "XMLParser.h"
+#include "LUAManager.h"
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -15,6 +16,8 @@
 
 using std::string;
 
+
+
 void main(int argc,char** argv)
 {
 #pragma region
@@ -25,6 +28,7 @@ void main(int argc,char** argv)
 #pragma endregion
 
 
+
 	ifstream stream(SETTINGS_LOCATION);
 	if (!stream.good())
 	{
@@ -32,10 +36,10 @@ void main(int argc,char** argv)
 		ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
 	}
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
-
+	
 	//XMLParser xml;
 	//xml.Parse(BUFFER);
-
+	
 	istringstream ss(BUFFER);
 	vector<string> settings;
 	string token, token2;
@@ -44,7 +48,8 @@ void main(int argc,char** argv)
 		settings.push_back(token);
 	}
 	
-	Settings::Initialize(atoi(settings.at(0).c_str()), atoi(settings.at(1).c_str()), GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), (int32_t)std::thread::hardware_concurrency());
+	Settings::Initialize(atoi(settings.at(0).c_str()), atoi(settings.at(1).c_str()), GetSystemMetrics(SM_CXSCREEN),
+		GetSystemMetrics(SM_CYSCREEN), (int32_t)std::thread::hardware_concurrency(),(bool)atoi(settings.at(2).c_str()), (bool)atoi(settings.at(3).c_str()));
 
 	FrameWork* frameWork = new FrameWork();
 

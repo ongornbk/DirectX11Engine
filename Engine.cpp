@@ -15,6 +15,7 @@
 #include <istream>
 #include <sstream>
 #include <stack>
+#include <thread>
 
 Engine* Engine::m_instance = NULL;
 
@@ -146,7 +147,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 #pragma endregion
 	
 	m_input = new Input();
-	m_input->Initialize(hInstance, hwnd,Settings::GetScreenResolutionX(), Settings::GetScreenResolutionY());
+	m_input->Initialize(hInstance, hwnd,Settings::GetResolutionX(), Settings::GetResolutionY());
 	lua_callback::SetInput(m_input);
 //	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader);
@@ -206,8 +207,12 @@ void Engine::Run()
 {
 	clock_t beginFrame = clock();
 	Update();
+
+	std::thread t(lua::Execute, lua::LUA_LOCATION_RENDERAFTER);
+
 	Render();
-	lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+
+	//lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
 	clock_t endFrame = clock();
 
 	deltaTime += endFrame - beginFrame;
@@ -224,6 +229,9 @@ void Engine::Run()
 		UserInterfaceGame::SetFPS(fps);
 
 	}
+
+	t.join();
+
 }
 
 void Engine::Release()
@@ -259,7 +267,6 @@ Sound * Engine::CreateSound(WCHAR* name)
 
 Sound * Engine::CreateSound(WCHAR* name, bool looping)
 {
-	//Sound* sound = new Sound(name);
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 	Sound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
@@ -279,11 +286,9 @@ Sound * Engine::CreateSound(WCHAR* name, float volume)
 
 Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 {
-
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 	Sound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
-	//MessageBox(NULL, (char*)tmp1.c_str(), NULL, NULL);
 	sound->SetVolume(volume);
 	sound->SetLooping(looping);
 	return sound;

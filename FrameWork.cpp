@@ -19,7 +19,7 @@ FrameWork::FrameWork(void)
 
 FrameWork::~FrameWork(void)
 {
-	if (FULL_SCREEN)
+	if (Settings::GetFullscreen())
 	{
 		ChangeDisplaySettings(NULL,0);
 	}
@@ -31,7 +31,7 @@ FrameWork::~FrameWork(void)
 bool FrameWork::Initialize(GameComponent* gameComponent)
 {
 	
-	if (!CreateDXWindow("USiA",WINDOW_POS_X,WINDOW_POS_Y,Settings::GetScreenResolutionX(),Settings::GetScreenResolutionY()))
+	if (!CreateDXWindow("USiA",0,0,Settings::GetResolutionX(),Settings::GetResolutionY()))
 	{
 		return false;
 	}
@@ -94,7 +94,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	int screenWidth = ipp::System::GetScreenWidth();
 	int screenHeight = ipp::System::GetScreenHeight();
 
-	if (FULL_SCREEN)
+	if (Settings::GetFullscreen())
 	{
 		DEVMODE dmScreenSettings;
 		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));

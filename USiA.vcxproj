@@ -224,7 +224,6 @@
     <ClInclude Include="ParticleVertexBuffer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlatformHelper.h" />
-    <ClInclude Include="Region.h" />
     <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RenderContainerVector.h" />
     <ClInclude Include="RendererManager.h" />
@@ -273,7 +272,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
-    <ClCompile Include="2D\Brushes.cpp" />
     <ClCompile Include="2D\Direct2D.cpp" />
     <ClCompile Include="2D\Direct2DCallback.cpp" />
     <ClCompile Include="2D\Graphics2D.cpp" />
@@ -318,7 +316,6 @@
     <ClCompile Include="IPP.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleVertexBuffer.cpp" />
-    <ClCompile Include="Region.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />

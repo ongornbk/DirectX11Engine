@@ -1,9 +1,13 @@
 require "core/Unit"
+require "core/Doodads"
+require "core/Camera"
+require "core/Game"
+require "core/Chat"
 
 if IsKeyHit(1) == true
 then 
-SaveInstance("../saves/map.save")
-PostQuitMessage(1) 
+Game.Save()
+Game.Exit()
 end
 if IsKeyHit(2) == true
 then
@@ -49,85 +53,81 @@ end
 if IsKeyPressed(20) == true
 then
 local x,y = GetMousePosition()
-local unit = Unit.new()
-Unit.Pick(unit)
+Unit.new()
 Unit.SetWalkingStance(1)
 Unit.SetSpeed(100)
 Unit.Initialize("enemy",100,18,x,y,0,false)
 end
+
 if IsKeyPressed(21) == true
 then
-PickLastSelectedUnit()
---LockCameraOnUnit()
-end
-if IsKeyPressed(22) == true
+niu = Unit.Load(GetLastSelectedUnit())
+if Unit.exist(niu)
 then
-GetUnitVariable("hero")
---LockCameraOnUnit()
+hero = niu
+end
+
+else
+
+end
+
+if IsKeyHit(22) == true
+then
+local x,y = GetMousePosition()
+Doodads.new()
+Doodads.Initialize("well0",125,50,x,y,0,false)
+Chat.Print("well0 Has Been Created!")
 end
 if IsKeyPressed(23) == true
 then
-EraseUnitVariable("hero")
-PickLastSelectedUnit()
-PushUnitVariable("hero")
---LockCameraOnUnit()
-end
-if IsKeyHit(24) == true
-then
 local x,y = GetMousePosition()
-CreateDoodads()
-InitializeDoodads("well0",125,50,x,y,0,false)
-GameChatMessageBack("well0 Has Been Created!")
+Doodads.new()
+Doodads.Initialize("barell0",105,17,x,y,0,true)
+Chat.Print("barell0 Has Been Created!")
 end
-if IsKeyPressed(25) == true
-then
-local x,y = GetMousePosition()
-CreateDoodads()
-InitializeDoodads("barell0",105,17,x,y,0,true)
-GameChatMessageBack("barell0 Has Been Created!")
-end
-if IsKeyPressed(26) == true
+if IsKeyPressed(24) == true
 then
 local x,y = GetMousePosition()
 CreateAnimatedDoodads()
 InitializeAnimatedDoodads("fire0",math.random(80,120),0,x,y,0,false)
-SetNumberOfFrames(24)
-GameChatMessageBack("fire0 Has Been Created!")
+SetNumberOfFrames(25)
+Chat.Print("fire0 Has Been Created!")
+end
+if IsKeyHit(26) == true
+then
+local x,y = GetMousePosition()
+Doodads.new()
+Doodads.Initialize("cow_corpse0",120,0,x,y,-1,false)
+Chat.Print("cow_corpse0 Has Been Created!")
+--SetZ(1)
 end
 if IsKeyHit(27) == true
 then
 local x,y = GetMousePosition()
-CreateDoodads()
-InitializeDoodads("cow_corpse0",120,0,x,y,-1,false)
-GameChatMessageBack("cow_corpse0 Has Been Created!")
---SetZ(1)
+CreateTree()
+InitializeTree("tree0",400,20,x,y,0,false)
+Chat.Print("tree0 Has Been Created!")
 end
 if IsKeyHit(28) == true
 then
 local x,y = GetMousePosition()
 CreateTree()
-InitializeTree("tree0",400,20,x,y,0,false)
-GameChatMessageBack("tree0 Has Been Created!")
-end
-if IsKeyHit(29) == true
-then
-local x,y = GetMousePosition()
-CreateTree()
 InitializeTree("fountain0",250,70,x,y,0,false)
-GameChatMessageBack("fountain0 Has Been Created!")
+Chat.Print("fountain0 Has Been Created!")
 end
 if GetMouseState(0) == true
 then
-GetUnitVariable("hero")
+Unit.Pick(hero)
 local x,y = GetMousePosition()
-SetTaskGotoPoint(x,y)
+Unit.Goto(x,y)
 end
 if GetMousePressed(1) == true
 then
-GetUnitVariable("hero")
+Unit.Pick(hero)
 local x,y = GetMousePosition()
-SetUnitPosition(x,y)
+Unit.SetPosition(x,y)
+Unit.CleanTasks()
 end
 
 Unit.Pick(hero)
-SetCameraPosition(Unit.GetPosition())
+Camera.SetPosition(Unit.GetPosition())

@@ -273,9 +273,6 @@
     <ClInclude Include="EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Region.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -548,16 +545,10 @@
     <ClCompile Include="EventListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Region.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParticleVertexBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="2D\Brushes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="2D\TextFormat.cpp">

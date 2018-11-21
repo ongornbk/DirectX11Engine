@@ -1,9 +1,8 @@
 require "core/Unit"
+require "core/Game"
 
-LoadInstance("../saves/map.save")
-tileSelected = 0
-SetInterface(1)
-ResumeGame()
+Game.Start()
+
 hero = Unit.new()
 Unit.Pick(hero)
 Unit.Register("hero")

@@ -115,7 +115,7 @@ namespace lua_callback
 
 	static int InitializeOrthoMatrix(lua_State* state)
 	{
-		m_camera->InitializeOrthoMatrix(Settings::GetScreenResolutionX(), Settings::GetScreenResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+		m_camera->InitializeOrthoMatrix(Settings::GetResolutionX(), Settings::GetResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
 		return 0;
 	}
 
@@ -222,9 +222,19 @@ namespace lua_callback
 		return 2;
 	}
 
+	static int32_t DeleteUnit(lua_State* state) noexcept
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			unit->Release();
+		}
+		return 0;
+	}
+
 	static int32_t PickUnit(lua_State* state) noexcept
 	{
-		m_global->m_lastPickedUnit = (Unit*)LuaPointer(lua_tointeger(state, 1), lua_tointeger(state, 2)).ptr;
+		m_global->m_lastPickedUnit = (Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
 		return 0;
 	}
 
@@ -232,7 +242,10 @@ namespace lua_callback
 	{
 		Doodads* doodads = new Doodads();
 		m_global->m_lastCreatedRenderContainer = doodads;
-		return 0;
+		LuaPointer lptr(doodads);
+		lua_pushinteger(state, lptr.lua.first);
+		lua_pushinteger(state, lptr.lua.second);
+		return 2;
 	}
 
 	static int32_t CreateAnimatedDoodads(lua_State* state) noexcept
@@ -270,14 +283,22 @@ namespace lua_callback
 		return 2;
 	}
 
-	static int32_t PickLastSelectedUnit(lua_State*) noexcept
+	static int32_t GetLastSelectedUnit(lua_State* state) noexcept
 	{
 		Unit* unit = m_global->m_lastSelectedUnit;
 		if (unit)
 		{
-			m_global->m_lastPickedUnit = unit;
+			LuaPointer lptr(unit);
+			lua_pushinteger(state, lptr.lua.first);
+			lua_pushinteger(state, lptr.lua.second);
 		}
-		return 0;
+		else
+		{
+			LuaPointer lptr(unit);
+			lua_pushinteger(state, 0);
+			lua_pushinteger(state, 0);
+		}
+		return 2;
 	}
 
 	static int32_t PickLastCreatedUnit(lua_State*) noexcept
@@ -761,6 +782,7 @@ namespace lua_callback
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
 		lua_register(m_lua, "PickUnit", lua_callback::PickUnit);
+		lua_register(m_lua, "DeleteUnit", lua_callback::DeleteUnit);
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);
@@ -773,7 +795,7 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeTree", lua_callback::InitializeTree);
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
-		lua_register(m_lua, "PickLastSelectedUnit", lua_callback::PickLastSelectedUnit);
+		lua_register(m_lua, "GetLastSelectedUnit", lua_callback::GetLastSelectedUnit);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);
 		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);
