@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "IPP.h"
 #include "Network.h"
+#include "LuaPointer.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -114,7 +115,7 @@ namespace lua_callback
 
 	static int InitializeOrthoMatrix(lua_State* state)
 	{
-		m_camera->InitializeOrthoMatrix(*(Settings::get()->RESOLUTION_X), *(Settings::get()->RESOLUTION_Y), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+		m_camera->InitializeOrthoMatrix(Settings::GetScreenResolutionX(), Settings::GetScreenResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
 		return 0;
 	}
 
@@ -215,6 +216,15 @@ namespace lua_callback
 	{
 		Unit* unit = new Unit();
 		m_global->m_lastCreatedRenderContainer = unit;
+		LuaPointer lptr(unit);
+		lua_pushinteger(state, lptr.lua.first);
+		lua_pushinteger(state, lptr.lua.second);
+		return 2;
+	}
+
+	static int32_t PickUnit(lua_State* state) noexcept
+	{
+		m_global->m_lastPickedUnit = (Unit*)LuaPointer(lua_tointeger(state, 1), lua_tointeger(state, 2)).ptr;
 		return 0;
 	}
 
@@ -750,6 +760,7 @@ namespace lua_callback
 		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
+		lua_register(m_lua, "PickUnit", lua_callback::PickUnit);
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);

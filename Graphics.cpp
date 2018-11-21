@@ -19,7 +19,7 @@ Graphics::~Graphics(void)
 bool Graphics::InitializeDX(HWND hwnd)
 {
 	m_dxManager = new DXManager();
-	if (!m_dxManager->Initialize(*(Settings::get()->REALRESOLUTION_X),*(Settings::get()->REALRESOLUTION_Y),FULL_SCREEN, hwnd,VSYNC_ENABLED))
+	if (!m_dxManager->Initialize(Settings::GetScreenResolutionX(),Settings::GetScreenResolutionY(),FULL_SCREEN, hwnd,VSYNC_ENABLED))
 	{
 		return false;
 	}

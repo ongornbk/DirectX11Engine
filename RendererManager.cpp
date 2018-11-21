@@ -49,8 +49,8 @@ RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui,Shader*
 	TileMap::SetCurrentTileMap(m_map);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
-	m_ranges[0] = ((float)*(SETTINGS RESOLUTION_X) / 2.0f)+300.0f;
-	m_ranges[1] = ((float)*(SETTINGS RESOLUTION_Y) / 2.0f) + 300.0f;
+	m_ranges[0] = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
+	m_ranges[1] = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
 
 }
 

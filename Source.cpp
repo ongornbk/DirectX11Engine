@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "SettingsC.h"
 #include "IPP.h"
+#include "XMLParser.h"
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -23,9 +24,6 @@ void main(int argc,char** argv)
 	using std::atof;
 #pragma endregion
 
-	SETTINGS NUMBER_OF_THREADS = new unsigned int(std::thread::hardware_concurrency());
-	SETTINGS REALRESOLUTION_X = new int(GetSystemMetrics(SM_CXSCREEN));
-	SETTINGS REALRESOLUTION_Y = new int(GetSystemMetrics(SM_CYSCREEN));
 
 	ifstream stream(SETTINGS_LOCATION);
 	if (!stream.good())
@@ -34,6 +32,10 @@ void main(int argc,char** argv)
 		ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
 	}
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+
+	//XMLParser xml;
+	//xml.Parse(BUFFER);
+
 	istringstream ss(BUFFER);
 	vector<string> settings;
 	string token, token2;
@@ -42,11 +44,7 @@ void main(int argc,char** argv)
 		settings.push_back(token);
 	}
 	
-	SETTINGS RESOLUTION_X = new int(atoi(settings.at(0).c_str()));
-	SETTINGS RESOLUTION_Y = new int(atoi(settings.at(1).c_str()));
-	SETTINGS NUMBER_OF_UNITS = new int(atoi(settings.at(2).c_str()));
-	SETTINGS COLLISSION_RADIUS = new float((float)atof(settings.at(3).c_str()));
-
+	Settings::Initialize(atoi(settings.at(0).c_str()), atoi(settings.at(1).c_str()), GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), (int32_t)std::thread::hardware_concurrency());
 
 	FrameWork* frameWork = new FrameWork();
 

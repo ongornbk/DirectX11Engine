@@ -26,10 +26,8 @@ namespace
 
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
-
 	ID3D11Device* device = engine->GetGraphics()->GetDevice();
 	ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
-	float resolutionX = (float)*(Settings::get()->RESOLUTION_X);
 	Font* font = Font::GetFontByName("ExocetLight");
 
 	m_fpsText.Initialize(device, deviceContext, shader, font);
@@ -44,15 +42,6 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_gameChat->SetFont(font);
 	m_gameChat->SetTextsLimit(5u);
 
-	//for (uint32_t i = 0u; i < 16u; i++)
-	//{
-	//	Text* text = new Text();
-	//	
-	//	text->Initialize(device, deviceContext, shader, font);
-	//	text->SetText(msq[i]);
-	//	m_objectsText.push_back(text);
-	//}
-
 	for (uint32_t i = 0u; i < CPU_MED; i++)
 	{
 		cput.push_back(0.0);
@@ -60,16 +49,13 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
-
-
 	m_cursor->Initialize(device, shader, L"ui_cursor", true);
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixIdentity());
-	m_ui = new Sprite(resolutionX, UIG_HEIGHT);
+	m_ui = new Sprite(Settings::GetResolutionX(), UIG_HEIGHT);
 	m_ui->Initialize(device, shader, L"ui_game", true);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixIdentity());
 	m_input = m_engine->GetInput();
 
-	
 }
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
@@ -87,8 +73,8 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 
 void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 {
-	int xr = (*(Settings::get()->RESOLUTION_X)/2);
-	int yr = (*(Settings::get()->RESOLUTION_Y)/2);
+	int xr = ((Settings::GetResolutionX())/2);
+	int yr = ((Settings::GetResolutionY())/2);
 	m_input->GetMousePosition(xm, ym);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixTranslation(cameraPosition.m128_f32[0], cameraPosition.m128_f32[1] - UI_MUI_OFFSET,cameraPosition.m128_f32[2]));
 	xm -= xr;

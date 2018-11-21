@@ -1,61 +1,51 @@
 #include "SettingsC.h"
 
-extern "C"
+namespace 
 {
-
-	namespace
-	{
-		static SettingsC m_settings;
-	}
-
+	static int32_t SETTINGS_RESOLUTION_X = 0;
+	static int32_t SETTINGS_RESOLUTION_Y = 0;
+	static int32_t SETTINGS_SCREEN_RESOLUTION_X = 0;
+	static int32_t SETTINGS_SCREEN_RESOLUTION_Y = 0;
+	static int32_t SETTINGS_NUMBER_OF_THREADS = 1;
 }
 
-SettingsC::SettingsC()
+float Settings::GetAspectRatio()
 {
-
+	if (SETTINGS_RESOLUTION_Y == 0)
+		return 0.f;
+	return (((float)(SETTINGS_RESOLUTION_X)) / ((float)(SETTINGS_RESOLUTION_Y)));
 }
 
-SettingsC::~SettingsC()
+int32_t Settings::GetScreenResolutionX()
 {
-	if (NUMBER_OF_UNITS)
-	{
-		delete NUMBER_OF_UNITS;
-		NUMBER_OF_UNITS = 0;
-	}
-	if (RESOLUTION_X)
-	{
-		delete RESOLUTION_X;
-		RESOLUTION_X = 0;
-	}
-	if (RESOLUTION_Y)
-	{
-		delete RESOLUTION_Y;
-		RESOLUTION_Y = 0;
-	}
-	if (COLLISSION_RADIUS)
-	{
-		delete COLLISSION_RADIUS;
-		COLLISSION_RADIUS = 0;
-	}
-	if (REALRESOLUTION_X)
-	{
-		delete REALRESOLUTION_X;
-		REALRESOLUTION_X = 0;
-	}
-	if (REALRESOLUTION_Y)
-	{
-		delete REALRESOLUTION_Y;
-		REALRESOLUTION_Y = 0;
-	}
-	if (NUMBER_OF_THREADS)
-	{
-		delete NUMBER_OF_THREADS;
-		NUMBER_OF_THREADS = 0;
-	}
+	return SETTINGS_SCREEN_RESOLUTION_X;
 }
 
-SettingsC* Settings::get()
+int32_t Settings::GetScreenResolutionY()
 {
-	return &m_settings;
+	return SETTINGS_SCREEN_RESOLUTION_Y;
 }
 
+int32_t Settings::GetResolutionX()
+{
+	return SETTINGS_RESOLUTION_X;
+}
+
+int32_t Settings::GetResolutionY()
+{
+	return SETTINGS_RESOLUTION_Y;
+}
+
+int32_t Settings::GetNumberOfThreads()
+{
+	return SETTINGS_NUMBER_OF_THREADS;
+}
+
+void Settings::Initialize(int32_t resX, int32_t resY, int32_t scrX, int32_t scrY, int32_t threads)
+{
+	SETTINGS_RESOLUTION_X = resX;
+	SETTINGS_RESOLUTION_Y = resY;
+	SETTINGS_SCREEN_RESOLUTION_X = scrX;
+	SETTINGS_SCREEN_RESOLUTION_Y = scrY;
+	SETTINGS_NUMBER_OF_THREADS = threads;
+}

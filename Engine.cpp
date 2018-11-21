@@ -146,7 +146,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 #pragma endregion
 	
 	m_input = new Input();
-	m_input->Initialize(hInstance, hwnd, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y)));
+	m_input->Initialize(hInstance, hwnd,Settings::GetScreenResolutionX(), Settings::GetScreenResolutionY());
 	lua_callback::SetInput(m_input);
 //	InitializeTemplates();
 	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader);

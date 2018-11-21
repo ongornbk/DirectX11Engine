@@ -31,7 +31,7 @@ FrameWork::~FrameWork(void)
 bool FrameWork::Initialize(GameComponent* gameComponent)
 {
 	
-	if (!CreateDXWindow("USiA",WINDOW_POS_X,WINDOW_POS_Y, (*(Settings::get()->RESOLUTION_X)), (*(Settings::get()->RESOLUTION_Y))))
+	if (!CreateDXWindow("USiA",WINDOW_POS_X,WINDOW_POS_Y,Settings::GetScreenResolutionX(),Settings::GetScreenResolutionY()))
 	{
 		return false;
 	}
