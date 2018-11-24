@@ -44,15 +44,31 @@ extern "C"
 TaskGotoPoint::TaskGotoPoint()
 {
 	m_type = Type::TASKGOTOPOINT;
+	
 }
 
 bool TaskGotoPoint::Update()
 {
 
+	switch (object->GetWalkingStance())
+	{
+	case Unit::WalkingStance::WS_RUN:
+	{
+		object->SetAnimation(Unit::ModelStance::MS_RUN);
+		break;
+	}
+	case Unit::WalkingStance::WS_WALK:
+	{
+		object->SetAnimation(Unit::ModelStance::MS_WALK);
+		break;
+	}
+	}
 	XMFLOAT3 position = object->GetPosition();
 
 	if (object->m_collided)
 	{
+		object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+		object->SetVelocity(0.0f, 0.0f, 0.0f);
 		return false;
 	}
 
@@ -63,27 +79,10 @@ bool TaskGotoPoint::Update()
 		
 		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 		{
-
-
-			switch (object->GetWalkingStance())
-			{
-			case Unit::WalkingStance::WS_RUN:
-			{
-				object->SetAnimation(Unit::ModelStance::MS_RUN);
-				break;
-			}
-			case Unit::WalkingStance::WS_WALK:
-			{
-				object->SetAnimation(Unit::ModelStance::MS_WALK);
-				break;
-			}
-			}
 			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / XM_PI;
-			//float rotation = XMVector2AngleBetweenVectors(XMLoadFloat3(&destination), XMLoadFloat3(&position)).m128_f32[0];
-			//float rotation = math::RadiansToDegrees(math::AngleBetween(destination, position));
 			rotation += 180.0f;
 			rotation /= 22.5f;
-			rotation = 20 - rotation;//to handle
+			rotation = 20 - rotation;
 			object->SetRotation(rotation);
 			FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 			object->SetVelocity(f3.x, f3.y, f3.z);
@@ -97,40 +96,6 @@ bool TaskGotoPoint::Update()
 			return false;
 		}
 	}
-
-		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
-		{
-			
-			
-				switch (object->GetWalkingStance())
-				{
-				case Unit::WalkingStance::WS_RUN:
-				{
-					object->SetAnimation(Unit::ModelStance::MS_RUN);
-					break;
-				}
-				case Unit::WalkingStance::WS_WALK:
-				{
-					object->SetAnimation(Unit::ModelStance::MS_WALK);
-					break;
-				}
-				}
-				float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
-				rotation += 180.0f;
-				rotation /= 22.5f;
-				rotation = 20 - rotation;//to handle
-				object->SetRotation((int)rotation);
-				FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
-				object->SetVelocity(f3.x, f3.y, f3.z);
-				return true;
-			
-		}
-		else
-		{
-			object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
-			object->SetVelocity(0.0f,0.0f,0.0f);
-			return false;
-		}
 }
 
 void TaskGotoPoint::Release()

@@ -7,7 +7,19 @@
 struct RenderContainerFlags
 {
 
+	RenderContainerFlags() : m_flags(0u) {}
+	
 
+
+	RenderContainerFlags(std::string str)
+	{
+		for (int32_t i = 0;i<8;i++)
+		{
+			if (str[i] == '1')
+				m_flag[i] = true;
+			else m_flag[i] = false;
+		}
+	}
 
 	union
 	{

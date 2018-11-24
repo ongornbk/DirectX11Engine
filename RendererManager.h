@@ -39,11 +39,7 @@ public:
 
 	
 
-	enum RenderingStyle
-	{
-		NOREVERSE = 0,
-		REVERSE = 1
-	};
+
 
 	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select);
 	~RendererManager();
@@ -55,7 +51,6 @@ public:
 	void PushTree(Tree* doodads, int8_t z);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update();
-	void SetRenderingStyle(RenderingStyle render);
 	void SetInterface(uint32_t type, Shader* shader);
 	void SetTile(XMFLOAT2 position, int32_t tile);
 	void SetTile(XMFLOAT2 position, int32_t tile,int32_t brush);
@@ -79,9 +74,6 @@ private:
 	Shader* m_shadowShader;
 	Shader* m_selectShader;
 
-
-
-	RenderingStyle m_renderingStyle;
 	TileMap* m_map;
 	UserInterface* m_ui;
 };

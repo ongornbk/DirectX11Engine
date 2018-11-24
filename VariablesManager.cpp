@@ -164,6 +164,8 @@ VariablesManager::~VariablesManager()
 	m_integers.clear();
 	m_units.clear();
 	m_bools.clear();
+	m_points.clear();
+	m_reals.clear();
 }
 
 VariableUnit::VariableUnit()

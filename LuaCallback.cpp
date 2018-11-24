@@ -238,6 +238,12 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32_t SetFlags(lua_State* state) noexcept
+	{
+		m_global->m_lastFlags = RenderContainerFlags(lua_tostring(state, 1));
+		return 0;
+	}
+
 	static int32_t CreateDoodads(lua_State* state) noexcept
 	{
 		Doodads* doodads = new Doodads();
@@ -368,24 +374,16 @@ namespace lua_callback
 		float p_z = (float)lua_tointeger(state, 6);
 		bool wander = lua_toboolean(state, 7);
 
-		RenderContainerFlags flags;
-		flags.m_blocked = false;
-		flags.m_cast_shadow = false;
-		flags.m_collided = false;
-		flags.m_pushable = true;
-		flags.m_rendering = true;
-		flags.m_selectable = true;
-		flags.m_selected = false;
-		flags.m_UNDECLARED_YET = false;
-
 		XMFLOAT3 pos(p_x, p_y, p_z);
 		wchar_t* wide_string = new wchar_t[str.length() + 1];
 		wstring ws = std::wstring(str.begin(), str.end()).c_str();
 		wcscpy(wide_string, ws.c_str());
 
 
-			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos,flags, wander);
+			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags, wander);
 			m_renderer->PushUnit(unit,(int8_t)p_z);
+
+			delete wide_string;
 		}
 		return 0;
 		
@@ -402,16 +400,6 @@ namespace lua_callback
 			float p_x = (float)lua_tointeger(state, 4);
 			float p_y = (float)lua_tointeger(state, 5);
 			float p_z = (float)lua_tointeger(state, 6);
-			
-			RenderContainerFlags flags;
-			flags.m_blocked = false;
-			flags.m_cast_shadow = false;
-			flags.m_collided = false;
-			flags.m_pushable = true;
-			flags.m_rendering = true;
-			flags.m_selectable = false;
-			flags.m_selected = false;
-			flags.m_UNDECLARED_YET = false;
 
 			XMFLOAT3 pos(p_x, p_y, p_z);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -419,8 +407,10 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, flags);
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags);
 			m_renderer->PushDoodads(doodads, (int8_t)p_z);
+
+			delete wide_string;
 		}
 		return 0;
 
@@ -439,15 +429,6 @@ namespace lua_callback
 			int8_t z = (int8_t)lua_tointeger(state, 6);
 			float p_z = (float)z;
 			
-			RenderContainerFlags flags;
-			flags.m_blocked = false;
-			flags.m_cast_shadow = false;
-			flags.m_collided = false;
-			flags.m_pushable = false;
-			flags.m_rendering = true;
-			flags.m_selectable = false;
-			flags.m_selected = false;
-			flags.m_UNDECLARED_YET = false;
 
 			XMFLOAT3 pos(p_x, p_y, p_z);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -455,8 +436,10 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, flags);
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags);
 			m_renderer->PushAnimatedDoodads(doodads,z);
+
+			delete wide_string;
 		}
 		return 0;
 
@@ -474,24 +457,15 @@ namespace lua_callback
 			float p_y = (float)lua_tointeger(state, 5);
 			float p_z = (float)lua_tointeger(state, 6);
 
-			RenderContainerFlags flags;
-			flags.m_blocked = false;
-			flags.m_cast_shadow = false;
-			flags.m_collided = false;
-			flags.m_pushable = false;
-			flags.m_rendering = true;
-			flags.m_selectable = false;
-			flags.m_selected = false;
-			flags.m_UNDECLARED_YET = false;
-
 			XMFLOAT3 pos(p_x, p_y, p_z);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
 			wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 
-
-			tree->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, flags);
+			tree->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos,m_global->m_lastFlags);
 			m_renderer->PushTree(tree, (int8_t)p_z);
+
+			delete wide_string;
 				
 		}
 		return 0;
@@ -659,22 +633,6 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int SetRenderingStyle(lua_State* state)
-	{
-		RendererManager::RenderingStyle rs;
-		switch (lua_tointeger(state, 1))
-		{
-		case 0:
-			rs = RendererManager::RenderingStyle::REVERSE;
-			break;
-		case 1:
-			rs = RendererManager::RenderingStyle::NOREVERSE;
-			break;
-		}
-		m_renderer->SetRenderingStyle(rs);
-		return 0;
-	}
-
 	static int SetInterface(lua_State* state)
 	{
 		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
@@ -814,6 +772,7 @@ namespace lua_callback
 		//RenderContainer
 		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
+		lua_register(m_lua, "SetFlags", lua_callback::SetFlags);
 		//lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
@@ -851,7 +810,6 @@ namespace lua_callback
 		lua_register(m_lua, "GetUnitVariable", lua_callback::GetUnitVariable);
 		lua_register(m_lua, "EraseUnitVariable", lua_callback::EraseUnitVariable);
 		//RendererManager
-		lua_register(m_lua,"SetRendereringStyle", lua_callback::SetRenderingStyle);
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);
 		//Engine
 		lua_register(m_lua,"ResumeGame", lua_callback::ResumeGame);

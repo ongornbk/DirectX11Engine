@@ -1,7 +1,8 @@
 #pragma once
+#include "Unit.h"
+#include "LuaPointer.h"
 #include <map>
 #include <string>
-#include "Unit.h"
 
 
 class VariablePoint
@@ -98,6 +99,8 @@ public:
 protected:
 	std::map<std::string, std::string> m_strings;
 };
+
+
 
 class VariablesManager : public VariableInteger, public VariableString,public VariableUnit,public VariableBoolean,
 	public VariablePoint,public VariableReal
