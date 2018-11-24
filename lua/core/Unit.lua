@@ -20,8 +20,6 @@ function Unit.Pick(unit)
 PickUnit(unit.ptrA,unit.ptrB)
 end
 
-
-
 function Unit.SetWalkingStance (stance)
 SetWalkingStance(stance)
 end

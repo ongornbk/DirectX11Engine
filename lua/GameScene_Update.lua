@@ -61,7 +61,7 @@ end
 
 if IsKeyPressed(21) == true
 then
-niu = Unit.Load(GetLastSelectedUnit())
+local niu = Unit.Load(GetLastSelectedUnit())
 if Unit.exist(niu)
 then
 hero = niu

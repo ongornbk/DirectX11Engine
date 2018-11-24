@@ -1,0 +1,5 @@
+ImportPackage("conio")
+ImportPackage("system")
+ImportPackage("filesystem")
+SetConsoleTitle("UpdateExecutable")
+CopyFile("C:/Users/Szymon/Documents/Visual Studio 2017/Projects/USiA/USiA/x64/Release/bin/x64/USiA.exe","Game.exe")
