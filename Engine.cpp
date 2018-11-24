@@ -90,14 +90,13 @@ Engine::Engine(void)
 	m_global          = nullptr;
 	m_framework       = nullptr;
 	m_lua             = nullptr;
-	m_listener = nullptr;
 #pragma endregion
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)
 {
 	m_graphics = new Graphics();
-	return (m_graphics->InitializeDX(hwnd)&&m_graphics->InitializeVulcan(hwnd));
+	return m_graphics->InitializeDirectX(hwnd);
 }
 
 

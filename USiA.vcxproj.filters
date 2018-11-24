@@ -99,12 +99,6 @@
     <ClInclude Include="DXManager.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
@@ -141,9 +135,6 @@
     <ClInclude Include="GameScene.h">
       <Filter>Header Files\Engine\Components\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -163,9 +154,6 @@
       <Filter>Header Files\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Header Files\Graphics\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteModel.h">
       <Filter>Header Files\Graphics\Items</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
@@ -240,9 +228,6 @@
     <ClInclude Include="GraphicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnimatedSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -273,18 +258,6 @@
     <ClInclude Include="EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleVertexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\Brushes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\d2d1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="2D\TextFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -294,16 +267,7 @@
     <ClInclude Include="2D\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="2D\Direct2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="2D\RenderTarget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct2DCallback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\Graphics2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowHandle.h">
@@ -407,9 +371,6 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -417,9 +378,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResourceShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
@@ -441,12 +399,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RendererManager.cpp">
@@ -506,13 +458,7 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VulcanManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp">
@@ -542,12 +488,6 @@
     <ClCompile Include="TriggersManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleVertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -557,16 +497,7 @@
     <ClCompile Include="2D\TextSize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="2D\Direct2D.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="2D\RenderTarget.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="2D\Graphics2D.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="2D\Direct2DCallback.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowHandle.cpp">

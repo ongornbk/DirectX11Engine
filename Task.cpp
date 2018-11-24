@@ -51,26 +51,30 @@ bool TaskGotoPoint::Update()
 
 	XMFLOAT3 position = object->GetPosition();
 
-	if (object->m_flags[4])
+	if (object->m_collided)
 	{
 		return false;
 	}
+
+	
+	
 	else
 	{
+		
 		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 		{
 
 
 			switch (object->GetWalkingStance())
 			{
-			case Unit::WalkingStance::RUN:
+			case Unit::WalkingStance::WS_RUN:
 			{
-				object->SetAnimation(SpriteModel::ModelStance::RUN);
+				object->SetAnimation(Unit::ModelStance::MS_RUN);
 				break;
 			}
-			case Unit::WalkingStance::WALK:
+			case Unit::WalkingStance::WS_WALK:
 			{
-				object->SetAnimation(SpriteModel::ModelStance::WALK);
+				object->SetAnimation(Unit::ModelStance::MS_WALK);
 				break;
 			}
 			}
@@ -80,7 +84,7 @@ bool TaskGotoPoint::Update()
 			rotation += 180.0f;
 			rotation /= 22.5f;
 			rotation = 20 - rotation;//to handle
-			object->SetRotation((int)rotation);
+			object->SetRotation(rotation);
 			FLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 			object->SetVelocity(f3.x, f3.y, f3.z);
 			return true;
@@ -88,8 +92,8 @@ bool TaskGotoPoint::Update()
 		}
 		else
 		{
-			object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-			object->SetVelocity(0.0f);
+			object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+			object->SetVelocity(0.0f,0.0f,0.0f);
 			return false;
 		}
 	}
@@ -100,14 +104,14 @@ bool TaskGotoPoint::Update()
 			
 				switch (object->GetWalkingStance())
 				{
-				case Unit::WalkingStance::RUN:
+				case Unit::WalkingStance::WS_RUN:
 				{
-					object->SetAnimation(SpriteModel::ModelStance::RUN);
+					object->SetAnimation(Unit::ModelStance::MS_RUN);
 					break;
 				}
-				case Unit::WalkingStance::WALK:
+				case Unit::WalkingStance::WS_WALK:
 				{
-					object->SetAnimation(SpriteModel::ModelStance::WALK);
+					object->SetAnimation(Unit::ModelStance::MS_WALK);
 					break;
 				}
 				}
@@ -123,8 +127,8 @@ bool TaskGotoPoint::Update()
 		}
 		else
 		{
-			object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-			object->SetVelocity(0.0f);
+			object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+			object->SetVelocity(0.0f,0.0f,0.0f);
 			return false;
 		}
 }
@@ -160,14 +164,14 @@ bool TaskPatrol::Update()
 	{
 		switch (object->GetWalkingStance())
 		{
-		case Unit::WalkingStance::RUN:
+		case Unit::WalkingStance::WS_RUN:
 		{
-			object->SetAnimation(SpriteModel::ModelStance::RUN);
+			object->SetAnimation(Unit::ModelStance::MS_RUN);
 			break;
 		}
-		case Unit::WalkingStance::WALK:
+		case Unit::WalkingStance::WS_WALK:
 		{
-			object->SetAnimation(SpriteModel::ModelStance::WALK);
+			object->SetAnimation(Unit::ModelStance::MS_WALK);
 			break;
 		}
 		}
@@ -206,14 +210,14 @@ bool TaskFollow::Update()
 	{
 		switch (object->GetWalkingStance())
 		{
-		case Unit::WalkingStance::RUN:
+		case Unit::WalkingStance::WS_RUN:
 		{
-			object->SetAnimation(SpriteModel::ModelStance::RUN);
+			object->SetAnimation(Unit::ModelStance::MS_RUN);
 			break;
 		}
-		case Unit::WalkingStance::WALK:
+		case Unit::WalkingStance::WS_WALK:
 		{
-			object->SetAnimation(SpriteModel::ModelStance::WALK);
+			object->SetAnimation(Unit::ModelStance::MS_WALK);
 			break;
 		}
 		}
@@ -228,8 +232,8 @@ bool TaskFollow::Update()
 	}
 	else
 	{
-		object->SetAnimation(SpriteModel::ModelStance::TOWNNEUTRAL);
-		object->SetVelocity(0.0f);
+		object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+		object->SetVelocity(0.0f,0.0f,0.0f);
 	}
 	return false;
 }

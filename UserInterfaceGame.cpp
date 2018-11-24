@@ -51,7 +51,7 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 
 	m_cursor->Initialize(device, shader, L"ui_cursor", true);
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixIdentity());
-	m_ui = new Sprite(Settings::GetResolutionX(), UIG_HEIGHT);
+	m_ui = new Sprite((float)Settings::GetResolutionX(), UIG_HEIGHT);
 	m_ui->Initialize(device, shader, L"ui_game", true);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixIdentity());
 	m_input = m_engine->GetInput();
@@ -101,7 +101,7 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	med /= double(CPU_MED);
 
 	std::stringstream ss;
-	ss << ceilf(med*100);
+	ss << ceilf(100*med);
 	std::string cpu = "CPU " + string(ss.str());
 	m_cpuText.SetText(cpu);
 

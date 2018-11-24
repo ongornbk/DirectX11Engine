@@ -28,7 +28,7 @@ union LuaPointer
 	{
 		lua = l;
 	}
-	__unaligned void* ptr;
+	/*__unaligned */ void* ptr;
 	uint64_t          value;
 	lua64int         lua;
 };

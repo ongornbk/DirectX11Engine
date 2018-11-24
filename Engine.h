@@ -4,7 +4,6 @@
 #include "Input.h"
 #include "GameComponent.h"
 #include "ResourceManager.h"
-#include "EntityManager.h"
 #include "TextureShader.h"
 #include "GlobalUtilities.h"
 #include "RendererManager.h"
@@ -12,7 +11,6 @@
 #include "CameraControl.h"
 #include "FrameWork.h"
 #include "Canals.h"
-#include "EventListener.h"
 
 class RendererManager;
 class FrameWork;
@@ -75,7 +73,6 @@ private:
 	GameComponent*   m_gameComponent;
 	Canals           m_canals;
 	CameraControl    m_cameraControl;
-	EventListener*   m_listener;
 
 	lua_State*       m_lua;
 };

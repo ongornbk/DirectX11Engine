@@ -172,16 +172,11 @@
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h" />
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h" />
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
-    <ClInclude Include="2D\Brushes.h" />
-    <ClInclude Include="2D\d2d1.h" />
-    <ClInclude Include="2D\Direct2D.h" />
-    <ClInclude Include="2D\Graphics2D.h" />
     <ClInclude Include="2D\RenderTarget.h" />
     <ClInclude Include="2D\TextFormat.h" />
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="AnimatedDoodads.h" />
-    <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
@@ -190,15 +185,12 @@
     <ClInclude Include="Connection.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="Direct2DCallback.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Enet.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FrameWork.h" />
@@ -217,11 +209,8 @@
     <ClInclude Include="LuaPointersManager.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Math.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="IPP.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleVertexBuffer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="RenderContainer.h" />
@@ -243,7 +232,6 @@
     <ClInclude Include="Sorting.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteModel.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
@@ -272,20 +260,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.cpp" />
-    <ClCompile Include="2D\Direct2D.cpp" />
-    <ClCompile Include="2D\Direct2DCallback.cpp" />
-    <ClCompile Include="2D\Graphics2D.cpp" />
     <ClCompile Include="2D\RenderTarget.cpp" />
     <ClCompile Include="2D\TextFormat.cpp" />
     <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
-    <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="BinaryTree.c" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
-    <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
@@ -294,8 +277,6 @@
     <ClCompile Include="Canals.cpp" />
     <ClCompile Include="DXManager.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FrameWork.cpp" />
     <ClCompile Include="GameComponent.cpp" />
@@ -311,10 +292,8 @@
     <ClCompile Include="LuaPointersManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Math.inl" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="IPP.cpp" />
-    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleVertexBuffer.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
@@ -335,7 +314,6 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteModel.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -355,7 +333,6 @@
     <ClCompile Include="UserInterfaceMainMenu.cpp" />
     <ClCompile Include="VariablesManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="VulcanManager.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowHandle.cpp" />
     <ClCompile Include="XMLParser.cpp" />

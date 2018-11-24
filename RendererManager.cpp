@@ -22,16 +22,13 @@ namespace
 	RendererManager*              m_instance;
 	Engine*                       m_engine;
 	static XMVECTOR               m_cameraPosition;
-	static float                  m_ranges[2];
-	static atomic<int32_t>            m_coord[2];
-	atomic<uint8_t>               m_async;
+	static float                  m_rangeX;
+	static float                  m_rangeY;
 	static RenderZMap             g_units;
-	//std::mutex                    m_validateMutex;
 }
 
 RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select)
 {
-	this->m_renderingStyle = RendererManager::RenderingStyle::REVERSE;
 	this->m_engine = engine;
 	this->m_unitsShader = units;
 	this->m_shader = ui;
@@ -49,8 +46,8 @@ RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui,Shader*
 	TileMap::SetCurrentTileMap(m_map);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
-	m_ranges[0] = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
-	m_ranges[1] = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
+	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
+	m_rangeY = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
 
 }
 
@@ -92,132 +89,15 @@ void RendererManager::PushTree(Tree * doodads, int8_t z)
 	g_units.Push(doodads,z);
 }
 
-extern "C"
-{
-
-	//bool Intersects(RenderContainer* a, RenderContainer* b)
-	//{
-	//	return a->GetBoundingSphere()->Intersects(*b->GetBoundingSphere());
-	//}
 
 
 
-	bool _cdecl CollisionSortingXY  (RenderContainer* a,RenderContainer* b) noexcept
+	bool _vectorcall validateRendering(XMFLOAT3 _In_ object) noexcept
 	{
+		float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
+		float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
 
-		BoundingSphere* bsa = a->GetBoundingSphere();
-		BoundingSphere* bsb = b->GetBoundingSphere();
-
-		bool af2 = a->Flag(2u);
-		bool bf2 = b->Flag(2u);
-
-		float radius[3];
-		float ax, ay, bx, by;
-
-		radius[0] = bsa->Radius;
-		radius[1] = bsb->Radius;
-		ax = bsa->Center.x;
-		ay = bsa->Center.y;
-
-		bx = bsb->Center.x;
-		by = bsb->Center.y;
-
-		if (radius[0] == 0.0f || radius[1] == 0.0f) goto RETURN;
-		radius[2] = radius[0] + radius[1];
-		float distance = 0.0f;
-		float distanceX = 0.0f, distanceY = 0.0f;
-		float collision = 0.0f;
-
-
-
-
-
-
-
-
-
-		distanceX = ax - bx;
-		distanceY = ay - by;
-
-		//float xratio = distanceX / distanceY;
-		//float yratio = distanceY / distanceX;
-
-		distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
-		if (distance < radius[2])
-		{
-			collision = distance - radius[2];
-			if (af2)
-			{
-				if (bf2)
-				{
-					collision /= 2.0f;
-					if (ax < bx)
-					{
-						bsa->Center.x += collision;// *xratio;
-						bsb->Center.x -= collision;// *xratio;
-					}
-					else
-					{
-						bsa->Center.x -= collision;// *xratio;
-						bsa->Center.x += collision;// *xratio;
-					}
-					//if (ay < by)
-					//{
-					//	a->m_yOffset += collision;// *yratio;
-					//	a->m_yOffset -= collision;// *yratio;
-					//}
-					//else
-					//{
-					//	a->m_yOffset -= collision;// *yratio;
-					//	a->m_yOffset += collision;// *yratio;
-					//}
-					//a->UpdatePosition();
-					//b->UpdatePosition();
-				}
-				else
-				{
-					if (ax < bx) bsa->Center.x += collision;// *xratio;
-					else         bsa->Center.x -= collision;// *xratio;
-					//if (ay < by) a->m_yOffset += collision;// *yratio;
-				//	else         a->m_yOffset -= collision;;// *yratio;
-
-				}
-			}
-
-			else
-			{
-				if (bf2)
-				{
-					if (ax < bx) bsb->Center.x -= collision;// *xratio;
-					else         bsb->Center.x += collision;// *xratio;
-				//	if (ay < by) a->m_yOffset -= collision;
-				//	else         a->m_yOffset += collision;
-
-					//b->UpdatePosition();
-				}
-
-			}
-		}
-		
-	RETURN:
-
-		return ay > by;
-	}
-
-	
-
-	inline void DoNothing() noexcept
-	{
-		//ipp::Console::Print("!");
-	}
-
-
-
-	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept
-	{
-		float f[2] = { abs((object.x) - (m_cameraPosition.m128_f32[0])),abs((object.y) - (m_cameraPosition.m128_f32[1])) };
-
-		if ((f[0] > m_ranges[0]) || (f[1] > m_ranges[1]))
+		if ((x > m_rangeX) || (y > m_rangeY))
 		{
 			return false;
 		}
@@ -228,7 +108,6 @@ extern "C"
 
 	}
 
-}
 
 	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 	{
@@ -276,10 +155,6 @@ void RendererManager::Update()
 
 
 
-void RendererManager::SetRenderingStyle(RenderingStyle render)
-{
-	m_renderingStyle = render;
-}
 
 void RendererManager::SetInterface(uint32_t type,Shader* shader)
 {

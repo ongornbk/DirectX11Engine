@@ -6,9 +6,6 @@
 Graphics::Graphics(void)
 {
 	m_dxManager = nullptr;
-	m_vulcanManager = nullptr;
-	m_direct2D = nullptr;
-	m_gfxEngine = DIRECTX11;
 }
 
 Graphics::~Graphics(void)
@@ -16,27 +13,13 @@ Graphics::~Graphics(void)
 
 }
 
-bool Graphics::InitializeDX(HWND hwnd)
+bool Graphics::InitializeDirectX(HWND hwnd)
 {
 	m_dxManager = new DXManager();
 	if (!m_dxManager->Initialize(Settings::GetResolutionX(),Settings::GetResolutionY(),Settings::GetFullscreen(), hwnd,Settings::GetVsync()))
 	{
 		return false;
 	}
-	return true;
-}
-
-bool Graphics::InitializeVulcan(HWND hwnd)
-{
-	//m_vulcanManager = new VulcanManager();
-	//return m_vulcanManager->Initialize(*(Settings::get()->REALRESOLUTION_X), *(Settings::get()->REALRESOLUTION_Y), FULL_SCREEN, hwnd, VSYNC_ENABLED);
-	return true;
-}
-
-bool Graphics::InitializeDirect2D()
-{
-	//m_direct2D = new Direct2D();
-	//return (bool)m_direct2D->CreateFactory();
 	return true;
 }
 
@@ -73,15 +56,11 @@ void Graphics::Release()
 {
 	if(m_dxManager)
 	m_dxManager->Release();
-	//if(m_vulcanManager)
-	//m_vulcanManager->Release();
-	//if (m_direct2D)
-	//	delete m_direct2D;
 }
 
 
 
-DXManager * Graphics::GetDXManager()
+DXManager * Graphics::GetDirectXManager()
 {
 	return m_dxManager;
 }

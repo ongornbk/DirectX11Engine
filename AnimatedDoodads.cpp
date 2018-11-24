@@ -12,13 +12,8 @@ AnimatedDoodads::AnimatedDoodads()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	Center = XMFLOAT3(POSITION_ZERO_POINT_X, POSITION_ZERO_POINT_Y, POSITION_ZERO_POINT_Z);
-	Radius = COLLISION_DISABLED_OR_NULL;
-	m_flags[0] = TRUE;//rendering
-	m_flags[1] = FALSE;//selected
-	m_flags[2] = TRUE;//pushable
-	m_flags[3] = FALSE;//blocked
-	m_flags[4] = FALSE;//collision with tilemap
+	Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	Radius = 0.0f;
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
 	m_isLooping = true;
@@ -39,7 +34,15 @@ AnimatedDoodads::~AnimatedDoodads()
 	}
 }
 
-void AnimatedDoodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR * paths, float size, float collision, XMFLOAT3 position, bool pushable)
+void AnimatedDoodads::Initialize(
+	ID3D11Device * device,
+	ID3D11DeviceContext * deviceContext,
+	Shader * shader, WCHAR * paths,
+	float size,
+	float collision,
+	XMFLOAT3 position,
+	RenderContainerFlags flags)
+
 {
 	m_size = size;
 
@@ -58,19 +61,17 @@ void AnimatedDoodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * de
 	m_deviceContext = deviceContext;
 
 
-	m_flags[2] = pushable;
+	m_flags = flags.m_flags;
 
 	Radius = collision;
 	Center = position;
-	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
-	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;//Collision fix
 
 	m_type = RenderContainer::RenderContainerType::ANIMATED_DOODADS;
 }
 
 void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-	if (m_flags[0] && m_texture)
+	if (m_rendering)
 	{
 		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -81,8 +82,8 @@ void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 vie
 void AnimatedDoodads::Update(float dt)
 {
 
-	m_flags[0] = validateRendering(Center);
-	if (m_flags[0])
+	m_rendering = validateRendering(Center);
+	if (m_rendering)
 	{
 		if (m_currentFrame < 24.0f)
 		{
@@ -159,16 +160,6 @@ BoundingSphere * AnimatedDoodads::GetBoundingSphere()
 void AnimatedDoodads::Release()
 {
 	delete this;
-}
-
-bool AnimatedDoodads::Flag(uint8_t index)
-{
-	return m_flags[index];
-}
-
-void AnimatedDoodads::Flag(uint8_t index, bool boolean)
-{
-	m_flags[index] = boolean;
 }
 
 void AnimatedDoodads::SetNumberOfFrames(float frames)

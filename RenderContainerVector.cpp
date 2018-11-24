@@ -54,7 +54,7 @@ void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceConte
 	{
 			RenderContainerContainer rcc;
 			rcc.rc = m_objectsY[i].data();
-			rcc.size = m_objectsY[i].size();
+			rcc.size = (uint32_t)m_objectsY[i].size();
 			mvpp.push_back(rcc);
 	}
 
