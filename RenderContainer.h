@@ -13,7 +13,12 @@ struct RenderContainerFlags
 
 	RenderContainerFlags(std::string str)
 	{
-		for (int32_t i = 0;i<8;i++)
+		SetFlags(str);
+	}
+
+	void SetFlags(std::string str)
+	{
+		for (int32_t i = 0; i < 8; i++)
 		{
 			if (str[i] == '1')
 				m_flag[i] = true;
@@ -33,7 +38,7 @@ struct RenderContainerFlags
 			bool m_collided;
 			bool m_selectable;
 			bool m_cast_shadow;
-			bool m_UNDECLARED_YET;
+			bool m_movable;
 		};
 
 		uint64_t m_flags{};

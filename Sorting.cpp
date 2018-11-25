@@ -370,6 +370,17 @@ bool __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const
 				if (Ax < Bx) Bcollision->Center.x -= Scollision;
 				else         Bcollision->Center.x += Scollision;
 			}
+			else
+			{
+				if (A->m_movable)
+				{
+					A->m_collided = true;
+				}
+				if (B->m_movable)
+				{
+					B->m_collided = true;
+				}
+			}
 		}
 	}
 	return Ay > By;
@@ -431,7 +442,17 @@ bool __sort__SortByX::operator()(RenderContainer * A, RenderContainer * B) const
 				if (Ay < By) Bcollision->Center.y -= Scollision;
 				else         Bcollision->Center.y += Scollision;
 			}
-
+			else
+			{
+				if (A->m_movable)
+				{
+					A->m_collided = true;
+				}
+				if (B->m_movable)
+				{
+					B->m_collided = true;
+				}
+			}
 		}
 
 	}

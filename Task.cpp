@@ -50,35 +50,36 @@ TaskGotoPoint::TaskGotoPoint()
 bool TaskGotoPoint::Update()
 {
 
-	switch (object->GetWalkingStance())
-	{
-	case Unit::WalkingStance::WS_RUN:
-	{
-		object->SetAnimation(Unit::ModelStance::MS_RUN);
-		break;
-	}
-	case Unit::WalkingStance::WS_WALK:
-	{
-		object->SetAnimation(Unit::ModelStance::MS_WALK);
-		break;
-	}
-	}
+	
 	XMFLOAT3 position = object->GetPosition();
 
 	if (object->m_collided)
 	{
-		object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
-		object->SetVelocity(0.0f, 0.0f, 0.0f);
+		object->GoBack();
+		//object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+		//object->SetVelocity(0.0f, 0.0f, 0.0f);
 		return false;
 	}
-
-	
-	
 	else
 	{
 		
 		if (DistanceBetweenXMFLOAT3(position, destination) > object->GetCollisionRadius())
 		{
+
+			switch (object->GetWalkingStance())
+			{
+			case Unit::WalkingStance::WS_RUN:
+			{
+				object->SetAnimation(Unit::ModelStance::MS_RUN);
+				break;
+			}
+			case Unit::WalkingStance::WS_WALK:
+			{
+				object->SetAnimation(Unit::ModelStance::MS_WALK);
+				break;
+			}
+			}
+
 			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / XM_PI;
 			rotation += 180.0f;
 			rotation /= 22.5f;

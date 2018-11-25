@@ -108,6 +108,7 @@ public:
 	void SetVelocity(float x, float y, float z);
 	void DiscardTasks(); 
 	void SetPosition(XMFLOAT3 position);
+	void GoBack();
 
 	friend class Task;
 	friend class TaskGotoPoint;

@@ -119,6 +119,18 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int SetCameraLookAt(lua_State* state)
+	{
+		m_global->camera_lookat = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+		return 0;
+	}
+
+	static int SetCameraUp(lua_State* state)
+	{
+		m_global->camera_up = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+		return 0;
+	}
+
 	static int SetCameraPosition(lua_State* state)
 	{
 		XMVECTOR position;
@@ -240,7 +252,7 @@ namespace lua_callback
 
 	static int32_t SetFlags(lua_State* state) noexcept
 	{
-		m_global->m_lastFlags = RenderContainerFlags(lua_tostring(state, 1));
+		m_global->m_lastFlags.SetFlags(lua_tostring(state, 1));
 		return 0;
 	}
 
@@ -756,6 +768,8 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::InitializeOrthoMatrix);
 		lua_register(m_lua, "SetCameraPosition", lua_callback::SetCameraPosition);
 		lua_register(m_lua, "LockCameraOnUnit", lua_callback::LockCameraOnUnit);
+		lua_register(m_lua, "SetCameraLookAt", lua_callback::SetCameraLookAt);
+		lua_register(m_lua, "SetCameraUp", lua_callback::SetCameraUp);
 		//Music
 		lua_register(m_lua, "AddMusic", lua_callback::AddMusic);
 		lua_register(m_lua, "PlayMusic", lua_callback::PlayMusic);

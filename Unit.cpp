@@ -307,6 +307,11 @@ void Unit::SetPosition(XMFLOAT3 position)
 	Center = position;
 }
 
+void Unit::GoBack()
+{
+	Center = m_floats[1];
+}
+
 void Unit::Resize(ID3D11Device * device, Shader * shader, float resize)
 {
 	m_size *= resize;
@@ -329,7 +334,7 @@ void Unit::PlayAnimation(ModelStance animation)
 
 void Unit::SetAnimation(ModelStance animation)
 {
-	if (m_rendering && !m_stop)
+	if (m_rendering && !m_stop&&(animation!=m_modelVariant.GetVariant()))
 	{
 		m_currentFrame = 0.0f;
 		m_previousFrame = -1.0f;

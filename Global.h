@@ -22,5 +22,9 @@ public:
 	VariablesManager     m_variables;
 	uint32_t             m_size;
 
+	XMVECTOR camera_up;
+	XMVECTOR camera_lookat;
+
+
 };
 

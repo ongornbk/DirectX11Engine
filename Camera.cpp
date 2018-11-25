@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "Defines.h"
-
+#include "Global.h"
 
 extern "C"
 {
@@ -9,7 +9,8 @@ extern "C"
 
 namespace
 {
-	static Camera *   m_currentCamera = NULL;
+	static Camera*   m_currentCamera = nullptr;
+	static Global*   m_global = nullptr;
 }
 
 Camera::Camera(void)
@@ -17,6 +18,7 @@ Camera::Camera(void)
 	m_position = XMVECTORNULL;
 	m_rotation = XMVECTORNULL;
 	m_currentCamera = this;
+	m_global = Global::GetInstance();
 }
 Camera::~Camera(void)
 {
@@ -47,11 +49,14 @@ void Camera::InitializeProjectionMatrix(float fow, float screenaspect, float scr
 
 void Camera::SetPosition(float x, float y, float z)
 {
-	m_position = XMVectorSet(x, y, z,0.0f);
+	m_position.m128_f32[0] = x;
+	m_position.m128_f32[1] = y;
+	m_position.m128_f32[2] = z;
 }
 void Camera::SetPosition(float x, float y)
 {
-	m_position = XMVectorSet(x, y,m_position.m128_f32[2], 0.0f);
+	m_position.m128_f32[0] = x;
+	m_position.m128_f32[1] = y;
 }
 void Camera::SetPosition(XMVECTOR position)
 {
@@ -59,7 +64,7 @@ void Camera::SetPosition(XMVECTOR position)
 }
 void Camera::SetRotation(float x, float y, float z)
 {
-	m_rotation = XMVectorSet(x*(float)XM_PI/180.0f, y*(float)XM_PI / 180.0f, z*(float)XM_PI / 180.0f, 0.0f);
+	m_rotation = XMVectorSet(x*(float)XM_PI/180.0f, y*(float)XM_PI / 180.0f, z*XM_PI / 180.0f, 0.0f);
 }
 XMVECTOR Camera::GetPosition()
 {
@@ -82,25 +87,15 @@ XMFLOAT4X4 Camera::GetOrtho()
 	return m_ortho;
 }
 
-namespace
-{
-	namespace local
-	{
-		static XMVECTOR up;
-		static XMVECTOR lookat;
-		static XMMATRIX rotationMatrix;
-	}
-}
 
 void Camera::Update()
 {
-local::up     = XMVectorSet(0.0f, 1.0f, 0.0f,0.0f);
-local::lookat = XMVectorSet(0.0f, 0.0f, 1.0f,0.0f);
-local::rotationMatrix = XMMatrixRotationRollPitchYaw(m_rotation.m128_f32[0],m_rotation.m128_f32[1],m_rotation.m128_f32[2]);
 
-local::lookat = XMVector3TransformCoord(local::lookat, local::rotationMatrix);
-local::up = XMVector3TransformCoord(local::up, local::rotationMatrix);
+XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(m_rotation.m128_f32[0],m_rotation.m128_f32[1],m_rotation.m128_f32[2]);
 
-local::lookat += m_position;
-XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position, local::lookat, local::up));
+m_global->camera_lookat = XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
+m_global->camera_up = XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
+
+m_global->camera_lookat += m_position;
+XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position, m_global->camera_lookat, m_global->camera_up));
 }
