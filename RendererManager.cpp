@@ -10,12 +10,7 @@
 #include <stack>
 
 
-#pragma region
 class Unit;
-#define UnitPtr Unit*;
-#pragma endregion
-
-
 
 namespace
 {
@@ -58,7 +53,7 @@ RendererManager::~RendererManager()
 	if (m_ui)
 	{
 		delete m_ui;
-		m_ui = NULL;
+		m_ui = nullptr;
 	}
 	if (m_map)
 	{
@@ -94,17 +89,12 @@ void RendererManager::PushTree(Tree * doodads, int8_t z)
 
 	bool _vectorcall validateRendering(XMFLOAT3 _In_ object) noexcept
 	{
-		float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
-		float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
+		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
+		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
 
 		if ((x > m_rangeX) || (y > m_rangeY))
-		{
 			return false;
-		}
-		else
-		{
-			return true;
-		}
+		else return true;
 
 	}
 

@@ -45,7 +45,8 @@ constexpr float MAP_YBEGd38 = (TILE_MAP_SIZE / 2.0f) * (-15.0f* ipp::SQRT2);
 constexpr float MAP_YENDd18 = (TILE_MAP_SIZE / 2.0f) * (5.0f * ipp::SQRT2 );
 constexpr float MAP_YBEGd18 = (TILE_MAP_SIZE / 2.0f) * (-5.0f* ipp::SQRT2 );
 
-int8_t GetXCell(float x)
+_Use_decl_annotations_
+int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 {
 	int8_t r{};
 	if (x < 0.0f)
@@ -271,10 +272,11 @@ int8_t GetYCell(float y)
 	return r;
 }
 
+_Use_decl_annotations_
 template <class T>
-bool __validate_Xrendering__(const T index) noexcept
+bool _Out_opt_ _fastcall __validate_Xrendering__(const T& _In_opt_ index) noexcept
 {
-	int8_t t0 = xp - index;
+	const int8_t t0 = xp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 	{
 		return true;
@@ -285,8 +287,9 @@ bool __validate_Xrendering__(const T index) noexcept
 	}
 }
 
+_Use_decl_annotations_
 template <class T>
-bool __validate_Yrendering__(const T index) noexcept
+bool _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexcept
 {
 	int8_t t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -299,7 +302,7 @@ bool __validate_Yrendering__(const T index) noexcept
 	}
 }
 
-void __intersect_test__()
+void _fastcall __intersect_test__() noexcept
 {
 	Camera* cam = Camera::GetCurrentCamera();
 	DirectX::XMVECTOR pvx = cam->GetPosition();
@@ -319,67 +322,50 @@ for (uint16_t i = 0u; i < 16u; i++)
 
 bool __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const noexcept
 {
-	BoundingSphere* Acollision = A->GetBoundingSphere();
-	BoundingSphere* Bcollision = B->GetBoundingSphere();
+	BoundingSphere& Acollision = A->GetBoundingSphere();
+	BoundingSphere& Bcollision = B->GetBoundingSphere();
 
-	bool Apushable = A->m_pushable;
-	bool Bpushable = B->m_pushable;
+	const bool Apushable = A->m_pushable;
+	const bool Bpushable = B->m_pushable;
+	const float Aradius = Acollision.Radius;
+	const float Bradius = Bcollision.Radius;
+	const float Ax = Acollision.Center.x;
+	const float Ay = Acollision.Center.y;
+	const float Bx = Bcollision.Center.x;
+	const float By = Bcollision.Center.y;
+	const float Sradius = Aradius + Bradius;
+	const float Xdistance = Ax - Bx;
+	const float Ydistance = Ay - By;
+	const float Sdistance = XMVector2Length({Xdistance,Ydistance}).m128_f32[0];
 
-	float Aradius = Acollision->Radius;
-	float Bradius = Bcollision->Radius;
-	float Ax = Acollision->Center.x;
-	float Ay = Acollision->Center.y;
-
-	float Bx = Bcollision->Center.x;
-	float By = Bcollision->Center.y;
-
-	float Sradius = Aradius + Bradius;
-
-	float Xdistance = Ax - Bx;
-	float Ydistance = Ay - By;
-	float Sdistance = XMVector2Length({Xdistance,Ydistance}).m128_f32[0];
 	if (Sdistance < Sradius)
 	{
 		float Scollision = Sdistance - Sradius;
-		if (Apushable)
+		if (Apushable == Bpushable)
 		{
-			if (Bpushable)
+			Scollision /= 2.0f;
+			if (Ax < Bx)
 			{
-				Scollision /= 2.0f;
-				if (Ax < Bx)
-				{
-					Acollision->Center.x += Scollision;
-					Bcollision->Center.x -= Scollision;
-				}
-				else
-				{
-					Acollision->Center.x -= Scollision;
-					Bcollision->Center.x += Scollision;
-				}
+				Acollision.Center.x += Scollision;
+				Bcollision.Center.x -= Scollision;
 			}
 			else
 			{
-				if (Ax < Bx) Acollision->Center.x += Scollision;
-				else         Acollision->Center.x -= Scollision;
+				Acollision.Center.x -= Scollision;
+				Bcollision.Center.x += Scollision;
 			}
 		}
 		else
 		{
-			if (Bpushable)
+			if (Apushable)
 			{
-				if (Ax < Bx) Bcollision->Center.x -= Scollision;
-				else         Bcollision->Center.x += Scollision;
+			if (Ax < Bx) Acollision.Center.x += Scollision;
+			else         Acollision.Center.x -= Scollision;
 			}
 			else
 			{
-				if (A->m_movable)
-				{
-					A->m_collided = true;
-				}
-				if (B->m_movable)
-				{
-					B->m_collided = true;
-				}
+			if (Ax < Bx) Bcollision.Center.x -= Scollision;
+			else         Bcollision.Center.x += Scollision;
 			}
 		}
 	}
@@ -388,77 +374,57 @@ bool __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const
 
 bool __sort__SortByX::operator()(RenderContainer * A, RenderContainer * B) const noexcept
 {
-	BoundingSphere* Acollision = A->GetBoundingSphere();
-	BoundingSphere* Bcollision = B->GetBoundingSphere();
+	BoundingSphere& Acollision = A->GetBoundingSphere();
+	BoundingSphere& Bcollision = B->GetBoundingSphere();
 
-	bool Apushable = A->m_pushable;
-	bool Bpushable = B->m_pushable;
+	const bool Apushable = A->m_pushable;
+	const bool Bpushable = B->m_pushable;
+	const float Aradius = Acollision.Radius;
+	const float Bradius = Bcollision.Radius;
+	const float Ax = Acollision.Center.x;
+	const float Ay = Acollision.Center.y;
+	const float Bx = Bcollision.Center.x;
+	const float By = Bcollision.Center.y;
+	const float Sradius = Aradius + Bradius;
+	const float Xdistance = Ax - Bx;
+	const float Ydistance = Ay - By;
+	const float Sdistance = XMVector2Length({ Xdistance,Ydistance }).m128_f32[0];
 
-	float Aradius = Acollision->Radius;
-	float Bradius = Bcollision->Radius;
-
-	float Ax = Acollision->Center.x;
-	float Ay = Acollision->Center.y;
-
-	float Bx = Bcollision->Center.x;
-	float By = Bcollision->Center.y;
-
-	float Sradius = Aradius + Bradius;
-
-
-	float Xdistance = Ax - Bx;
-	float Ydistance = Ay - By;
-	float Sdistance = XMVector2Length({ Xdistance,Ydistance }).m128_f32[0];
 	if (Sdistance < Sradius)
 	{
 		float Scollision = Sdistance - Sradius;
-		if (Apushable)
+		if (Apushable == Bpushable)
 		{
-			if (Bpushable)
+			Scollision /= 2.0f;
+			if (Ay < By)
 			{
-				Scollision /= 2.0f;
-				if (Ay < By)
-				{
-					Acollision->Center.y += Scollision;
-					Bcollision->Center.y -= Scollision;
-				}
-				else
-				{
-					Acollision->Center.y -= Scollision;
-					Bcollision->Center.y += Scollision;
-				}
+				Acollision.Center.y += Scollision;
+				Bcollision.Center.y -= Scollision;
 			}
 			else
 			{
-				if (Ay < By) Acollision->Center.y += Scollision;
-				else         Acollision->Center.y -= Scollision;
-
+				Acollision.Center.y -= Scollision;
+				Bcollision.Center.y += Scollision;
 			}
 		}
 		else
 		{
-			if (Bpushable)
+			if (Apushable)
 			{
-				if (Ay < By) Bcollision->Center.y -= Scollision;
-				else         Bcollision->Center.y += Scollision;
+				if (Ay < By) Acollision.Center.y += Scollision;
+				else         Acollision.Center.y -= Scollision;
 			}
 			else
 			{
-				if (A->m_movable)
-				{
-					A->m_collided = true;
-				}
-				if (B->m_movable)
-				{
-					B->m_collided = true;
-				}
+				if (Ay < By) Bcollision.Center.y -= Scollision;
+				else         Bcollision.Center.y += Scollision;	
 			}
 		}
-
 	}
-
 	return Ax > Bx;
 }
+
+
 
 void _cdecl sortPy(std::vector<RenderContainer*>::iterator begin, std::vector<RenderContainer*>::iterator end) noexcept
 {
@@ -481,7 +447,7 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[16], std::vector<Rend
 	{
 		for (auto && RC : vecG[i])
 		{
-			vec[GetYCell(RC->GetBoundingSphere()->Center.y)].push_back(RC);
+			vec[GetYCell(RC->GetBoundingSphere().Center.y)].push_back(RC);
 		}
 	}
 
@@ -520,7 +486,7 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[16], std::vector<Rend
 	{
 		for (auto && RC : vecG[i])
 		{
-		vec[GetXCell(RC->GetBoundingSphere()->Center.x)].push_back(RC);
+		vec[GetXCell(RC->GetBoundingSphere().Center.x)].push_back(RC);
 		}	
 	}
 

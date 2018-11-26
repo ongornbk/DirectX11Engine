@@ -24,6 +24,8 @@ Global::~Global()
 
 Global* Global::GetInstance()
 {
+	if(m_instance)
 	return m_instance;
+	else return new Global();
 }
 

@@ -69,7 +69,7 @@ void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 			shader.standard->End(deviceContext);
 			shader.shadow->Begin(deviceContext);
 
-			__m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
+			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
 
 			__m128 distance{};
 			distance.m128_f32[0] = cameraPosition.m128_f32[1] - Center.y;
@@ -113,9 +113,9 @@ void Tree::SetZ(float z)
 	Center.z = z;
 }
 
-BoundingSphere * Tree::GetBoundingSphere()
+BoundingSphere& Tree::GetBoundingSphere()
 {
-	return (BoundingSphere*)(this);
+	return *this;
 }
 
 void Tree::Release()

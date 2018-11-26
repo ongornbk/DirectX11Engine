@@ -55,9 +55,10 @@ bool TaskGotoPoint::Update()
 
 	if (object->m_collided)
 	{
-		object->GoBack();
+		//object->GoBack();
 		//object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
 		//object->SetVelocity(0.0f, 0.0f, 0.0f);
+		object->m_collided = false;
 		return false;
 	}
 	else

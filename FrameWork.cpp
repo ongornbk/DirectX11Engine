@@ -15,6 +15,7 @@ FrameWork::FrameWork(void)
 {
 	Instance = this;
 	m_hDC = NULL;
+	//m_menu = nullptr;
 }
 
 FrameWork::~FrameWork(void)
@@ -23,6 +24,11 @@ FrameWork::~FrameWork(void)
 	{
 		ChangeDisplaySettings(NULL,0);
 	}
+	//if (m_menu)
+	//{
+	//	delete m_menu;
+	//	m_menu = nullptr;
+	//}
 	Engine::GetEngine()->Release();
 	//UnregisterClass(m_applicationName, m_hInstance);
 	//m_hInstance = NULL;
@@ -42,6 +48,11 @@ bool FrameWork::Initialize(GameComponent* gameComponent)
 	{
 		return false;
 	}
+
+	//if (true/*Settings::Menu*/)
+	//{
+		//m_menu = new Menu(m_hwnd,m_hInstance);
+	//}
 
 	return true;
 }
@@ -140,9 +151,8 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	Engine::GetEngine()->GetGraphics()->SetHwnd(m_hwnd);
 
 	ShowWindow(m_hwnd, SW_SHOW);
-	(void)SetForegroundWindow(m_hwnd);
-	(void)SetFocus(m_hwnd);
-	ipp::Console::Println("FrameWork : Window has been created", ipp::LIGHTGREEN);
+	SetForegroundWindow(m_hwnd);
+	SetFocus(m_hwnd);
 	return true;
 }
 
@@ -150,11 +160,21 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT ps;
-	HDC hdc;
 	
 	switch (message)
 	{
+	//case WM_COMMAND:
+	//{
+	//	switch (LOWORD(wParam))
+	//	{
+	//	case Menu::MenuEvents::MENU_EXIT:
+	//	{
+			//PostQuitMessage(WM_COMMAND);
+			//break;
+	//	}
+	//	}
+	//	break;
+//	}
 	case WM_QUIT:
 		if (Instance)
 		{
@@ -162,19 +182,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 			Instance = NULL;
 		}
 		break;
-	case WM_PAINT:
-	{
-		hdc = BeginPaint(hwnd, &ps);
-		EndPaint(hwnd, &ps);
-		
-	}break;
 	case WM_CLOSE:
 	{
-		if (Instance)
-		{
-			delete Instance;
-			Instance = NULL;
-		}
+		PostQuitMessage(WM_CLOSE);
 		break;
 	}break;
 	

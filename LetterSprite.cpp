@@ -8,11 +8,8 @@ LetterSprite::LetterSprite(Font * font,char letter, float size,Shader* shader)
 
 #pragma warning(disable : 4996)
 
-	//ResourceManager::GetInstance()->PrintOutTextures();
-	//Onion::Console::Println(font->GetName());
-
 	this->m_shader = shader;
-	this->m_vertexBuffer = NULL;
+	this->m_vertexBuffer = nullptr;
 	this->m_size = size;
 	this->m_char = letter;
 

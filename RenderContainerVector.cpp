@@ -114,11 +114,11 @@ void RenderContainerVector::Push(Tree * tree)
 Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float range) noexcept
 {
 
-	BoundingSphere* bsa = a->GetBoundingSphere();
-	BoundingSphere* bsb = b->GetBoundingSphere();
+	BoundingSphere& bsa = a->GetBoundingSphere();
+	BoundingSphere& bsb = b->GetBoundingSphere();
 
-	float distanceX = bsa->Center.x - bsb->Center.x;
-	float distanceY = bsa->Center.y - bsb->Center.y;
+	float distanceX = bsa.Center.x - bsb.Center.x;
+	float distanceY = bsa.Center.y - bsb.Center.y;
 	float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 	if (distance < range)
 	{
@@ -157,16 +157,24 @@ ENDLOOP:
 std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	std::stack<Unit*> units;
-	//atomic<std::stack<Unit*>*> sa = &units;
-	//std::vector<RenderContainer*>* upv = &g_units.m_zVectors[(int8_t)object->GetZ()]->m_objectsY;
-	//size_t index = (size_t)object->m_index;
+	//const size_t index = (size_t)object->m_index;
 	//
 	//std::vector<RenderContainer*> fv(upv->begin(), upv->begin() + index);
 	//std::reverse(fv.begin(), fv.end());
 	//std::vector<RenderContainer*> sv(upv->begin() + index, upv->end());
-	//m_async = 2;
-	//std::async(std::launch::async, PushUnitsInRange, &fv, &sa, object, range);
-	//std::async(std::launch::async, PushUnitsInRange, &sv, &sa, object, range);
+	//PushUnitsInRange(&fv, &sa, object, range);
+	//PushUnitsInRange(&sv, &sa, object, range);
+	//
+	//
+	//
+	//for (auto & vec : m_objectsY)
+	//{
+	//	if (vec.size() < index)
+	//	{
+	//		PushUnitsInRange(&fv, &sa, object, range);
+	//	}
+	//}
+	//
 	//while (m_async)
 	//{
 	//	DoNothing();

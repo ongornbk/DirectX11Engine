@@ -113,7 +113,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	{
 		return false;
 	}
-	m_global = new Global();
+	m_global = Global::GetInstance();
 	Tree::SetGlobal(m_global);
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();

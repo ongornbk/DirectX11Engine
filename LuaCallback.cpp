@@ -275,8 +275,8 @@ namespace lua_callback
 
 	static int32_t CreateTree(lua_State* state) noexcept
 	{
-		Tree* doodads = new Tree();
-		m_global->m_lastCreatedRenderContainer = doodads;
+		Tree* tree = new Tree();
+		m_global->m_lastCreatedRenderContainer = tree;
 		return 0;
 	}
 

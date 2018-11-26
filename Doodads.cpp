@@ -97,9 +97,9 @@ void Doodads::SetZ(float z)
 	Center.z = z;
 }
 
-BoundingSphere * Doodads::GetBoundingSphere()
+BoundingSphere& Doodads::GetBoundingSphere()
 {
-	return (BoundingSphere*)(this);
+	return *this;
 }
 
 void Doodads::Release()

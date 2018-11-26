@@ -2,11 +2,6 @@
 #include "Defines.h"
 #include "Global.h"
 
-extern "C"
-{
-#define XMVECTORNULL XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f)
-}
-
 namespace
 {
 	static Camera*   m_currentCamera = nullptr;
@@ -15,8 +10,8 @@ namespace
 
 Camera::Camera(void)
 {
-	m_position = XMVECTORNULL;
-	m_rotation = XMVECTORNULL;
+	m_position = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	m_rotation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	m_currentCamera = this;
 	m_global = Global::GetInstance();
 }
@@ -49,12 +44,14 @@ void Camera::InitializeProjectionMatrix(float fow, float screenaspect, float scr
 
 void Camera::SetPosition(float x, float y, float z)
 {
+	//m_position = XMVectorSet(x, y, z, 0.0f);
 	m_position.m128_f32[0] = x;
 	m_position.m128_f32[1] = y;
 	m_position.m128_f32[2] = z;
 }
 void Camera::SetPosition(float x, float y)
 {
+	//m_position = XMVectorSet(x, y, m_position.m128_f32[2], 0.0f);
 	m_position.m128_f32[0] = x;
 	m_position.m128_f32[1] = y;
 }
@@ -93,9 +90,9 @@ void Camera::Update()
 
 XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(m_rotation.m128_f32[0],m_rotation.m128_f32[1],m_rotation.m128_f32[2]);
 
-m_global->camera_lookat = XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
-m_global->camera_up = XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
+XMVECTOR lookat = XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
+XMVECTOR up = XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
 
-m_global->camera_lookat += m_position;
-XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position, m_global->camera_lookat, m_global->camera_up));
+lookat += m_position;
+XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
 }

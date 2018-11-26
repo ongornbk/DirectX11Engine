@@ -77,8 +77,24 @@ void Unit::Update(float dt)
 	if (!m_blocked)
 	{
 
-		if (!m_tasks.Update() && m_wanderingFlag)
-			m_tasks.Wander(this);
+		if (m_tasks.Update())
+		{
+
+		}
+		else
+		{
+			if (m_wanderingFlag)
+			{
+				m_tasks.Wander(this);
+			}
+			else
+			{
+				SetAnimation(ModelStance::MS_TOWNNEUTRAL);
+				SetVelocity(0.0f, 0.0f, 0.0f);
+			}
+		}
+		
+			
 
 		if (!m_stop)
 		{
@@ -222,9 +238,9 @@ float Unit::GetCollisionRadius()
 	return Radius;
 }
 
-BoundingSphere* Unit::GetBoundingSphere()
+BoundingSphere& Unit::GetBoundingSphere()
 {
-	return (BoundingSphere*)(this);
+	return *this;
 }
 
 XMFLOAT3 Unit::GetPosition()

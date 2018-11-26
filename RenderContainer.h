@@ -38,7 +38,7 @@ struct RenderContainerFlags
 			bool m_collided;
 			bool m_selectable;
 			bool m_cast_shadow;
-			bool m_movable;
+			bool m_hide;
 		};
 
 		uint64_t m_flags{};
@@ -68,7 +68,7 @@ public:
 	virtual void            SetZ(float z = 0.0f) = 0;
 	virtual void            Update(float dt) = 0;
 	virtual void            Release() = 0;
-	virtual BoundingSphere* GetBoundingSphere() = 0;
+	virtual BoundingSphere& GetBoundingSphere() = 0;
 
 
 public:
