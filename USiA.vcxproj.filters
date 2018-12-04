@@ -70,6 +70,9 @@
     <Filter Include="Clean\Engine\Math">
       <UniqueIdentifier>{11377f74-5f05-4ef7-add8-912216beb3d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -228,9 +231,6 @@
     <ClInclude Include="GraphicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -338,6 +338,12 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="gdef.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

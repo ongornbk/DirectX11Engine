@@ -2,53 +2,96 @@
 #include "Defines.h"
 #include "Camera.h"
 #include "IPP.h"
+#include "Vector.h"
 #include <thread>
 #include <sstream>
 #include <sal.h>
 
+
+
 using std::thread;
 
-constexpr float MAP_XEND = (TILE_MAP_SIZE / 2.0f)    * (80.0f * ipp::SQRT2);
-constexpr float MAP_XBEG = (TILE_MAP_SIZE / 2.0f)    * (-80.0f* ipp::SQRT2);
-constexpr float MAP_XENDd2 = (TILE_MAP_SIZE / 2.0f)  * (40.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-40.0f* ipp::SQRT2);
-constexpr float MAP_XENDd34 = (TILE_MAP_SIZE / 2.0f) * (60.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-60.0f* ipp::SQRT2);
+namespace
+{
+using ipp::SQRT2;
+#define HALF_MAP_SIZE (TILE_MAP_SIZE / 2.0f)
+	constexpr float MAP_XEND = HALF_MAP_SIZE * (80.0f  * SQRT2);
+	constexpr float MAP_XBEG = HALF_MAP_SIZE * (-80.0f * SQRT2);
+	constexpr float MAP_XENDd14 = HALF_MAP_SIZE * (20.0f  * SQRT2);
+	constexpr float MAP_XBEGd14 = HALF_MAP_SIZE * (-20.0f * SQRT2);
+	constexpr float MAP_XENDd2 = HALF_MAP_SIZE * (40.0f  * SQRT2);
+	constexpr float MAP_XBEGd2 = HALF_MAP_SIZE * (-40.0f * SQRT2);
+	constexpr float MAP_XENDd34 = HALF_MAP_SIZE * (60.0f  * SQRT2);
+	constexpr float MAP_XBEGd34 = HALF_MAP_SIZE * (-60.0f * SQRT2);
 
-constexpr float MAP_XENDd78 = (TILE_MAP_SIZE / 2.0f) * (70.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd78 = (TILE_MAP_SIZE / 2.0f) * (-70.0f* ipp::SQRT2);
-constexpr float MAP_XENDd58 = (TILE_MAP_SIZE / 2.0f) * (50.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd58 = (TILE_MAP_SIZE / 2.0f) * (-50.0f* ipp::SQRT2);
-constexpr float MAP_XENDd38 = (TILE_MAP_SIZE / 2.0f) * (30.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd38 = (TILE_MAP_SIZE / 2.0f) * (-30.0f* ipp::SQRT2);
-constexpr float MAP_XENDd18 = (TILE_MAP_SIZE / 2.0f) * (10.0f * ipp::SQRT2);
-constexpr float MAP_XBEGd18 = (TILE_MAP_SIZE / 2.0f) * (-10.0f* ipp::SQRT2);
+	constexpr float MAP_XENDd78 = HALF_MAP_SIZE * (70.0f  * SQRT2);
+	constexpr float MAP_XBEGd78 = HALF_MAP_SIZE * (-70.0f * SQRT2);
+	constexpr float MAP_XENDd58 = HALF_MAP_SIZE * (50.0f  * SQRT2);
+	constexpr float MAP_XBEGd58 = HALF_MAP_SIZE * (-50.0f * SQRT2);
+	constexpr float MAP_XENDd38 = HALF_MAP_SIZE * (30.0f  * SQRT2);
+	constexpr float MAP_XBEGd38 = HALF_MAP_SIZE * (-30.0f * SQRT2);
+	constexpr float MAP_XENDd18 = HALF_MAP_SIZE * (10.0f  * SQRT2);
+	constexpr float MAP_XBEGd18 = HALF_MAP_SIZE * (-10.0f * SQRT2);
 
-constexpr float MAP_XENDd14 = (TILE_MAP_SIZE / 2.0f) * (20.0f* ipp::SQRT2 );
-constexpr float MAP_XBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-20.0f* ipp::SQRT2);
+	constexpr float MAP_XENDd1516 = HALF_MAP_SIZE * (75.0f  * SQRT2);
+	constexpr float MAP_XBEGd1516 = HALF_MAP_SIZE * (-75.0f * SQRT2);
+	constexpr float MAP_XENDd1316 = HALF_MAP_SIZE * (65.0f  * SQRT2);
+	constexpr float MAP_XBEGd1316 = HALF_MAP_SIZE * (-65.0f * SQRT2);
+	constexpr float MAP_XENDd1116 = HALF_MAP_SIZE * (55.0f  * SQRT2);
+	constexpr float MAP_XBEGd1116 = HALF_MAP_SIZE * (-55.0f * SQRT2);
+	constexpr float MAP_XENDd916 = HALF_MAP_SIZE * (45.0f  * SQRT2);
+	constexpr float MAP_XBEGd916 = HALF_MAP_SIZE * (-45.0f * SQRT2);
+	constexpr float MAP_XENDd716 = HALF_MAP_SIZE * (35.0f  * SQRT2);
+	constexpr float MAP_XBEGd716 = HALF_MAP_SIZE * (-35.0f * SQRT2);
+	constexpr float MAP_XENDd516 = HALF_MAP_SIZE * (25.0f  * SQRT2);
+	constexpr float MAP_XBEGd516 = HALF_MAP_SIZE * (-25.0f * SQRT2);
+	constexpr float MAP_XENDd316 = HALF_MAP_SIZE * (15.0f  * SQRT2);
+	constexpr float MAP_XBEGd316 = HALF_MAP_SIZE * (-15.0f * SQRT2);
+	constexpr float MAP_XENDd116 = HALF_MAP_SIZE * (5.0f  * SQRT2);
+	constexpr float MAP_XBEGd116 = HALF_MAP_SIZE * (-5.0f * SQRT2);
 
-constexpr float MAP_YEND = (TILE_MAP_SIZE / 2.0f)    * (40.0f* ipp::SQRT2 );
-constexpr float MAP_YBEG = (TILE_MAP_SIZE / 2.0f)    * (-40.0f* ipp::SQRT2);
-constexpr float MAP_YENDd2 = (TILE_MAP_SIZE / 2.0f)  * (20.0f* ipp::SQRT2 );
-constexpr float MAP_YBEGd2 = (TILE_MAP_SIZE / 2.0f)  * (-20.0f* ipp::SQRT2);
-constexpr float MAP_YENDd34 = (TILE_MAP_SIZE / 2.0f) * (30.0f* ipp::SQRT2 );
-constexpr float MAP_YBEGd34 = (TILE_MAP_SIZE / 2.0f) * (-30.0f* ipp::SQRT2);
-constexpr float MAP_YENDd14 = (TILE_MAP_SIZE / 2.0f) * (10.0f* ipp::SQRT2 );
-constexpr float MAP_YBEGd14 = (TILE_MAP_SIZE / 2.0f) * (-10.0f* ipp::SQRT2);
+	constexpr float MAP_YEND = HALF_MAP_SIZE * (40.0f  * SQRT2);
+	constexpr float MAP_YBEG = HALF_MAP_SIZE * (-40.0f * SQRT2);
+	constexpr float MAP_YENDd2 = HALF_MAP_SIZE * (20.0f  * SQRT2);
+	constexpr float MAP_YBEGd2 = HALF_MAP_SIZE * (-20.0f * SQRT2);
+	constexpr float MAP_YENDd34 = HALF_MAP_SIZE * (30.0f  * SQRT2);
+	constexpr float MAP_YBEGd34 = HALF_MAP_SIZE * (-30.0f * SQRT2);
+	constexpr float MAP_YENDd14 = HALF_MAP_SIZE * (10.0f  * SQRT2);
+	constexpr float MAP_YBEGd14 = HALF_MAP_SIZE * (-10.0f * SQRT2);
 
-constexpr float MAP_YENDd78 = (TILE_MAP_SIZE / 2.0f) * (35.0f * ipp::SQRT2);
-constexpr float MAP_YBEGd78 = (TILE_MAP_SIZE / 2.0f) * (-35.0f* ipp::SQRT2);
-constexpr float MAP_YENDd58 = (TILE_MAP_SIZE / 2.0f) * (25.0f * ipp::SQRT2);
-constexpr float MAP_YBEGd58 = (TILE_MAP_SIZE / 2.0f) * (-25.0f* ipp::SQRT2);
-constexpr float MAP_YENDd38 = (TILE_MAP_SIZE / 2.0f) * (15.0f * ipp::SQRT2);
-constexpr float MAP_YBEGd38 = (TILE_MAP_SIZE / 2.0f) * (-15.0f* ipp::SQRT2);
-constexpr float MAP_YENDd18 = (TILE_MAP_SIZE / 2.0f) * (5.0f * ipp::SQRT2 );
-constexpr float MAP_YBEGd18 = (TILE_MAP_SIZE / 2.0f) * (-5.0f* ipp::SQRT2 );
+	constexpr float MAP_YENDd78 = HALF_MAP_SIZE * (35.0f  * SQRT2);
+	constexpr float MAP_YBEGd78 = HALF_MAP_SIZE * (-35.0f * SQRT2);
+	constexpr float MAP_YENDd58 = HALF_MAP_SIZE * (25.0f  * SQRT2);
+	constexpr float MAP_YBEGd58 = HALF_MAP_SIZE * (-25.0f * SQRT2);
+	constexpr float MAP_YENDd38 = HALF_MAP_SIZE * (15.0f  * SQRT2);
+	constexpr float MAP_YBEGd38 = HALF_MAP_SIZE * (-15.0f * SQRT2);
+	constexpr float MAP_YENDd18 = HALF_MAP_SIZE * (5.0f   * SQRT2);
+	constexpr float MAP_YBEGd18 = HALF_MAP_SIZE * (-5.0f  * SQRT2);
+
+	constexpr float MAP_YENDd1516 = HALF_MAP_SIZE * (37.5f  * SQRT2);
+	constexpr float MAP_YBEGd1516 = HALF_MAP_SIZE * (-37.5f * SQRT2);
+	constexpr float MAP_YENDd1316 = HALF_MAP_SIZE * (32.5f  * SQRT2);
+	constexpr float MAP_YBEGd1316 = HALF_MAP_SIZE * (-32.5f * SQRT2);
+	constexpr float MAP_YENDd1116 = HALF_MAP_SIZE * (27.5f  * SQRT2);
+	constexpr float MAP_YBEGd1116 = HALF_MAP_SIZE * (-27.5f * SQRT2);
+	constexpr float MAP_YENDd916 = HALF_MAP_SIZE * (22.5f   * SQRT2);
+	constexpr float MAP_YBEGd916 = HALF_MAP_SIZE * (-22.5f  * SQRT2);
+	constexpr float MAP_YENDd716 = HALF_MAP_SIZE * (17.5f  * SQRT2);
+	constexpr float MAP_YBEGd716 = HALF_MAP_SIZE * (-17.5f * SQRT2);
+	constexpr float MAP_YENDd516 = HALF_MAP_SIZE * (12.5f  * SQRT2);
+	constexpr float MAP_YBEGd516 = HALF_MAP_SIZE * (-12.5f * SQRT2);
+	constexpr float MAP_YENDd316 = HALF_MAP_SIZE * (7.5f  * SQRT2);
+	constexpr float MAP_YBEGd316 = HALF_MAP_SIZE * (-7.5f * SQRT2);
+	constexpr float MAP_YENDd116 = HALF_MAP_SIZE * (2.5f   * SQRT2);
+	constexpr float MAP_YBEGd116 = HALF_MAP_SIZE * (-2.5f  * SQRT2);
+}
+
+
 
 _Use_decl_annotations_
 int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 {
-	int8_t r{};
+	int8_t r;
 	if (x < 0.0f)
 	{
 		if (x < MAP_XBEGd2)
@@ -159,7 +202,7 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 }
 int8_t GetYCell(float y)
 {
-	int8_t r{};
+	int8_t r;
 
 	if (y < 0.0f)
 	{
@@ -451,7 +494,7 @@ void _vectorcall SortByY(std::vector<RenderContainer*> vec[16], std::vector<Rend
 		}
 	}
 
-	std::vector<std::thread*> threads;
+	Vector<std::thread*> threads;
 
 	for (uint32_t i = 0u; i < 16u; i++)
 	{
@@ -492,7 +535,7 @@ void _vectorcall SortByX(std::vector<RenderContainer*> vec[16], std::vector<Rend
 
 
 
-	std::vector<std::thread*> threads;
+	Vector<std::thread*> threads;
 
 	for (uint32_t i = 0u; i < 16u; i++)
 	{

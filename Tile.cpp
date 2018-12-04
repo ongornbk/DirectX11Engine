@@ -427,7 +427,7 @@ void TileMap::SetTile(INDEX2 index, int32_t tile)
 		{
 			
 			Tile* tilep = new Tile((AnimatedTile*)map[index.i][index.j]);
-			delete (AnimatedTile*)map[index.i][index.j];
+			delete dynamic_cast<AnimatedTile*>(map[index.i][index.j]);
 			map[index.i][index.j] = tilep;
 			map[index.i][index.j]->m_type = Tile::Type::TILE;
 			map[index.i][index.j]->m_collision = false;

@@ -34,8 +34,8 @@ void RenderContainerVector::Update(float dt)
 
 void RenderContainerVector::Sort()
 {
-	SortByX(m_objectsX, m_objectsY);
-	SortByY(m_objectsY, m_objectsX);
+	//SortByX(m_objectsX, m_objectsY);
+	//SortByY(m_objectsY, m_objectsX);
 }
 
 static uint32_t sizeg = 0u;

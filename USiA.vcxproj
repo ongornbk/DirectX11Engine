@@ -170,7 +170,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h" />
-    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Vector.h" />
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
     <ClInclude Include="2D\RenderTarget.h" />
     <ClInclude Include="2D\TextFormat.h" />
@@ -197,6 +196,7 @@
     <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="gdef.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GlobalUtilities.h" />
     <ClInclude Include="GlobalVariables.h" />
@@ -252,6 +252,7 @@
     <ClInclude Include="UserInterfaceGameMenu.h" />
     <ClInclude Include="UserInterfaceMainMenu.h" />
     <ClInclude Include="VariablesManager.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VulcanManager.h" />

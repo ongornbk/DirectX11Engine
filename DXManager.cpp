@@ -262,14 +262,7 @@ void DXManager::BeginScrene(float* color)
 
 void DXManager::EndScene()
 {
-	if (vsync_enabled)
-	{
-		m_swapChain->Present(1, 0);
-	}
-	else
-	{
-		m_swapChain->Present(0, 0);
-	}
+		m_swapChain->Present(vsync_enabled, 0);
 }
 
 void DXManager::EnableAlphaBlending(bool enable)
