@@ -4,7 +4,7 @@
 #include "ShaderPackage.h"
 #include <DirectXCollision.h>
 
-struct RenderContainerFlags
+struct RenderContainerFlags 
 {
 
 	RenderContainerFlags() : m_flags(0u) {}
@@ -60,7 +60,7 @@ enum RenderContainerAnchor
 	CENTRE
 };
 
-class RenderContainer : public RenderContainerFlags
+class RenderContainer : public RenderContainerFlags, public BoundingSphere
 {
 public:
 
@@ -68,12 +68,11 @@ public:
 	virtual void            SetZ(float z = 0.0f) = 0;
 	virtual void            Update(float dt) = 0;
 	virtual void            Release() = 0;
-	virtual BoundingSphere& GetBoundingSphere() = 0;
 
 
 public:
 	uint32_t             m_index;
-	
+	uint32_t             m_vector;
 
 	enum RenderContainerType
 	{

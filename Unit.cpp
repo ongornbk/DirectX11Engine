@@ -4,7 +4,7 @@
 #include "RendererManager.h"
 #include "IPP.h"
 
-Unit::Unit() : BoundingSphere(XMFLOAT3(0.0f, 0.0f, 0.0f),0.0f)
+Unit::Unit()
 {
 	m_floats[0] = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_floats[1] = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -120,7 +120,7 @@ void Unit::Update(float dt)
 			if (m_modelVariant.GetMaxFrames() == 1.0f) return;
 			if (m_currentFrame < m_modelVariant.GetMaxFrames())
 			{
-				m_currentSpeed += m_animationSpeed + dt;
+				m_currentSpeed += m_animationSpeed - dt;
 
 				if (m_currentSpeed > m_framesPerSecond)
 				{
@@ -229,19 +229,11 @@ void Unit::Release()
 	delete this;
 }
 
-
-
-
-
 float Unit::GetCollisionRadius()
 {
 	return Radius;
 }
 
-BoundingSphere& Unit::GetBoundingSphere()
-{
-	return *this;
-}
 
 XMFLOAT3 Unit::GetPosition()
 {

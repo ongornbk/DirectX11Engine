@@ -4,15 +4,19 @@
 #include "AnimatedDoodads.h"
 #include "Tree.h"
 #include "Unit.h"
+#include "Vector.h"
 #include <stack>
+//#include <forward_list>
+
+//using std::forward_list;
 
 struct RenderContainerVector
 {
 
 	RenderContainerVector();
 
-	vector<RenderContainer*> m_objectsX[16];
-	vector<RenderContainer*> m_objectsY[16];
+	Vector<RenderContainer*> m_objectsXY[2][32];
+	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);
 	void Sort();

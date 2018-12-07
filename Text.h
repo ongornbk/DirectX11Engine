@@ -1,10 +1,11 @@
 #pragma once
 #include "LetterSprite.h"
+#include "Vector.h"
 #include <string>
-#include <vector>
+
 
 using std::string;
-using std::vector;
+
 
 class Text
 {
@@ -42,7 +43,7 @@ public:
 
 private:
 
-	vector<LetterSpriteStruct*> m_letters;
+	Vector<LetterSpriteStruct*> m_letters;
 	string                m_text;
 
 

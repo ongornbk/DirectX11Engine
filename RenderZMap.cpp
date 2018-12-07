@@ -109,7 +109,7 @@ uint32_t RenderZMap::GetSize()
 	uint32_t size = 0u;
 	for (auto vector : m_zVectors)
 	{
-		size += (uint32_t)vector.second->m_objectsY[0].size();
+		//size += (uint32_t)vector.second->m_objectsXY[0].size();
 	}
 	return size;
 }
@@ -119,10 +119,10 @@ __m128 RenderZMap::GetSizeX4()
 	__m128 size{};
 	for (auto vector : m_zVectors)
 	{
-		size.m128_u32[0] += (uint32_t)vector.second->m_objectsX[0].size();
-		size.m128_u32[1] += (uint32_t)vector.second->m_objectsX[1].size();
-		size.m128_u32[2] += (uint32_t)vector.second->m_objectsX[2].size();
-		size.m128_u32[3] += (uint32_t)vector.second->m_objectsX[3].size();
+	//	size.m128_u32[0] += (uint32_t)vector.second->m_objectsX[0].size();
+	//	size.m128_u32[1] += (uint32_t)vector.second->m_objectsX[1].size();
+	//	size.m128_u32[2] += (uint32_t)vector.second->m_objectsX[2].size();
+	//	size.m128_u32[3] += (uint32_t)vector.second->m_objectsX[3].size();
 	}
 	return size;
 }
@@ -134,7 +134,7 @@ std::vector<uint32_t> RenderZMap::GetSizeVector()
 	{
 		for (uint32_t i = 0u; i < 16u; i++)
 		{
-			mv.push_back((uint32_t)vector.second->m_objectsX[i].size());
+		//	mv.push_back((uint32_t)vector.second->m_objectsX[i].size());
 		}
 	}
 	return mv;

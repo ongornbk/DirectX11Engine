@@ -9,7 +9,7 @@
 
 
 
-class Unit : public RenderContainer, public BoundingSphere
+class Unit : public RenderContainer
 {
 public:
 
@@ -88,7 +88,6 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) override;
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
-	BoundingSphere& GetBoundingSphere() override;
 	void Release() override;
 
 	void SetTask(Task* task);

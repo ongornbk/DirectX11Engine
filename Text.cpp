@@ -12,7 +12,6 @@ namespace
 
 Text::Text()
 {
-	m_letters.reserve(10);
 }
 
 

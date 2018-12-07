@@ -3,10 +3,11 @@
 #include "Camera.h"
 #include "IPP.h"
 #include "Vector.h"
+#include "ThreadPool.h"
 #include <thread>
 #include <sstream>
 #include <sal.h>
-
+#include <forward_list>
 
 
 using std::thread;
@@ -84,8 +85,10 @@ using ipp::SQRT2;
 	constexpr float MAP_YBEGd316 = HALF_MAP_SIZE * (-7.5f * SQRT2);
 	constexpr float MAP_YENDd116 = HALF_MAP_SIZE * (2.5f   * SQRT2);
 	constexpr float MAP_YBEGd116 = HALF_MAP_SIZE * (-2.5f  * SQRT2);
-}
 
+	std::atomic<void*> tp_p_one;
+	std::atomic<void*> tp_p_two;
+}
 
 
 _Use_decl_annotations_
@@ -100,22 +103,48 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 			{
 				if (x < MAP_XBEGd78)
 				{
-					r = 0;
+					if (x < MAP_XBEGd1516)
+					{
+						r = 0;
+					}
+					else
+					{
+						r = 1;
+					}
+					
 				}
-				else
-				{
-					r = 1;
-				}
-			}
-			else
-			{
-				if (x < MAP_XBEGd58)
+				if (x < MAP_XBEGd1316)
 				{
 					r = 2;
 				}
 				else
 				{
 					r = 3;
+				}
+			}
+			else
+			{
+				if (x < MAP_XBEGd58)
+				{
+					if (x < MAP_XBEGd1116)
+					{
+						r = 4;
+					}
+					else
+					{
+						r = 5;
+					}
+				}
+				else
+				{
+					if (x < MAP_XBEGd916)
+					{
+						r = 6;
+					}
+					else
+					{
+						r = 7;
+					}
 				}
 			}
 		}
@@ -125,22 +154,50 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 			{
 				if (x < MAP_XBEGd38)
 				{
-					r = 4;
+					if (x < MAP_XBEGd716)
+					{
+						r = 8;
+					}
+					else
+					{
+						r = 9;
+					}
 				}
 				else
 				{
-					r = 5;
+					if (x < MAP_XBEGd516)
+					{
+						r = 10;
+					}
+					else
+					{
+						r = 11;
+					}
 				}
 			}
 			else
 			{
 				if (x < MAP_XBEGd18)
 				{
-					r = 6;
+					if (x < MAP_XBEGd316)
+					{
+						r = 12;
+					}
+					else
+					{
+						r = 13;
+					}
 				}
 				else
 				{
-					r = 7;
+					if (x < MAP_XBEGd116)
+					{
+						r = 14;
+					}
+					else
+					{
+						r = 15;
+					}
 				}
 			}
 		}
@@ -153,22 +210,50 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 			{
 				if (x < MAP_XENDd18)
 				{
-					r = 8;
+					if (x < MAP_XENDd116)
+					{
+						r = 16;
+					}
+					else
+					{
+						r = 17;
+					}
 				}
 				else
 				{
-					r = 9;
+					if (x < MAP_XENDd316)
+					{
+						r = 18;
+					}
+					else
+					{
+						r = 19;
+					}
 				}
 			}
 			else
 			{
 				if (x < MAP_XENDd38)
 				{
-					r = 10;
+					if (x < MAP_XENDd516)
+					{
+						r = 20;
+					}
+					else
+					{
+						r = 21;
+					}
 				}
 				else
 				{
-					r = 11;
+					if (x < MAP_XENDd716)
+					{
+						r = 22;
+					}
+					else
+					{
+						r = 23;
+					}
 				}
 			}
 		}
@@ -178,22 +263,50 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 			{
 				if (x < MAP_XENDd58)
 				{
-					r = 12;
+					if (x < MAP_XENDd916)
+					{
+						r = 24;
+					}
+					else
+					{
+						r = 25;
+					}
 				}
 				else
 				{
-					r = 13;
+					if (x < MAP_XENDd1116)
+					{
+						r = 26;
+					}
+					else
+					{
+						r = 27;
+					}
 				}
 			}
 			else
 			{
 				if (x < MAP_XENDd78)
 				{
-					r = 14;
+					if (x < MAP_XENDd1316)
+					{
+						r = 28;
+					}
+					else
+					{
+						r = 29;
+					}
 				}
 				else
 				{
-					r = 15;
+					if (x < MAP_XENDd1516)
+					{
+						r = 30;
+					}
+					else
+					{
+						r = 31;
+					}
 				}
 			}
 		}
@@ -334,7 +447,7 @@ _Use_decl_annotations_
 template <class T>
 bool _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexcept
 {
-	int8_t t0 = yp - index;
+	const int8_t t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 	{
 		return true;
@@ -345,7 +458,7 @@ bool _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexce
 	}
 }
 
-void _fastcall __intersect_test__() noexcept
+void _cdecl __intersect_test__() noexcept
 {
 	Camera* cam = Camera::GetCurrentCamera();
 	DirectX::XMVECTOR pvx = cam->GetPosition();
@@ -354,32 +467,29 @@ void _fastcall __intersect_test__() noexcept
 xp = GetXCell(pvx.m128_f32[0]);
 yp = GetYCell(pvx.m128_f32[1]);
 
-for (uint16_t i = 0u; i < 16u; i++)
+for (uint16_t i = 0u; i < 32u; i++)
 {
 	xta[i] = __validate_Xrendering__(i);
 	yta[i] = __validate_Yrendering__(i);
 }
 }
 
-
-
-bool __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const noexcept
+bool _stdcall __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const noexcept
 {
-	BoundingSphere& Acollision = A->GetBoundingSphere();
-	BoundingSphere& Bcollision = B->GetBoundingSphere();
 
 	const bool Apushable = A->m_pushable;
 	const bool Bpushable = B->m_pushable;
-	const float Aradius = Acollision.Radius;
-	const float Bradius = Bcollision.Radius;
-	const float Ax = Acollision.Center.x;
-	const float Ay = Acollision.Center.y;
-	const float Bx = Bcollision.Center.x;
-	const float By = Bcollision.Center.y;
+	const float Aradius = A->Radius;
+	const float Bradius = B->Radius;
+	const float Ax = A->Center.x;
+	const float Ay = A->Center.y;
+	const float Bx = B->Center.x;
+	const float By = B->Center.y;
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
 	const float Sdistance = XMVector2Length({Xdistance,Ydistance}).m128_f32[0];
+	//const float Sdistance = sqrt((Xdistance*Xdistance) + (Ydistance*Ydistance));
 
 	if (Sdistance < Sradius)
 	{
@@ -389,45 +499,42 @@ bool __sort__SortByY::operator()(RenderContainer * A, RenderContainer * B) const
 			Scollision /= 2.0f;
 			if (Ax < Bx)
 			{
-				Acollision.Center.x += Scollision;
-				Bcollision.Center.x -= Scollision;
+				A->Center.x += Scollision;
+				B->Center.x -= Scollision;
 			}
 			else
 			{
-				Acollision.Center.x -= Scollision;
-				Bcollision.Center.x += Scollision;
+				A->Center.x -= Scollision;
+				B->Center.x += Scollision;
 			}
 		}
 		else
 		{
 			if (Apushable)
 			{
-			if (Ax < Bx) Acollision.Center.x += Scollision;
-			else         Acollision.Center.x -= Scollision;
+			if (Ax < Bx) A->Center.x += Scollision;
+			else         A->Center.x -= Scollision;
 			}
 			else
 			{
-			if (Ax < Bx) Bcollision.Center.x -= Scollision;
-			else         Bcollision.Center.x += Scollision;
+			if (Ax < Bx) B->Center.x -= Scollision;
+			else         B->Center.x += Scollision;
 			}
 		}
 	}
 	return Ay > By;
 }
 
-bool __sort__SortByX::operator()(RenderContainer * A, RenderContainer * B) const noexcept
+bool _stdcall __sort__SortByX::operator()(RenderContainer * A, RenderContainer * B) const noexcept
 {
-	BoundingSphere& Acollision = A->GetBoundingSphere();
-	BoundingSphere& Bcollision = B->GetBoundingSphere();
-
 	const bool Apushable = A->m_pushable;
 	const bool Bpushable = B->m_pushable;
-	const float Aradius = Acollision.Radius;
-	const float Bradius = Bcollision.Radius;
-	const float Ax = Acollision.Center.x;
-	const float Ay = Acollision.Center.y;
-	const float Bx = Bcollision.Center.x;
-	const float By = Bcollision.Center.y;
+	const float Aradius = A->Radius;
+	const float Bradius = B->Radius;
+	const float Ax = A->Center.x;
+	const float Ay = A->Center.y;
+	const float Bx = B->Center.x;
+	const float By = B->Center.y;
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
@@ -441,124 +548,146 @@ bool __sort__SortByX::operator()(RenderContainer * A, RenderContainer * B) const
 			Scollision /= 2.0f;
 			if (Ay < By)
 			{
-				Acollision.Center.y += Scollision;
-				Bcollision.Center.y -= Scollision;
+				A->Center.y += Scollision;
+				B->Center.y -= Scollision;
 			}
 			else
 			{
-				Acollision.Center.y -= Scollision;
-				Bcollision.Center.y += Scollision;
+				A->Center.y -= Scollision;
+				B->Center.y += Scollision;
 			}
 		}
 		else
 		{
 			if (Apushable)
 			{
-				if (Ay < By) Acollision.Center.y += Scollision;
-				else         Acollision.Center.y -= Scollision;
+				if (Ay < By) A->Center.y += Scollision;
+				else         A->Center.y -= Scollision;
 			}
 			else
 			{
-				if (Ay < By) Bcollision.Center.y -= Scollision;
-				else         Bcollision.Center.y += Scollision;	
+				if (Ay < By) B->Center.y -= Scollision;
+				else         B->Center.y += Scollision;	
 			}
 		}
 	}
 	return Ax > Bx;
 }
 
-
-
-void _cdecl sortPy(std::vector<RenderContainer*>::iterator begin, std::vector<RenderContainer*>::iterator end) noexcept
+void _cdecl sortPyV(RenderContainer** begin, RenderContainer** end) noexcept
 {
 	std::sort(begin, end, __sort__SortByY());
 }
 
-void _cdecl sortPx(std::vector<RenderContainer*>::iterator begin, std::vector<RenderContainer*>::iterator end) noexcept
+void _cdecl sortPxV(RenderContainer** begin, RenderContainer** end) noexcept
 {
 	std::sort(begin, end, __sort__SortByX());
 }
 
-void _vectorcall SortByY(std::vector<RenderContainer*> vec[16], std::vector<RenderContainer*> vecG[16]) noexcept
+void _stdcall sortPxVTP(RenderContainer** begin, RenderContainer** end) noexcept
 {
+	std::sort(begin, end, __sort__SortByX());
+}
 
+void _stdcall sortPyVTP(RenderContainer** begin, RenderContainer** end) noexcept
+{
+	std::sort(begin, end, __sort__SortByY());
+}
 
-	for (uint32_t i = 0u; i < 16u; i++)
-		vec[i].clear();
+void _vectorcall SortByYV(Vector<RenderContainer*> vec[2][32]) noexcept
+{
+	for (uint32_t i = 0u; i < 32u; i++)
+		vec[1][i].clear();
 
-	for (uint32_t i = 0u; i < 16u; i++)
+	for (uint32_t i = 0u; i < 32u; i++)
 	{
-		for (auto && RC : vecG[i])
+		for (auto && RC : vec[0][i])
 		{
-			vec[GetYCell(RC->GetBoundingSphere().Center.y)].push_back(RC);
+			if(RC)
+			vec[1][GetYCell(RC->Center.y)].push_back(RC);
 		}
 	}
 
-	Vector<std::thread*> threads;
+	ThreadPoolHandle pool;
 
-	for (uint32_t i = 0u; i < 16u; i++)
+	//Vector<std::thread*> threads;
+	//
+	for (uint32_t i = 0u; i < 32u; i++)
 	{
 		if (yta[i])
 		{
-			std::thread* t = new thread(sortPy, vec[i].begin(), vec[i].end());
-			threads.push_back(t);
+			pool.pool->push([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
 		}
 	}
 
-	for (auto && thread : threads)
-	{
-		if (thread)
-		{
-			thread->join();
-			delete thread;
-			thread = nullptr;
-		}
-	}
+	pool.pool->wait();
 
-	threads.clear();
+	//Vector<std::thread*> threads;
+	//
+	//for (uint32_t i = 0u; i < 32u; i++)
+	//{
+	//	if (yta[i])
+	//	{
+	//		threads.push_back(new thread(sortPyV, vec[1][i].begin(), vec[1][i].end()));
+	//	}
+	//}
+	//
+	//for (auto && thread : threads)
+	//{
+	//	if (thread)
+	//	{
+	//		thread->join();
+	//		delete thread;
+	//		thread = nullptr;
+	//	}
+	//}
+	//
+	//threads.clear();
 }
 
-void _vectorcall SortByX(std::vector<RenderContainer*> vec[16], std::vector<RenderContainer*> vecG[16]) noexcept
+void _vectorcall SortByXV(Vector<RenderContainer*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
-	for (uint32_t i = 0u; i < 16u; i++)
-	vec[i].clear();
+	for (uint32_t i = 0u; i < 32u; i++)
+		vec[0][i].clear();
 
-	for (uint32_t i = 0u; i < 16u; i++)
+	for (uint32_t i = 0u; i < 32u; i++)
 	{
-		for (auto && RC : vecG[i])
+		for (auto && RC : vec[1][i])
 		{
-		vec[GetXCell(RC->GetBoundingSphere().Center.x)].push_back(RC);
-		}	
+			if(RC)
+			vec[0][GetXCell(RC->Center.x)].push_back(RC);
+		}
 	}
 
+	ThreadPoolHandle pool;
 
+	
 
-	Vector<std::thread*> threads;
-
-	for (uint32_t i = 0u; i < 16u; i++)
+	//Vector<std::thread*> threads;
+	//
+	for (uint32_t i = 0u; i < 32u; i++)
 	{
 		if (xta[i])
 		{
-			std::thread* t = new thread(sortPx, vec[i].begin(), vec[i].end());
-			threads.push_back(t);
+			pool.pool->push([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
 		}
 	}
 
-	for (auto && thread : threads)
-	{
-		if (thread)
-		{
-			thread->join();
-			delete thread;
-			thread = nullptr;
-		}
-	}
+	pool.pool->wait();
+	
+	//for (auto && thread : threads)
+	//{
+	//	if (thread)
+	//	{
+	//		thread->join();
+	//		delete thread;
+	//		thread = nullptr;
+	//	}
+	//}
+	//
+	//threads.clear();
 
-	threads.clear();
+
 }
-
-
-
-

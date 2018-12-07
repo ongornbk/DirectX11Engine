@@ -11,6 +11,7 @@
 #include "CameraControl.h"
 #include "FrameWork.h"
 #include "Canals.h"
+#include "ThreadPool.h"
 
 class RendererManager;
 class FrameWork;
@@ -73,6 +74,7 @@ private:
 	GameComponent*   m_gameComponent;
 	Canals           m_canals;
 	CameraControl    m_cameraControl;
+	ThreadPool       m_threadPool;
 
 	lua_State*       m_lua;
 };

@@ -152,11 +152,6 @@ void AnimatedDoodads::SetZ(float z)
 	Center.z = z;
 }
 
-BoundingSphere& AnimatedDoodads::GetBoundingSphere()
-{
-	return *this;
-}
-
 void AnimatedDoodads::Release()
 {
 	delete this;

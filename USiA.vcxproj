@@ -242,6 +242,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="ThreadManager.h" />
+    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TriggersManager.h" />
@@ -295,7 +296,6 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="IPP.cpp" />
-    <ClCompile Include="ParticleVertexBuffer.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />
@@ -323,6 +323,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TriggersManager.cpp" />

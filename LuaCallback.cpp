@@ -240,6 +240,7 @@ namespace lua_callback
 		if (unit)
 		{
 			unit->Release();
+			unit = nullptr;
 		}
 		return 0;
 	}

@@ -1,6 +1,7 @@
 #include "RenderContainerVector.h"
 #include "Sorting.h"
 #include "Defines.h"
+#include "Vector.h"
 #include <thread>
 
 typedef int32_t Boolean;
@@ -9,75 +10,63 @@ RenderContainerVector::RenderContainerVector()
 {
 }
 
-void _vectorcall UpdatePart(std::vector<RenderContainer*> vec, float dt) noexcept
-{
-	RenderContainer** m_array = vec.data();
-	for (uint32_t i = 0u; i < vec.size(); ++i)
-	{
-		m_array[i]->Update(dt);
-	}
-}
 
-void _cdecl UpdatePartP(std::vector<RenderContainer*> vec, float dt)
-{
-	UpdatePart(vec, dt);
-}
 
 void RenderContainerVector::Update(float dt)
 {
-
-	for (uint32_t i = 0u; i < 16u; i++)
+	for (u32 i = 0u; i < 32u; i++)
 	{
-			UpdatePart(m_objectsY[i], dt);
+		if(!xta[i])
+		for (auto & obj : m_objectsXY[1][i])
+		{
+			if (obj)
+				obj->Update(dt);
+		}
 	}
 }
 
 void RenderContainerVector::Sort()
 {
-	//SortByX(m_objectsX, m_objectsY);
-	//SortByY(m_objectsY, m_objectsX);
+	SortByXV(m_objectsXY);
+	SortByYV(m_objectsXY);
 }
 
-static uint32_t sizeg = 0u;
+//static uint32_t sizeg = 0u;
 
-struct RenderContainerContainer
-{
-	uint32_t size;
-	RenderContainer** rc;
-};
+
 
 void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
 {
-
-	std::vector<RenderContainerContainer> mvpp;
-	for (uint16_t i = 0u; i < 16u; i++)
+Vector<Vector<RenderContainer*>*> mvpp;
+for (uint16_t i = 0u; i < 32u; i++)
 	{
-			RenderContainerContainer rcc;
-			rcc.rc = m_objectsY[i].data();
-			rcc.size = (uint32_t)m_objectsY[i].size();
-			mvpp.push_back(rcc);
+	if(!yta[i])
+mvpp.push_back(&m_objectsXY[1][i]);
 	}
 
-	std::reverse(mvpp.begin(), mvpp.end());
+std::reverse(mvpp.begin(), mvpp.end());
 
-	for (auto && rc : mvpp)
-	{
-		for (uint32_t i = 0; i < rc.size; i++)
+u32 group = 31u;
+for (auto& vec : mvpp)
 {
-	rc.rc[i]->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-	rc.rc[i]->m_index = i;
-}
+	u32 index = 0u;
+	for (auto& obj : *vec)
+	{
+		obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		obj->m_index = index;
+		obj->m_vector = group;
+		index++;
 	}
-
-	mvpp.clear();
+	group--;
+}
 
 }
 
 void RenderContainerVector::Clear()
 {
-	for (uint32_t cv = 0u; cv < 16u; cv++)
+	for (u32 cv = 0u; cv < 32u; cv++)
 	{
-		for (auto &&object : m_objectsY[cv])
+		for (auto &&object : m_objectsXY[0][cv])
 		{
 			if (object)
 			{
@@ -85,41 +74,38 @@ void RenderContainerVector::Clear()
 				object = nullptr;
 			}
 		}
-		m_objectsX[cv].clear();
-		m_objectsY[cv].clear();
+		m_objectsXY[0][cv].clear();
+		m_objectsXY[1][cv].clear();
 	}
 
 }
 
 void RenderContainerVector::Push(Unit * unit)
 {
-	m_objectsY[0].push_back(unit);
+	m_objectsXY[1][0].push_back(unit);
 }
 
 void RenderContainerVector::Push(Doodads * doodads)
 {
-	m_objectsY[0].push_back(doodads);
+	m_objectsXY[1][0].push_back(doodads);
 }
 
 void RenderContainerVector::Push(AnimatedDoodads* animated)
 {
-	m_objectsY[0].push_back(animated);
+	m_objectsXY[1][0].push_back(animated);
 }
 
 void RenderContainerVector::Push(Tree * tree)
 {
-	m_objectsY[0].push_back(tree);
+	m_objectsXY[1][0].push_back(tree);
 }
 
-Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float range) noexcept
+Boolean _stdcall CheckDistance(RenderContainer* A, RenderContainer* B, float range) noexcept
 {
 
-	BoundingSphere& bsa = a->GetBoundingSphere();
-	BoundingSphere& bsb = b->GetBoundingSphere();
-
-	float distanceX = bsa.Center.x - bsb.Center.x;
-	float distanceY = bsa.Center.y - bsb.Center.y;
-	float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
+	const float distanceX = A->Center.x - B->Center.x;
+	const float distanceY = A->Center.y - B->Center.y;
+	const float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 	if (distance < range)
 	{
 		return 2;
@@ -132,16 +118,16 @@ Boolean _stdcall CheckDistance(RenderContainer* a, RenderContainer* b, float ran
 	}
 }
 
-void _stdcall PushUnitsInRange(std::vector<RenderContainer*>* vec, atomic<std::stack<Unit*>*>* sa, RenderContainer* object, float range) noexcept
+void _stdcall PushUnitsInRange(vector<RenderContainer*>& vec, std::stack<Unit*>& sa, RenderContainer* object, float range) noexcept
 {
-	for (auto unit : *vec)
+	for (auto&& unit : vec)
 	{
 		if (unit&&unit != object && (unit->m_type == RenderContainer::RenderContainerType::UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
 			case 2:
-				sa->load()->push((Unit*)unit);
+				sa.push((Unit*)unit);
 				break;
 			case 1:
 				break;
@@ -154,30 +140,116 @@ ENDLOOP:
 	return;
 }
 
+
 std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	std::stack<Unit*> units;
-	//const size_t index = (size_t)object->m_index;
-	//
-	//std::vector<RenderContainer*> fv(upv->begin(), upv->begin() + index);
-	//std::reverse(fv.begin(), fv.end());
-	//std::vector<RenderContainer*> sv(upv->begin() + index, upv->end());
-	//PushUnitsInRange(&fv, &sa, object, range);
-	//PushUnitsInRange(&sv, &sa, object, range);
-	//
-	//
-	//
-	//for (auto & vec : m_objectsY)
-	//{
-	//	if (vec.size() < index)
-	//	{
-	//		PushUnitsInRange(&fv, &sa, object, range);
-	//	}
-	//}
-	//
-	//while (m_async)
-	//{
-	//	DoNothing();
-	//}
+
+
+	const u32 cVec = object->m_vector;
+
+	switch (cVec)
+	{
+	case 0U:
+	{
+
+
+		for (auto &obj : m_objectsXY[1][cVec])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		for (auto &obj : m_objectsXY[1][cVec+1])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		break;
+	}
+	case 31U:
+	{
+		for (auto &obj : m_objectsXY[1][cVec - 1])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		for (auto &obj : m_objectsXY[1][cVec])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		break;
+	}
+	default:
+	{
+		for (auto &obj : m_objectsXY[1][cVec - 1])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		for (auto &obj : m_objectsXY[1][cVec])
+		{
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		{
+			for (auto &obj : m_objectsXY[1][cVec + 1])
+			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			{
+				switch (CheckDistance(obj, object, range))
+				{
+				case 2:
+					units.push((Unit*)obj);
+					break;
+				}
+			}
+		}
+		break;
+	}
+	}
+	
+
 	return units;
 }

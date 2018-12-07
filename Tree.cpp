@@ -113,11 +113,6 @@ void Tree::SetZ(float z)
 	Center.z = z;
 }
 
-BoundingSphere& Tree::GetBoundingSphere()
-{
-	return *this;
-}
-
 void Tree::Release()
 {
 	delete this;

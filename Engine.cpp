@@ -207,11 +207,12 @@ void Engine::Run()
 	clock_t beginFrame = clock();
 	Update();
 
-	std::thread t(lua::Execute, lua::LUA_LOCATION_RENDERAFTER);
+	
 
 	Render();
 
-	//lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+	lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+
 	clock_t endFrame = clock();
 
 	deltaTime += endFrame - beginFrame;
@@ -229,7 +230,6 @@ void Engine::Run()
 
 	}
 
-	t.join();
 
 }
 
