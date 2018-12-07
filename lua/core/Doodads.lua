@@ -11,17 +11,10 @@ function Doodads.Load(A,B)
 return {ptrA = A,ptrB = B}
 end
 
-
-
-function Doodads.exist(doodads)
-
-if doodads.ptrA > 0 or doodads.ptrB > 0
-then
-return true
-else
-return false
+function Doodads.Initialize(texture,size,collision,x,y,z)
+InitializeDoodads(texture,size,collision,x,y,z)
 end
 
-end
+
 
 

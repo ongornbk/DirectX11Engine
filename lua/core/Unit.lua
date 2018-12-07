@@ -12,10 +12,6 @@ function Unit.delete()
 DeleteUnit()
 end
 
-function Unit.Load(A,B)
-return {ptrA = A,ptrB = B}
-end
-
 function Unit.Pick(unit)
 PickUnit(unit.ptrA,unit.ptrB)
 end
@@ -51,16 +47,4 @@ end
 function Unit.CleanTasks ()
 CleanTasks()
 end
-
-function Unit.exist(unit)
-
-if unit.ptrA > 0 or unit.ptrB > 0
-then
-return true
-else
-return false
-end
-
-end
-
 
