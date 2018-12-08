@@ -148,7 +148,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd,Settings::GetResolutionX(), Settings::GetResolutionY());
 	lua_callback::SetInput(m_input);
-//	InitializeTemplates();
+
 	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
@@ -157,13 +157,6 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	lua_callback::InitializeGraphics();
 
-
-
-
-
-	//SuperModel::InitializeTextures();
-
-	
 
 	if(m_gameComponent!=NULL)
 	{

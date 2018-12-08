@@ -11,7 +11,7 @@ namespace
 Canals::Canals()
 {
 	m_instance = this;
-	for (int i = 0; i < NUMBER_OF_CANALS; i++)
+	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		m_canals[i] = new Sound_Canal(CanalType(i), 100.0f);
 	}
@@ -20,7 +20,7 @@ Canals::Canals()
 
 Canals::~Canals()
 {
-	for (int i = 0; i < NUMBER_OF_CANALS; i++)
+	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		delete m_canals[i];
 		m_canals[i] = NULL;
@@ -42,7 +42,7 @@ Canals * Canals::GetInstance()
 Sound* Canals::__GetSound(string sound)
 {	
 
-	for (int i = 0; i < NUMBER_OF_CANALS; i++)
+	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		m_canals[i]->GetSound(sound);
 	}

@@ -81,104 +81,142 @@ namespace lua_callback
 		m_input = input;
 	}
 
-	static int LoadTexture(lua_State* state)
+	namespace Resources
 	{
+		static i32 LoadTexture(lua_State* state)
+		{
 #pragma warning(disable : 4996)
-			string str = LUA_STRING(state,1);
+			string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
 			wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			wcscpy(wide_string,ws.c_str());
+			wcscpy(wide_string, ws.c_str());
 			m_resources->LoadTextureResource(wide_string);
 			delete wide_string;
-		return 0;
+			return 0;
+		}
+
+		static i32 LoadSound(lua_State* state)
+		{
+#pragma warning(disable : 4996)
+			string str = LUA_STRING(state, 1);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+			m_resources->LoadSoundResource(wide_string);
+			delete wide_string;
+			return 0;
+		}
+
+		static i32 AddModelPaths(lua_State* state)
+		{
+			string str = LUA_STRING(state, 1);
+			m_engine->AddModelPaths(str);
+			return 0;
+		}
 	}
 
-	static int LoadSound(lua_State* state)
+	namespace Cameras
 	{
-#pragma warning(disable : 4996)
-		string str = LUA_STRING(state, 1);
+		static i32 InitializeProjectionMatrix(lua_State* state)
+		{
+			m_camera->InitializeProjectionMatrix((float)XM_PI / LUA_FLOAT(state, 1), Settings::GetAspectRatio(), 1.0f / LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
+			return 0;
+		}
+
+		static i32 InitializeOrthoMatrix(lua_State* state)
+		{
+			m_camera->InitializeOrthoMatrix(Settings::GetResolutionX(), Settings::GetResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+			return 0;
+		}
+
+		static i32 SetCameraLookAt(lua_State* state)
+		{
+			m_global->camera_lookat = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+			return 0;
+		}
+
+		static i32 SetCameraUp(lua_State* state)
+		{
+			m_global->camera_up = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+			return 0;
+		}
+
+		static i32 SetCameraPosition(lua_State* state)
+		{
+			XMVECTOR position;
+			position.m128_f32[0] = LUA_FLOAT(state, 1);
+			position.m128_f32[1] = LUA_FLOAT(state, 2);
+			position.m128_f32[2] = LUA_FLOAT(state, 3);
+			m_camera->SetPosition(position);
+			return 0;
+		}
+
+		static i32 LockCameraOnUnit(lua_State* state) noexcept
+		{
+			Unit* unit = m_global->m_lastPickedUnit;
+			if (unit)
+			{
+				m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
+			}
+			return 0;
+		}
+
 		
-		wchar_t* wide_string = new wchar_t[str.length() + 1];
-		wstring ws = std::wstring(str.begin(), str.end()).c_str();
-		wcscpy(wide_string, ws.c_str());
-		m_resources->LoadSoundResource(wide_string);
-		delete wide_string;
-		return 0;
 	}
 
-
-	static int InitializeProjectionMatrix(lua_State* state)
+	namespace Music
 	{
-		m_camera->InitializeProjectionMatrix((float)XM_PI / LUA_FLOAT(state, 1), Settings::GetAspectRatio(),1.0f / LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
-		return 0;
-	}
+		static i32 AddMusic(lua_State* state)
+		{
+			string str = LUA_STRING(state, 1);
+			m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
+			return 0;
+		}
 
-	static int InitializeOrthoMatrix(lua_State* state)
-	{
-		m_camera->InitializeOrthoMatrix(Settings::GetResolutionX(), Settings::GetResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
-		return 0;
-	}
-
-	static int SetCameraLookAt(lua_State* state)
-	{
-		m_global->camera_lookat = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
-		return 0;
-	}
-
-	static int SetCameraUp(lua_State* state)
-	{
-		m_global->camera_up = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
-		return 0;
-	}
-
-	static int SetCameraPosition(lua_State* state)
-	{
-		XMVECTOR position;
-		position.m128_f32[0] = LUA_FLOAT(state, 1);
-		position.m128_f32[1] = LUA_FLOAT(state, 2);
-		position.m128_f32[2] = LUA_FLOAT(state, 3);
-		m_camera->SetPosition(position);
-		return 0;
-	}
-
-	static int AddMusic(lua_State* state)
-	{
-		string str = LUA_STRING(state, 1);
-		m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
-		return 0;
-	}
-
-	static int AddModelPaths(lua_State* state)
-	{
-		string str = LUA_STRING(state, 1);
-		m_engine->AddModelPaths(str);
-		return 0;
-	}
-
-	static int32_t PlayMusic(lua_State* state) noexcept
-	{
+		static i32 PlayMusic(lua_State* state) noexcept
+		{
 #pragma warning(disable : 4996)
-		string str = LUA_STRING(state, 1);
-
-		wchar_t* wide_string = new wchar_t[str.length() + 1];
-		wstring ws = std::wstring(str.begin(), str.end()).c_str();
-		wcscpy(wide_string, ws.c_str());
-		m_engine->PlayMusic(wide_string);
-		delete wide_string;
-		return 0;
+			string str = LUA_STRING(state, 1);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+			m_engine->PlayMusic(wide_string);
+			delete wide_string;
+			return 0;
+		}
 	}
 
-	static int32_t StartServer(lua_State* state) noexcept
+	namespace _Network
 	{
-		Network::StartServer((uint16_t)lua_tointeger(state, 1));
-		return 0;
+		static i32 _StartServer(lua_State* state) noexcept
+		{
+			Network::StartServer((u16)lua_tointeger(state, 1));
+			return 0;
+		}
 	}
 
-	static int32_t __PostQuitMessage(lua_State* state) noexcept
+	namespace _Game
 	{
-		PostQuitMessage((int)lua_tointeger(state, 1));
-		return 0;
+		static i32 __PostQuitMessage(lua_State* state) noexcept
+		{
+			PostQuitMessage((i32)lua_tointeger(state, 1));
+			return 0;
+		}
+
+		static i32 PauseGame(lua_State* state)
+		{
+			m_engine->PauseGame();
+			return 0;
+		}
+
+		static i32 ResumeGame(lua_State* state)
+		{
+			m_engine->ResumeGame();
+			return 0;
+		}
 	}
+
+	
 
 	static int32_t __IsKeyHit(lua_State* state) noexcept
 	{
@@ -350,7 +388,8 @@ namespace lua_callback
 		if (unit)
 		{
 			TaskGotoPoint* task = new TaskGotoPoint();
-			task->destination = m_global->m_lastPoint;
+			task->destination.x = LUA_FLOAT(state, 1);
+			task->destination.y = LUA_FLOAT(state, 2);
 			task->object = unit;
 			unit->SetTask(task);
 		}
@@ -364,15 +403,7 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t LockCameraOnUnit(lua_State* state) noexcept
-	{
-		Unit* unit = m_global->m_lastPickedUnit;
-		if (unit)
-		{
-			m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
-		}
-		return 0;
-	}
+	
 
 	static int32_t InitializeUnit(lua_State* state) noexcept
 	{
@@ -532,11 +563,15 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t ChangeWalkingStance(lua_State* state) noexcept
+	namespace _Units
 	{
-		m_global->m_lastPickedUnit->ChangeWalkingStance();
-		return 0;
+		static i32 ChangeWalkingStance(lua_State* state) noexcept
+		{
+			m_global->m_lastPickedUnit->ChangeWalkingStance();
+			return 0;
+		}
 	}
+	
 
 	static int32_t SetUnitSpeed(lua_State* state) noexcept
 	{
@@ -630,13 +665,13 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int GetSize(lua_State* state)
+	static i32 GetSize(lua_State* state)
 	{
 		lua_pushinteger(state, (int)m_global->m_size);
 		return 1;
 	}
 
-	static int SetUnitRotations(lua_State* state)
+	static i32 SetUnitRotations(lua_State* state)
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -646,23 +681,13 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int SetInterface(lua_State* state)
+	static i32 SetInterface(lua_State* state)
 	{
 		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
 		return 0;
 	}
 
-	static int PauseGame(lua_State* state)
-	{
-		m_engine->PauseGame();
-		return 0;
-	}
-
-	static int ResumeGame(lua_State* state)
-	{
-		m_engine->ResumeGame();
-		return 0;
-	}
+	
 
 	static int LoadFont(lua_State* state) //EXPORTED
 	{
@@ -761,21 +786,22 @@ namespace lua_callback
 	{
 		lua_State* m_lua = lua::GetInstance();
 
-		//ResourceManager
-		lua_register(m_lua, "LoadTexture", lua_callback::LoadTexture);
-		lua_register(m_lua, "LoadSound", lua_callback::LoadSound);
-		//Camera
-		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::InitializeProjectionMatrix);
-		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::InitializeOrthoMatrix);
-		lua_register(m_lua, "SetCameraPosition", lua_callback::SetCameraPosition);
-		lua_register(m_lua, "LockCameraOnUnit", lua_callback::LockCameraOnUnit);
-		lua_register(m_lua, "SetCameraLookAt", lua_callback::SetCameraLookAt);
-		lua_register(m_lua, "SetCameraUp", lua_callback::SetCameraUp);
+		//Resources
+		lua_register(m_lua, "LoadTexture", lua_callback::Resources::LoadTexture);
+		lua_register(m_lua, "LoadSound", lua_callback::Resources::LoadSound);
+		lua_register(m_lua, "AddModelPaths", lua_callback::Resources::AddModelPaths);
+		//Cameras
+		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::Cameras::InitializeProjectionMatrix);
+		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::Cameras::InitializeOrthoMatrix);
+		lua_register(m_lua, "SetCameraPosition", lua_callback::Cameras::SetCameraPosition);
+		lua_register(m_lua, "LockCameraOnUnit", lua_callback::Cameras::LockCameraOnUnit);
+		lua_register(m_lua, "SetCameraLookAt", lua_callback::Cameras::SetCameraLookAt);
+		lua_register(m_lua, "SetCameraUp", lua_callback::Cameras::SetCameraUp);
 		//Music
-		lua_register(m_lua, "AddMusic", lua_callback::AddMusic);
-		lua_register(m_lua, "PlayMusic", lua_callback::PlayMusic);
+		lua_register(m_lua, "AddMusic", lua_callback::Music::AddMusic);
+		lua_register(m_lua, "PlayMusic", lua_callback::Music::PlayMusic);
 		//System
-		lua_register(m_lua, "PostQuitMessage", lua_callback::__PostQuitMessage);
+		lua_register(m_lua, "PostQuitMessage", lua_callback::_Game::__PostQuitMessage);
 		lua_register(m_lua, "SaveInstance", lua_callback::SaveInstance);
 		lua_register(m_lua, "LoadInstance", lua_callback::LoadInstance);
 		//Input
@@ -784,6 +810,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetMouseState", lua_callback::__GetMouseState);
 		lua_register(m_lua, "GetMousePressed", lua_callback::__GetMousePressed);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
+		
 		//RenderContainer
 		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
@@ -793,7 +820,7 @@ namespace lua_callback
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);
 		lua_register(m_lua,"InitializeUnit", lua_callback::InitializeUnit);
 		lua_register(m_lua,"SetWalkingStance", lua_callback::SetWalkingStance);
-		lua_register(m_lua,"ChangeWalkingStance", lua_callback::ChangeWalkingStance);
+		lua_register(m_lua,"ChangeWalkingStance", lua_callback::_Units::ChangeWalkingStance);
 		lua_register(m_lua,"SetUnitSpeed", lua_callback::SetUnitSpeed);
 		lua_register(m_lua,"SetUnitRotations", lua_callback::SetUnitRotations);
 		lua_register(m_lua, "PickUnit", lua_callback::PickUnit);
@@ -815,7 +842,7 @@ namespace lua_callback
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);
 		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);
 		lua_register(m_lua,"GetUnitPosition", lua_callback::GetUnitPosition);
-		lua_register(m_lua,"AddModelPaths", lua_callback::AddModelPaths);
+
 		lua_register(m_lua, "SetUnitPosition", lua_callback::SetUnitPosition);
 		lua_register(m_lua, "GetUnitsInRange", lua_callback::GetUnitsInRange);
 		lua_register(m_lua, "GetSize", lua_callback::GetSize);
@@ -827,8 +854,8 @@ namespace lua_callback
 		//RendererManager
 		lua_register(m_lua,"SetInterface", lua_callback::SetInterface);
 		//Engine
-		lua_register(m_lua,"ResumeGame", lua_callback::ResumeGame);
-		lua_register(m_lua,"PauseGame", lua_callback::PauseGame);
+		lua_register(m_lua,"ResumeGame", lua_callback::_Game::ResumeGame);
+		lua_register(m_lua,"PauseGame", lua_callback::_Game::PauseGame);
 		//Fonts
 		lua_register(m_lua, "LoadFont", lua_callback::LoadFont);
 		//Tiles
@@ -839,7 +866,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetInput", lua_callback::GetInput);
 		lua_register(m_lua, "Println", lua_callback::Println);
 		//Network
-		lua_register(m_lua, "StartServer", lua_callback::StartServer);
+		lua_register(m_lua, "StartServer", lua_callback::_Network::_StartServer);
 		//GameChat
 		lua_register(m_lua, "ClearGameChat", lua_callback::ClearGameChat);
 		lua_register(m_lua, "GameChatMessageBack", lua_callback::GameChatMessageBack);

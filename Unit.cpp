@@ -3,6 +3,7 @@
 #include "S_ModelPaths.h"
 #include "RendererManager.h"
 #include "IPP.h"
+#include "Math.h"
 
 Unit::Unit()
 {
@@ -98,17 +99,23 @@ void Unit::Update(float dt)
 
 		if (!m_stop)
 		{
-			m_floats[1] = Center;
-			if (XMVectorGetIntX < 0)
+			m_collided = TileMap::CollisionAt(Center);
+			if (m_collided)
 			{
-				Center.x -= m_floats[0].x * dt;
-				Center.y -= m_floats[0].y * dt;
+				Center = m_floats[1];
 			}
 			else
 			{
-				Center.x += m_floats[0].x * dt;
-				Center.y += m_floats[0].y * dt;
+				m_floats[1] = Center;
 			}
+				XMFLOAT3 niuPos = XMFloat3Sum(Center, XMFloat3Multiply(m_floats[0], dt));
+
+				m_collided = TileMap::CollisionAt(niuPos);
+
+				if (!m_collided)
+				{
+					Center = niuPos;
+				}
 		}
 
 		if (m_rendering)
@@ -195,15 +202,6 @@ void Unit::Update(float dt)
 		else
 		{
 			m_selected = false;
-		}
-		if (TileMap::CollisionAt(Center))
-		{
-			Center = m_floats[1];
-			m_collided = true;
-		}
-		else
-		{
-			m_collided = false;
 		}
 	}
 }	

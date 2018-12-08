@@ -8,7 +8,7 @@ public:
 	AnimatedDoodads();
 	~AnimatedDoodads();
 
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths, float size, float collision, XMFLOAT3 position,RenderContainerFlags flags);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths, float size, float collision, XMFLOAT3 position, RenderContainerFlags flags);
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) override;
 	void Update(float dt) override;
@@ -33,7 +33,7 @@ private:
 
 	float         m_previousSpeed;
 	float         m_rotations;
-	int           m_stopped;
+	i32           m_stopped;
 	bool          m_stop;
 
 	float m_currentFrame;

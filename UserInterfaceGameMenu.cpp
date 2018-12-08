@@ -36,13 +36,12 @@ void UserInterfaceGameMenu::Update(XMVECTOR cameraPosition)
 	XMStoreFloat4x4(&m_gameMenuMatrix, XMMatrixTranslation(cameraPosition.m128_f32[0], cameraPosition.m128_f32[1], cameraPosition.m128_f32[2]));
 	xm -= ((Settings::GetResolutionX()) / 2);
 	ym -= ((Settings::GetResolutionY()) / 2);
-	m_mousePosition.i = (SINDEX)(cameraPosition.m128_f32[0] + xm);
-	m_mousePosition.j = (SINDEX)(cameraPosition.m128_f32[1] - ym);
-	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition.i, m_mousePosition.j, cameraPosition.m128_f32[2]));
+	m_mousePosition = {(i16)(cameraPosition.m128_f32[0] + xm), (i16)(cameraPosition.m128_f32[1] - ym)};
+	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition[0], m_mousePosition[1], cameraPosition.m128_f32[2]));
 }
 
 void UserInterfaceGameMenu::GetMousePosition(int16_t & x, int16_t & y)
 {
-	x = (m_mousePosition.i);
-	y = (m_mousePosition.j);
+	x = m_mousePosition[0];
+	y = m_mousePosition[1];
 }

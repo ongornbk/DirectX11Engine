@@ -1,4 +1,5 @@
 #pragma once
+#include "gdef.h"
 #include "Sound.h"
 #include <map>
 #include <string>

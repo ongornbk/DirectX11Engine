@@ -4,6 +4,8 @@
 #include "IPP.h"
 #include "Vector.h"
 #include "ThreadPool.h"
+#include "Math.h"
+#include "Tile.h"
 #include <thread>
 #include <sstream>
 #include <sal.h>
@@ -501,6 +503,7 @@ bool _stdcall __sort__SortByY::operator()(RenderContainer * A, RenderContainer *
 			{
 				A->Center.x += Scollision;
 				B->Center.x -= Scollision;
+
 			}
 			else
 			{
@@ -603,46 +606,20 @@ void _vectorcall SortByYV(Vector<RenderContainer*> vec[2][32]) noexcept
 	{
 		for (auto && RC : vec[0][i])
 		{
-			if(RC)
 			vec[1][GetYCell(RC->Center.y)].push_back(RC);
 		}
 	}
 
 	ThreadPoolHandle pool;
 
-	//Vector<std::thread*> threads;
-	//
 	for (uint32_t i = 0u; i < 32u; i++)
 	{
 		if (yta[i])
 		{
-			pool.pool->push([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
+			pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
 		}
 	}
 
-	pool.pool->wait();
-
-	//Vector<std::thread*> threads;
-	//
-	//for (uint32_t i = 0u; i < 32u; i++)
-	//{
-	//	if (yta[i])
-	//	{
-	//		threads.push_back(new thread(sortPyV, vec[1][i].begin(), vec[1][i].end()));
-	//	}
-	//}
-	//
-	//for (auto && thread : threads)
-	//{
-	//	if (thread)
-	//	{
-	//		thread->join();
-	//		delete thread;
-	//		thread = nullptr;
-	//	}
-	//}
-	//
-	//threads.clear();
 }
 
 void _vectorcall SortByXV(Vector<RenderContainer*> vec[2][32]) noexcept
@@ -656,38 +633,17 @@ void _vectorcall SortByXV(Vector<RenderContainer*> vec[2][32]) noexcept
 	{
 		for (auto && RC : vec[1][i])
 		{
-			if(RC)
 			vec[0][GetXCell(RC->Center.x)].push_back(RC);
 		}
 	}
 
 	ThreadPoolHandle pool;
 
-	
-
-	//Vector<std::thread*> threads;
-	//
 	for (uint32_t i = 0u; i < 32u; i++)
 	{
 		if (xta[i])
 		{
-			pool.pool->push([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
+			pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
 		}
 	}
-
-	pool.pool->wait();
-	
-	//for (auto && thread : threads)
-	//{
-	//	if (thread)
-	//	{
-	//		thread->join();
-	//		delete thread;
-	//		thread = nullptr;
-	//	}
-	//}
-	//
-	//threads.clear();
-
-
 }

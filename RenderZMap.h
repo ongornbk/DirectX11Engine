@@ -1,7 +1,6 @@
 #pragma once
 #include "Shader.h"
 #include "Doodads.h"
-#include "AnimatedDoodads.h"
 #include "RendererManager.h"
 #include "RenderContainerVector.h"
 #include "Tree.h"

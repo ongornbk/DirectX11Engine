@@ -7,10 +7,10 @@ class Sprite
 {
 public:
 	Sprite(float size);
-	Sprite(float sizex,float sizey);
+	Sprite(float sizex, float sizey);
 	virtual ~Sprite(void);
 
-	virtual void Initialize(ID3D11Device* device,Shader* shader,WCHAR* textureFileName,bool isWriteable = false);
+	virtual void Initialize(ID3D11Device* device, Shader* shader, WCHAR* textureFileName, bool isWriteable = false);
 	virtual void InitializeRotated(ID3D11Device* device, Shader* shader, WCHAR* textureFileName, bool isWriteable = false);
 	virtual void Update();
 	virtual void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
@@ -24,4 +24,3 @@ protected:
 	float m_size[2];
 
 };
-

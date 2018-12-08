@@ -1,6 +1,6 @@
 #pragma once
+#include "gdef.h"
 #include "TaskQueue.h"
-#include "Types.h"
 #include "ShaderPackage.h"
 #include <DirectXCollision.h>
 
@@ -41,7 +41,7 @@ struct RenderContainerFlags
 			bool m_hide;
 		};
 
-		uint64_t m_flags{};
+		u64 m_flags{};
 		bool     m_flag[8];
 
 	};
@@ -71,8 +71,8 @@ public:
 
 
 public:
-	uint32_t             m_index;
-	uint32_t             m_vector;
+	u32           m_index;
+	u32             m_vector;
 
 	enum RenderContainerType
 	{

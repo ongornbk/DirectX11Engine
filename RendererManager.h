@@ -6,7 +6,6 @@
 #include "UserInterface.h"
 #include "Stack.h"
 #include "Doodads.h"
-#include "AnimatedDoodads.h"
 #include "Tree.h"
 #include "RenderZMap.h"
 #include <stack>

@@ -1,6 +1,6 @@
 #pragma once
+#include "gdef.h"
 #include "Sprite.h"
-#include "Types.h"
 #include "Engine.h"
 #include "Camera.h"
 #include "GameChat.h"
@@ -13,7 +13,7 @@ public:
 	UserInterfaceGame(Engine* engine, Shader* shader);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
-    void GetMousePosition(int16_t &x,int16_t &y);
+    void GetMousePosition(i16 &x,i16 &y);
 	static GameChat* GetGameChat();
 	~UserInterfaceGame();
 
@@ -27,8 +27,8 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_uiMatrix;
 
-	ASINDEX2 m_mousePosition;
-	Text     m_fpsText;
+	array<i32, 2> m_mousePosition;
+	Text          m_fpsText;
 	//std::vector<Text*> m_objectsText;
 
 

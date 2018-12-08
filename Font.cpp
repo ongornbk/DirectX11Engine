@@ -1,7 +1,7 @@
 #include "ResourceManager.h"
 #include "Font.h"
 #include "IPP.h"
-#include <vector>
+#include "Vector.h"
 #include <fstream>
 #include <sstream>
 #include <streambuf>
@@ -12,7 +12,7 @@
 
 namespace
 {
-	static std::vector<Font*> m_fonts;
+	static Vector<Font*> m_fonts;
 }
 
 
@@ -91,7 +91,7 @@ void Font::LoadFontFromFile(std::string filename,float width,float height)
 
 Font * Font::GetFontByName(std::string name)
 {
-	for (int i = 0; i < (int)m_fonts.size(); ++i)
+	for (i32 i = 0; i < (i32)m_fonts.size(); ++i)
 	{
 		if (!strcmp(name.c_str(), (m_fonts[i]->m_name).c_str()))
 		{

@@ -176,7 +176,6 @@
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="AnimatedDoodads.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
@@ -190,7 +189,6 @@
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Enet.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="EventListener.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="GameChat.h" />
@@ -229,7 +227,6 @@
     <ClInclude Include="ShaderPackage.h" />
     <ClInclude Include="ShaderV2.h" />
     <ClInclude Include="ShadowShader.h" />
-    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sorting.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
@@ -241,12 +238,9 @@
     <ClInclude Include="TextArea.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
-    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tree.h" />
-    <ClInclude Include="TriggersManager.h" />
-    <ClInclude Include="Types.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
@@ -290,7 +284,6 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LetterSprite.cpp" />
     <ClCompile Include="LUAManager.cpp" />
-    <ClCompile Include="LuaPointer.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Math.inl" />
     <ClCompile Include="Menu.cpp" />
@@ -322,11 +315,9 @@
     <ClCompile Include="TextArea.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
-    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="TriggersManager.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />

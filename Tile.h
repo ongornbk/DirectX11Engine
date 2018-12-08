@@ -1,29 +1,19 @@
 #pragma once
 #include "Defines.h"
+#include "gdef.h"
 #include "Sprite.h"
-#include "Types.h"
-
+#include <array>
 
 
 #define TILE_MAP_RANGE TILE_MAP_SIZE -1
 
-extern "C"
-{
-	//extern void _vectorcall InitializeTemplates();
 	extern void SetCellMultiplier(float multiplier = 1.0f);
 	extern void LoadTilesResourceFromFile(std::string filename);
-}
+	extern array<i32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept;
+	extern array<i32,2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept;
 
-extern "C++"
-{
-	extern INDEX2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept;
-	extern INDEX2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept;
-}
-
-#pragma region
 class Tile;
 class RendererManager;
-#pragma endregion
 
 struct TileMap
 {
@@ -33,7 +23,7 @@ struct TileMap
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile,int32_t brush);
-	void _vectorcall SetTile(INDEX2 index, int32_t tile);
+	void _vectorcall SetTile(array<i32, 2> index, int32_t tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 
@@ -45,7 +35,7 @@ struct TileMap
 
 private:
 
-	int32_t   renderInts[6];
+	i32  renderInts[6];
 
 	float m_currentFrame;
 	float m_previousFrame;
@@ -62,7 +52,7 @@ class Tile
 {
 public:
 	Tile(float x,float y,int ix,int iy);
-	Tile(XMFLOAT2 position,INDEX2 index);
+	Tile(XMFLOAT2 position, array<i32, 2> index);
 	explicit Tile(AnimatedTile* tile);
 	explicit Tile(Tile* tile);
 	virtual ~Tile();
@@ -85,9 +75,9 @@ protected:
 	friend class AnimatedTile;
 
 	void LoadTexture();
-	XMFLOAT4X4 m_world;
-	INDEX2     m_index;
-	XMFLOAT2   m_position;
+	XMFLOAT4X4    m_world;
+	array<i32, 2> m_index;
+	XMFLOAT2      m_position;
 
 public:
 

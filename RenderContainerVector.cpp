@@ -2,6 +2,7 @@
 #include "Sorting.h"
 #include "Defines.h"
 #include "Vector.h"
+#include "ThreadPool.h"
 #include <thread>
 
 typedef int32_t Boolean;
@@ -145,6 +146,9 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 {
 	std::stack<Unit*> units;
 
+	//std::stack<Unit*> unitsA[3];
+
+	//ThreadPoolHandle pool; TO DO
 
 	const u32 cVec = object->m_vector;
 

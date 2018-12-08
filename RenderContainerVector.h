@@ -1,7 +1,7 @@
 #pragma once
+#include "AnimatedDoodads.h"
 #include "RenderContainer.h"
 #include "Doodads.h"
-#include "AnimatedDoodads.h"
 #include "Tree.h"
 #include "Unit.h"
 #include "Vector.h"

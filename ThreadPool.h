@@ -29,5 +29,8 @@ public:
 struct ThreadPoolHandle
 {
 	ThreadPoolHandle();
+	~ThreadPoolHandle();
 	ThreadPool* pool;
+
+	void operator << (tpTask task);
 };

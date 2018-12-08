@@ -60,7 +60,7 @@ private:
 	void Update();
 	void Render();
 
-	volatile bool m_gamePaused;
+	bool m_gamePaused;
 
 	FrameWork* m_framework;
     Graphics* m_graphics;
@@ -68,7 +68,7 @@ private:
 	static Engine* m_instance;
 	Camera* m_camera;
 	Input* m_input;
-	//temp
+
 	ResourceManager* m_resourceManager;
 	RendererManager* m_rendererManager;
 	GameComponent*   m_gameComponent;

@@ -3,7 +3,6 @@
 #include "Stack.h"
 #include "VariablesManager.h"
 #include "Doodads.h"
-#include "AnimatedDoodads.h"
 #include <stack>
 
 class Global

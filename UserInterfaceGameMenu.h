@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Sprite.h"
 
 class UserInterfaceGameMenu
 {
@@ -19,7 +20,7 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_gameMenuMatrix;
 
-	ASINDEX2 m_mousePosition;
+	array<i16,2> m_mousePosition;
 	Engine*  m_engine;
 	Input*   m_input;
 

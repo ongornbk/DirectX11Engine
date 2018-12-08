@@ -71,13 +71,3 @@ void TaskQueue::Wander(Unit * unit)
 	task->object = unit;
 	SetTask(task);
 }
-//
-//void TaskQueue::Push(Task task)
-//{
-//	m_tasks.push(task);
-//}
-//
-////Task::Type TaskQueue::GetCurrentTask()
-////{
-////	return m_tasks.front().m_type;
-////}
