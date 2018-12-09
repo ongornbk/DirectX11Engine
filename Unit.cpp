@@ -295,7 +295,7 @@ void Unit::SetRotations(int32_t rotations)
 
 void Unit::SetRotation(float rotation)
 {
-	m_rotation = (int32_t)rotation % (int32_t)m_rotations;
+	m_rotation = (i32)rotation % (i32)m_rotations;
 }
 
 void Unit::SetVelocity(float x, float y, float z)

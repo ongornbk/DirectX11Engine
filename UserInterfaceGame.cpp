@@ -127,10 +127,6 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	m_fpsText.Update();
 	m_mainText.Update();
 	m_cpuText.Update();
-	//for (uint32_t i = 0u; i < 16u; i++)
-	//{
-	//	m_objectsText[i]->Update();
-	//}
 }
 
 
@@ -151,15 +147,7 @@ UserInterfaceGame::~UserInterfaceGame()
 		delete m_gameChat;
 		m_gameChat = nullptr;
 	}
-	//for (auto && text : m_objectsText)
-	//{
-	//	if (text)
-	//	{
-	//		delete text;
-	//		text = nullptr;
-	//	}
-	//}
-	//m_objectsText.clear();
+
 }
 
 void UserInterfaceGame::SetFPS(int fps)

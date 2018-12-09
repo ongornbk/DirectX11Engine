@@ -124,32 +124,36 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 	ResourceShader* resourceShader = new ResourceShader();
 	if (!resourceShader->Load(m_device, hwnd, shaderFileName))
 	{
-		wstring ws(shaderFileName);
-		string str(ws.begin(), ws.end());
-		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str], str)))
-		{
-
-			if (!resourceShader->Load(m_device,hwnd, shaderFileName))
-			{
-				delete resourceShader;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
-				return;
-			}
-			else
-			{
-				m_shaders.push_back(resourceShader);
-				return;
-			}
-		}
-		else
-		{
+		//wstring ws(shaderFileName);
+		//string str(ws.begin(), ws.end());
+		//if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str], str)))
+		//{
+		//
+		//	if (!resourceShader->Load(m_device,hwnd, shaderFileName))
+		//	{
+		//		delete resourceShader;
+		//		Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
+		//		return;
+		//	}
+		//	else
+		//	{
+		//
+		//		m_shaders.push_back(resourceShader);
+		//		return;
+		//	}
+		//}
+		//else
+		//{
 			delete resourceShader;
 			Console::Println("Load Failed : ",wstring(shaderFileName), ipp::RED);
 			return;
-		}
+		//}
 	}
+	m_shaderMutex.lock();
 	m_shaders.push_back(resourceShader);
+	m_shaderMutex.unlock();
 }
+
 
 void ResourceManager::LoadShaderResource(Shader * shader)
 {

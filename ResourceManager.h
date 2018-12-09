@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <vector>
+#include <mutex>
 
 using namespace std;
 
@@ -39,6 +40,7 @@ private:
 	vector<ResourceShader*>  m_shaders;
 	vector<ResourceSound*>   m_sounds;
 
+	mutex m_shaderMutex;
 
 	static ResourceManager* m_instance;
 

@@ -103,35 +103,27 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
-
-	Initialize_CPU();
+	ThreadPoolHandle pool;
+	pool << ([]() {Initialize_CPU();});
 
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define END );
-	//NEWS
-	if (!Network::Initialize())
-	{
-		return false;
-	}
+
+
 	m_global = Global::GetInstance();
 	Tree::SetGlobal(m_global);
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();
-	//LUA CALLBACK
 	lua_callback::Initialize(this);
 	lua_callback::SetResourceManager(m_resourceManager);
 	lua_callback::SetCamera(m_camera);
-	//RESOURCE MANAGER
+
 	rm::SetDevice(m_graphics->GetDevice());
-	//LUA
+
 	lua::Open();
 	lua_callback::RegisterFunctions();
-
-	//LUA EXECUTE
-
 	lua::Execute(lua::LUA_LOCATION_ENGINE_INITIALIZATION);
 
-	// END LUA EXECUTE
 
 #pragma region
 	LOADSHADER  L"../Shaders/texture.fx"                              END

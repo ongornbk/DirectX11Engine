@@ -20,6 +20,11 @@ void ThreadPoolHandle::operator<<(tpTask task)
 	pool->push(task);
 }
 
+void ThreadPoolHandle::wait()
+{
+	pool->wait();
+}
+
 ThreadPool::ThreadPool(size_t num_threads) :
 	_running(true), _taskNum(0) {
 	m_instance = this;

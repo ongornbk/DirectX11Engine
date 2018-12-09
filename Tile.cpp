@@ -107,8 +107,7 @@ static uint8_t tilesub[32] ={
 		_f[1] += floats.x / tile::CELL_WIDTH;
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
 		index = { (i32)_f[0],(i32)_f[1] };
-		const bool out = ipp::math::SquashInt32ArrayWithCheck(index.data(), 2, 0, TILE_MAP_RANGE);
-		return out;
+		return ipp::math::SquashInt32ArrayWithCheck(index.data(), 2, 0, TILE_MAP_RANGE);
 	}
 
 
@@ -479,9 +478,9 @@ void TileMap::LoadFromFile(std::string filename)
 bool TileMap::CollisionAt(XMFLOAT3 position)
 {
 	array<i32, 2> index;
-	bool out = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
+	const bool out = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
 	if (out)return true;
-	Tile* tilep = m_currentTileMap->map[index[0]][index[1]];
+	const Tile* tilep = m_currentTileMap->map[index[0]][index[1]];
 	if (tilep)
 	{
 		return tilep->m_collision;

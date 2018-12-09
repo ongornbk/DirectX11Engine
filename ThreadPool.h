@@ -33,4 +33,5 @@ struct ThreadPoolHandle
 	ThreadPool* pool;
 
 	void operator << (tpTask task);
+	void wait();
 };
