@@ -3,6 +3,7 @@
 #include "IPP.h"
 #include <d3dcompilerW.h>
 #include "Defines.h"
+#include "gdef.h"
 
 #pragma comment(lib,"d3dcompilerW.lib")
 
@@ -155,15 +156,12 @@ void Shader::End(ID3D11DeviceContext * deviceContext)
 
 bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * texture,UINT index)
 {
-	//deviceContext->GenerateMips(texture);
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 	return true;
 }
 
 bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * texture)
 {
-	//m_pixelShader->
-	//deviceContext->P
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 	return true;
 }
@@ -171,35 +169,6 @@ bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11Shad
 
 
 bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType* dataPtr;
-
-
-
-
-	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		return false;
-	}
-
-	dataPtr = (MatrixBufferType*)mappedResource.pData;
-	dataPtr->worldMatrix = XMMatrixTranspose(XMLoadFloat4x4(&worldMatrix));
-	dataPtr->viewMatrix = XMMatrixTranspose(XMLoadFloat4x4(&viewMatrix));
-	dataPtr->projectionMatrix = XMMatrixTranspose(XMLoadFloat4x4(&projectionMatrix));
-
-	deviceContext->Unmap(m_matrixBuffer, 0);
-
-
-	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
-
-
-	return true;
-}
-
-bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, UINT index)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -347,7 +316,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 void Shader::OutputShadeErrorMessage(ID3D10Blob * errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
 	char* compileErrors = (char*)errorMessage->GetBufferPointer();
-	unsigned long bufferSize = static_cast<unsigned long>(errorMessage->GetBufferSize());
+	u32 bufferSize = (u32)(errorMessage->GetBufferSize());
 
 	ofstream fout;
 	fout.open("shader-error-txt");

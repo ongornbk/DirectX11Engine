@@ -1,5 +1,5 @@
 #include "DXManager.h"
-
+#include "gdef.h"
 
 
 DXManager::DXManager(void)
@@ -79,13 +79,13 @@ DXManager::~DXManager(void)
 
 }
 
-bool DXManager::Initialize(int screenWidth, int screenHeight,bool fullscreen, HWND hwnd,bool vsync)
+bool DXManager::Initialize(i32 screenWidth, i32 screenHeight,bool fullscreen, HWND hwnd,bool vsync)
 {
 	HRESULT result;
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes =0u, numerator = 0u, denominator = 0u;
+	u32 numModes =0u, numerator = 0u, denominator = 0u;
 	size_t stringLength;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
@@ -111,7 +111,7 @@ bool DXManager::Initialize(int screenWidth, int screenHeight,bool fullscreen, HW
 			return false;
 	}
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 		if (FAILED(result))
 		{
 			return false;
@@ -119,7 +119,7 @@ bool DXManager::Initialize(int screenWidth, int screenHeight,bool fullscreen, HW
 		//if (numModes > (sizeof(unsigned int) * 56))numModes = (sizeof(unsigned int) * 56);
 		displayModeList = new DXGI_MODE_DESC[numModes];
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
 		if (FAILED(result))
 		{
 			return true;
@@ -137,7 +137,7 @@ bool DXManager::Initialize(int screenWidth, int screenHeight,bool fullscreen, HW
 			}
 		}
 
-		if (numerator == 0u && denominator == 0u)//Nwm czy tu nie powinno byc ||
+		if (numerator == 0u && denominator == 0u)
 		{
 			return false;
 		}
@@ -148,7 +148,7 @@ bool DXManager::Initialize(int screenWidth, int screenHeight,bool fullscreen, HW
 			return false;
 		}
 
-		m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
+		m_videoCardMemory = (i32)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 		error = wcstombs_s(&stringLength,m_videoCardDescription ,128,adapterDesc.Description, 128);
 
 		if (error != 0)
@@ -250,14 +250,14 @@ void DXManager::BeginScrene(float r, float g, float b, float a)
 
 	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
 void DXManager::BeginScrene(float* color)
 {
 	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
 void DXManager::EndScene()
@@ -267,7 +267,7 @@ void DXManager::EndScene()
 
 void DXManager::EnableAlphaBlending(bool enable)
 {
-	float blendFactor[4]{};
+	const float blendFactor[4]{};
 
 	if (enable)
 	{
@@ -306,7 +306,7 @@ ID3D11DeviceContext * DXManager::GetDeviceContext()
 	return m_deviceContext;
 }
 
-bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen, int screenWidth, int screenHeight, unsigned int numerator, unsigned int denominator)
+bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen, i32 screenWidth, i32 screenHeight, u32 numerator, u32 denominator)
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	D3D_FEATURE_LEVEL featureLevel;
@@ -319,7 +319,7 @@ bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen, int screenWidth,
 	swapChainDesc.BufferDesc.Width = screenWidth;
 	swapChainDesc.BufferDesc.Height = screenHeight;
 
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
 	if (vsync_enabled)
 	{
@@ -471,7 +471,7 @@ bool DXManager::InitializeRasterizerState()
 	return true;
 }
 
-void DXManager::InitializeViewport(int screenWidth, int screenHeight)
+void DXManager::InitializeViewport(i32 screenWidth, i32 screenHeight)
 {
 	D3D11_VIEWPORT viewport;
 

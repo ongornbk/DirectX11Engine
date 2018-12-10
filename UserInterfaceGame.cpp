@@ -60,7 +60,7 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
-	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
+	//m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
@@ -73,8 +73,8 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 
 void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 {
-	int xr = ((Settings::GetResolutionX())/2);
-	int yr = ((Settings::GetResolutionY())/2);
+	const i32 xr = ((Settings::GetResolutionX())/2);
+	const i32 yr = ((Settings::GetResolutionY())/2);
 	m_input->GetMousePosition(xm, ym);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixTranslation(cameraPosition.m128_f32[0], cameraPosition.m128_f32[1] - UI_MUI_OFFSET,cameraPosition.m128_f32[2]));
 	xm -= xr;

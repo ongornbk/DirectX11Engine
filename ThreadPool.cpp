@@ -20,6 +20,11 @@ void ThreadPoolHandle::operator<<(tpTask task)
 	pool->push(task);
 }
 
+ThreadPool * ThreadPoolHandle::operator->()
+{
+	return pool;
+}
+
 void ThreadPoolHandle::wait()
 {
 	pool->wait();
@@ -46,14 +51,19 @@ ThreadPool::ThreadPool(size_t num_threads) :
 	};
 	_threads.reserve(num_threads);
 	for (size_t i = 0; i < num_threads; i++) {
-		_threads.push_back(std::thread(thread_loop, i));
+		_threads.push_back(new std::thread(thread_loop, i));
 	}
 }
 
 ThreadPool::~ThreadPool() {
 	_running = false;
-	for (std::thread& t : _threads) {
-		t.join();
+	for (auto&& t : _threads) {
+		if (t)
+		{
+			t->join();
+			delete t;
+			t = nullptr;
+		}
 	}
 }
 

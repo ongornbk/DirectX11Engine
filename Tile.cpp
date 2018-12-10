@@ -339,21 +339,21 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	_f[0] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
 	_f[1] -= cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
 	_f[1] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
-	renderInts[2] = (int)_f[1] - tile::CAMERA_TILE_VIEW;
-	renderInts[3] = (int)_f[1] + tile::CAMERA_TILE_VIEW;
-	renderInts[0] = (int)_f[0] - tile::CAMERA_TILE_VIEW;
-	renderInts[1] = (int)_f[0] + tile::CAMERA_TILE_VIEW;
+	renderInts[2] = (i32)_f[1] - tile::CAMERA_TILE_VIEW;
+	renderInts[3] = (i32)_f[1] + tile::CAMERA_TILE_VIEW;
+	renderInts[0] = (i32)_f[0] - tile::CAMERA_TILE_VIEW;
+	renderInts[1] = (i32)_f[0] + tile::CAMERA_TILE_VIEW;
 	int tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	int tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
 	ipp::math::SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
 	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
 	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
-	for (int j = renderInts[2]; j <renderInts[3]; j++)
+	for (i32 j = renderInts[2]; j <renderInts[3]; j++)
 	{
-		for (int i = renderInts[0]; i < renderInts[1]; i++)
+		for (i32 i = renderInts[0]; i < renderInts[1]; i++)
 		{
-			int tempB = i + j;
+			const i32 tempB = i + j;
 			if (((tempB) > (tempA)) || ((tempB) < (tempC)))
 				continue;
 			switch (map[j][i]->m_type)

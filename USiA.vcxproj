@@ -231,6 +231,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskQueue.h" />

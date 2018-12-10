@@ -330,6 +330,9 @@
     <ClInclude Include="AnimatedDoodads.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">

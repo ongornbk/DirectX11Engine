@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Defines.h"
 #include "Global.h"
+#include <DirectXMath.h>
 
 namespace
 {
@@ -10,8 +11,8 @@ namespace
 
 Camera::Camera(void)
 {
-	m_position = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	m_rotation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	m_position = _mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
+	m_rotation = _mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
 	m_currentCamera = this;
 	m_global = Global::GetInstance();
 }
@@ -44,16 +45,11 @@ void Camera::InitializeProjectionMatrix(float fow, float screenaspect, float scr
 
 void Camera::SetPosition(float x, float y, float z)
 {
-	//m_position = XMVectorSet(x, y, z, 0.0f);
-	m_position.m128_f32[0] = x;
-	m_position.m128_f32[1] = y;
-	m_position.m128_f32[2] = z;
+	m_position = _mm_set_ps(x, y, z, 0.f);
 }
 void Camera::SetPosition(float x, float y)
 {
-	//m_position = XMVectorSet(x, y, m_position.m128_f32[2], 0.0f);
-	m_position.m128_f32[0] = x;
-	m_position.m128_f32[1] = y;
+	m_position = _mm_set_ps(x, y, 0.f, 0.f);
 }
 void Camera::SetPosition(XMVECTOR position)
 {
@@ -61,7 +57,7 @@ void Camera::SetPosition(XMVECTOR position)
 }
 void Camera::SetRotation(float x, float y, float z)
 {
-	m_rotation = XMVectorSet(x*(float)XM_PI/180.0f, y*(float)XM_PI / 180.0f, z*XM_PI / 180.0f, 0.0f);
+	m_rotation = _mm_set_ps(x*(float)XM_PI/180.0f, y*(float)XM_PI / 180.0f, z*XM_PI / 180.0f, 0.0f);
 }
 XMVECTOR Camera::GetPosition()
 {

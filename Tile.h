@@ -48,6 +48,16 @@ private:
 
 class AnimatedTile;
 
+class _Tile //To do
+{
+	virtual void Update() = 0;
+	virtual void Render() = 0;
+
+	XMFLOAT4X4    m_world;
+	array<i32, 2> m_index;
+	XMFLOAT2      m_position;
+};
+
 class Tile
 {
 public:

@@ -11,13 +11,16 @@
 
 typedef std::function<void(void)> tpTask;
 
+using std::atomic;
+using std::mutex;
+
 class ThreadPool {
 private:
 	bool _running;
 	std::queue<tpTask> _taskQueue;
-	std::atomic<size_t> _taskNum;
-	std::mutex _mutex;
-	std::vector<std::thread> _threads;
+	atomic<size_t> _taskNum;
+	mutex _mutex;
+	Vector<std::thread*> _threads;
 public:
 	ThreadPool(size_t num_threads = std::thread::hardware_concurrency());
 	virtual ~ThreadPool();
@@ -30,8 +33,13 @@ struct ThreadPoolHandle
 {
 	ThreadPoolHandle();
 	~ThreadPoolHandle();
-	ThreadPool* pool;
+
 
 	void operator << (tpTask task);
+	ThreadPool* operator ->();
 	void wait();
+
+	private:
+
+	ThreadPool* pool;
 };

@@ -9,7 +9,7 @@
 #include <thread>
 #include <sstream>
 #include <sal.h>
-#include <forward_list>
+#include <DirectXMath.h>
 
 
 using std::thread;
@@ -94,9 +94,9 @@ using ipp::SQRT2;
 
 
 _Use_decl_annotations_
-int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
+i32 _Out_opt_ _fastcall GetXCell(const _In_opt_ float x) noexcept
 {
-	int8_t r;
+	i32 r;
 	if (x < 0.0f)
 	{
 		if (x < MAP_XBEGd2)
@@ -315,9 +315,11 @@ int8_t _Out_opt_ GetXCell(const _In_opt_ float x) noexcept
 	}
 	return r;
 }
-int8_t GetYCell(float y)
+
+_Use_decl_annotations_
+i32 _Out_opt_ _fastcall GetYCell(const _In_opt_ float y)
 {
-	int8_t r;
+	i32 r;
 
 	if (y < 0.0f)
 	{
@@ -434,7 +436,7 @@ _Use_decl_annotations_
 template <class T>
 bool _Out_opt_ _fastcall __validate_Xrendering__(const T& _In_opt_ index) noexcept
 {
-	const int8_t t0 = xp - index;
+	const i32 t0 = xp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 	{
 		return true;
@@ -449,7 +451,7 @@ _Use_decl_annotations_
 template <class T>
 bool _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexcept
 {
-	const int8_t t0 = yp - index;
+	const i32 t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 	{
 		return true;
@@ -462,14 +464,12 @@ bool _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexce
 
 void _cdecl __intersect_test__() noexcept
 {
-	Camera* cam = Camera::GetCurrentCamera();
-	DirectX::XMVECTOR pvx = cam->GetPosition();
+	float cameraPosition[4];
+	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
+	xp = GetXCell(cameraPosition[0]);
+	yp = GetYCell(cameraPosition[1]);
 
-
-xp = GetXCell(pvx.m128_f32[0]);
-yp = GetYCell(pvx.m128_f32[1]);
-
-for (uint16_t i = 0u; i < 32u; i++)
+for (i32 i = 0u; i < 32; i++)
 {
 	xta[i] = __validate_Xrendering__(i);
 	yta[i] = __validate_Yrendering__(i);

@@ -5,8 +5,8 @@
 
 namespace
 {
-	int8_t yp{};
-	int8_t xp{};
+	i32 yp{};
+	i32 xp{};
 
 	static bool xta[32]{};
 	static bool yta[32]{};

@@ -9,6 +9,7 @@
 #include "Network.h"
 #include "ShadowShader.h"
 #include "CPU.h"
+#include "String.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -25,8 +26,6 @@ namespace
 {
 
 	static Sound*                  m_playingMusic = nullptr;
-
-
 
 }
 
@@ -209,7 +208,7 @@ void Engine::Run()
 		deltaTime -= CLOCKS_PER_SEC;
 		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
 
-		int fps = (int)(1000 / averageFrameTimeMilliseconds);
+		const i32 fps = (i32)(1000 / averageFrameTimeMilliseconds);
 
 		UserInterfaceGame::SetFPS(fps);
 
