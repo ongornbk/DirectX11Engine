@@ -1,6 +1,5 @@
 #pragma once
 #include "Unit.h"
-#include "Stack.h"
 #include "VariablesManager.h"
 #include "Doodads.h"
 #include <stack>

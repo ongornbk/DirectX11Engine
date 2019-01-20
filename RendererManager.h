@@ -4,7 +4,6 @@
 #include "Unit.h"
 #include "UserInterfaceGame.h"
 #include "UserInterface.h"
-#include "Stack.h"
 #include "Doodads.h"
 #include "Tree.h"
 #include "RenderZMap.h"

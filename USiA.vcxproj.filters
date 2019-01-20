@@ -219,12 +219,6 @@
     <ClInclude Include="GraphicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\source\repos\Whoops\Whoops\Memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VariablesManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -456,9 +450,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VariablesManager.cpp">
