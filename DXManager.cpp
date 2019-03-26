@@ -111,7 +111,7 @@ bool DXManager::Initialize(i32 screenWidth, i32 screenHeight,bool fullscreen, HW
 			return false;
 	}
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 		if (FAILED(result))
 		{
 			return false;
@@ -119,7 +119,7 @@ bool DXManager::Initialize(i32 screenWidth, i32 screenHeight,bool fullscreen, HW
 		//if (numModes > (sizeof(unsigned int) * 56))numModes = (sizeof(unsigned int) * 56);
 		displayModeList = new DXGI_MODE_DESC[numModes];
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
 		if (FAILED(result))
 		{
 			return true;
@@ -319,7 +319,7 @@ bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen, i32 screenWidth,
 	swapChainDesc.BufferDesc.Width = screenWidth;
 	swapChainDesc.BufferDesc.Height = screenHeight;
 
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	if (vsync_enabled)
 	{
@@ -501,7 +501,7 @@ bool DXManager::InitializeAlphaBlending()
 	blendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	blendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendStateDesc.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+	blendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 
 	result = m_device->CreateBlendState(&blendStateDesc, &m_alphaEnableBlendingState);
