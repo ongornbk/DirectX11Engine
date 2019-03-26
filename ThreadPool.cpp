@@ -31,55 +31,51 @@ void ThreadPoolHandle::wait()
 }
 
 ThreadPool::ThreadPool(size_t num_threads) :
-	_running(true), _taskNum(0) {
+ _taskNum(0) {
+	_running.store(true);
 	m_instance = this;
 	auto thread_loop = [&](size_t id) {
-		while (_running) {
-			_mutex.lock();
+		
+		while (_running.load()) {
+			unique_lock<mutex> lk(_mutex);
+		//	_mutex.lock();
 			if (!_taskQueue.empty()) {
 				auto work = _taskQueue.front();
 				_taskQueue.pop();
-				_mutex.unlock();
+				lk.unlock();
 				work();
 				_taskNum--;
 			}
-			else {
-				_mutex.unlock();
-				std::this_thread::yield();
+			else
+			{
+				cv.wait(lk);
 			}
 		}
 	};
 	_threads.reserve(num_threads);
 	for (size_t i = 0; i < num_threads; i++) {
-		_threads.push_back(new std::thread(thread_loop, i));
+		_threads.push_back(std::thread(thread_loop, i));
 	}
 }
 
 ThreadPool::~ThreadPool() {
-	_running = false;
-	for (auto&& t : _threads) {
-		if (t)
-		{
-			t->join();
-			delete t;
-			t = nullptr;
-		}
-	}
+	_running.store(false);
+	cv.notify_all();
+	for (auto&& t : _threads) t.join();
 }
 
 void ThreadPool::push(tpTask work) {
-	_mutex.lock();
+	unique_lock<mutex> lk(_mutex);
 	_taskQueue.push(work);
 	_taskNum++;
-	_mutex.unlock();
+	cv.notify_one();
 }
 
 void ThreadPool::clear() {
 	std::queue<tpTask> empty;
-	_mutex.lock();
+	unique_lock<mutex> lk(_mutex);
 	_taskNum -= _taskQueue.size();
 	std::swap(_taskQueue, empty);
-	_mutex.unlock();
 }
 
 void ThreadPool::wait() {

@@ -18,7 +18,7 @@
 #include <stack>
 #include <thread>
 
-Engine* Engine::m_instance = NULL;
+Engine* Engine::m_instance = nullptr;
 
 
 
@@ -36,6 +36,10 @@ namespace
 
 Engine::~Engine(void)
 {
+
+	ThreadPoolHandle tph;
+	tph.wait();
+
 	if (m_graphics)
 	{
 		delete m_graphics;
@@ -102,8 +106,7 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
-	ThreadPoolHandle pool;
-	pool << ([]() {Initialize_CPU();});
+	Initialize_CPU();
 
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define END );

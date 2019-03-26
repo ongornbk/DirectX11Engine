@@ -7,23 +7,28 @@
 #include <mutex>
 #include <queue>
 #include <functional>
+#include <condition_variable>
 
 
 typedef std::function<void(void)> tpTask;
 
 using std::atomic;
 using std::mutex;
+using std::condition_variable;
+using std::unique_lock;
+using std::vector;
 
 class ThreadPool {
 private:
-	bool _running;
+	atomic<bool> _running;
 	std::queue<tpTask> _taskQueue;
+	condition_variable cv;
 	atomic<size_t> _taskNum;
 	mutex _mutex;
-	Vector<std::thread*> _threads;
+	vector<std::thread> _threads;
 public:
 	ThreadPool(size_t num_threads = std::thread::hardware_concurrency());
-	virtual ~ThreadPool();
+	~ThreadPool();
 	void push(tpTask work);
 	void clear();
 	void wait();
