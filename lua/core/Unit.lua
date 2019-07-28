@@ -48,3 +48,7 @@ function Unit.CleanTasks ()
 CleanTasks()
 end
 
+function Unit.GetFlag(flag)
+return GetRenderContainerFlag(flag)
+end
+

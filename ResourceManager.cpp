@@ -284,7 +284,7 @@ Texture * ResourceManager::GetTextureByName(char* textureName)
 	}
 	return NULL;
 }
-Sound  * ResourceManager::GetSoundByName(	char* soundName)
+Sound  * ResourceManager::GetSoundByName(char* soundName)
 {
 	for (int i = 0; i < (int)m_sounds.size(); ++i)
 	{
@@ -296,6 +296,8 @@ Sound  * ResourceManager::GetSoundByName(	char* soundName)
 		}
 
 	}
+
+
 	return NULL;
 }
 

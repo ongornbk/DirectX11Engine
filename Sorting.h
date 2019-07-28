@@ -5,22 +5,22 @@
 
 namespace
 {
-	i32 yp{};
-	i32 xp{};
+	 int32 yp{};
+	 int32 xp{};
 
-	static bool xta[32]{};
-	static bool yta[32]{};
+	static int32 xta[32]{};
+	static int32 yta[32]{};
 }
 
 
 struct __sort__SortByY {
-	bool operator()(RenderContainer* a, RenderContainer* b) const noexcept;
+	bool operator()(class EObject* a,class EObject* b) const noexcept;
 };
 
 struct  __sort__SortByX
 {
-	bool operator()(RenderContainer *a, RenderContainer *b) const noexcept;
+	bool operator()(class EObject *a,class EObject *b) const noexcept;
 };
 
-void _vectorcall SortByYV(Vector<RenderContainer*> vec[2][32]) noexcept;
-void _vectorcall SortByXV(Vector<RenderContainer*> vec[2][32]) noexcept;
+void _vectorcall SortByYV(Vector<EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByXV(Vector<EObject*> vec[2][32]) noexcept;

@@ -10,8 +10,8 @@ Doodads::Doodads()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Radius = 0.0f;
+	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_boundingSphere.Radius = 0.0f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 }
@@ -25,7 +25,15 @@ Doodads::~Doodads()
 	}
 }
 
-void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR * paths, float size, float collision, XMFLOAT3 position,RenderContainerFlags flags)
+void Doodads::Initialize(
+	ID3D11Device * device,
+	ID3D11DeviceContext * deviceContext,
+	class Shader * shader,
+	WCHAR * paths,
+	const float size,
+	const float collision,
+	const XMFLOAT3 position
+	)
 {
 
 	m_size = size;
@@ -43,16 +51,13 @@ void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceCont
 	
 	m_deviceContext = deviceContext;
 
-	
-	m_flags = flags.m_flags;
-
-	Radius = collision;
-	Center = position;
-	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
-	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
+	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 
-	m_type = RenderContainer::RenderContainerType::DOODADS;
+	m_type = EObject::EObjectType::DOODADS;
 
 	
 
@@ -60,9 +65,9 @@ void Doodads::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceCont
 
 void Doodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-	if (m_rendering)
+	if (m_flags.m_rendering)
 	{
-		if (m_cast_shadow)
+		if (m_flags.m_cast_shadow)
 		{
 			shader.standard->End(deviceContext);
 
@@ -84,17 +89,17 @@ void Doodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix,
 void Doodads::Update(float dt)
 {
 
-	m_rendering = validateRendering(Center);
-	if (m_rendering)
+	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
+	if (m_flags.m_rendering)
 	{
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
+		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y + (m_size / 1.5f), m_boundingSphere.Center.z - (m_size / 1.5f)));
 	}
 
 }
 
 void Doodads::SetZ(float z)
 {
-	Center.z = z;
+	m_boundingSphere.Center.z = z;
 }
 
 void Doodads::Release()

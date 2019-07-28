@@ -316,7 +316,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 void Shader::OutputShadeErrorMessage(ID3D10Blob * errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
 	char* compileErrors = (char*)errorMessage->GetBufferPointer();
-	u32 bufferSize = (u32)(errorMessage->GetBufferSize());
+	uint32 bufferSize = (uint32)(errorMessage->GetBufferSize());
 
 	ofstream fout;
 	fout.open("shader-error-txt");

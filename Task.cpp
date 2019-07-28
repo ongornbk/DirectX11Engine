@@ -8,7 +8,7 @@
 
 	 
 
-	 XMFLOAT3 _vectorcall calculateVelocity(float speed,float rotation) noexcept
+	 XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation) noexcept
 	{
 #define ANGLE (3.14f / 8.0f)
 		 XMFLOAT3 f3;
@@ -19,17 +19,10 @@
 	}
 
 
-
-
-
-
-
-
-
 TaskGotoPoint::TaskGotoPoint()
 {
 	m_type = Type::TASKGOTOPOINT;
-	
+	m_stance = TSRUNNING;
 }
 
 bool TaskGotoPoint::Update()
@@ -81,6 +74,7 @@ TaskPatrol::TaskPatrol()
 {
 	m_target = true;
 	m_type = Type::TASKPATROL;
+	m_stance = TSRUNNING;
 }
 
 
@@ -118,7 +112,7 @@ bool TaskPatrol::Update()
 		rotation += 180.0f;
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
-		object->SetRotation((i32)rotation);
+		object->SetRotation(rotation);
 		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 		object->SetVelocity(f3.x, f3.y, f3.z);
 		return true;
@@ -138,6 +132,7 @@ void TaskPatrol::Release()
 TaskFollow::TaskFollow()
 {
 	m_type = Type::TASKFOLLOW;
+	m_stance = TSRUNNING;
 }
 
 bool TaskFollow::Update()
@@ -164,7 +159,7 @@ bool TaskFollow::Update()
 		rotation += 180.0f;
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
-		object->SetRotation((i32)rotation);
+		object->SetRotation(rotation);
 		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 		object->SetVelocity(f3.x, f3.y, f3.z);
 		return true;

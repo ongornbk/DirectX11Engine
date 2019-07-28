@@ -33,21 +33,21 @@ Camera * Camera::GetCurrentCamera()
 
 
 
-void Camera::InitializeOrthoMatrix(int screenwidth, int screenheight, float screennear, float screenfar)
+void Camera::InitializeOrthoMatrix(const int32 screenwidth,const int32 screenheight,const float screennear,const float screenfar)
 {
 	XMStoreFloat4x4(&m_ortho, XMMatrixOrthographicLH((float)screenwidth, (float)screenheight, screennear, screenfar));
 }
 
-void Camera::InitializeProjectionMatrix(float fow, float screenaspect, float screennear, float screenfar)
+void Camera::InitializeProjectionMatrix(const float fow,const float screenaspect,const float screennear,const float screenfar)
 {
 	XMStoreFloat4x4(&m_projection, XMMatrixPerspectiveFovLH(fow,screenaspect,screennear,screenfar));
 }
 
-void Camera::SetPosition(float x, float y, float z)
+void Camera::SetPosition(const float x,const float y,const float z)
 {
 	m_position = _mm_set_ps(x, y, z, 0.f);
 }
-void Camera::SetPosition(float x, float y)
+void Camera::SetPosition(const float x,const float y)
 {
 	m_position = _mm_set_ps(x, y, 0.f, 0.f);
 }
@@ -55,27 +55,27 @@ void Camera::SetPosition(XMVECTOR position)
 {
 	m_position = position;
 }
-void Camera::SetRotation(float x, float y, float z)
+void Camera::SetRotation(const float x,const float y,const float z)
 {
-	m_rotation = _mm_set_ps(x*(float)XM_PI/180.0f, y*(float)XM_PI / 180.0f, z*XM_PI / 180.0f, 0.0f);
+	m_rotation = _mm_set_ps(x*(float)XM_PI/180.f, y*(float)XM_PI / 180.f, z*XM_PI / 180.f, 0.f);
 }
-XMVECTOR Camera::GetPosition()
+XMVECTOR Camera::GetPosition() const noexcept
 {
 	return m_position;
 }
-XMVECTOR Camera::GetRotation()
+XMVECTOR Camera::GetRotation()const noexcept
 {
 	return m_rotation;
 }
-XMFLOAT4X4 Camera::GetView()
+XMFLOAT4X4 Camera::GetView()const noexcept
 {
 	return m_view;
 }
-XMFLOAT4X4 Camera::GetProjection()
+XMFLOAT4X4 Camera::GetProjection()const noexcept
 {
 	return m_projection;
 }
-XMFLOAT4X4 Camera::GetOrtho()
+XMFLOAT4X4 Camera::GetOrtho()const noexcept
 {
 	return m_ortho;
 }

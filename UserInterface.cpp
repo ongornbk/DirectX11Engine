@@ -12,7 +12,7 @@ UserInterface::UserInterface()
 	m_engine = Engine::GetEngine();
 }
 
-UserInterface::UserInterface(Type type)
+UserInterface::UserInterface(const enum Type type)
 {
 	m_type = type;
 	m_instance = this;
@@ -51,7 +51,7 @@ void UserInterface::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewM
 	}
 }
 
-void UserInterface::Update(XMVECTOR cameraPosition)
+void UserInterface::Update(const XMVECTOR cameraPosition)
 {
 	switch (m_type)
 	{
@@ -67,7 +67,7 @@ void UserInterface::Update(XMVECTOR cameraPosition)
 	}
 }
 
-void UserInterface::SetScene(Type scene,Shader* shader)
+void UserInterface::SetScene(const enum Type scene,class Shader* shader)
 {
 	switch (m_type)
 	{
@@ -110,7 +110,7 @@ void UserInterface::SetScene(Type scene,Shader* shader)
 	}
 }
 
-void UserInterface::SetScene(unsigned int scene, Shader * shader)
+void UserInterface::SetScene(const uint32 scene,class Shader * shader)
 {
 	switch (scene)
 	{
@@ -126,7 +126,7 @@ void UserInterface::SetScene(unsigned int scene, Shader * shader)
 	}
 }
 
-void UserInterface::GetMousePosition(int16_t & X, int16_t & Y)
+void UserInterface::GetMousePosition(int32 & X, int32 & Y)
 {
 	switch (m_instance->m_type)
 	{

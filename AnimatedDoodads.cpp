@@ -12,8 +12,8 @@ AnimatedDoodads::AnimatedDoodads()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Radius = 0.0f;
+	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_boundingSphere.Radius = 0.0f;
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
 	m_isLooping = true;
@@ -37,12 +37,12 @@ AnimatedDoodads::~AnimatedDoodads()
 void AnimatedDoodads::Initialize(
 	ID3D11Device * device,
 	ID3D11DeviceContext * deviceContext,
-	Shader * shader, WCHAR * paths,
-	float size,
-	float collision,
-	XMFLOAT3 position,
-	RenderContainerFlags flags)
-
+	class Shader * shader,
+	WCHAR * paths,
+	const float size,
+	const float collision,
+	const XMFLOAT3 position
+	)
 {
 	m_size = size;
 
@@ -60,18 +60,15 @@ void AnimatedDoodads::Initialize(
 
 	m_deviceContext = deviceContext;
 
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
 
-	m_flags = flags.m_flags;
-
-	Radius = collision;
-	Center = position;
-
-	m_type = RenderContainer::RenderContainerType::ANIMATED_DOODADS;
+	m_type = EObject::EObjectType::ANIMATED_DOODADS;
 }
 
 void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-	if (m_rendering)
+	if (m_flags.m_rendering)
 	{
 		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -82,8 +79,8 @@ void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 vie
 void AnimatedDoodads::Update(float dt)
 {
 
-	m_rendering = validateRendering(Center);
-	if (m_rendering)
+	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
+	if (m_flags.m_rendering)
 	{
 		if (m_currentFrame < 24.0f)
 		{
@@ -111,7 +108,7 @@ void AnimatedDoodads::Update(float dt)
 			}
 		}
 		if (m_currentFrame == m_previousFrame) return;
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
+		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y + (m_size / 1.5f), m_boundingSphere.Center.z - (m_size / 1.5f)));
 	}
 
 
@@ -147,9 +144,9 @@ void AnimatedDoodads::Update(float dt)
 
 }
 
-void AnimatedDoodads::SetZ(float z)
+void AnimatedDoodads::SetZ(const float z)
 {
-	Center.z = z;
+	m_boundingSphere.Center.z = z;
 }
 
 void AnimatedDoodads::Release()

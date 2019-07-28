@@ -91,7 +91,7 @@ void Font::LoadFontFromFile(std::string filename,float width,float height)
 
 Font * Font::GetFontByName(std::string name)
 {
-	for (i32 i = 0; i < (i32)m_fonts.size(); ++i)
+	for ( int32 i = 0; i < ( int32)m_fonts.size(); ++i)
 	{
 		if (!strcmp(name.c_str(), (m_fonts[i]->m_name).c_str()))
 		{

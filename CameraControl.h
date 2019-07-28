@@ -10,7 +10,7 @@ public:
 
 	void LockCameraPositionOnUnit(Unit* unit);
 	void SetCurrentCamera(Camera* camera);
-	void Update(float dt);
+	void Update(const float dt);
 private:
 	Camera * m_camera;
 	bool     m_flags[1];

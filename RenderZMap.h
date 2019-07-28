@@ -15,21 +15,21 @@ struct RenderZMap
 
 	~RenderZMap();
 
-	std::map<int8_t, RenderContainerVector*> m_zVectors;
+	std::map<int64, EObjectVector*> m_zVectors;
 
 	bool m_zStance[256];
 
-	void Update(float dt);
+	void Update(const float dt);
 	void Sort();
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept;
 	void Clear();
-	void Push(Unit* unit, int8_t z);
-	void Push(Doodads* doodads, int8_t z);
-	void Push(AnimatedDoodads* animated, int8_t z);
-	void Push(Tree* tree, int8_t z);
+	void Push(Unit* unit,const int64 z);
+	void Push(Doodads* doodads,const int64 z);
+	void Push(AnimatedDoodads* animated,const int64 z);
+	void Push(Tree* tree, const int64 z);
 	uint32_t GetSize();
 	__m128 GetSizeX4();
-	std::vector<uint32_t> GetSizeVector();
-	std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range);
+	std::vector<int64> GetSizeVector();
+	std::stack<Unit*> GetUnitsInRange(class Unit* object,const float range);
 
 };

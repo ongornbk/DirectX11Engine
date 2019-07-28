@@ -20,6 +20,8 @@ Unit::Unit()
 	m_currentSpeed = 0.0f;
 	m_stop = false;
 	m_rotations = 16.0f;
+
+	m_tasks.SetOwner(this);
 }
 
 
@@ -32,7 +34,15 @@ Unit::~Unit()
 	}
 }
 
-void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR* paths, float modelsize, float collision, XMFLOAT3 position,RenderContainerFlags flags, bool wander)
+void Unit::Initialize(
+	ID3D11Device * device,
+	ID3D11DeviceContext * deviceContext,
+	class Shader * shader,
+	WCHAR* paths,
+	const float modelsize,
+	const float collision,
+	const XMFLOAT3 position,
+	const bool wander)
 {
 	wstring tmp0 = wstring(paths);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
@@ -42,23 +52,65 @@ void Unit::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	m_size = modelsize;
 	m_lastSize = modelsize;
-	Radius = collision;
-	Center = position;
-	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
-	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
+	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 	InitializeModel(device, deviceContext, shader, ptr);
 	m_wanderingFlag = wander;
-	m_type = RenderContainer::RenderContainerType::UNIT;
-
-	m_flags = flags.m_flags;
+	m_type = EObject::EObjectType::UNIT;
 }
 
 void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
 {
-	if (m_rendering)
+	if (m_flags.m_rendering)
 	{
-		Shader* csh = shader.standard;
+
+		if (m_flags.m_cast_shadow)
+		{
+			shader.standard->End(deviceContext);
+			shader.shadow->Begin(deviceContext);
+
+			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
+
+			//__m128 distance{};
+			//distance.m128_f32[0] = cameraPosition.m128_f32[1] - m_boundingSphere.Center.y;
+			//distance.m128_f32[1] = cameraPosition.m128_f32[0] - m_boundingSphere.Center.x;
+
+			//float rotation = atan2(distance.m128_f32[0], distance.m128_f32[1]);
+
+			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
+
+			//float length = XMVector2Length(distance).m128_f32[0];
+
+			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
+			XMFLOAT4X4 shadowMatrix;
+			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
+			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
+			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+			m_vertexBuffer->Render(deviceContext);
+
+			shader.shadow->End(deviceContext);
+			shader.standard->Begin(deviceContext);
+		}
+
+		if (m_flags.m_selectable && m_flags.m_selected)
+		{
+			shader.standard->End(deviceContext);
+			shader.select->Begin(deviceContext);
+
+			class Shader* const csh = shader.select;
+
+			csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
+			csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+			m_vertexBuffer->Render(deviceContext);
+
+			shader.select->End(deviceContext);
+			shader.standard->Begin(deviceContext);
+		}
+
+		class Shader* const csh = shader.standard;
 		
 		csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -69,13 +121,13 @@ void Unit::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 
 
 
-void Unit::Update(float dt)
+void Unit::Update(const float dt)
 {
 
 	
-	m_rendering = validateRendering(Center);
+	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 
-	if (!m_blocked)
+	if (!m_flags.m_blocked)
 	{
 
 		if (m_tasks.Update())
@@ -92,6 +144,7 @@ void Unit::Update(float dt)
 			{
 				SetAnimation(ModelStance::MS_TOWNNEUTRAL);
 				SetVelocity(0.0f, 0.0f, 0.0f);
+				Unit::EndRunning();
 			}
 		}
 		
@@ -99,29 +152,36 @@ void Unit::Update(float dt)
 
 		if (!m_stop)
 		{
-			m_collided = TileMap::CollisionAt(Center);
-			if (m_collided)
+			m_flags.m_collided = TileMap::CollisionAt(m_boundingSphere.Center);
+			if (m_flags.m_collided)
 			{
-				Center = m_floats[1];
+				m_boundingSphere.Center = m_floats[1];
 			}
 			else
 			{
-				m_floats[1] = Center;
+				m_floats[1] = m_boundingSphere.Center;
 			}
-				XMFLOAT3 niuPos = XMFloat3Sum(Center, XMFloat3Multiply(m_floats[0], dt));
+				XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
 
-				m_collided = TileMap::CollisionAt(niuPos);
+				m_flags.m_collided = TileMap::CollisionAt(niuPos);
 
-				if (!m_collided)
+				if (!m_flags.m_collided)
 				{
-					Center = niuPos;
+					m_boundingSphere.Center = niuPos;
 				}
 		}
 
-		if (m_rendering)
+		if (m_flags.m_rendering)
 		{
 
-			XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y + (m_size / 1.5f), Center.z - (m_size / 1.5f)));
+			XMStoreFloat4x4(
+				&m_worldMatrix,
+				XMMatrixTranslation(
+					m_boundingSphere.Center.x,
+					m_boundingSphere.Center.y + (m_size / 1.5f),
+					m_boundingSphere.Center.z - (m_size / 1.5f)
+				)
+			);
 
 
 			if (m_modelVariant.GetMaxFrames() == 1.0f) return;
@@ -158,7 +218,7 @@ void Unit::Update(float dt)
 
 
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
+			struct SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 			vertices[0].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
 			vertices[0].uv.y = (m_rotation + 1.0f) / m_rotations;
@@ -180,7 +240,7 @@ void Unit::Update(float dt)
 				return;
 			}
 
-			SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+			struct SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
 			memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
 			m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 
@@ -191,33 +251,33 @@ void Unit::Update(float dt)
 
 
 
-		int16_t mousePosition[2];
+		int32 mousePosition[2];
 		UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
 		FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
-		if (BoundingSphere::Contains(point))
+		if (m_boundingSphere.Contains(point))
 		{
-			m_selected = true;
+			m_flags.m_selected = true;
 			GLOBAL m_lastSelectedUnit = this;
 		}
 		else
 		{
-			m_selected = false;
+			m_flags.m_selected = false;
 		}
 	}
 }	
 
 
-void Unit::SetZ(float z)
+void Unit::SetZ(const float z)
 {
-	Center.z = z;
+	m_boundingSphere.Center.z = z;
 }
 
-void Unit::SetTask(Task* task)
+void Unit::SetTask(class Task* task)
 {
 	m_tasks.SetTask(task);
 }
 
-void Unit::GiveTask(Task * task)
+void Unit::GiveTask(class Task * task)
 {
 	m_tasks.QueueTask(task);
 }
@@ -227,39 +287,39 @@ void Unit::Release()
 	delete this;
 }
 
-float Unit::GetCollisionRadius()
+float Unit::GetCollisionRadius() const noexcept
 {
-	return Radius;
+	return m_boundingSphere.Radius;
 }
 
 
-XMFLOAT3 Unit::GetPosition()
+XMFLOAT3 Unit::GetPosition() const noexcept
 {
-	return Center;
+	return m_boundingSphere.Center;
 }
 
-float Unit::GetSpeed()
+float Unit::GetSpeed() const noexcept
 {
 	return m_speed[0];
 }
 
-float Unit::GetZ()
+float Unit::GetZ() const noexcept
 {
-	return Center.z;
+	return m_boundingSphere.Center.z;
 }
 
-void Unit::SetSpeed(float speed)
+void Unit::SetSpeed(const float speed)
 {
 	m_speed[0] = speed;
 	m_speed[1] = speed;
 }
 
-Unit::WalkingStance Unit::GetWalkingStance()
+Unit::WalkingStance Unit::GetWalkingStance() const noexcept
 {
 	return m_walkingStance;
 }
 
-void Unit::SetWalkingStance(WalkingStance stance)
+void Unit::SetWalkingStance(const enum WalkingStance stance)
 {
 	this->m_walkingStance = stance;
 	switch (stance)
@@ -288,17 +348,17 @@ void Unit::ChangeWalkingStance()
 	}
 }
 
-void Unit::SetRotations(int32_t rotations)
+void Unit::SetRotations(const int32 rotations)
 {
 	(this->m_rotation) = (float)(rotations % (int32_t)m_rotations);
 }
 
 void Unit::SetRotation(float rotation)
 {
-	m_rotation = (i32)rotation % (i32)m_rotations;
+	m_rotation = (float)(( int32)rotation % ( int32)m_rotations);
 }
 
-void Unit::SetVelocity(float x, float y, float z)
+void Unit::SetVelocity(const float x,const float y,const float z)
 {
 	m_floats[0] = { x,y,z };
 }
@@ -308,26 +368,61 @@ void Unit::DiscardTasks()
 	m_tasks.Discard();
 }
 
-void Unit::SetPosition(XMFLOAT3 position)
+void Unit::SetPosition(const struct XMFLOAT3 position)
 {
-	Center = position;
+	m_boundingSphere.Center = position;
 }
 
 void Unit::GoBack()
 {
-	Center = m_floats[1];
+	m_boundingSphere.Center = m_floats[1];
 }
 
-void Unit::Resize(ID3D11Device * device, Shader * shader, float resize)
+void Unit::SetFootstepsSound(class Sound * sound)
+{
+	m_footstepsSound = sound;
+}
+
+void Unit::BeginRunning()
+{
+	if (m_footstepsSound)
+	{
+		if (m_footstepsHandle)
+		{
+			//m_footstepsHandle->stop();
+			//m_footstepsHandle = m_footstepsSound->StartPlaying();
+		}
+		else
+		{
+			m_footstepsHandle = m_footstepsSound->StartPlaying();
+		}
+	}
+}
+
+void Unit::EndRunning()
+{
+	if (m_footstepsHandle)
+	{
+		m_footstepsHandle->stop();
+		m_footstepsHandle = nullptr;
+	}
+}
+
+class Sound * Unit::GetFootstepsSound() const noexcept
+{
+	return m_footstepsSound;
+}
+
+void Unit::Resize(ID3D11Device * device, Shader * shader,const float resize)
 {
 	m_size *= resize;
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 }
 
-void Unit::PlayAnimation(ModelStance animation)
+void Unit::PlayAnimation(const enum ModelStance animation)
 {
-	if (m_rendering&&!m_stop)
+	if (m_flags.m_rendering&&!m_stop)
 	{
 		m_currentFrame = 0.0f;
 		m_previousFrame = -1.0f;
@@ -338,9 +433,9 @@ void Unit::PlayAnimation(ModelStance animation)
 	}
 }
 
-void Unit::SetAnimation(ModelStance animation)
+void Unit::SetAnimation(const enum ModelStance animation)
 {
-	if (m_rendering && !m_stop&&(animation!=m_modelVariant.GetVariant()))
+	if (m_flags.m_rendering && !m_stop&&(animation!=m_modelVariant.GetVariant()))
 	{
 		m_currentFrame = 0.0f;
 		m_previousFrame = -1.0f;
@@ -348,7 +443,7 @@ void Unit::SetAnimation(ModelStance animation)
 	}
 }
 
-void Unit::SetAnimationSpeed(float speed)
+void Unit::SetAnimationSpeed(const float speed)
 {
 	m_previousSpeed = m_animationSpeed;
 	m_animationSpeed = speed;

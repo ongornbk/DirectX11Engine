@@ -73,6 +73,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{c8da5a35-4815-4118-a39a-8aa0a32a9569}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -327,6 +330,12 @@
     <ClInclude Include="String.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Containers\Pair.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Footsteps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -540,6 +549,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedDoodads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Footsteps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

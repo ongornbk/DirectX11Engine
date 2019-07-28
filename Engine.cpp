@@ -211,7 +211,7 @@ void Engine::Run()
 		deltaTime -= CLOCKS_PER_SEC;
 		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
 
-		const i32 fps = (i32)(1000 / averageFrameTimeMilliseconds);
+		const  int32 fps = ( int32)(1000 / averageFrameTimeMilliseconds);
 
 		UserInterfaceGame::SetFPS(fps);
 
@@ -290,7 +290,12 @@ Sound * Engine::CreateSound(string name, float volume, bool looping)
 
 void Engine::AddMusicSound(string name, float volume,bool looping)
 {
-	m_canals.__AddSound(CanalType::MUSIC, name, CreateSound(name, volume, looping));
+	m_canals.__AddSound(CanalType::CTMUSIC, name, CreateSound(name, volume, looping));
+}
+
+void Engine::AddInterfaceSound(string name,const float volume)
+{
+	m_canals.__AddSound(CanalType::CTINTERFACE, name, CreateSound(name, volume, false));
 }
 
 void Engine::AddModelPaths(string name)
@@ -327,6 +332,14 @@ void Engine::PlayMusic(WCHAR * music)
 	}
 	m_playingMusic = __music;
 	__music->Play();
+}
+
+void Engine::PlaySound(WCHAR * music)
+{
+	wstring tmp0 = wstring(music);
+	string  tmp1 = string(tmp0.begin(), tmp0.end());
+	class Sound* sound = m_canals.__GetSound(tmp1);
+	sound->Play();
 }
 
 CameraControl * Engine::GetCameraControl()
@@ -371,7 +384,11 @@ Engine * Engine::GetEngine()
 
 void Engine::Update()
 {
-	
+	{
+		Canals* canals = Canals::GetInstance();
+		if (canals)
+			canals->Update();
+	}
 		if (m_gameComponent != NULL)
 		{
 			m_gameComponent->Update();

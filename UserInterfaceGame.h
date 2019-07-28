@@ -4,20 +4,21 @@
 #include "Engine.h"
 #include "Camera.h"
 #include "GameChat.h"
+#include "gdef.h"
 
 class Engine;
 
 class UserInterfaceGame
 {
 public:
-	UserInterfaceGame(Engine* engine, Shader* shader);
+	UserInterfaceGame(class Engine* engine,class Shader* shader);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
-    void GetMousePosition(i16 &x,i16 &y);
+    void GetMousePosition(int32 &x,int32 &y);
 	static GameChat* GetGameChat();
 	~UserInterfaceGame();
 
-	static void SetFPS(int fps);
+	static void SetFPS(const int32 fps) noexcept;
 
 private:
 	Sprite * m_cursor;
@@ -27,7 +28,7 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_uiMatrix;
 
-	array<i32, 2> m_mousePosition;
+	array< int32, 2> m_mousePosition;
 	Text          m_fpsText;
 	//std::vector<Text*> m_objectsText;
 
@@ -36,6 +37,6 @@ private:
 	Text     m_mainText;
 	Engine*  m_engine;
 	Input*   m_input;
-	int xm, ym;
+	int32 xm, ym;
 };
 

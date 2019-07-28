@@ -79,13 +79,13 @@ DXManager::~DXManager(void)
 
 }
 
-bool DXManager::Initialize(i32 screenWidth, i32 screenHeight,bool fullscreen, HWND hwnd,bool vsync)
+bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscreen, HWND hwnd,bool vsync)
 {
 	HRESULT result;
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	u32 numModes =0u, numerator = 0u, denominator = 0u;
+	uint32 numModes =0u, numerator = 0u, denominator = 0u;
 	size_t stringLength;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
@@ -148,7 +148,7 @@ bool DXManager::Initialize(i32 screenWidth, i32 screenHeight,bool fullscreen, HW
 			return false;
 		}
 
-		m_videoCardMemory = (i32)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
+		m_videoCardMemory = ( int32)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 		error = wcstombs_s(&stringLength,m_videoCardDescription ,128,adapterDesc.Description, 128);
 
 		if (error != 0)
@@ -306,7 +306,7 @@ ID3D11DeviceContext * DXManager::GetDeviceContext()
 	return m_deviceContext;
 }
 
-bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen, i32 screenWidth, i32 screenHeight, u32 numerator, u32 denominator)
+bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen,  int32 screenWidth,  int32 screenHeight, uint32 numerator, uint32 denominator)
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	D3D_FEATURE_LEVEL featureLevel;
@@ -471,7 +471,7 @@ bool DXManager::InitializeRasterizerState()
 	return true;
 }
 
-void DXManager::InitializeViewport(i32 screenWidth, i32 screenHeight)
+void DXManager::InitializeViewport( int32 screenWidth,  int32 screenHeight)
 {
 	D3D11_VIEWPORT viewport;
 

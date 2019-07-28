@@ -2,7 +2,7 @@
 
 
 
-UserInterfaceMainMenu::UserInterfaceMainMenu(Engine* engine, Shader* shader)
+UserInterfaceMainMenu::UserInterfaceMainMenu(class Engine* engine,class Shader* shader)
 {
 }
 
@@ -19,6 +19,6 @@ void UserInterfaceMainMenu::Update(XMVECTOR cameraPosition)
 {
 }
 
-void UserInterfaceMainMenu::GetMousePosition(int16_t & X, int16_t & Y)
+void UserInterfaceMainMenu::GetMousePosition(int32 & X, int32 & Y)
 {
 }

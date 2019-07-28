@@ -16,7 +16,7 @@ RenderZMap::~RenderZMap()
 	m_zVectors.clear();
 }
 
-void RenderZMap::Update(float dt)
+void RenderZMap::Update(const float dt)
 {
 	for (auto vector : m_zVectors)
 	{
@@ -48,7 +48,7 @@ void RenderZMap::Clear()
 	}
 }
 
-void RenderZMap::Push(Unit * unit, int8_t z)
+void RenderZMap::Push(Unit * unit,const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -56,13 +56,13 @@ void RenderZMap::Push(Unit * unit, int8_t z)
 	}
 	else
 	{
-		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z] = new EObjectVector();
 		m_zVectors[z]->Push(unit);
 		m_zStance[z] = true;
 	}
 }
 
-void RenderZMap::Push(Doodads * doodads, int8_t z)
+void RenderZMap::Push(Doodads * doodads,const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -70,13 +70,13 @@ void RenderZMap::Push(Doodads * doodads, int8_t z)
 	}
 	else
 	{
-		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z] = new EObjectVector();
 		m_zVectors[z]->Push(doodads);
 		m_zStance[z] = true;
 	}
 }
 
-void RenderZMap::Push(AnimatedDoodads * animated, int8_t z)
+void RenderZMap::Push(AnimatedDoodads * animated,const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -84,13 +84,13 @@ void RenderZMap::Push(AnimatedDoodads * animated, int8_t z)
 	}
 	else
 	{
-		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z] = new EObjectVector();
 		m_zVectors[z]->Push(animated);
 		m_zStance[z] = true;
 	}
 }
 
-void RenderZMap::Push(Tree * tree, int8_t z)
+void RenderZMap::Push(Tree * tree, const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -98,7 +98,7 @@ void RenderZMap::Push(Tree * tree, int8_t z)
 	}
 	else
 	{
-		m_zVectors[z] = new RenderContainerVector();
+		m_zVectors[z] = new EObjectVector();
 		m_zVectors[z]->Push(tree);
 		m_zStance[z] = true;
 	}
@@ -119,17 +119,17 @@ __m128 RenderZMap::GetSizeX4()
 	__m128 size{};
 	for (auto vector : m_zVectors)
 	{
-	//	size.m128_u32[0] += (uint32_t)vector.second->m_objectsX[0].size();
-	//	size.m128_u32[1] += (uint32_t)vector.second->m_objectsX[1].size();
-	//	size.m128_u32[2] += (uint32_t)vector.second->m_objectsX[2].size();
-	//	size.m128_u32[3] += (uint32_t)vector.second->m_objectsX[3].size();
+	//	size.m128_uint32[0] += (uint32_t)vector.second->m_objectsX[0].size();
+	//	size.m128_uint32[1] += (uint32_t)vector.second->m_objectsX[1].size();
+	//	size.m128_uint32[2] += (uint32_t)vector.second->m_objectsX[2].size();
+	//	size.m128_uint32[3] += (uint32_t)vector.second->m_objectsX[3].size();
 	}
 	return size;
 }
 
-std::vector<uint32_t> RenderZMap::GetSizeVector()
+std::vector<int64> RenderZMap::GetSizeVector()
 {
-	std::vector<uint32_t> mv;
+	std::vector<int64> mv;
 	for (auto vector : m_zVectors)
 	{
 		for (uint32_t i = 0u; i < 16u; i++)
@@ -140,11 +140,11 @@ std::vector<uint32_t> RenderZMap::GetSizeVector()
 	return mv;
 }
 
-std::stack<Unit*> _vectorcall RenderZMap::GetUnitsInRange(Unit * object, float range)
+std::stack<Unit*> RenderZMap::GetUnitsInRange(class Unit * object,const float range)
 {
 	if (object)
 	{
-		int8_t z = (int8_t)object->GetZ();
+		int32 z = (int32)object->GetZ();
 		return m_zVectors[z]->GetUnitsInRange(object, range);
 	}
 	std::stack<Unit*> m_elseStack;

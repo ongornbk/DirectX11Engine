@@ -27,7 +27,7 @@ void Graphics::Initialize()
 {
 }
 
-void Graphics::BeginScene(float r, float g, float b, float a)
+void Graphics::BeginScene(const float r,const float g,const float b,const float a)
 {
 	m_dxManager->BeginScrene(r, g, b, a);
 }

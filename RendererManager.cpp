@@ -64,22 +64,22 @@ RendererManager::~RendererManager()
 
 
 
-void RendererManager::PushUnit(Unit * unit,int8_t z)
+void RendererManager::PushUnit(class Unit * unit,const int32 z)
 {
 	g_units.Push(unit,z);
 }
 
-void RendererManager::PushDoodads(Doodads * doodads, int8_t z)
+void RendererManager::PushDoodads(class Doodads * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
 }
 
-void RendererManager::PushAnimatedDoodads(AnimatedDoodads * doodads, int8_t z)
+void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
 }
 
-void RendererManager::PushTree(Tree * doodads, int8_t z)
+void RendererManager::PushTree(class Tree * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
 }
@@ -87,7 +87,7 @@ void RendererManager::PushTree(Tree * doodads, int8_t z)
 
 
 
-	bool _vectorcall validateRendering(XMFLOAT3 _In_ object) noexcept
+	bool _vectorcall validateRendering(const XMFLOAT3 _In_ object) noexcept
 	{
 		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
 		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
@@ -99,9 +99,13 @@ void RendererManager::PushTree(Tree * doodads, int8_t z)
 	}
 
 
-	void RendererManager::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
+	void RendererManager::Render(
+		ID3D11DeviceContext * deviceContext,
+		XMFLOAT4X4 viewMatrix,
+		XMFLOAT4X4 projectionMatrix
+	)
 	{
-		ShaderPackage pck;
+		struct ShaderPackage pck;
 		pck.select = m_selectShader;
 		pck.shadow = m_shadowShader;
 		pck.standard = m_unitsShader;
@@ -146,17 +150,17 @@ void RendererManager::Update()
 
 
 
-void RendererManager::SetInterface(uint32_t type,Shader* shader)
+void RendererManager::SetInterface(const uint32 type,class Shader* shader)
 {
 	m_ui->SetScene(type, shader);
 }
 
-void RendererManager::SetTile(XMFLOAT2 position, int32_t tile)
+void RendererManager::SetTile(XMFLOAT2 position,const int32 tile)
 {
 	m_map->SetTile(position, tile);
 }
 
-void RendererManager::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush)
+void RendererManager::SetTile(XMFLOAT2 position,const int32 tile,const int32 brush)
 {
 	if(brush)
 	m_map->SetTile(position, tile,brush);
@@ -172,7 +176,7 @@ void RendererManager::LoadInstanceToFile(std::string filename)
 	m_map->LoadFromFile(filename);
 }
 
-std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(Unit * object, float range) noexcept
+std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * object,const float range) noexcept
 {
 	return g_units.GetUnitsInRange(object, range);
 }
@@ -192,7 +196,7 @@ __m128 RendererManager::GetNumberOfObjectsX4()
 	return g_units.GetSizeX4();
 }
 
-std::vector<uint32_t> RendererManager::GetNumberOfObjectsVector()
+std::vector<int64> RendererManager::GetNumberOfObjectsVector()
 {
 	return g_units.GetSizeVector();
 }

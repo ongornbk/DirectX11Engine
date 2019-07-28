@@ -9,8 +9,8 @@
 
 	extern void SetCellMultiplier(float multiplier = 1.0f);
 	extern void LoadTilesResourceFromFile(std::string filename);
-	extern array<i32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept;
-	extern array<i32,2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept;
+	extern array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept;
+	extern array< int32,2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept;
 
 class Tile;
 class RendererManager;
@@ -23,7 +23,7 @@ struct TileMap
 	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile);
 	void _vectorcall SetTile(XMFLOAT2 position, int32_t tile,int32_t brush);
-	void _vectorcall SetTile(array<i32, 2> index, int32_t tile);
+	void _vectorcall SetTile(array< int32, 2> index, int32_t tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 
@@ -35,7 +35,7 @@ struct TileMap
 
 private:
 
-	i32  renderInts[6];
+	 int32  renderInts[6];
 
 	float m_currentFrame;
 	float m_previousFrame;
@@ -54,7 +54,7 @@ class _Tile //To do
 	virtual void Render() = 0;
 
 	XMFLOAT4X4    m_world;
-	array<i32, 2> m_index;
+	array< int32, 2> m_index;
 	XMFLOAT2      m_position;
 };
 
@@ -62,7 +62,7 @@ class Tile
 {
 public:
 	Tile(float x,float y,int ix,int iy);
-	Tile(XMFLOAT2 position, array<i32, 2> index);
+	Tile(XMFLOAT2 position, array< int32, 2> index);
 	explicit Tile(AnimatedTile* tile);
 	explicit Tile(Tile* tile);
 	virtual ~Tile();
@@ -86,7 +86,7 @@ protected:
 
 	void LoadTexture();
 	XMFLOAT4X4    m_world;
-	array<i32, 2> m_index;
+	array< int32, 2> m_index;
 	XMFLOAT2      m_position;
 
 public:

@@ -30,7 +30,7 @@ GameChat::~GameChat()
 	m_texts.clear();
 }
 
-void GameChat::SetTextsLimit(uint8_t limit) noexcept
+void GameChat::SetTextsLimit(const int32 limit) noexcept
 {
 	m_textsLimit = limit;
 }
@@ -49,7 +49,7 @@ void  GameChat::PushTextFront(std::string text) noexcept
 	CheckSize();
 }
 
-void  GameChat::SetFont(Font* font) noexcept
+void  GameChat::SetFont(class Font* font) noexcept
 {
 	m_font = font;
 }

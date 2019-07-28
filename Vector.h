@@ -8,13 +8,13 @@ public:
 
 	explicit Vector()
 	{
-		m_size = 0u;
-		m_capacity = 2u;
+		m_size = 0;
+		m_capacity = 2;
 		m_data = (T*)malloc(sizeof(T)*m_capacity);
 	}
-	Vector(u32 capacity)
+	Vector(const int32 capacity)
 	{
-		m_size = 0u;
+		m_size = 0;
 		m_capacity = capacity;
 		m_data = (T*)malloc(sizeof(T)*m_capacity);
 	}
@@ -32,17 +32,17 @@ public:
 	{
 		return (m_data + m_size);
 	}
-	T& operator[](u32 element)
+	T& operator[](const int32 element)
 	{
 		return *(m_data + element);
 	}
 
-	T& at(u32 element)
+	T& at(const int32 element)
 	{
 		return *(m_data + element);
 	}
 
-	void resize(u32 size = m_capacity)
+	void resize(const int32 size = m_capacity)
 	{
 		m_size = size;
 		if (m_size > m_capacity)
@@ -52,7 +52,7 @@ public:
 		}
 	}
 
-	void reserve(u32 capacity)
+	void reserve(const int32 capacity)
 	{
 		if (capacity > m_capacity)
 		{
@@ -65,45 +65,45 @@ public:
 		m_size++;
 		if (m_size >= m_capacity)
 		{
-			m_capacity *= 2u;
+			m_capacity *= 2;
 			m_data = (T*)realloc(m_data, sizeof(T)*m_capacity);
 		}
-		m_data[m_size - 1u] = element;
+		m_data[m_size - 1] = element;
 	}
 
 	
 
-	T* data() const 
+	T* data() 
 	{
 		return m_data;
 	}
 
-	const u32 size() const
+	const int32 size() const noexcept
 	{
 		return m_size;
 	}
 
-	const u32 capacity() const 
+	const int32 capacity() const noexcept
 	{
 		return m_capacity;
 	}
 
-	const bool empty() const
+	const bool empty() const noexcept
 	{
 		if (m_size) return false;
 		else return true;
 	}
 
-	void clear()
+	void clear() noexcept
 	{
-		m_size = 0u;
+		m_size = 0;
 	}
 
 private:
 
 	T* m_data;
-	u32 m_capacity;
-	u32 m_size;
+	int32 m_capacity;
+	int32 m_size;
 
 };
 
@@ -111,10 +111,10 @@ template <class T>
 class Vector_view
 {
 	T* m_data;
-	u32 m_size;
+	int32 m_size;
 public:
 
-	explicit Vector_view(const T* data, u32 size)
+	explicit Vector_view(const T* data, const int32 size)
 	{
 		m_data = data;
 		m_size = size;
@@ -122,7 +122,7 @@ public:
 
 	explicit Vector_view(T* begin,T* end)
 	{
-		m_size = (u32)(end - begin);
+		m_size = (int32)(end - begin);
 		m_data = begin;
 	}
 
@@ -138,12 +138,12 @@ public:
 	{
 		return (m_data + m_size);
 	}
-	T operator[](u32 element)
+	T operator[](const int32 element) const
 	{
 		return *(m_data + element);
 	}
 
-	u32 size()
+	uint32 size() const noexcept
 	{
 		return m_size;
 	}

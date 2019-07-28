@@ -40,10 +40,12 @@ public:
 	Sound* CreateSound(string name, float volume, bool looping);
 
 	void AddMusicSound(string name, float volume, bool looping = false);
+	void AddInterfaceSound(string name,const float volume);
 	void AddModelPaths(string name);
 	void AddFont(string filename, float width, float height);
 
 	void PlayMusic(WCHAR* music);
+	void PlaySound(WCHAR* music);
 
 	CameraControl* GetCameraControl();
 	FrameWork* GetFrameWork();

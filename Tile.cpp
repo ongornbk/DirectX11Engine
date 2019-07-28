@@ -74,39 +74,39 @@ static uint8_t tilesub[32] ={
 
 
 
-	array<i32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept
+	array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept
 	{
 		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 		_f[0] -= floats.x / tile::CELL_WIDTH;
 		_f[0] -= floats.y / tile::CELL_HEIGHT;
 		_f[1] += floats.x / tile::CELL_WIDTH;
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		array<i32, 2> _i = { (i32)_f[0],(i32)_f[1]};
+		array< int32, 2> _i = { ( int32)_f[0],( int32)_f[1]};
 
 		ipp::math::SquashInt32Array(_i.data(), 2, 0, TILE_MAP_RANGE);
 		return _i;
 	}
 
-	array<i32, 2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept
+	array< int32, 2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept
 	{
 		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 		_f[0] -= floats.x / tile::CELL_WIDTH;
 		_f[0] -= floats.y / tile::CELL_HEIGHT;
 		_f[1] += floats.x / tile::CELL_WIDTH;
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		array<i32, 2> _i = { (i32)_f[0],(i32)_f[1] };
+		array< int32, 2> _i = { ( int32)_f[0],( int32)_f[1] };
 		ipp::math::SquashInt32Array(_i.data(), 2, 0, TILE_MAP_RANGE);
 		return _i;
 	}
 
-	bool _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(XMFLOAT3 floats, array<i32, 2>& index) noexcept
+	bool _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(XMFLOAT3 floats, array< int32, 2>& index) noexcept
 	{
 		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 		_f[0] -= floats.x / tile::CELL_WIDTH;
 		_f[0] -= floats.y / tile::CELL_HEIGHT;
 		_f[1] += floats.x / tile::CELL_WIDTH;
 		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		index = { (i32)_f[0],(i32)_f[1] };
+		index = { ( int32)_f[0],( int32)_f[1] };
 		return ipp::math::SquashInt32ArrayWithCheck(index.data(), 2, 0, TILE_MAP_RANGE);
 	}
 
@@ -136,7 +136,7 @@ Tile::Tile(float x,float y,int ix,int iy)
 	m_collision = false;
 }
 
-Tile::Tile(XMFLOAT2 position, array<i32, 2> index)
+Tile::Tile(XMFLOAT2 position, array< int32, 2> index)
 {
 	XMStoreFloat4x4(&m_world, XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
 	m_index = index;
@@ -339,21 +339,21 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	_f[0] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
 	_f[1] -= cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
 	_f[1] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
-	renderInts[2] = (i32)_f[1] - tile::CAMERA_TILE_VIEW;
-	renderInts[3] = (i32)_f[1] + tile::CAMERA_TILE_VIEW;
-	renderInts[0] = (i32)_f[0] - tile::CAMERA_TILE_VIEW;
-	renderInts[1] = (i32)_f[0] + tile::CAMERA_TILE_VIEW;
+	renderInts[2] = ( int32)_f[1] - tile::CAMERA_TILE_VIEW;
+	renderInts[3] = ( int32)_f[1] + tile::CAMERA_TILE_VIEW;
+	renderInts[0] = ( int32)_f[0] - tile::CAMERA_TILE_VIEW;
+	renderInts[1] = ( int32)_f[0] + tile::CAMERA_TILE_VIEW;
 	int tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	int tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
 	ipp::math::SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
 	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
 	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
-	for (i32 j = renderInts[2]; j <renderInts[3]; j++)
+	for ( int32 j = renderInts[2]; j <renderInts[3]; j++)
 	{
-		for (i32 i = renderInts[0]; i < renderInts[1]; i++)
+		for ( int32 i = renderInts[0]; i < renderInts[1]; i++)
 		{
-			const i32 tempB = i + j;
+			const  int32 tempB = i + j;
 			if (((tempB) > (tempA)) || ((tempB) < (tempC)))
 				continue;
 			switch (map[j][i]->m_type)
@@ -380,7 +380,7 @@ void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
 
 void _vectorcall TileMap::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush)
 {
-	array<i32,2> pos = TransformXMFLOAT2ToTileMapINDEX2(position);
+	array< int32,2> pos = TransformXMFLOAT2ToTileMapINDEX2(position);
 	for (int32_t x = 0; x < brush; x++)
 	{
 		for (int32_t y = 0; y < brush; y++)
@@ -396,7 +396,7 @@ void _vectorcall TileMap::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush
 	}
 }
 
-void TileMap::SetTile(array<i32, 2> index, int32_t tile)
+void TileMap::SetTile(array< int32, 2> index, int32_t tile)
 {
 	ipp::math::clamp(tile, 0, 8);
 	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;
@@ -458,14 +458,14 @@ void TileMap::LoadFromFile(std::string filename)
 	std::ifstream myfile;
 	myfile.open(filename);
 	char ch;
-	for (i32 i = 0; i < TILE_MAP_SIZE; ++i)
+	for ( int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
-		for (i32 j = 0; j < TILE_MAP_SIZE; ++j)
+		for ( int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
 
 			myfile.get(ch);
-			array<i32, 2> pos = { i,j };
-			SetTile(pos, (u8)ch);
+			array< int32, 2> pos = { i,j };
+			SetTile(pos, (int32)ch);
 		}
 		myfile.get(ch);
 	}
@@ -477,7 +477,7 @@ void TileMap::LoadFromFile(std::string filename)
 
 bool TileMap::CollisionAt(XMFLOAT3 position)
 {
-	array<i32, 2> index;
+	array< int32, 2> index;
 	const bool out = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
 	if (out)return true;
 	const Tile* tilep = m_currentTileMap->map[index[0]][index[1]];

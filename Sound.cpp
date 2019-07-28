@@ -25,7 +25,7 @@ bool Sound::Initialize(WCHAR* soundFileName)
 {
 	wstring tmp0 = wstring(soundFileName);
 	string tmp1 = string(tmp0.begin(), tmp0.end());
-	int pos = (int)tmp1.find_last_of("/");
+	int32 pos = (int32)tmp1.find_last_of("/");
 	if (pos >= 0)
 	{
 		m_name = tmp1.substr(pos + 1, tmp1.length());
@@ -57,59 +57,22 @@ sf::SoundSource::Status Sound::GetStatus()
 
 void Sound::Play()
 {
-	if (GetStatus() != sf::SoundSource::Playing)
-	{
-		m_sound->play();
-	}
-
+	m_instances.push_back(sf::Sound(m_soundBuffer));
+	m_instances.back().play();
 }
 
-void Sound::Play(float volume)
+class sf::Sound * Sound::StartPlaying()
 {
-	m_volume = volume;
-	if (GetStatus() != sf::SoundSource::Playing)
-	{
-		m_sound->setVolume(volume);
-		m_sound->play();
-	}
-}
-
-void Sound::Play(bool isLooping)
-{
-	m_isLooping = isLooping;
-	if (GetStatus() != sf::SoundSource::Playing)
-	{
-		m_sound->setLoop(isLooping);
-		m_sound->play();
-	}
-}
-
-void Sound::Play(bool isLooping, float volume)
-{
-	m_isLooping = isLooping;
-	m_volume = volume;
-	if (GetStatus() != sf::SoundSource::Playing)
-	{
-		m_sound->setLoop(isLooping);
-		m_sound->setVolume(volume);
-		m_sound->play();
-	}
-	else
-		
-		{
-		m_sound->stop();
-		//m_sound->
-			m_sound->setLoop(isLooping);
-			m_sound->setVolume(volume);
-			m_sound->play();
-		}
-
-	
+	Sound::SetLooping(true);
+	sf::Sound sound(m_soundBuffer);
+	m_instances.push_back(sound);
+	m_instances.back().play();
+	return &sound;
 }
 
 void Sound::Stop()
 {
-	m_sound->pause();
+//	m_sound->pause();
 }
 
 void Sound::SetLooping(bool looping)
@@ -120,7 +83,6 @@ void Sound::SetLooping(bool looping)
 
 void Sound::SetVolume(float volume)
 {
-
 	m_volume = volume;
 	m_sound->setVolume(volume);
 }
@@ -134,6 +96,18 @@ float Sound::GetVolume()
 bool Sound::IsLooping()
 {
 	return m_isLooping;
+}
+
+void Sound::Update(void)
+{
+	for (int32 i = 0; i < m_instances.size(); ++i)
+	{
+		if (m_instances[i].getStatus() == sf::Sound::Stopped)
+		{
+			m_instances.erase(m_instances.begin() + i);
+			--i;
+		}
+	}
 }
 
 string Sound::GetName()

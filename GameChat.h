@@ -15,13 +15,13 @@ public:
 		GODOWN
 	};
 
-	void SetTextsLimit(uint8_t limit) noexcept;
+	void SetTextsLimit(const int32 limit) noexcept;
 
 	void PushText(std::string  text) noexcept;
 
 	void PushTextFront(std::string  text) noexcept;
 
-	void SetFont(Font* font) noexcept;
+	void SetFont(class Font* font) noexcept;
 
 	void ClearQueue() noexcept;
 
@@ -41,8 +41,8 @@ protected:
 
 	std::list<Text*> m_texts;
 
-	uint8_t                   m_size;
-	uint8_t                   m_textsLimit;
+	int32                     m_size;
+	int32                     m_textsLimit;
 	DirectX::XMFLOAT3         m_pos;
 	Font*                     m_font;
 

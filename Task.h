@@ -25,6 +25,13 @@ enum Type
 	TASKFOLLOW
 } m_type;
 
+enum Stance
+{
+	TSRUNNING,
+	TSATTACKING,
+	TSNEUTRAL
+} m_stance;
+
 };
 
 class TaskGotoPoint : public Task

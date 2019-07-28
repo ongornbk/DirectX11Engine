@@ -10,12 +10,12 @@
 
 //using std::forward_list;
 
-struct RenderContainerVector
+struct EObjectVector
 {
 
-	RenderContainerVector();
+	EObjectVector();
 
-	Vector<RenderContainer*> m_objectsXY[2][32];
+	Vector<EObject*> m_objectsXY[2][32];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);

@@ -13,7 +13,7 @@ public:
 
 	bool InitializeDirectX(HWND hwnd);
 	void Initialize();
-	void BeginScene(float r, float g, float b, float a);
+	void BeginScene(const float r,const float g,const float b,const float a);
 	void BeginScene(float* color);
 	void EndScene();
 

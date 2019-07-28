@@ -7,8 +7,12 @@
 #include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
+#include <queue>
+#include <deque>
 #pragma comment(lib,"sfml-audio.lib")
 using namespace std;
+
+#include "gdef.h"
 
 class Sound
 {
@@ -19,14 +23,14 @@ public:
 	bool IsInitialized();
 	sf::SoundSource::Status GetStatus();
 	void Play();
-	void Play(float volume);
-	void Play(bool isLooping);
-	void Play(bool isLooping, float volume);
+	class sf::Sound* StartPlaying();
 	void Stop();
 	void SetLooping(bool looping = true);
 	void SetVolume(float volume);
 	float GetVolume();
 	bool IsLooping();
+
+	void Update(void);
 
 	string GetName();
 	sf::Sound* GetSound();
@@ -38,5 +42,7 @@ private:
 	bool m_initialized;
 	bool m_isLooping;
 	float m_volume;
+
+	std::deque<sf::Sound> m_instances;
 };
 

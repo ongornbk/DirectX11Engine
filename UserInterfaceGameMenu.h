@@ -10,7 +10,7 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosItion);
-	void GetMousePosition(int16_t &X, int16_t &Y);
+	void GetMousePosition(int32 &X, int32 &Y);
 
 private:
 
@@ -20,7 +20,7 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_gameMenuMatrix;
 
-	array<i16,2> m_mousePosition;
+	array<int32,2> m_mousePosition;
 	Engine*  m_engine;
 	Input*   m_input;
 

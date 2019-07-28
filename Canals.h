@@ -3,6 +3,7 @@
 #include "Sound.h"
 #include <map>
 #include <string>
+#include <queue>
 #pragma region
 using std::string;
 using std::map;
@@ -12,14 +13,14 @@ using std::map;
 
 enum CanalType
 {
-	AMBIENT = 0,
-	COMBAT = 1,
-	SPEECH = 2,
-	INTERFACE = 3,
-	MUSIC = 4,
-	SPELLS = 5,
-	WARNINGS = 6,
-	FOOTSTEPS = 7
+	CTAMBIENT = 0,
+	CTCOMBAT = 1,
+	CTSPEECH = 2,
+	CTINTERFACE = 3,
+	CTMUSIC = 4,
+	CTSPELLS = 5,
+	CTWARNINGS = 6,
+	CTFOOTSTEPS = 7
 };
 
 struct Sound_Canal
@@ -31,6 +32,7 @@ public:
 	Sound_Canal(CanalType type,float volume);
 	~Sound_Canal();
 
+	void Update(void);
 
 
 	map<string,Sound*> m_sounds;
@@ -51,6 +53,10 @@ public:
 
 	Sound* __GetSound(string sound);
 	void __AddSound(CanalType type, string name, Sound* sound);
+
+	void Play(WCHAR * sound);
+
+	void Update();
 
 protected:
 	Sound_Canal * m_canals[NUMBER_OF_CANALS];

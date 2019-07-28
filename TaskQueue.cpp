@@ -35,6 +35,8 @@ void TaskQueue::Discard()
 		delete m_tasks.front();
 		m_tasks.pop();
 	}
+	//if (m_owner)
+	//	m_owner->EndRunning();
 }
 
 
@@ -48,8 +50,25 @@ bool TaskQueue::Update()
 		}
 		else
 		{
-			m_tasks.front()->Release();
-			m_tasks.pop();
+			{
+				Task* task = m_tasks.front();
+				//if (task->m_stance == Task::Stance::TSRUNNING)
+				//{
+					//if (m_owner)
+					//	m_owner->EndRunning();
+				//}
+				m_tasks.front()->Release();
+				m_tasks.pop();
+			}
+			//if (m_tasks.size())
+			//{
+			//	Task* task = m_tasks.front();
+			//	if (task->m_stance == Task::Stance::TSRUNNING)
+			//	{
+			//		if (m_owner)
+			//			m_owner->BeginRunning();
+			//	}
+			//}
 		}
 	}
 		return false;
@@ -59,6 +78,8 @@ void TaskQueue::SetTask(Task* task)
 {
 	Discard();
 	m_tasks.push(task);
+	//if (m_owner&&task->m_stance == Task::Stance::TSRUNNING)
+	//	m_owner->BeginRunning();
 }
 void TaskQueue::QueueTask(Task * task)
 {
@@ -70,4 +91,9 @@ void TaskQueue::Wander(Unit * unit)
 	task->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
 	task->object = unit;
 	SetTask(task);
+}
+
+void TaskQueue::SetOwner(Unit * object)
+{
+	m_owner = object;
 }

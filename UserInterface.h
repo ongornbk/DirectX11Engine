@@ -35,15 +35,15 @@ private:
 	};
 public:
 	UserInterface(void);
-	UserInterface(Type type);
+	UserInterface(const enum Type type);
 	
 	~UserInterface();
 
 	 void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	 void Update(XMVECTOR cameraPosition);
-	 void SetScene(Type scene,Shader* shader);
-	 void SetScene(unsigned int scene, Shader* shader);
-	 static void GetMousePosition(int16_t &X, int16_t &Y);
+	 void SetScene(const enum Type scene,class Shader* shader);
+	 void SetScene(const uint32 scene,class Shader* shader);
+	 static void GetMousePosition(int32 &X, int32 &Y);
 
 	Interface m_interface;
 	Type      m_type;

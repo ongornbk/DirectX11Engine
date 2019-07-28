@@ -8,12 +8,12 @@ class String
 
 public:
 
-	u32 size()
+	uint32 size()
 	{
 		m_data.size();
 	}
 
-	u32 capacity()
+	uint32 capacity()
 	{
 		m_data.capacity();
 	}

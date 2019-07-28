@@ -25,9 +25,9 @@ public:
 				m_sprite = nullptr;
 			}
 		}
-		LetterSprite* m_sprite;
-		XMFLOAT4X4    m_world;
-		CHAR          m_char;
+		class LetterSprite* m_sprite;
+		XMFLOAT4X4          m_world;
+		CHAR                m_char;
 	};
 
 	Text();
@@ -43,8 +43,8 @@ public:
 
 private:
 
-	Vector<LetterSpriteStruct*> m_letters;
-	string                m_text;
+	Vector<struct LetterSpriteStruct*> m_letters;
+	string                             m_text;
 
 
 	void Initialize();

@@ -14,8 +14,8 @@ Tree::Tree()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Radius = 0.0f;
+	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_boundingSphere.Radius = 0.0f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 }
@@ -30,10 +30,17 @@ Tree::~Tree()
 	}
 }
 
-void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, WCHAR * paths, float size, float collision, XMFLOAT3 position, RenderContainerFlags flags)
+void Tree::Initialize(
+	ID3D11Device * device,
+	ID3D11DeviceContext * deviceContext,
+	Shader * shader,
+	WCHAR * paths,
+	const float size,
+	const float collision,
+	const XMFLOAT3 position
+)
 {
 	m_size = size;
-
 
 	m_vertexBuffer = new VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
@@ -48,23 +55,24 @@ void Tree::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	m_deviceContext = deviceContext;
 
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
+	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
-	m_flags = flags.m_flags;
-
-	Radius = collision;
-	Center = position;
-	Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
-	Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
-
-	m_type = RenderContainer::RenderContainerType::TREE;
+	m_type = EObject::EObjectType::TREE;
 }
 
-void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
+void Tree::Render(
+	ID3D11DeviceContext * deviceContext,
+	XMFLOAT4X4 viewMatrix,
+	XMFLOAT4X4 projectionMatrix,
+	ShaderPackage &shader)
 {
-	if (m_rendering)
+	if (m_flags.m_rendering)
 	{
 
-		if (m_cast_shadow)
+		if (m_flags.m_cast_shadow)
 		{
 			shader.standard->End(deviceContext);
 			shader.shadow->Begin(deviceContext);
@@ -72,8 +80,8 @@ void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
 
 			__m128 distance{};
-			distance.m128_f32[0] = cameraPosition.m128_f32[1] - Center.y;
-			distance.m128_f32[1] = cameraPosition.m128_f32[0] - Center.x;
+			distance.m128_f32[0] = cameraPosition.m128_f32[1] - m_boundingSphere.Center.y;
+			distance.m128_f32[1] = cameraPosition.m128_f32[0] - m_boundingSphere.Center.x;
 
 			float rotation = atan2(distance.m128_f32[0], distance.m128_f32[1]);
 
@@ -99,18 +107,18 @@ void Tree::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XM
 	}
 }
 
-void Tree::Update(float dt)
+void Tree::Update(const float dt)
 {
-	m_rendering = validateRendering(Center);
-	if (m_rendering)
+	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
+	if (m_flags.m_rendering)
 	{
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(Center.x, Center.y, Center.z));
+		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
 	}
 }
 
-void Tree::SetZ(float z)
+void Tree::SetZ(const float z)
 {
-	Center.z = z;
+	m_boundingSphere.Center.z = z;
 }
 
 void Tree::Release()

@@ -4,50 +4,7 @@
 #include "ShaderPackage.h"
 #include <DirectXCollision.h>
 
-struct RenderContainerFlags 
-{
-
-	RenderContainerFlags() : m_flags(0u) {}
-	
-
-
-	RenderContainerFlags(std::string str)
-	{
-		SetFlags(str);
-	}
-
-	void SetFlags(std::string str)
-	{
-		for (int32_t i = 0; i < 8; i++)
-		{
-			if (str[i] == '1')
-				m_flag[i] = true;
-			else m_flag[i] = false;
-		}
-	}
-
-	union
-	{
-
-		struct
-		{
-			bool m_rendering;
-			bool m_selected;
-			bool m_pushable;
-			bool m_blocked;
-			bool m_collided;
-			bool m_selectable;
-			bool m_cast_shadow;
-			bool m_hide;
-		};
-
-		u64 m_flags{};
-		bool     m_flag[8];
-
-	};
-};
-
-enum RenderContainerAnchor
+enum EObjectAnchor
 {
 	BOTTOM_CENTRE,
 	BOTTOM_LEFT,
@@ -60,21 +17,41 @@ enum RenderContainerAnchor
 	CENTRE
 };
 
-class RenderContainer : public RenderContainerFlags, public BoundingSphere
+struct EObjectFlags
+{
+	bool m_rendering = false;
+	bool m_selected = false;
+	bool m_pushable = false;
+	bool m_blocked = false;
+	bool m_collided = false;
+	bool m_selectable = false;
+	bool m_cast_shadow = false;
+	bool m_hide = false;
+};
+
+class EObject
 {
 public:
 
 	virtual void            Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) = 0;
-	virtual void            SetZ(float z = 0.0f) = 0;
-	virtual void            Update(float dt) = 0;
+	virtual void            SetZ(const float z = 0.f) = 0;
+	virtual void            Update(const float dt = 0.f) = 0;
 	virtual void            Release() = 0;
 
 
 public:
-	u32           m_index;
-	u32             m_vector;
+	uint32           m_index;
+	uint32           m_vector;
 
-	enum RenderContainerType
+
+
+	int32 collisionPriority = 0;
+
+	DirectX::BoundingSphere m_boundingSphere;
+
+	EObjectFlags m_flags;
+
+	enum EObjectType
 	{
 		UNIT,
 		DOODADS,

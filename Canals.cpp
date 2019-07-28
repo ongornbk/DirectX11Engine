@@ -11,7 +11,7 @@ namespace
 Canals::Canals()
 {
 	m_instance = this;
-	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
+	for ( int32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		m_canals[i] = new Sound_Canal(CanalType(i), 100.0f);
 	}
@@ -20,7 +20,7 @@ Canals::Canals()
 
 Canals::~Canals()
 {
-	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
+	for ( int32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		delete m_canals[i];
 		m_canals[i] = NULL;
@@ -42,7 +42,7 @@ Canals * Canals::GetInstance()
 Sound* Canals::__GetSound(string sound)
 {	
 
-	for (i32 i = 0; i < NUMBER_OF_CANALS; i++)
+	for ( int32 i = 0; i < NUMBER_OF_CANALS; i++)
 	{
 		m_canals[i]->GetSound(sound);
 	}
@@ -57,6 +57,25 @@ void Canals::__AddSound(CanalType type, string name, Sound * sound)
 
 }
 
+void Canals::Play(WCHAR * sound)
+{
+	
+	
+	
+	
+	
+	
+	
+}
+
+void Canals::Update()
+{
+	for (int32 i = 0; i < NUMBER_OF_CANALS; ++i)
+	{
+		m_canals[i]->Update();
+	}
+}
+
 Sound_Canal::Sound_Canal(CanalType type, float volume)
 {
 }
@@ -66,11 +85,20 @@ Sound_Canal::~Sound_Canal()
 	m_sounds.clear();
 }
 
+void Sound_Canal::Update(void)
+{
+	for (auto && sound : m_sounds)
+	{
+		if (sound.second)
+		{
+			sound.second->Update();
+		}
+	}
+}
+
 void Sound_Canal::AddSound(Sound * sound, string name)
 {
-
 	m_sounds[name] = sound;
-
 }
 
 void Sound_Canal::GetSound(string name)
@@ -80,5 +108,4 @@ void Sound_Canal::GetSound(string name)
 	{
 		a_sound = tmp;
 	}
-
 }

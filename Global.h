@@ -11,18 +11,18 @@ public:
 	~Global(void);
 	Unit*                m_lastPickedUnit;
 	Unit*                m_lastSelectedUnit;
-	RenderContainer*     m_lastCreatedRenderContainer;
-	RenderContainerFlags m_lastFlags{};
+	EObject*             m_lastCreatedRenderContainer;
+	EObjectFlags         m_lastFlags{};
 	Task*                m_lastTask;
 	static Global*       GetInstance();
 	XMFLOAT3             m_lastPoint;
 	std::stack<Unit*>    m_stack;
 	VariablesManager     m_variables;
-	uint32_t             m_size;
+	uint32               m_size;
 
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
 
-
+	
 };
 

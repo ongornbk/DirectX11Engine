@@ -83,7 +83,7 @@ namespace lua_callback
 
 	namespace Resources
 	{
-		static i32 LoadTexture(lua_State* state)
+		static  int32 LoadTexture(lua_State* state)
 		{
 #pragma warning(disable : 4996)
 			string str = LUA_STRING(state, 1);
@@ -95,7 +95,7 @@ namespace lua_callback
 			return 0;
 		}
 
-		static i32 LoadSound(lua_State* state)
+		static  int32 LoadSound(lua_State* state)
 		{
 #pragma warning(disable : 4996)
 			string str = LUA_STRING(state, 1);
@@ -107,7 +107,7 @@ namespace lua_callback
 			return 0;
 		}
 
-		static i32 AddModelPaths(lua_State* state)
+		static  int32 AddModelPaths(lua_State* state)
 		{
 			string str = LUA_STRING(state, 1);
 			m_engine->AddModelPaths(str);
@@ -117,31 +117,50 @@ namespace lua_callback
 
 	namespace Cameras
 	{
-		static i32 InitializeProjectionMatrix(lua_State* state)
+		static  int32 InitializeProjectionMatrix(lua_State* state)
 		{
-			m_camera->InitializeProjectionMatrix((float)XM_PI / LUA_FLOAT(state, 1), Settings::GetAspectRatio(), 1.0f / LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
+			m_camera->InitializeProjectionMatrix(
+				(float)XM_PI / LUA_FLOAT(state, 1),
+				Settings::GetAspectRatio(),
+				1.0f / LUA_FLOAT(state, 2),
+				LUA_FLOAT(state, 3));
 			return 0;
 		}
 
-		static i32 InitializeOrthoMatrix(lua_State* state)
+		static  int32 InitializeOrthoMatrix(lua_State* state)
 		{
-			m_camera->InitializeOrthoMatrix(Settings::GetResolutionX(), Settings::GetResolutionY(), 1.0f / LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+			m_camera->InitializeOrthoMatrix(
+				Settings::GetResolutionX(),
+				Settings::GetResolutionY(),
+				1.0f / LUA_FLOAT(state, 1),
+				LUA_FLOAT(state, 2)
+			);
 			return 0;
 		}
 
-		static i32 SetCameraLookAt(lua_State* state)
+		static  int32 SetCameraLookAt(lua_State* state)
 		{
-			m_global->camera_lookat = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+			m_global->camera_lookat = XMVectorSet(
+				(float)lua_tointeger(state, 1),
+				(float)lua_tointeger(state, 2),
+				(float)lua_tointeger(state, 3),
+				(float)lua_tointeger(state, 4)
+			);
 			return 0;
 		}
 
-		static i32 SetCameraUp(lua_State* state)
+		static  int32 SetCameraUp(lua_State* state)
 		{
-			m_global->camera_up = XMVectorSet(lua_tointeger(state, 1), lua_tointeger(state, 2), lua_tointeger(state, 3), lua_tointeger(state, 4));
+			m_global->camera_up = XMVectorSet(
+				(float)lua_tointeger(state, 1),
+				(float)lua_tointeger(state, 2),
+				(float)lua_tointeger(state, 3),
+				(float)lua_tointeger(state, 4)
+			);
 			return 0;
 		}
 
-		static i32 SetCameraPosition(lua_State* state)
+		static  int32 SetCameraPosition(lua_State* state)
 		{
 			XMVECTOR position;
 			position.m128_f32[0] = LUA_FLOAT(state, 1);
@@ -151,7 +170,7 @@ namespace lua_callback
 			return 0;
 		}
 
-		static i32 LockCameraOnUnit(lua_State* state) noexcept
+		static  int32 LockCameraOnUnit(lua_State* state) noexcept
 		{
 			Unit* unit = m_global->m_lastPickedUnit;
 			if (unit)
@@ -166,14 +185,14 @@ namespace lua_callback
 
 	namespace Music
 	{
-		static i32 AddMusic(lua_State* state)
+		static  int32 AddMusic(lua_State* state)
 		{
 			string str = LUA_STRING(state, 1);
 			m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
 			return 0;
 		}
 
-		static i32 PlayMusic(lua_State* state) noexcept
+		static  int32 PlayMusic(lua_State* state) noexcept
 		{
 #pragma warning(disable : 4996)
 			string str = LUA_STRING(state, 1);
@@ -184,32 +203,51 @@ namespace lua_callback
 			delete wide_string;
 			return 0;
 		}
+
+		static  int32 AddInterfaceSound(lua_State* state)
+		{
+			string str = LUA_STRING(state, 1);
+			m_engine->AddInterfaceSound(str, LUA_FLOAT(state, 2));
+			return 0;
+		}
+
+		static  int32 PlaySound(lua_State* state) noexcept
+		{
+#pragma warning(disable : 4996)
+			string str = LUA_STRING(state, 1);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+			m_engine->PlaySound(wide_string);
+			delete wide_string;
+			return 0;
+		}
 	}
 
 	namespace _Network
 	{
-		static i32 _StartServer(lua_State* state) noexcept
+		static  int32 _StartServer(lua_State* state) noexcept
 		{
-			Network::StartServer((u16)lua_tointeger(state, 1));
+			//Network::StartServer((uint16)lua_tointeger(state, 1));
 			return 0;
 		}
 	}
 
 	namespace _Game
 	{
-		static i32 __PostQuitMessage(lua_State* state) noexcept
+		static  int32 __PostQuitMessage(lua_State* state) noexcept
 		{
-			PostQuitMessage((i32)lua_tointeger(state, 1));
+			PostQuitMessage(( int32)lua_tointeger(state, 1));
 			return 0;
 		}
 
-		static i32 PauseGame(lua_State* state)
+		static  int32 PauseGame(lua_State* state)
 		{
 			m_engine->PauseGame();
 			return 0;
 		}
 
-		static i32 ResumeGame(lua_State* state)
+		static  int32 ResumeGame(lua_State* state)
 		{
 			m_engine->ResumeGame();
 			return 0;
@@ -291,7 +329,7 @@ namespace lua_callback
 
 	static int32_t SetFlags(lua_State* state) noexcept
 	{
-		m_global->m_lastFlags.SetFlags(lua_tostring(state, 1));
+//		m_global->m_lastFlags.SetFlags(lua_tostring(state, 1));
 		return 0;
 	}
 
@@ -332,7 +370,7 @@ namespace lua_callback
 
 	static int32_t GetMousePosition(lua_State* state) noexcept
 	{
-		int16_t xm, ym;
+		int32 xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
 		m_global->m_lastPoint = XMFLOAT3((float)xm,(float)ym, 0.0f);
 		lua_pushinteger(state, (int32_t)xm);
@@ -396,6 +434,38 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32_t SetFootstepsSound(lua_State* state) noexcept
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			string  str = lua_tostring(state, 1);
+			class Sound* sound = Canals::GetInstance()->__GetSound(str);
+			unit->SetFootstepsSound(sound);
+		}
+		return 0;
+	}
+
+	static int32_t BeginRunning(lua_State* state) noexcept
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			unit->BeginRunning();
+		}
+		return 0;
+	}
+
+	static int32_t EndRunning(lua_State* state) noexcept
+	{
+		Unit* unit = m_global->m_lastPickedUnit;
+		if (unit)
+		{
+			unit->EndRunning();
+		}
+		return 0;
+	}
+
 	static int32_t CleanTasks(lua_State* state) noexcept
 	{
 
@@ -411,12 +481,12 @@ namespace lua_callback
 		if (unit)
 		{
 		string str = lua_tostring(state, 1);
-		float size = (float)lua_tointeger(state, 2);
-		float collision = (float)lua_tointeger(state, 3);
-		float p_x = (float)lua_tointeger(state, 4);
-		float p_y = (float)lua_tointeger(state, 5);
-		float p_z = (float)lua_tointeger(state, 6);
-		bool wander = lua_toboolean(state, 7);
+		const float size = (float)lua_tointeger(state, 2);
+		const float collision = (float)lua_tointeger(state, 3);
+		const float p_x = (float)lua_tointeger(state, 4);
+		const float p_y = (float)lua_tointeger(state, 5);
+		const float p_z = (float)lua_tointeger(state, 6);
+		const bool wander = lua_toboolean(state, 7);
 
 		XMFLOAT3 pos(p_x, p_y, p_z);
 		wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -424,8 +494,8 @@ namespace lua_callback
 		wcscpy(wide_string, ws.c_str());
 
 
-			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags, wander);
-			m_renderer->PushUnit(unit,(int8_t)p_z);
+			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, wander);
+			m_renderer->PushUnit(unit,(int32)p_z);
 
 			delete wide_string;
 		}
@@ -451,8 +521,8 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags);
-			m_renderer->PushDoodads(doodads, (int8_t)p_z);
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
+			m_renderer->PushDoodads(doodads, (int32)p_z);
 
 			delete wide_string;
 		}
@@ -480,7 +550,7 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, m_global->m_lastFlags);
+			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
 			m_renderer->PushAnimatedDoodads(doodads,z);
 
 			delete wide_string;
@@ -506,8 +576,8 @@ namespace lua_callback
 			wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 
-			tree->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos,m_global->m_lastFlags);
-			m_renderer->PushTree(tree, (int8_t)p_z);
+			tree->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
+			m_renderer->PushTree(tree, (int32)p_z);
 
 			delete wide_string;
 				
@@ -516,22 +586,62 @@ namespace lua_callback
 
 	}
 
-	static int32_t SetRenderContainerFlag(lua_State* state) noexcept
+	static int32_t SetRenderingFlag(lua_State* state) noexcept
 	{
-		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
-		if (rc)
+		class EObject* object = m_global->m_lastPickedUnit;
+		if (object)
 		{
-			rc->m_flag[lua_tointeger(state, 1)] =  lua_toboolean(state, 2);
+			object->m_flags.m_rendering =  (bool)lua_toboolean(state, 1);
+		}
+		return 0;
+	}
+
+	static int32_t SetShadowFlag(lua_State* state) noexcept
+	{
+		class EObject* object = m_global->m_lastPickedUnit;
+		if (object)
+		{
+			object->m_flags.m_cast_shadow = (bool)lua_toboolean(state, 1);
+		}
+		return 0;
+	}
+
+	static int32_t SetPushableFlag(lua_State* state) noexcept
+	{
+		class EObject* object = m_global->m_lastPickedUnit;
+		if (object)
+		{
+			object->m_flags.m_pushable = (bool)lua_toboolean(state, 1);
+		}
+		return 0;
+	}
+
+	static int32_t SetSelectableFlag(lua_State* state) noexcept
+	{
+		class EObject* object = m_global->m_lastPickedUnit;
+		if (object)
+		{
+			object->m_flags.m_selectable = (bool)lua_toboolean(state, 1);
+		}
+		return 0;
+	}
+
+	static int32_t SetCollisionPriority(lua_State* state) noexcept
+	{
+		class EObject* object = m_global->m_lastPickedUnit;
+		if (object)
+		{
+			object->collisionPriority = (int32)lua_tointeger(state, 1);
 		}
 		return 0;
 	}
 
 	static int32_t GetRenderContainerFlag(lua_State* state) noexcept
 	{
-		RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
-		if (rc)
+		//RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
+	//	if (rc)
 		{
-			lua_pushboolean(state, rc->m_flag[lua_tointeger(state,1)]);
+			//lua_pushboolean(state, rc->m_flag[lua_tointeger(state,1)]);
 		}
 		return 1;
 	}
@@ -565,7 +675,7 @@ namespace lua_callback
 
 	namespace _Units
 	{
-		static i32 ChangeWalkingStance(lua_State* state) noexcept
+		static  int32 ChangeWalkingStance(lua_State* state) noexcept
 		{
 			m_global->m_lastPickedUnit->ChangeWalkingStance();
 			return 0;
@@ -629,9 +739,9 @@ namespace lua_callback
 		if (unit)
 		{
 			XMFLOAT3 position;
-			position = unit->Center;
-			lua_pushinteger(state,(int)position.x);
-			lua_pushinteger(state,(int)position.y);
+			position = unit->m_boundingSphere.Center;
+			lua_pushinteger(state,(int32)position.x);
+			lua_pushinteger(state,(int32)position.y);
 			return 2;
 		}
 		return 0;
@@ -644,7 +754,7 @@ namespace lua_callback
 		if (unit)
 		{
 			m_global->m_stack = m_renderer->GetUnitsInRange(unit, range);
-			m_global->m_size = (uint32_t)m_global->m_stack.size();
+			m_global->m_size = (uint32)m_global->m_stack.size();
 		}
 		return 0;
 	}
@@ -665,23 +775,23 @@ namespace lua_callback
 		return 1;
 	}
 
-	static i32 GetSize(lua_State* state)
+	static  int32 GetSize(lua_State* state)
 	{
 		lua_pushinteger(state, (int)m_global->m_size);
 		return 1;
 	}
 
-	static i32 SetUnitRotations(lua_State* state)
+	static  int32 SetUnitRotations(lua_State* state)
 	{
 		Unit* unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
-			unit->SetRotations((float)lua_tointeger(state, 1));
+			unit->SetRotations((int32)lua_tointeger(state, 1));
 		}
 		return 0;
 	}
 
-	static i32 SetInterface(lua_State* state)
+	static  int32 SetInterface(lua_State* state)
 	{
 		m_renderer->SetInterface((unsigned int)lua_tointeger(state,1), m_resources->GetShaderByName("texture.fx"));
 		return 0;
@@ -742,7 +852,7 @@ namespace lua_callback
 
 	static int GameChatMessageFront(lua_State* state)
 	{
-		GameChat* gc = UserInterfaceGame::GetGameChat();
+		class GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			std::string str = lua_tostring(state, 1);
@@ -758,7 +868,7 @@ namespace lua_callback
 
 	static int GameChatMessageBack(lua_State* state)
 	{
-		GameChat* gc = UserInterfaceGame::GetGameChat();
+		class GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			std::string str = lua_tostring(state, 1);
@@ -774,7 +884,7 @@ namespace lua_callback
 
 	static int ClearGameChat(lua_State* state)
 	{
-		GameChat* gc = UserInterfaceGame::GetGameChat();
+		class GameChat* gc = UserInterfaceGame::GetGameChat();
 		if (gc)
 		{
 			gc->ClearQueue();
@@ -800,6 +910,8 @@ namespace lua_callback
 		//Music
 		lua_register(m_lua, "AddMusic", lua_callback::Music::AddMusic);
 		lua_register(m_lua, "PlayMusic", lua_callback::Music::PlayMusic);
+		lua_register(m_lua, "AddInterfaceSound", lua_callback::Music::AddInterfaceSound);
+		lua_register(m_lua, "PlaySound", lua_callback::Music::PlaySound);
 		//System
 		lua_register(m_lua, "PostQuitMessage", lua_callback::_Game::__PostQuitMessage);
 		lua_register(m_lua, "SaveInstance", lua_callback::SaveInstance);
@@ -811,10 +923,17 @@ namespace lua_callback
 		lua_register(m_lua, "GetMousePressed", lua_callback::__GetMousePressed);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
 		
-		//RenderContainer
-		lua_register(m_lua, "SetRenderContainerFlag", lua_callback::SetRenderContainerFlag);
+		//EObject
+		lua_register(m_lua, "SetPushableFlag", lua_callback::SetPushableFlag);
+		lua_register(m_lua, "SetRenderingFlag", lua_callback::SetRenderingFlag);
+		lua_register(m_lua, "SetShadowFlag", lua_callback::SetShadowFlag);
+		lua_register(m_lua, "SetSelectableFlag", lua_callback::SetSelectableFlag);
+		lua_register(m_lua, "SetCollisionPriority", lua_callback::SetPushableFlag);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
 		lua_register(m_lua, "SetFlags", lua_callback::SetFlags);
+		lua_register(m_lua, "SetFootstepsSound", lua_callback::SetFootstepsSound);
+		lua_register(m_lua, "BeginRunning", lua_callback::BeginRunning);
+		lua_register(m_lua, "EndRunning", lua_callback::EndRunning);
 		//lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);

@@ -7,15 +7,15 @@
 
 typedef int32_t Boolean;
 
-RenderContainerVector::RenderContainerVector()
+EObjectVector::EObjectVector()
 {
 }
 
 
 
-void RenderContainerVector::Update(float dt)
+void EObjectVector::Update(float dt)
 {
-	for (u32 i = 0u; i < 32u; i++)
+	for (uint32 i = 0u; i < 32u; i++)
 	{
 		if(!xta[i])
 		for (auto & obj : m_objectsXY[1][i])
@@ -26,7 +26,7 @@ void RenderContainerVector::Update(float dt)
 	}
 }
 
-void RenderContainerVector::Sort()
+void EObjectVector::Sort()
 {
 	SortByXV(m_objectsXY);
 	SortByYV(m_objectsXY);
@@ -36,9 +36,9 @@ void RenderContainerVector::Sort()
 
 
 
-void _vectorcall RenderContainerVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
+void _vectorcall EObjectVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
 {
-Vector<Vector<RenderContainer*>*> mvpp;
+Vector<Vector<EObject*>*> mvpp;
 for (uint16_t i = 0u; i < 32u; i++)
 	{
 	if(!yta[i])
@@ -47,10 +47,10 @@ mvpp.push_back(&m_objectsXY[1][i]);
 
 std::reverse(mvpp.begin(), mvpp.end());
 
-u32 group = 31u;
+uint32 group = 31u;
 for (auto& vec : mvpp)
 {
-	u32 index = 0u;
+	uint32 index = 0u;
 	for (auto& obj : *vec)
 	{
 		obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
@@ -63,9 +63,9 @@ for (auto& vec : mvpp)
 
 }
 
-void RenderContainerVector::Clear()
+void EObjectVector::Clear()
 {
-	for (u32 cv = 0u; cv < 32u; cv++)
+	for (uint32 cv = 0u; cv < 32u; cv++)
 	{
 		for (auto &&object : m_objectsXY[0][cv])
 		{
@@ -81,31 +81,31 @@ void RenderContainerVector::Clear()
 
 }
 
-void RenderContainerVector::Push(Unit * unit)
+void EObjectVector::Push(Unit * unit)
 {
 	m_objectsXY[1][0].push_back(unit);
 }
 
-void RenderContainerVector::Push(Doodads * doodads)
+void EObjectVector::Push(Doodads * doodads)
 {
 	m_objectsXY[1][0].push_back(doodads);
 }
 
-void RenderContainerVector::Push(AnimatedDoodads* animated)
+void EObjectVector::Push(AnimatedDoodads* animated)
 {
 	m_objectsXY[1][0].push_back(animated);
 }
 
-void RenderContainerVector::Push(Tree * tree)
+void EObjectVector::Push(Tree * tree)
 {
 	m_objectsXY[1][0].push_back(tree);
 }
 
-Boolean _stdcall CheckDistance(RenderContainer* A, RenderContainer* B, float range) noexcept
+Boolean _stdcall CheckDistance(EObject* A, EObject* B,const float range) noexcept
 {
 
-	const float distanceX = A->Center.x - B->Center.x;
-	const float distanceY = A->Center.y - B->Center.y;
+	const float distanceX = A->m_boundingSphere.Center.x - B->m_boundingSphere.Center.x;
+	const float distanceY = A->m_boundingSphere.Center.y - B->m_boundingSphere.Center.y;
 	const float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 	if (distance < range)
 	{
@@ -119,11 +119,11 @@ Boolean _stdcall CheckDistance(RenderContainer* A, RenderContainer* B, float ran
 	}
 }
 
-void _stdcall PushUnitsInRange(vector<RenderContainer*>& vec, std::stack<Unit*>& sa, RenderContainer* object, float range) noexcept
+void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object,const float range) noexcept
 {
 	for (auto&& unit : vec)
 	{
-		if (unit&&unit != object && (unit->m_type == RenderContainer::RenderContainerType::UNIT))
+		if (unit&&unit != object && (unit->m_type == EObject::EObjectType::UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
@@ -142,7 +142,7 @@ ENDLOOP:
 }
 
 
-std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	std::stack<Unit*> units;
 
@@ -150,7 +150,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 
 	//ThreadPoolHandle pool; TO DO
 
-	const u32 cVec = object->m_vector;
+	const uint32 cVec = object->m_vector;
 
 	switch (cVec)
 	{
@@ -160,7 +160,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 
 		for (auto &obj : m_objectsXY[1][cVec])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -172,7 +172,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 		}
 		for (auto &obj : m_objectsXY[1][cVec+1])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -188,7 +188,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 	{
 		for (auto &obj : m_objectsXY[1][cVec - 1])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -200,7 +200,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 		}
 		for (auto &obj : m_objectsXY[1][cVec])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -216,7 +216,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 	{
 		for (auto &obj : m_objectsXY[1][cVec - 1])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -228,7 +228,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 		}
 		for (auto &obj : m_objectsXY[1][cVec])
 		{
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{
@@ -240,7 +240,7 @@ std::stack<Unit*> _vectorcall RenderContainerVector::GetUnitsInRange(Unit* objec
 		}
 		{
 			for (auto &obj : m_objectsXY[1][cVec + 1])
-			if (obj&&obj != object && (obj->m_type == RenderContainer::RenderContainerType::UNIT))
+			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 			{
 				switch (CheckDistance(obj, object, range))
 				{

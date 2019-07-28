@@ -2,6 +2,7 @@
 #include "RenderContainer.h"
 #include "S_ModelPaths.h"
 #include "Sprite.h"
+#include "Sound.h"
 
 #pragma region
 
@@ -9,7 +10,7 @@
 
 
 
-class Unit : public RenderContainer
+class Unit : public EObject
 {
 public:
 
@@ -47,23 +48,23 @@ public:
 
 		}
 
-		ID3D11ShaderResourceView* GetTexture()
+		ID3D11ShaderResourceView* GetTexture() const
 		{
 			return m_textures[m_variant]->GetTexture();
 		}
-		int32_t GetVariant()
+		int32 GetVariant() const noexcept
 		{
 			return m_variant;
 		}
-		float GetMaxFrames()
+		float GetMaxFrames() const noexcept
 		{
 			return m_maxFrames[m_variant];
 		}
-		void SetVariant(ModelStance variant)
+		void SetVariant(const enum ModelStance variant = ModelStance::MS_NEUTRAL) noexcept
 		{
 			this->m_variant = variant;
 		}
-		void SetVariant(int32_t variant)
+		void SetVariant(const int32 variant)
 		{
 			this->m_variant = variant;
 		}
@@ -71,43 +72,59 @@ public:
 		Texture*             m_textures[13];
 		float                m_maxFrames[13] = { 8,16,15,5,0,0,8,16,8,0,8,0,0 };
 	private:
-		int32_t               m_variant;
+		int32                m_variant;
 
 	};
 
 	Unit();
 	~Unit();
 
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths,float size, float collision, XMFLOAT3 position,RenderContainerFlags flags,bool wander = true);
-	void Resize(ID3D11Device * device, Shader * shader, float resize);
-	void PlayAnimation(ModelStance animation);
-	void SetAnimation(ModelStance animation);
+	void Initialize(
+		ID3D11Device* device,
+		ID3D11DeviceContext* deviceContext,
+		class Shader* shader,
+		WCHAR* paths,
+		const float size,
+		const float collision,
+		const XMFLOAT3 position,
+		const bool wander = true
+	);
+	void Resize(ID3D11Device * device, Shader * shader,const float resize);
+	void PlayAnimation(const enum ModelStance animation);
+	void SetAnimation(const enum ModelStance animation);
 	void SetAnimationSpeed(float speed);
 
 
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) override;
-	void Update(float dt) override;
-	void SetZ(float z = 0.0f) override;
+	void Update(const float dt) override;
+	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 
-	void SetTask(Task* task);
-	void GiveTask(Task* task);
+	void SetTask(class Task* task);
+	void GiveTask(class Task* task);
 
-	float    GetCollisionRadius();
+	float    GetCollisionRadius() const noexcept;
 
-	XMFLOAT3 GetPosition();
-	float    GetSpeed();
-	float GetZ();
-	void SetSpeed(float speed = 0.0f);
-	WalkingStance GetWalkingStance();
-	void SetWalkingStance(WalkingStance stance);
+	XMFLOAT3 GetPosition() const noexcept;
+	float    GetSpeed() const noexcept;
+	float GetZ() const noexcept;
+	void SetSpeed(const float speed = 0.0f);
+	WalkingStance GetWalkingStance() const noexcept;
+	void SetWalkingStance(const enum WalkingStance stance = WalkingStance::WS_RUN);
 	void ChangeWalkingStance();
-	void SetRotations(int32_t rotations);
-	void SetRotation(float rotation);
-	void SetVelocity(float x, float y, float z);
+	void SetRotations(const int32 rotations);
+	void SetRotation(const float rotation);
+	void SetVelocity(const float x,const float y,const float z);
 	void DiscardTasks(); 
-	void SetPosition(XMFLOAT3 position);
+	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
+
+	void SetFootstepsSound(class Sound* sound);
+
+	void BeginRunning();
+	void EndRunning();
+
+	class Sound* GetFootstepsSound() const noexcept;
 
 	friend class Task;
 	friend class TaskGotoPoint;
@@ -120,12 +137,19 @@ public:
 
 private:
 
-	void InitializeModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, ModelPaths* paths);
+	void InitializeModel(
+		ID3D11Device* device,
+		ID3D11DeviceContext* deviceContext,
+		class Shader* shader,
+		struct ModelPaths* paths
+	);
 
-	float         m_speed[2];
-	WalkingStance m_walkingStance;
-	TaskQueue     m_tasks;
-	bool          m_wanderingFlag;
+	float               m_speed[2];
+	enum  WalkingStance m_walkingStance;
+	class TaskQueue     m_tasks;
+	bool                m_wanderingFlag;
+	class Sound*        m_footstepsSound{};
+	class sf::Sound*    m_footstepsHandle{};
 
 	ID3D11DeviceContext * m_deviceContext;
 	float m_currentFrame;

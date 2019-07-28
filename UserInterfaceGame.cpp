@@ -73,14 +73,17 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 
 void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 {
-	const i32 xr = ((Settings::GetResolutionX())/2);
-	const i32 yr = ((Settings::GetResolutionY())/2);
+	const  int32 xr = ((Settings::GetResolutionX())/2);
+	const  int32 yr = ((Settings::GetResolutionY())/2);
 	m_input->GetMousePosition(xm, ym);
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixTranslation(cameraPosition.m128_f32[0], cameraPosition.m128_f32[1] - UI_MUI_OFFSET,cameraPosition.m128_f32[2]));
 	xm -= xr;
 	ym -= yr;
-	m_mousePosition = { (i16)(cameraPosition.m128_f32[0] + xm),(i16)(cameraPosition.m128_f32[1] - ym) };
-	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition[0], m_mousePosition[1],cameraPosition.m128_f32[2]));
+	m_mousePosition = {
+		(int32)(cameraPosition.m128_f32[0] + xm),
+		(int32)(cameraPosition.m128_f32[1] - ym)
+	};
+	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation((float)m_mousePosition[0], (float)m_mousePosition[1],cameraPosition.m128_f32[2]));
 	stringstream ssfps;
 	ssfps << m_fps;
 	string fps = "FPS " + string(ssfps.str());
@@ -100,13 +103,13 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	med /= double(CPU_MED);
 
 	std::stringstream ss;
-	ss << ceilf(100*med);
+	ss << ceilf((float)(100.0*med));
 	std::string cpu = "CPU " + string(ss.str());
 	m_cpuText.SetText(cpu);
 
 
 
-	std::vector<uint32_t> ts = RendererManager::GetNumberOfObjectsVector();
+	std::vector<int64> ts = RendererManager::GetNumberOfObjectsVector();
 
 	//for (uint32_t i = 0u; i < 16u; i++)
 	//{
@@ -150,12 +153,12 @@ UserInterfaceGame::~UserInterfaceGame()
 
 }
 
-void UserInterfaceGame::SetFPS(int fps)
+void UserInterfaceGame::SetFPS(const int32 fps) noexcept
 {
 	m_fps = fps;
 }
 
-void UserInterfaceGame::GetMousePosition(int16_t & x,int16_t & y)
+void UserInterfaceGame::GetMousePosition(int32 & x,int32 & y)
 {
 	x = m_mousePosition[0];
 	y = m_mousePosition[1];
