@@ -135,7 +135,9 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileName)
 	return InitializeShader(device, hwnd,shaderFileName);
 }
 
-void Shader::Begin(ID3D11DeviceContext* deviceContext)
+void Shader::Begin(
+	struct ID3D11DeviceContext* const deviceContext
+)
 {
 	deviceContext->OMSetBlendState(m_alphaBlendState, 0, 0xFFFFFFFF);
 	deviceContext->OMSetDepthStencilState(m_depthStencilState, 0);
@@ -146,7 +148,9 @@ void Shader::Begin(ID3D11DeviceContext* deviceContext)
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Shader::End(ID3D11DeviceContext * deviceContext)
+void Shader::End(
+	struct ID3D11DeviceContext * const deviceContext
+)
 {
 	deviceContext->PSSetSamplers(0, 0,NULL);
 	deviceContext->IASetInputLayout(NULL);
@@ -154,13 +158,20 @@ void Shader::End(ID3D11DeviceContext * deviceContext)
 	deviceContext->PSSetShader(NULL, NULL, 0);
 }
 
-bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * texture,UINT index)
+bool Shader::SetShaderParameters(
+	struct ID3D11DeviceContext * const deviceContext,
+	struct ID3D11ShaderResourceView * const texture,
+	const uint32 index
+)
 {
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 	return true;
 }
 
-bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * texture)
+bool Shader::SetShaderParameters(
+	struct ID3D11DeviceContext * const deviceContext,
+	struct ID3D11ShaderResourceView * const texture
+)
 {
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 	return true;
@@ -168,7 +179,12 @@ bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, ID3D11Shad
 
 
 
-bool Shader::SetShaderParameters(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
+bool Shader::SetShaderParameters(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct XMFLOAT4X4& worldMatrix,
+	const struct XMFLOAT4X4& viewMatrix,
+	const struct XMFLOAT4X4& projectionMatrix
+)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

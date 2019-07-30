@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string>
 
+#include "gdef.h"
+
 
 using namespace DirectX;
 
@@ -23,23 +25,51 @@ public:
 	Shader(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
 	Shader(Shader &shader);
 	virtual ~Shader(void);
-	virtual void Begin(ID3D11DeviceContext* deviceContext);
-	virtual void End(ID3D11DeviceContext* deviceContext);
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* texture, UINT index);
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* texture);
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, UINT index);
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	virtual void Begin(
+		struct ID3D11DeviceContext* const deviceContext
+	);
+	virtual void End(
+		struct ID3D11DeviceContext* const deviceContext
+	);
+	bool SetShaderParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		struct ID3D11ShaderResourceView* const texture,
+		const uint32 index
+	);
+	bool SetShaderParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		struct ID3D11ShaderResourceView* const texture
+	);
+
+	bool SetShaderParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& worldMatrix,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix
+	);
 
 
 	string GetName();
 	bool IsInitialized();
 
 protected:
-	virtual bool Initialize(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
+	virtual bool Initialize(
+		struct ID3D11Device* const device,
+		HWND hwnd,
+		WCHAR* shaderFileName
+	);
 	bool m_initialized;
 private:
-	bool InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
-	void OutputShadeErrorMessage(ID3D10Blob* errorMessage, HWND hwnd,WCHAR* shaderFileName);
+	bool InitializeShader(
+		struct ID3D11Device* const device,
+		HWND hwnd,
+		WCHAR* shaderFileName
+	);
+	void OutputShadeErrorMessage(
+		struct ID3D10Blob* const errorMessage,
+		HWND hwnd,
+		WCHAR* shaderFileName
+	);
 
 	ID3D11VertexShader* m_vertexShader;
 	ID3D11PixelShader* m_pixelShader;

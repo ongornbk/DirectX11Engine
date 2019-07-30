@@ -25,10 +25,11 @@ struct TileMap;
 struct RenderContainerVector;
 #pragma endregion
 
-extern "C"
-{
-	bool _vectorcall validateRendering(XMFLOAT3 object) noexcept;
-}
+
+	int32 _vectorcall validateRendering(
+		const struct XMFLOAT3& object
+	) noexcept;
+
 
 
 class RendererManager
@@ -47,7 +48,11 @@ public:
 	void PushDoodads(class Doodads* doodads,const int32 z = 0);
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads,const int32 z = 0);
 	void PushTree(class Tree* doodads,const int32 z = 0);
-	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	void Render(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix
+	);
 	void Update();
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(XMFLOAT2 position, const int32 tile);

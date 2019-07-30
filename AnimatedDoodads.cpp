@@ -66,7 +66,12 @@ void AnimatedDoodads::Initialize(
 	m_type = EObject::EObjectType::ANIMATED_DOODADS;
 }
 
-void AnimatedDoodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
+void AnimatedDoodads::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct XMFLOAT4X4& viewMatrix,
+	const struct XMFLOAT4X4& projectionMatrix,
+	const struct ShaderPackage &shader
+)
 {
 	if (m_flags.m_rendering)
 	{

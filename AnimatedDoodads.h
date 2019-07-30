@@ -18,7 +18,12 @@ public:
 		const XMFLOAT3 position
 		);
 
-	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) override;
+	void Render(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		const struct ShaderPackage &shader
+	) override;
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;

@@ -336,6 +336,15 @@
     <ClInclude Include="Footsteps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IBidirectionalStruct.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IBidirectionalElement.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">

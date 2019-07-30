@@ -13,6 +13,7 @@
 using namespace std;
 
 #include "gdef.h"
+#include "List.h"
 
 class Sound
 {
@@ -43,6 +44,6 @@ private:
 	bool m_isLooping;
 	float m_volume;
 
-	std::deque<sf::Sound> m_instances;
+	class std::deque<class sf::Sound> m_instances;
 };
 

@@ -11,6 +11,7 @@
 #include <sstream>
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
+#define TILE_MAP_HALF_SIZE_INT32 TILE_MAP_SIZE / 2
 
 #define CELL_ZERO_Z             0.0f
 #define TILE_NUMBER_OF_TEXTURES 13
@@ -24,13 +25,13 @@ struct TileType
 	{
 	struct
 	{
-	uint8_t tile_type : 5u;
-	uint8_t tile_sub  : 3u;
+	int32 tile_type;
+	int32 tile_sub;
 	};
-	uint8_t tile_val;
+	int64 tile_val;
 	};
 
-	bool operator !=(TileType type)
+	bool operator !=(const struct TileType type)
 	{
 		return (tile_val != type.tile_val);
 	}
@@ -61,7 +62,7 @@ static uint8_t tilesub[32] ={
 
 	}
 
-	void SetCellMultiplier(float multiplier)
+	void SetCellMultiplier(const float multiplier) noexcept
 	{
 		m_cellMultiplier = multiplier/100.0f;
 	}
@@ -74,89 +75,104 @@ static uint8_t tilesub[32] ={
 
 
 
-	array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(XMFLOAT2 floats) noexcept
+	class array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(
+		const struct XMFLOAT2 floats
+	) noexcept
 	{
-		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-		_f[0] -= floats.x / tile::CELL_WIDTH;
-		_f[0] -= floats.y / tile::CELL_HEIGHT;
-		_f[1] += floats.x / tile::CELL_WIDTH;
-		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		array< int32, 2> _i = { ( int32)_f[0],( int32)_f[1]};
-
-		ipp::math::SquashInt32Array(_i.data(), 2, 0, TILE_MAP_RANGE);
-		return _i;
+		class array< int32, 2> _indexes = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
+		_indexes[0] -= (int32)(floats.x / tile::CELL_WIDTH);
+		_indexes[0] -= (int32)(floats.y / tile::CELL_HEIGHT);
+		_indexes[1] += (int32)(floats.x / tile::CELL_WIDTH);
+		_indexes[1] -= (int32)(floats.y / tile::CELL_HEIGHT);
+		ipp::math::SquashInt32Array(_indexes.data(), 2, 0, TILE_MAP_RANGE);
+		return _indexes;
 	}
 
-	array< int32, 2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(XMFLOAT3 floats) noexcept
+	class array< int32, 2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(
+		const struct XMFLOAT3 floats
+	) noexcept
 	{
-		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-		_f[0] -= floats.x / tile::CELL_WIDTH;
-		_f[0] -= floats.y / tile::CELL_HEIGHT;
-		_f[1] += floats.x / tile::CELL_WIDTH;
-		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		array< int32, 2> _i = { ( int32)_f[0],( int32)_f[1] };
-		ipp::math::SquashInt32Array(_i.data(), 2, 0, TILE_MAP_RANGE);
-		return _i;
+		class array< int32, 2> _indexes = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
+		_indexes[0] -= (int32)(floats.x / tile::CELL_WIDTH);
+		_indexes[0] -= (int32)(floats.y / tile::CELL_HEIGHT);
+		_indexes[1] += (int32)(floats.x / tile::CELL_WIDTH);
+		_indexes[1] -= (int32)(floats.y / tile::CELL_HEIGHT);
+		ipp::math::SquashInt32Array(_indexes.data(), 2, 0, TILE_MAP_RANGE);
+		return _indexes;
 	}
 
-	bool _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(XMFLOAT3 floats, array< int32, 2>& index) noexcept
+	int32 _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(
+		const struct XMFLOAT3 floats,
+		class array< int32, 2>& index
+	) noexcept
 	{
-		float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-		_f[0] -= floats.x / tile::CELL_WIDTH;
-		_f[0] -= floats.y / tile::CELL_HEIGHT;
-		_f[1] += floats.x / tile::CELL_WIDTH;
-		_f[1] -= floats.y / tile::CELL_HEIGHT;
-		index = { ( int32)_f[0],( int32)_f[1] };
+		index = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
+		index[0] -= (int32)(floats.x / tile::CELL_WIDTH);
+		index[0] -= (int32)(floats.y / tile::CELL_HEIGHT);
+		index[1] += (int32)(floats.x / tile::CELL_WIDTH);
+		index[1] -= (int32)(floats.y / tile::CELL_HEIGHT);
 		return ipp::math::SquashInt32ArrayWithCheck(index.data(), 2, 0, TILE_MAP_RANGE);
 	}
 
 
 namespace
 {
-	static ID3D11Device*        m_device;
-	static Shader*              m_tileShader;
-	static VertexBuffer*        m_vertexBuffer;
-	static VertexBuffer*        m_animatedVertexBuffer;
-	static Texture*             m_texture[32][8];
-	static float   m_size[2];
-	static ID3D11DeviceContext* m_deviceContext;
-	static XMFLOAT4X4 m_viewMatrix;
-	static XMFLOAT4X4 m_projectionMatrix;
-	static TileType m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
-	static TileType current = {0u,0u};
-	static RendererManager*     m_renderer;
-	static TileMap*              m_currentTileMap;
+	static struct ID3D11Device*        m_device;
+	static class Shader*               m_tileShader;
+	static class VertexBuffer*         m_vertexBuffer;
+	static class VertexBuffer*         m_animatedVertexBuffer;
+	static class Texture*              m_texture[32][8];
+	static float                       m_size[2];
+	static struct ID3D11DeviceContext* m_deviceContext;
+	static struct XMFLOAT4X4           m_viewMatrix;
+	static struct XMFLOAT4X4           m_projectionMatrix;
+	static struct TileType             m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
+	static struct TileType             current = {0u,0u};
+	static class RendererManager*      m_renderer;
+	static struct TileMap*             m_currentTileMap;
 }
 
-Tile::Tile(float x,float y,int ix,int iy)
+Tile::Tile(
+	const float x,
+	const float y,
+	const int32 ix,
+	const int32 iy
+) : 
+	m_position(x, y),
+	m_index{ ix,iy },
+	m_collision(false)
 {
-	m_position = { x,y };
-	XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y, CELL_ZERO_Z));
-	m_index = { ix,iy };
-	m_collision = false;
+	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(x,y, CELL_ZERO_Z));
 }
 
-Tile::Tile(XMFLOAT2 position, array< int32, 2> index)
+Tile::Tile(
+	const struct XMFLOAT2 position,
+	class array< int32, 2> index
+) : 
+	m_index(index),
+	m_collision(false)
 {
-	XMStoreFloat4x4(&m_world, XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
-	m_index = index;
-	m_collision = false;
+	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
 }
 
-Tile::Tile(AnimatedTile * tile)
+Tile::Tile(
+	class AnimatedTile* tile
+): 
+	m_position(tile->m_position),
+	m_index(tile->m_index),
+	m_collision(false)
 {
-	m_position = tile->m_position;
-	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
-	m_index = tile->m_index;
-	m_collision = false;
+	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 }
 
-Tile::Tile(Tile * tile)
+Tile::Tile(
+	class Tile * tile
+) : 
+	m_position(tile->m_position),
+	m_index(tile->m_index),
+	m_collision(false)
 {
-	m_position = tile->m_position;
-	XMStoreFloat4x4(&m_world, XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
-	m_index = tile->m_index;
-	m_collision = false;
+	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
 }
 
 
@@ -271,9 +287,9 @@ void Tile::Render()
 }
 TileMap::~TileMap()
 {
-	for (int i = 0; i < TILE_MAP_SIZE; i++)
+	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
-		for (int j = 0; j < TILE_MAP_SIZE; j++)
+		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
 			delete map[i][j];
 		}
@@ -294,9 +310,9 @@ void TileMap::Initialize()
 {
 	float offsety = (TILE_MAP_RANGE) *tile::CELL_HALF_HEIGHT;
 	float offsetx = 0.0f;
-	for (int i = 0; i < TILE_MAP_SIZE; i++)
+	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
-		for (int j = 0; j < TILE_MAP_SIZE; j++)
+		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
 			map[i][j] = new Tile(offsetx + (tile::CELL_HALF_WIDTH*j), offsety - (tile::CELL_HALF_HEIGHT*j), i, j);
 			map[i][j]->m_type = Tile::Type::TILE;
@@ -329,7 +345,12 @@ TileMap::TileMap(float size, float framesPerSecond, float animationSpeed, bool i
 	m_maxFrames = ANIMATEDTILE_FRAME_COUNT;
 }
 
-void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition)
+void _vectorcall TileMap::Render(
+	struct ID3D11DeviceContext * deviceContext,
+	const struct XMFLOAT4X4 viewMatrix,
+	const struct XMFLOAT4X4 projectionMatrix,
+	const XMVECTOR cameraPosition
+)
 {
 	m_tileShader->Begin(deviceContext);
 	GRAPHICS EnableAlphaBlending(true);
@@ -349,9 +370,9 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
 	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
-	for ( int32 j = renderInts[2]; j <renderInts[3]; j++)
+	for ( int32 j = renderInts[2]; j <renderInts[3]; ++j)
 	{
-		for ( int32 i = renderInts[0]; i < renderInts[1]; i++)
+		for ( int32 i = renderInts[0]; i < renderInts[1]; ++i)
 		{
 			const  int32 tempB = i + j;
 			if (((tempB) > (tempA)) || ((tempB) < (tempC)))
@@ -362,7 +383,7 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 				map[j][i]->Render();
 				break;
 			case Tile::Type::ANIMATEDTILE:
-				((AnimatedTile*)map[j][i])->Render();
+				map[j][i]->Render();
 				break;
 			}
 			
@@ -373,17 +394,24 @@ void _vectorcall TileMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4
 	
 }
 
-void TileMap::SetTile(XMFLOAT2 position, int32_t tile)
+void TileMap::SetTile(
+	const struct XMFLOAT2 position,
+	const int32 tile
+)
 {
 	SetTile(TransformXMFLOAT2ToTileMapINDEX2(position),tile);
 }
 
-void _vectorcall TileMap::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush)
+void _vectorcall TileMap::SetTile(
+	const struct XMFLOAT2 position,
+	const int32 tile,
+	const int32 brush
+)
 {
 	array< int32,2> pos = TransformXMFLOAT2ToTileMapINDEX2(position);
-	for (int32_t x = 0; x < brush; x++)
+	for (int32 x = 0; x < brush; ++x)
 	{
-		for (int32_t y = 0; y < brush; y++)
+		for (int32 y = 0; y < brush; ++y)
 		{
 			if (x + y < brush)
 			{
@@ -396,7 +424,9 @@ void _vectorcall TileMap::SetTile(XMFLOAT2 position, int32_t tile, int32_t brush
 	}
 }
 
-void TileMap::SetTile(array< int32, 2> index, int32_t tile)
+void TileMap::SetTile(
+	array< int32, 2> index,
+	int32 tile)
 {
 	ipp::math::clamp(tile, 0, 8);
 	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;
@@ -475,33 +505,35 @@ void TileMap::LoadFromFile(std::string filename)
 	myfile.close();
 }
 
-bool TileMap::CollisionAt(XMFLOAT3 position)
+int32 TileMap::CollisionAt(const struct XMFLOAT3& position)
 {
 	array< int32, 2> index;
-	const bool out = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
-	if (out)return true;
-	const Tile* tilep = m_currentTileMap->map[index[0]][index[1]];
+	const int32 collision = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
+	if (collision)return 1;
+	const class Tile* tilep = m_currentTileMap->map[index[0]][index[1]];
 	if (tilep)
 	{
-		return tilep->m_collision;
+		return (int32)tilep->m_collision;
 	}
 	else
 	{
-		return false;
+		return 0;
 	}
 }
-void TileMap::SetCurrentTileMap(TileMap* tilemap)
+void TileMap::SetCurrentTileMap(
+	struct TileMap* const tilemap
+)
 {
 	m_currentTileMap = tilemap;
 }
 
-void TileMap::Update(float dt)
+void TileMap::Update(const float dt)
 {
-	for (int32_t j = renderInts[2]; j <renderInts[3]; j++)
+	for (int32 j = renderInts[2]; j <renderInts[3]; ++j)
 	{
-		for (int32_t i = renderInts[0]; i < renderInts[1]; i++)
+		for (int32 i = renderInts[0]; i < renderInts[1]; ++i)
 		{
-			int32_t sum = i + j;
+			int32 sum = i + j;
 			if ((sum >(renderInts[4])) || (sum < (renderInts[5])))
 				continue;
 			map[j][i]->Update();
@@ -561,29 +593,44 @@ void TileMap::Update(float dt)
 	m_previousFrame = m_currentFrame;
 }
 
-AnimatedTile::AnimatedTile(float x, float y, int ix, int iy,Texture* texture) : Tile(x, y, ix, iy)
+AnimatedTile::AnimatedTile(
+	const float x,
+	const float y,
+	const int32 ix,
+	const int32 iy,
+	class Texture* const texture
+) : 
+	Tile(x, y, ix, iy), m_texture(texture)
 {
-	m_texture = texture;
+
 }
 
-AnimatedTile::AnimatedTile(Tile * tile, Texture * texture) : Tile(tile->m_position,tile->m_index)
+AnimatedTile::AnimatedTile(
+	class Tile * const tile,
+	class Texture * const texture
+) : 
+	Tile(tile->m_position,tile->m_index),
+	m_texture(texture)
 {
-	m_texture = texture;
+
 }
 
 AnimatedTile::~AnimatedTile()
 {
 }
 
-void AnimatedTile::SetTexture(Texture * texture)
+void AnimatedTile::SetTexture(
+	class Texture * const texture
+)
 {
 	m_texture = texture;
 }
 
-void AnimatedTile::Update(float dt)
+void AnimatedTile::Update(
+	const float dt
+)
 {
 	Tile::Update();
-	
 }
 
 void AnimatedTile::Render()

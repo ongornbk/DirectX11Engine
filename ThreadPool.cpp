@@ -30,7 +30,7 @@ void ThreadPoolHandle::wait()
 	pool->wait();
 }
 
-ThreadPool::ThreadPool(size_t num_threads) :
+ThreadPool::ThreadPool(const size_t num_threads) :
  _taskNum(0) {
 	_running.store(true);
 	m_instance = this;

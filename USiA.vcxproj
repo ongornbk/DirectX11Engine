@@ -201,8 +201,11 @@
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsManager.h" />
+    <ClInclude Include="IBidirectionalElement.h" />
+    <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LetterSprite.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="LUAManager.h" />
     <ClInclude Include="LuaPointer.h" />
     <ClInclude Include="LuaPointersManager.h" />

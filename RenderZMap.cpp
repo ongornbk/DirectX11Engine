@@ -76,7 +76,7 @@ void RenderZMap::Push(Doodads * doodads,const int64 z)
 	}
 }
 
-void RenderZMap::Push(AnimatedDoodads * animated,const int64 z)
+void RenderZMap::Push(class AnimatedDoodads * animated,const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -84,13 +84,13 @@ void RenderZMap::Push(AnimatedDoodads * animated,const int64 z)
 	}
 	else
 	{
-		m_zVectors[z] = new EObjectVector();
+		m_zVectors[z] = new struct EObjectVector();
 		m_zVectors[z]->Push(animated);
 		m_zStance[z] = true;
 	}
 }
 
-void RenderZMap::Push(Tree * tree, const int64 z)
+void RenderZMap::Push(class Tree * tree, const int64 z)
 {
 	if (m_zStance[z])
 	{
@@ -98,7 +98,7 @@ void RenderZMap::Push(Tree * tree, const int64 z)
 	}
 	else
 	{
-		m_zVectors[z] = new EObjectVector();
+		m_zVectors[z] = new struct EObjectVector();
 		m_zVectors[z]->Push(tree);
 		m_zStance[z] = true;
 	}
@@ -132,7 +132,7 @@ std::vector<int64> RenderZMap::GetSizeVector()
 	std::vector<int64> mv;
 	for (auto vector : m_zVectors)
 	{
-		for (uint32_t i = 0u; i < 16u; i++)
+		for (int32 i = 0; i < 16; ++i)
 		{
 		//	mv.push_back((uint32_t)vector.second->m_objectsX[i].size());
 		}
@@ -144,9 +144,9 @@ std::stack<Unit*> RenderZMap::GetUnitsInRange(class Unit * object,const float ra
 {
 	if (object)
 	{
-		int32 z = (int32)object->GetZ();
+		const int32 z = (int32)object->GetZ();
 		return m_zVectors[z]->GetUnitsInRange(object, range);
 	}
-	std::stack<Unit*> m_elseStack;
+	class std::stack<class Unit*> m_elseStack;
 	return m_elseStack;
 }

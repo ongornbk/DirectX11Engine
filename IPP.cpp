@@ -265,43 +265,43 @@ void ipp::Timer::GetDeltaTime(float & dt)
 	}
 }
 
-float ipp::math::Sin(float degrees)
+float ipp::math::Sin(const float degrees)
 {
 	return sin(degrees * (ipp::PI / 180.0f));
 }
 
-float ipp::math::Cos(float degrees)
+float ipp::math::Cos(const float degrees)
 {
 	return cos(degrees * (ipp::PI / 180.0f));
 }
 
-float ipp::math::Tan(float degrees)
+float ipp::math::Tan(const float degrees)
 {
 	return tan(degrees * (ipp::PI / 180.0f));
 }
 
-float ipp::math::Asin(float degrees)
+float ipp::math::Asin(const float degrees)
 {
 	return asin(degrees) * (180.0f / ipp::PI);
 }
 
-float ipp::math::Acos(float degrees)
+float ipp::math::Acos(const float degrees)
 {
 	return acos(degrees) * (180.0f / ipp::PI);
 }
 
-float ipp::math::Atan(float degrees)
+float ipp::math::Atan(const float degrees)
 {
 	return atan(degrees) * (180.0f / ipp::PI);
 }
 
-float ipp::math::Atan2(float y, float x)
+float ipp::math::Atan2(const float y,const float x)
 {
-	return atan2(y, x) * (180.0f / ipp::PI);
+	return atan2(y, x) * (180.f / ipp::PI);
 }
 
 
-void ipp::math::clamp(int32_t & value, int32_t min, int32_t max)
+void _fastcall ipp::math::clamp(int32 & value,const int32 min,const int32 max)
 {
 		if (value > max)
 		{
@@ -315,7 +315,7 @@ void ipp::math::clamp(int32_t & value, int32_t min, int32_t max)
 		}
 }
 
-void ipp::math::clamp(float & value, float min, float max)
+void _fastcall ipp::math::clamp(float & value,const float min,const float max)
 {
 	if (value > max)
 	{
@@ -329,22 +329,22 @@ void ipp::math::clamp(float & value, float min, float max)
 	}
 }
 
-bool ipp::math::range(int32_t &value, int32_t min, int32_t max)
+int32 _fastcall ipp::math::range(int32 &value,const int32 min,const int32 max)
 {
 		if (value > max)
 		{
-			return false;
+			return 0;
 		}
 		if (value < min)
 		{
-			return false;
+			return 0;
 		}
-		return true;
+		return 1;
 }
 
-void ipp::math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32_t max) noexcept
+void ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
 {
-		for (char i = 0; i < size; i++)
+		for (int32 i = 0; i < size; ++i)
 		{
 			if (value[i] > max) value[i] = max;
 			else if (value[i] < min) value[i] = min;
@@ -352,36 +352,36 @@ void ipp::math::SquashInt32Array(int32_t * value, int32_t size,int32_t min,int32
 		return;
 }
 
-bool ipp::math::SquashInt32ArrayWithCheck(int32_t * value, int32_t size, int32_t min, int32_t max) noexcept
+int32 ipp::math::SquashInt32ArrayWithCheck(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
 {
-	bool out = false;
-	for (char i = 0; i < size; i++)
+	int32 out = 0;
+	for (int32 i = 0; i < size; ++i)
 	{
 		if (value[i] > max)
 		{
 			value[i] = max;
-			out = true;
+			out = 1;
 		}
 		else if (value[i] <= min)
 		{
 			value[i] = min;
-			out = true;
+			out = 1;
 		}
 	}
 	return out;
 }
 
-uint8_t _cdecl ipp::math::RandomUint8(uint8_t min, uint8_t max) noexcept
+uint8 _cdecl ipp::math::RandomUint8(const uint8 min,const uint8 max) noexcept
 {
-	return min + (rand() % int32_t(max - min + 1));
+	return min + (rand() % int32(max - min + 1));
 }
 
-int ipp::System::GetScreenWidth() noexcept
+int32 ipp::System::GetScreenWidth() noexcept
 {
 	return GetSystemMetrics(SM_CXSCREEN);
 }
 
-int ipp::System::GetScreenHeight() noexcept
+int32 ipp::System::GetScreenHeight() noexcept
 {
 	return GetSystemMetrics(SM_CYSCREEN);
 }
@@ -404,7 +404,7 @@ std::string ipp::System::GetFileName(const std::string & s) noexcept
 }
 
 
-void _stdcall ipp::System::Exit(const int32_t return_value) noexcept
+void _stdcall ipp::System::Exit(const int32 return_value) noexcept
 {
 	if (return_value)
 		ipp::Console::Println("System::Exit Code : ",return_value);

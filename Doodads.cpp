@@ -63,7 +63,12 @@ void Doodads::Initialize(
 
 }
 
-void Doodads::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader)
+void Doodads::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct XMFLOAT4X4& viewMatrix,
+	const struct XMFLOAT4X4& projectionMatrix,
+	const struct ShaderPackage &shader
+)
 {
 	if (m_flags.m_rendering)
 	{

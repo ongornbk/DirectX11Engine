@@ -27,7 +27,7 @@ private:
 	mutex _mutex;
 	vector<std::thread> _threads;
 public:
-	ThreadPool(size_t num_threads = std::thread::hardware_concurrency());
+	ThreadPool(const size_t num_threads = std::thread::hardware_concurrency());
 	~ThreadPool();
 	void push(tpTask work);
 	void clear();

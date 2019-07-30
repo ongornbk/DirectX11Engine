@@ -22,16 +22,19 @@ namespace
 	static RenderZMap             g_units;
 }
 
-RendererManager::RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select)
+RendererManager::RendererManager(
+	class Engine* const engine,
+	class Shader* const units,
+	class Shader* const ui,
+	class Shader* const shadow,
+	class Shader* const select
+) :
+	m_engine(engine),
+	m_unitsShader(units),
+	m_shader(ui),
+	m_shadowShader(shadow),
+	m_selectShader(select)
 {
-	this->m_engine = engine;
-	this->m_unitsShader = units;
-	this->m_shader = ui;
-	this->m_shadowShader = shadow;
-	this->m_selectShader = select;
-
-
-
 
 	m_instance = this;
 	
@@ -64,7 +67,10 @@ RendererManager::~RendererManager()
 
 
 
-void RendererManager::PushUnit(class Unit * unit,const int32 z)
+void RendererManager::PushUnit(
+	class Unit * const unit,
+	const int32 z
+)
 {
 	g_units.Push(unit,z);
 }
@@ -87,22 +93,22 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 
 
-	bool _vectorcall validateRendering(const XMFLOAT3 _In_ object) noexcept
+	int32 _vectorcall validateRendering(const struct XMFLOAT3& object) noexcept
 	{
 		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
 		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
 
 		if ((x > m_rangeX) || (y > m_rangeY))
-			return false;
-		else return true;
+			return 0;
+		else return 1;
 
 	}
 
 
 	void RendererManager::Render(
-		ID3D11DeviceContext * deviceContext,
-		XMFLOAT4X4 viewMatrix,
-		XMFLOAT4X4 projectionMatrix
+		struct ID3D11DeviceContext * const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix
 	)
 	{
 		struct ShaderPackage pck;

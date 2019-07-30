@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <atomic>
 
+#include "gdef.h"
+
 namespace ipp
 {
 
@@ -40,20 +42,20 @@ namespace ipp
 
 
 
-		float Sin(float degrees);
-		float Cos(float degrees);
-		float Tan(float degrees);
-		float Asin(float degrees);
-		float Acos(float degrees);
-		float Atan(float degrees);
-		float Atan2(float y, float x);
-		void clamp(int32_t &value, int32_t min, int32_t max);
-		void clamp(float &value, float min, float max);
-		bool range(int32_t &value, int32_t min, int32_t max);
+		float Sin(const float degrees);
+		float Cos(const float degrees);
+		float Tan(const float degrees);
+		float Asin(const float degrees);
+		float Acos(const float degrees);
+		float Atan(const float degrees);
+		float Atan2(const float y,const float x);
+		void _fastcall clamp(int32 &value,const int32 min,const int32 max);
+		void _fastcall clamp(float &value,const float min,const float max);
+		int32 _fastcall range(int32 &value,const int32 min,const int32 max);
 
-		void SquashInt32Array(int32_t* value, int32_t size,int32_t min,int32_t max) noexcept;
-		bool SquashInt32ArrayWithCheck(int32_t* value, int32_t size, int32_t min, int32_t max) noexcept;
-		uint8_t _cdecl RandomUint8(uint8_t min, uint8_t max) noexcept;
+		void SquashInt32Array(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
+		int32 SquashInt32ArrayWithCheck(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
+		uint8 _cdecl RandomUint8(const uint8 min,const uint8 max) noexcept;
 	}
 
 	namespace System
@@ -61,7 +63,7 @@ namespace ipp
 		int _stdcall GetScreenWidth() noexcept;
 		int _stdcall GetScreenHeight() noexcept;
 		std::string _stdcall GetFileName(const std::string &s) noexcept;
-		void _stdcall Exit(const int32_t return_value = 0) noexcept;
+		void _stdcall Exit(const int32 return_value = 0) noexcept;
 	}
 
 	class __Console

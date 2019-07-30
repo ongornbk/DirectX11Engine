@@ -33,7 +33,12 @@ class EObject
 {
 public:
 
-	virtual void            Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) = 0;
+	virtual void            Render(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		const struct ShaderPackage &shader
+	) = 0;
 	virtual void            SetZ(const float z = 0.f) = 0;
 	virtual void            Update(const float dt = 0.f) = 0;
 	virtual void            Release() = 0;

@@ -5,7 +5,7 @@ static ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
 static int numProcessors;
 static HANDLE self;
 
-void Initialize_CPU()
+void _cdecl Initialize_CPU()
 {
 	SYSTEM_INFO sysInfo;
 	FILETIME ftime, fsys, fuser;
@@ -23,7 +23,7 @@ void Initialize_CPU()
 }
 
 
-double Get_CPU()
+double _cdecl Get_CPU()
 {
 
 FILETIME ftime, fsys, fuser;
@@ -31,11 +31,10 @@ ULARGE_INTEGER now, sys, user;
 float percent;
 
 	GetSystemTimeAsFileTime(&ftime);
-	memcpy(&now, &ftime, sizeof(FILETIME));
-
-	GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
-	memcpy(&sys, &fsys, sizeof(FILETIME));
-	memcpy(&user, &fuser, sizeof(FILETIME));
+	(void)memcpy(&now, &ftime, sizeof(FILETIME));
+	(void)GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
+	(void)memcpy(&sys, &fsys, sizeof(FILETIME));
+	(void)memcpy(&user, &fuser, sizeof(FILETIME));
 	percent = (float)(sys.QuadPart - lastSysCPU.QuadPart) + (user.QuadPart - lastUserCPU.QuadPart);
 	percent /= (now.QuadPart - lastCPU.QuadPart);
 	percent /= numProcessors;

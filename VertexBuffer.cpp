@@ -4,7 +4,7 @@
 
 namespace
 {
-	static constexpr uint32_t t_indices6[6] = { 0u,1u,2u,0u,2u,3u };
+	static constexpr uint32 t_indices6[6] = { 0u,1u,2u,0u,2u,3u };
 }
 
 VertexBuffer::VertexBuffer()
@@ -107,7 +107,11 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 	return true;
 }
 
-bool VertexBuffer::InitializeAnchorBottom(ID3D11Device * device, Shader * shader, float size[2], bool writeable)
+bool VertexBuffer::InitializeAnchorBottom(
+	ID3D11Device * device,
+	Shader * shader,
+	float size[2],
+	bool writeable)
 {
 	m_shader = shader;
 	uint32_t* indices;
@@ -257,20 +261,25 @@ bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float 
 	return true;
 }
 
-void VertexBuffer::Render(ID3D11DeviceContext * deviceContext)
+void VertexBuffer::Render(
+	struct ID3D11DeviceContext * const deviceContext
+)
 {
-	constexpr uint32_t stride = sizeof(SpriteVertexType);
-	constexpr uint32_t offset = 0u;
+	constexpr uint32 stride = sizeof(SpriteVertexType);
+	constexpr uint32 offset = 0u;
 
 	deviceContext->IASetVertexBuffers(0u, 1u, &m_vertexBuffer, &stride, &offset);
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->DrawIndexed(m_indexCount, 0u, 0);
 }
 
-bool VertexBuffer::ResizeTexture(ID3D11Device * device, float size, bool writeable)
+bool VertexBuffer::ResizeTexture(
+	struct ID3D11Device * const device,
+	const float size,
+	const bool writeable)
 {
 
-	uint32_t* indices;
+	uint32* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
