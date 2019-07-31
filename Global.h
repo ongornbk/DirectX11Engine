@@ -12,6 +12,7 @@ public:
 	Unit*                m_lastPickedUnit;
 	Unit*                m_lastSelectedUnit;
 	EObject*             m_lastCreatedRenderContainer;
+	class EObject*       m_pickedObject{};
 	EObjectFlags         m_lastFlags{};
 	Task*                m_lastTask;
 	static Global*       GetInstance();

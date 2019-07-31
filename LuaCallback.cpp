@@ -309,9 +309,11 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int32_t __GetMouseState(lua_State* state) noexcept
+	static int32_t __GetMouseState(
+		struct lua_State* const state
+	) noexcept
 	{
-		if (m_input->GetMouseState((uint32_t)lua_tointeger(state, 1)))
+		if (m_input->GetMouseState((int32)lua_tointeger(state, 1)))
 		{
 			lua_pushboolean(state,true);
 		}
@@ -322,9 +324,11 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int32_t __GetMousePressed(lua_State* state) noexcept
+	static int32_t __GetMousePressed(
+		struct lua_State* const state
+	) noexcept
 	{
-		lua_pushboolean(state,m_input->GetMousePressed((int32_t)lua_tointeger(state,1)));
+		lua_pushboolean(state,m_input->GetMousePressed((int32)lua_tointeger(state,1)));
 		return 1;
 	}
 
@@ -353,8 +357,30 @@ namespace lua_callback
 
 	static int32_t PickUnit(lua_State* state) noexcept
 	{
-		m_global->m_lastPickedUnit = (Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
+		m_global->m_pickedObject = m_global->m_lastPickedUnit = 
+			(Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
 		return 0;
+	}
+
+	static int32_t PickObject(lua_State* state) noexcept
+	{
+		m_global->m_pickedObject = (Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
+		return 0;
+	}
+
+	static int32_t IsSelected(struct lua_State* const state) noexcept
+	{
+		class EObject* const obj = m_global->m_pickedObject;
+		if (obj)
+		{
+			if (obj->m_flags.m_selectable && obj->m_flags.m_selected)
+			{
+				lua_pushboolean(state, true);
+				return 1;
+			}
+		}
+		lua_pushboolean(state, false);
+		return 1;
 	}
 
 	static int32_t SetFlags(lua_State* state) noexcept
@@ -363,11 +389,13 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t CreateDoodads(lua_State* state) noexcept
+	static int32_t CreateDoodads(
+		struct lua_State* const state
+	) noexcept
 	{
-		Doodads* doodads = new Doodads();
+		class Doodads* const doodads = new class Doodads();
 		m_global->m_lastCreatedRenderContainer = doodads;
-		LuaPointer lptr(doodads);
+		const union LuaPointer lptr(doodads);
 		lua_pushinteger(state, lptr.lua.first);
 		lua_pushinteger(state, lptr.lua.second);
 		return 2;
@@ -380,11 +408,16 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t CreateTree(lua_State* state) noexcept
+	static int32 CreateTree(
+		struct lua_State* const state
+	) noexcept
 	{
-		Tree* tree = new Tree();
+		class Tree* const tree = new class Tree();
 		m_global->m_lastCreatedRenderContainer = tree;
-		return 0;
+		const union LuaPointer lptr(tree);
+		lua_pushinteger(state, lptr.lua.first);
+		lua_pushinteger(state, lptr.lua.second);
+		return 2;
 	}
 
 	//static int32_t SetZ(lua_State* state) noexcept
@@ -505,7 +538,9 @@ namespace lua_callback
 
 	
 
-	static int32_t InitializeUnit(lua_State* state) noexcept
+	static int32_t InitializeUnit(
+		struct lua_State* const state
+	) noexcept
 	{
 		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
@@ -593,7 +628,7 @@ namespace lua_callback
 
 	static int32_t InitializeTree(lua_State* state) noexcept
 	{
-		Tree* tree = (Tree*)m_global->m_lastCreatedRenderContainer;
+		class Tree* tree = (class Tree*)m_global->m_lastCreatedRenderContainer;
 		if (tree)
 		{
 			string str = lua_tostring(state, 1);
@@ -620,7 +655,7 @@ namespace lua_callback
 
 	static int32_t SetRenderingFlag(lua_State* state) noexcept
 	{
-		class EObject* object = m_global->m_lastPickedUnit;
+		class EObject* object = m_global->m_pickedObject;
 		if (object)
 		{
 			object->m_flags.m_rendering =  (bool)lua_toboolean(state, 1);
@@ -630,7 +665,7 @@ namespace lua_callback
 
 	static int32_t SetShadowFlag(lua_State* state) noexcept
 	{
-		class EObject* object = m_global->m_lastPickedUnit;
+		class EObject* object = m_global->m_pickedObject;
 		if (object)
 		{
 			object->m_flags.m_cast_shadow = (bool)lua_toboolean(state, 1);
@@ -638,9 +673,9 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t SetPushableFlag(lua_State* state) noexcept
+	static int32_t SetPushableFlag(struct lua_State* const state) noexcept
 	{
-		class EObject* object = m_global->m_lastPickedUnit;
+		class EObject* object = m_global->m_pickedObject;
 		if (object)
 		{
 			object->m_flags.m_pushable = (bool)lua_toboolean(state, 1);
@@ -650,7 +685,7 @@ namespace lua_callback
 
 	static int32_t SetSelectableFlag(lua_State* state) noexcept
 	{
-		class EObject* object = m_global->m_lastPickedUnit;
+		class EObject* object = m_global->m_pickedObject;
 		if (object)
 		{
 			object->m_flags.m_selectable = (bool)lua_toboolean(state, 1);
@@ -660,7 +695,7 @@ namespace lua_callback
 
 	static int32_t SetCollisionPriority(lua_State* state) noexcept
 	{
-		class EObject* object = m_global->m_lastPickedUnit;
+		class EObject* object = m_global->m_pickedObject;
 		if (object)
 		{
 			object->collisionPriority = (int32)lua_tointeger(state, 1);
@@ -854,13 +889,21 @@ namespace lua_callback
 		XMFLOAT2 position;
 		position.x= m_global->m_lastPoint.x;
 		position.y = m_global->m_lastPoint.y;
-		m_renderer->SetTile(position,(int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2));
+		m_renderer->SetTile(position,(int32)lua_tointeger(state, 1), (int32)lua_tointeger(state, 2));
 		return 0;
 	}
 
 	static int SaveInstance(lua_State* state)
 	{
 		m_renderer->SaveInstanceToFile(lua_tostring(state, 1));
+		return 0;
+	}
+
+	static int SetLastSelectedUnit(
+		struct lua_State* const state)
+	{
+		m_global->m_lastSelectedUnit = (class Unit*)
+			(LuaPointer((int32)lua_tointeger(state, 1), (int32)lua_tointeger(state, 2)).ptr);
 		return 0;
 	}
 
@@ -960,12 +1003,15 @@ namespace lua_callback
 		lua_register(m_lua, "SetRenderingFlag", lua_callback::SetRenderingFlag);
 		lua_register(m_lua, "SetShadowFlag", lua_callback::SetShadowFlag);
 		lua_register(m_lua, "SetSelectableFlag", lua_callback::SetSelectableFlag);
-		lua_register(m_lua, "SetCollisionPriority", lua_callback::SetPushableFlag);
+		lua_register(m_lua, "SetCollisionPriority", lua_callback::SetCollisionPriority);
 		lua_register(m_lua, "GetRenderContainerFlag", lua_callback::GetRenderContainerFlag);
 		lua_register(m_lua, "SetFlags", lua_callback::SetFlags);
 		lua_register(m_lua, "SetFootstepsSound", lua_callback::SetFootstepsSound);
 		lua_register(m_lua, "BeginRunning", lua_callback::BeginRunning);
 		lua_register(m_lua, "EndRunning", lua_callback::EndRunning);
+		lua_register(m_lua, "IsSelected", lua_callback::IsSelected);
+		lua_register(m_lua, "SetLastSelectedUnit", lua_callback::SetLastSelectedUnit);
+		lua_register(m_lua, "PickObject", lua_callback::PickObject);
 		//lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);

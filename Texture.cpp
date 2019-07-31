@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "GlobalUtilities.h"
+#include "gdef.h"
 
 using namespace DirectX;
 
@@ -23,14 +24,17 @@ Texture::~Texture()
 	m_name.clear();
 }
 
-bool Texture::Initialize(ID3D11Device * device, WCHAR* fileName)
+bool Texture::Initialize(
+	struct ID3D11Device * const device,
+	WCHAR* fileName
+)
 {
 	HRESULT result;
-	wstring tmp0 = wstring(fileName);
-	string tmp1 = string(tmp0.begin(), tmp0.end());
+	std::wstring tmp0 = std::wstring(fileName);
+	std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 	m_name = tmp1;
 
-	int pos = (int)m_name.find_last_of("/");
+	const int32 pos = (int32)m_name.find_last_of("/");
 	if (pos >= 0)
 	{
 		m_name = m_name.substr(pos + 1, m_name.length());
@@ -44,13 +48,13 @@ bool Texture::Initialize(ID3D11Device * device, WCHAR* fileName)
 		return false;
 	}
 
-	ID3D11Resource* resource = 0;
+	struct ID3D11Resource* resource = 0;
 	m_texture->GetResource(&resource);
-	ID3D11Texture2D* texture2D = 0;
+	struct ID3D11Texture2D* texture2D = 0;
 	result = resource->QueryInterface(&texture2D);
 	if (SUCCEEDED(result))
 	{
-		D3D11_TEXTURE2D_DESC desc;
+		struct D3D11_TEXTURE2D_DESC desc;
 		texture2D->GetDesc(&desc);
 		m_width = desc.Width;
 		m_height = desc.Height;
@@ -74,12 +78,12 @@ bool Texture::Initialize(ID3D11Device * device, WCHAR* fileName)
 
 
 
-ID3D11ShaderResourceView * Texture::GetTexture()
+struct ID3D11ShaderResourceView * Texture::GetTexture()
 {
 	return m_texture;
 }
 
-string Texture::GetName()
+std::string Texture::GetName()
 {
 	return m_name;
 }

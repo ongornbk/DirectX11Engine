@@ -55,14 +55,16 @@ public:
 
 	DirectX::BoundingSphere m_boundingSphere;
 
-	EObjectFlags m_flags;
+	struct EObjectFlags m_flags;
 
 	enum EObjectType
 	{
 		UNIT,
 		DOODADS,
 		ANIMATED_DOODADS,
-		TREE
+		TREE,
+		COLLISION_BOX,
+		SPECIAL_EFFECT
 	}m_type;
 };
 

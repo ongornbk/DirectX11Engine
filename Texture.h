@@ -12,7 +12,10 @@ public:
 	Texture(void);
 	~Texture(void);
 
-	bool Initialize(ID3D11Device* device, WCHAR* fileName);
+	bool Initialize(
+		struct ID3D11Device* const device,
+		WCHAR* fileName
+	);
 
 	ID3D11ShaderResourceView* GetTexture();
 	string GetName();
