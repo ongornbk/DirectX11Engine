@@ -13,6 +13,8 @@ namespace
 }
 
 
+
+
 struct __sort__SortByY {
 	bool operator()(class EObject* a,class EObject* b) const noexcept;
 };
@@ -22,5 +24,7 @@ struct  __sort__SortByX
 	bool operator()(class EObject *a,class EObject *b) const noexcept;
 };
 
-void _vectorcall SortByYV(Vector<EObject*> vec[2][32]) noexcept;
-void _vectorcall SortByXV(Vector<EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByYV(class Vector<EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept;
+
+void _vectorcall __CleanUp(class Vector<EObject*> vec[2][32]) noexcept;

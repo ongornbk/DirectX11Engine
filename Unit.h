@@ -93,7 +93,7 @@ public:
 	void PlayAnimation(const enum ModelStance animation);
 	void SetAnimation(const enum ModelStance animation);
 	void SetAnimationSpeed(float speed);
-
+	int32 isReleased() const noexcept override;
 
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,

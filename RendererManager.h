@@ -30,6 +30,7 @@ struct RenderContainerVector;
 		const struct XMFLOAT3& object
 	) noexcept;
 
+	void _cdecl CleanupFrame();
 
 
 class RendererManager

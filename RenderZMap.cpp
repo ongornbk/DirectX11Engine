@@ -24,6 +24,14 @@ void RenderZMap::Update(const float dt)
 	}
 }
 
+void RenderZMap::CleanUp()
+{
+	for (auto vector : m_zVectors)
+	{
+		vector.second->CleanUp();
+	}
+}
+
 void RenderZMap::Sort()
 {
 	for (auto vector : m_zVectors)
@@ -32,7 +40,12 @@ void RenderZMap::Sort()
 	}
 }
 
-void _vectorcall RenderZMap::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
+void _vectorcall RenderZMap::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct XMFLOAT4X4& viewMatrix,
+	const struct XMFLOAT4X4& projectionMatrix,
+	struct ShaderPackage &shader
+) noexcept
 {
 	for (auto vector : m_zVectors)
 	{

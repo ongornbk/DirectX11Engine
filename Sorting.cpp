@@ -93,6 +93,7 @@ using ipp::SQRT2;
 }
 
 
+
 _Use_decl_annotations_
  int32 _Out_opt_ _fastcall GetXCell(const _In_opt_ float x) noexcept
 {
@@ -625,7 +626,7 @@ void _stdcall sortPyVTP(class EObject** begin,class EObject** end) noexcept
 	std::sort(begin, end, __sort__SortByY());
 }
 
-void _vectorcall SortByYV(Vector<EObject*> vec[2][32]) noexcept
+void _vectorcall SortByYV(class Vector<EObject*> vec[2][32]) noexcept
 {
 	for (int32 i = 0; i < 32; ++i)
 		vec[1][i].clear();
@@ -650,7 +651,7 @@ void _vectorcall SortByYV(Vector<EObject*> vec[2][32]) noexcept
 
 }
 
-void _vectorcall SortByXV(Vector<EObject*> vec[2][32]) noexcept
+void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
@@ -675,3 +676,31 @@ void _vectorcall SortByXV(Vector<EObject*> vec[2][32]) noexcept
 		}
 	}
 }
+
+void _vectorcall __CleanUp(class Vector<EObject*> vec[2][32]) noexcept
+{
+	for (int32 i = 0; i < 32; ++i)
+	{
+	class Vector<class EObject*>& vectemp = vec[1][i];
+	for (int32 j = 0; j < vectemp.size(); ++j)
+	{
+		class EObject* obj = vectemp[j];
+		if (obj)
+		{
+			if (obj->isReleased())
+			{
+				delete obj;
+				obj = nullptr;
+				vectemp.remove(j);
+				j--;
+			}
+		}
+		else
+		{
+			vectemp.remove(j);
+			j--;
+		}
+	}	
+	}
+}
+

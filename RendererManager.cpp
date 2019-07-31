@@ -20,6 +20,12 @@ namespace
 	static float                  m_rangeX;
 	static float                  m_rangeY;
 	static RenderZMap             g_units;
+	static atomic<int32>          m_cleanupMode;
+}
+
+void _cdecl CleanupFrame()
+{
+	m_cleanupMode.store(1, std::memory_order::memory_order_seq_cst);
 }
 
 RendererManager::RendererManager(
@@ -141,11 +147,16 @@ void RendererManager::Update()
 {
 	m_cameraPosition = CAMERA GetPosition();
 	m_ui->Update(m_cameraPosition);
-	float dt = ipp::Timer::GetDeltaTime();
+	const float dt = ipp::Timer::GetDeltaTime();
 	m_map->Update(dt);
 
 	if (m_engine->GetGameStance() == false)
 	{
+		if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+		{
+			g_units.CleanUp();
+			m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
+		}
 		g_units.Update(dt);
 	}
 

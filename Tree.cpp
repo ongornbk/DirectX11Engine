@@ -123,7 +123,23 @@ void Tree::SetZ(const float z)
 
 void Tree::Release()
 {
-	delete this;
+	if (m_vertexBuffer)
+	{
+		delete m_vertexBuffer;
+		m_vertexBuffer = nullptr;
+	}
+}
+
+int32 Tree::isReleased() const noexcept
+{
+	if (m_vertexBuffer)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 void Tree::SetGlobal(Global * global) noexcept

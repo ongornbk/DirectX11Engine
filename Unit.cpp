@@ -288,7 +288,11 @@ void Unit::GiveTask(class Task * task)
 
 void Unit::Release()
 {
-	delete this;
+	if (m_vertexBuffer)
+	{
+		delete m_vertexBuffer;
+		m_vertexBuffer = nullptr;
+	}
 }
 
 float Unit::GetCollisionRadius() const noexcept
@@ -451,6 +455,18 @@ void Unit::SetAnimationSpeed(const float speed)
 {
 	m_previousSpeed = m_animationSpeed;
 	m_animationSpeed = speed;
+}
+
+int32 Unit::isReleased() const noexcept
+{
+	if (m_vertexBuffer)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 void Unit::InitializeModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, ModelPaths * paths)

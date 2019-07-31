@@ -27,6 +27,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
+	int32 isReleased() const noexcept override;
 
 private:
 

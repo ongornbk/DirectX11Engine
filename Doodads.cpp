@@ -109,6 +109,21 @@ void Doodads::SetZ(float z)
 
 void Doodads::Release()
 {
-	delete this;
+	if (m_vertexBuffer)
+	{
+		delete m_vertexBuffer;
+		m_vertexBuffer = nullptr;
+	}
 }
 
+int32 Doodads::isReleased() const noexcept
+{
+	if (m_vertexBuffer)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+}

@@ -42,6 +42,7 @@ public:
 	virtual void            SetZ(const float z = 0.f) = 0;
 	virtual void            Update(const float dt = 0.f) = 0;
 	virtual void            Release() = 0;
+	virtual int32           isReleased() const noexcept = 0;
 
 
 public:

@@ -26,6 +26,11 @@ void EObjectVector::Update(float dt)
 	}
 }
 
+void EObjectVector::CleanUp()
+{
+	__CleanUp(m_objectsXY);
+}
+
 void EObjectVector::Sort()
 {
 	SortByXV(m_objectsXY);

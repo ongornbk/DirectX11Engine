@@ -8,6 +8,7 @@
 #include "IPP.h"
 #include "Network.h"
 #include "LuaPointer.h"
+#include "Sorting.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -35,29 +36,35 @@ namespace lua_callback
 	namespace
 	{
 
-		static ResourceManager*     m_resources;
-		static Camera*              m_camera;
-		static Engine*              m_engine;
-		static Input*               m_input;
-		static Global*              m_global;
-		static ID3D11Device*        m_device;
-		static ID3D11DeviceContext* m_deviceContext;
-		static TextureShader*       m_unitsShader;
-		static RendererManager*     m_renderer;
+		static class ResourceManager*     m_resources;
+		static class Camera*              m_camera;
+		static class Engine*              m_engine;
+		static class Input*               m_input;
+		static class Global*              m_global;
+		static struct ID3D11Device*        m_device;
+		static struct ID3D11DeviceContext* m_deviceContext;
+		static class TextureShader*       m_unitsShader;
+		static class RendererManager*     m_renderer;
 
 	}
 
-	static void SetRendererManager(RendererManager* manager)
+	static void SetRendererManager(
+		class RendererManager* const manager
+	)
 	{
 		m_renderer = manager;
 	}
 
-	static void SetResourceManager(ResourceManager* manager)
+	static void SetResourceManager(
+		class ResourceManager* const manager
+	)
 	{
 		m_resources = manager;
 	}
 
-	static void SetCamera(Camera* camera)
+	static void SetCamera(
+		class Camera* const camera
+	)
 	{
 		m_camera = camera;
 	}
@@ -66,50 +73,59 @@ namespace lua_callback
 	{
 		m_device = m_engine->GetGraphics()->GetDevice();
 		m_deviceContext = m_engine->GetGraphics()->GetDeviceContext();
-		m_unitsShader = (TextureShader*)m_resources->GetShaderByName("units.fx");
+		m_unitsShader = (class TextureShader*)m_resources->GetShaderByName("units.fx");
 	}
 
-	static void Initialize(Engine* engine)
+	static void Initialize(
+		class Engine* const engine
+	)
 	{
 		m_engine = engine;
 		m_global = Global::GetInstance();
-
 	}
 
-	static void SetInput(Input* input)
+	static void SetInput(
+		class Input* const input
+	)
 	{
 		m_input = input;
 	}
 
 	namespace Resources
 	{
-		static  int32 LoadTexture(lua_State* state)
+		static  int32 LoadTexture(
+			struct lua_State* const state
+		)
 		{
 #pragma warning(disable : 4996)
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_resources->LoadTextureResource(wide_string);
 			delete wide_string;
 			return 0;
 		}
 
-		static  int32 LoadSound(lua_State* state)
+		static  int32 LoadSound(
+			struct lua_State* const state
+		)
 		{
 #pragma warning(disable : 4996)
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_resources->LoadSoundResource(wide_string);
 			delete wide_string;
 			return 0;
 		}
 
-		static  int32 AddModelPaths(lua_State* state)
+		static  int32 AddModelPaths(
+			struct lua_State* const state
+		)
 		{
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			m_engine->AddModelPaths(str);
 			return 0;
 		}
@@ -117,10 +133,12 @@ namespace lua_callback
 
 	namespace Cameras
 	{
-		static  int32 InitializeProjectionMatrix(lua_State* state)
+		static  int32 InitializeProjectionMatrix(
+			struct lua_State* const state
+		)
 		{
 			m_camera->InitializeProjectionMatrix(
-				(float)XM_PI / LUA_FLOAT(state, 1),
+				XM_PI / LUA_FLOAT(state, 1),
 				Settings::GetAspectRatio(),
 				1.0f / LUA_FLOAT(state, 2),
 				LUA_FLOAT(state, 3));
@@ -138,7 +156,9 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 SetCameraLookAt(lua_State* state)
+		static  int32 SetCameraLookAt(
+			struct lua_State* const state
+		)
 		{
 			m_global->camera_lookat = XMVectorSet(
 				(float)lua_tointeger(state, 1),
@@ -149,7 +169,9 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 SetCameraUp(lua_State* state)
+		static  int32 SetCameraUp(
+			struct lua_State* const state
+		)
 		{
 			m_global->camera_up = XMVectorSet(
 				(float)lua_tointeger(state, 1),
@@ -160,9 +182,11 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 SetCameraPosition(lua_State* state)
+		static  int32 SetCameraPosition(
+			struct lua_State* const state
+		)
 		{
-			XMVECTOR position;
+			DirectX::XMVECTOR position;
 			position.m128_f32[0] = LUA_FLOAT(state, 1);
 			position.m128_f32[1] = LUA_FLOAT(state, 2);
 			position.m128_f32[2] = LUA_FLOAT(state, 3);
@@ -170,9 +194,11 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 LockCameraOnUnit(lua_State* state) noexcept
+		static  int32 LockCameraOnUnit(
+			struct lua_State* const state
+		) noexcept
 		{
-			Unit* unit = m_global->m_lastPickedUnit;
+			class Unit* const unit = m_global->m_lastPickedUnit;
 			if (unit)
 			{
 				m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
@@ -185,9 +211,11 @@ namespace lua_callback
 
 	namespace Music
 	{
-		static  int32 AddMusic(lua_State* state)
+		static  int32 AddMusic(
+			struct lua_State* const state
+		)
 		{
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			m_engine->AddMusicSound(str, LUA_FLOAT(state, 2), LUA_BOOLEAN(state, 3));
 			return 0;
 		}
@@ -302,21 +330,23 @@ namespace lua_callback
 
 	static int32_t CreateUnit(lua_State* state) noexcept
 	{
-		Unit* unit = new Unit();
+		class Unit* const unit = new class Unit();
 		m_global->m_lastCreatedRenderContainer = unit;
-		LuaPointer lptr(unit);
+		const union LuaPointer lptr(unit);
 		lua_pushinteger(state, lptr.lua.first);
 		lua_pushinteger(state, lptr.lua.second);
 		return 2;
 	}
 
-	static int32_t DeleteUnit(lua_State* state) noexcept
+	static int32_t DeleteUnit(
+		struct lua_State* const state
+	) noexcept
 	{
-		Unit* unit = m_global->m_lastPickedUnit;
+		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			unit->Release();
-			unit = nullptr;
+			CleanupFrame();
 		}
 		return 0;
 	}
@@ -396,9 +426,9 @@ namespace lua_callback
 		return 2;
 	}
 
-	static int32_t PickLastCreatedUnit(lua_State*) noexcept
+	static int32_t PickLastCreatedUnit(struct lua_State* const) noexcept
 	{
-		Unit* unit = (Unit*)m_global->m_lastCreatedRenderContainer;
+		class Unit* const unit = (class Unit*)m_global->m_lastCreatedRenderContainer;
 		if (unit)
 		{
 			m_global->m_lastPickedUnit = unit;
@@ -477,24 +507,26 @@ namespace lua_callback
 
 	static int32_t InitializeUnit(lua_State* state) noexcept
 	{
-		Unit* unit = m_global->m_lastPickedUnit;
+		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
-		string str = lua_tostring(state, 1);
-		const float size = (float)lua_tointeger(state, 2);
-		const float collision = (float)lua_tointeger(state, 3);
-		const float p_x = (float)lua_tointeger(state, 4);
-		const float p_y = (float)lua_tointeger(state, 5);
+		std::string str = lua_tostring(state, 1);
 		const float p_z = (float)lua_tointeger(state, 6);
-		const bool wander = lua_toboolean(state, 7);
 
-		XMFLOAT3 pos(p_x, p_y, p_z);
 		wchar_t* wide_string = new wchar_t[str.length() + 1];
-		wstring ws = std::wstring(str.begin(), str.end()).c_str();
+		std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 		wcscpy(wide_string, ws.c_str());
 
-
-			unit->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos, wander);
+			unit->Initialize(
+				m_device,
+				m_deviceContext,
+				m_unitsShader,
+				wide_string,
+				(float)lua_tointeger(state, 2),
+				(float)lua_tointeger(state, 3),
+				struct DirectX::XMFLOAT3((float)lua_tointeger(state, 4),(float)lua_tointeger(state, 5),p_z),
+				lua_toboolean(state, 7)
+			);
 			m_renderer->PushUnit(unit,(int32)p_z);
 
 			delete wide_string;

@@ -14,16 +14,16 @@ struct ShaderPackage
 	{
 		struct
 		{
-			Shader* standard;
-			Shader* shadow;
-			Shader* select;
+			class Shader* standard;
+			class Shader* shadow;
+			class Shader* select;
 		};
 
-		Shader* shaders[3];
+		class Shader* shaders[3];
 	};
 
-	ID3D11DeviceContext* m_context;
-	ShaderType           m_activeShader;
+	struct ID3D11DeviceContext* m_context;
+	enum ShaderType             m_activeShader;
 
 	void Begin(const enum ShaderType type = ShaderType::STANDARD);
 

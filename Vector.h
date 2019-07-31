@@ -99,6 +99,15 @@ public:
 		m_size = 0;
 	}
 
+	void remove(const int32 index)
+	{
+		if (index > m_size || m_size < 1)
+			return;
+		for (int32 i = index; i < m_size; ++i)
+			m_data[i] = m_data[i + 1];
+		m_size--;
+	}
+
 private:
 
 	T* m_data;

@@ -170,7 +170,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h" />
-    <ClInclude Include="2D\RenderTarget.h" />
     <ClInclude Include="2D\TextFormat.h" />
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
@@ -260,7 +259,6 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2D\RenderTarget.cpp" />
     <ClCompile Include="2D\TextFormat.cpp" />
     <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />

@@ -27,6 +27,7 @@ public:
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
+	int32 isReleased() const noexcept override;
 
 	void SetNumberOfFrames(float frames);
 

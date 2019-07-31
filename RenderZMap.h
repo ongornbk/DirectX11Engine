@@ -20,8 +20,14 @@ struct RenderZMap
 	bool m_zStance[256];
 
 	void Update(const float dt);
+	void CleanUp();
 	void Sort();
-	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept;
+	void _vectorcall Render(
+		struct ID3D11DeviceContext * const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		struct ShaderPackage &shader
+	) noexcept;
 	void Clear();
 	void Push(Unit* unit,const int64 z);
 	void Push(Doodads* doodads,const int64 z);
