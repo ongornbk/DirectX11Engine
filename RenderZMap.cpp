@@ -153,7 +153,7 @@ std::vector<int64> RenderZMap::GetSizeVector()
 	return mv;
 }
 
-std::stack<Unit*> RenderZMap::GetUnitsInRange(class Unit * object,const float range)
+std::stack<Unit*> RenderZMap::GetUnitsInRange(class Unit * const object,const float range)
 {
 	if (object)
 	{

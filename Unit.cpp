@@ -71,33 +71,7 @@ void Unit::Render(
 	if (m_flags.m_rendering)
 	{
 
-		if (m_flags.m_cast_shadow)
-		{
-			shader.standard->End(deviceContext);
-			shader.shadow->Begin(deviceContext);
-
-			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
-
-			//__m128 distance{};
-			//distance.m128_f32[0] = cameraPosition.m128_f32[1] - m_boundingSphere.Center.y;
-			//distance.m128_f32[1] = cameraPosition.m128_f32[0] - m_boundingSphere.Center.x;
-
-			//float rotation = atan2(distance.m128_f32[0], distance.m128_f32[1]);
-
-			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
-
-			//float length = XMVector2Length(distance).m128_f32[0];
-
-			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
-			XMFLOAT4X4 shadowMatrix;
-			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
-			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
-			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
-			m_vertexBuffer->Render(deviceContext);
-
-			shader.shadow->End(deviceContext);
-			shader.standard->Begin(deviceContext);
-		}
+		
 
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
@@ -121,6 +95,37 @@ void Unit::Render(
 		m_vertexBuffer->Render(deviceContext);
 	}
 
+}
+
+void Unit::PreRender(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct DirectX::XMFLOAT4X4 & viewMatrix,
+	const struct XMFLOAT4X4 & projectionMatrix,
+	const struct ShaderPackage & shader
+)
+{
+	if (m_flags.m_rendering)
+	{
+		if (m_flags.m_cast_shadow)
+		{
+			shader.standard->End(deviceContext);
+			shader.shadow->Begin(deviceContext);
+
+			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
+
+			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
+
+			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
+			XMFLOAT4X4 shadowMatrix;
+			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
+			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
+			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+			m_vertexBuffer->Render(deviceContext);
+
+			shader.shadow->End(deviceContext);
+			shader.standard->Begin(deviceContext);
+		}
+	}
 }
 
 

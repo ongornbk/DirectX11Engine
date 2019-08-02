@@ -505,9 +505,11 @@ void TileMap::LoadFromFile(std::string filename)
 	myfile.close();
 }
 
-int32 TileMap::CollisionAt(const struct XMFLOAT3& position)
+int32 TileMap::CollisionAt(
+	const struct XMFLOAT3& position
+)
 {
-	array< int32, 2> index;
+	class array< int32, 2> index;
 	const int32 collision = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
 	if (collision)return 1;
 	const class Tile* tilep = m_currentTileMap->map[index[0]][index[1]];

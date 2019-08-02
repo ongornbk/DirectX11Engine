@@ -8,12 +8,12 @@ public:
 	CameraControl();
 	~CameraControl();
 
-	void LockCameraPositionOnUnit(Unit* unit);
-	void SetCurrentCamera(Camera* camera);
+	void LockCameraPositionOnUnit(class Unit* const unit);
+	void SetCurrentCamera(class Camera* const camera);
 	void Update(const float dt);
 private:
-	Camera * m_camera;
+	class Camera * m_camera;
 	bool     m_flags[1];
-	Unit*    m_target;
+	class Unit*    m_target;
 };
 

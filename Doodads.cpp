@@ -72,6 +72,16 @@ void Doodads::Render(
 {
 	if (m_flags.m_rendering)
 	{
+		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		m_vertexBuffer->Render(deviceContext);
+	}
+}
+
+void Doodads::PreRender(ID3D11DeviceContext * const deviceContext, const DirectX::XMFLOAT4X4 & viewMatrix, const DirectX::XMFLOAT4X4 & projectionMatrix, const ShaderPackage & shader)
+{
+	if (m_flags.m_rendering)
+	{
 		if (m_flags.m_cast_shadow)
 		{
 			shader.standard->End(deviceContext);
@@ -84,10 +94,6 @@ void Doodads::Render(
 
 			shader.standard->Begin(deviceContext);
 		}
-
-		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
-		m_vertexBuffer->Render(deviceContext);
 	}
 }
 

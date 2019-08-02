@@ -81,6 +81,16 @@ void AnimatedDoodads::Render(
 	}
 }
 
+void AnimatedDoodads::PreRender(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct DirectX::XMFLOAT4X4 & viewMatrix,
+	const struct DirectX::XMFLOAT4X4 & projectionMatrix,
+	const struct ShaderPackage & shader
+)
+{
+
+}
+
 void AnimatedDoodads::Update(float dt)
 {
 

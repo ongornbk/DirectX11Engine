@@ -22,10 +22,10 @@ struct EObjectVector
 	void CleanUp();
 	void Sort();
 	void _vectorcall Render(
-		ID3D11DeviceContext * deviceContext,
-		XMFLOAT4X4 viewMatrix,
-		XMFLOAT4X4 projectionMatrix,
-		ShaderPackage &shader
+		struct ID3D11DeviceContext * const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		const struct ShaderPackage &shader
 	) noexcept;
 	void Clear();
 	void Push(Unit* unit);

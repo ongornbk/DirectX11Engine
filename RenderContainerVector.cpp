@@ -13,9 +13,11 @@ EObjectVector::EObjectVector()
 
 
 
-void EObjectVector::Update(float dt)
+void EObjectVector::Update(
+	const float dt
+)
 {
-	for (uint32 i = 0u; i < 32u; i++)
+	for (int32 i = 0; i < 32; ++i)
 	{
 		if(!xta[i])
 		for (auto & obj : m_objectsXY[1][i])
@@ -41,10 +43,15 @@ void EObjectVector::Sort()
 
 
 
-void _vectorcall EObjectVector::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, ShaderPackage &shader) noexcept
+void _vectorcall EObjectVector::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct XMFLOAT4X4 & viewMatrix,
+	const struct XMFLOAT4X4 & projectionMatrix,
+	const struct ShaderPackage &shader
+) noexcept
 {
-Vector<Vector<EObject*>*> mvpp;
-for (uint16_t i = 0u; i < 32u; i++)
+class Vector<class Vector<class EObject*>*> mvpp;
+for (int32 i = 0; i < 32; i++)
 	{
 	if(!yta[i])
 mvpp.push_back(&m_objectsXY[1][i]);
@@ -55,6 +62,12 @@ std::reverse(mvpp.begin(), mvpp.end());
 uint32 group = 31u;
 for (auto& vec : mvpp)
 {
+
+	for (auto& obj : *vec)
+	{
+		obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+	}
+
 	uint32 index = 0u;
 	for (auto& obj : *vec)
 	{
@@ -106,7 +119,11 @@ void EObjectVector::Push(Tree * tree)
 	m_objectsXY[1][0].push_back(tree);
 }
 
-Boolean _stdcall CheckDistance(EObject* A, EObject* B,const float range) noexcept
+Boolean _fastcall CheckDistance(
+	class EObject* const A,
+	class EObject* const B,
+	const float range
+) noexcept
 {
 
 	const float distanceX = A->m_boundingSphere.Center.x - B->m_boundingSphere.Center.x;

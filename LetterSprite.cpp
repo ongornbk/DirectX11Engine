@@ -3,7 +3,12 @@
 #include "IPP.h"
 
 
-LetterSprite::LetterSprite(Font * font,char letter, float size,Shader* shader)
+LetterSprite::LetterSprite(
+	class Font * const font,
+	const char letter,
+	const float size,
+	class Shader* const shader
+)
 {
 
 #pragma warning(disable : 4996)
@@ -31,11 +36,16 @@ LetterSprite::~LetterSprite(void)
 	}
 }
 
-void LetterSprite::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader,Font* font)
+void LetterSprite::Initialize(
+	struct ID3D11Device * const device,
+	struct ID3D11DeviceContext * const deviceContext,
+	class Shader * const shader,
+	class Font* const font
+)
 {
-	m_vertexBuffer = new VertexBuffer();
+	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
-	FLOATX6 coords = font->GetCoordsOfLetter(m_char);
+	struct FLOATX6 coords = font->GetCoordsOfLetter(m_char);
 	(void)m_vertexBuffer->InitializePart(device, shader, sizexy,coords.__f32, true);
 }
 

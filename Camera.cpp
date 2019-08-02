@@ -5,8 +5,8 @@
 
 namespace
 {
-	static Camera*   m_currentCamera = nullptr;
-	static Global*   m_global = nullptr;
+	static class Camera*   m_currentCamera = nullptr;
+	static class Global*   m_global = nullptr;
 }
 
 Camera::Camera(void)
@@ -26,56 +26,79 @@ void Camera::Release()
 	delete(this);
 }
 
-Camera * Camera::GetCurrentCamera()
+class Camera * Camera::GetCurrentCamera()
 {
 	return m_currentCamera;
 }
 
 
 
-void Camera::InitializeOrthoMatrix(const int32 screenwidth,const int32 screenheight,const float screennear,const float screenfar)
+void Camera::InitializeOrthoMatrix(
+	const int32 screenwidth,
+	const int32 screenheight,
+	const float screennear,
+	const float screenfar
+)
 {
-	XMStoreFloat4x4(&m_ortho, XMMatrixOrthographicLH((float)screenwidth, (float)screenheight, screennear, screenfar));
+	DirectX::XMStoreFloat4x4(&m_ortho, DirectX::XMMatrixOrthographicLH((float)screenwidth, (float)screenheight, screennear, screenfar));
 }
 
-void Camera::InitializeProjectionMatrix(const float fow,const float screenaspect,const float screennear,const float screenfar)
+void Camera::InitializeProjectionMatrix(
+	const float fow,
+	const float screenaspect,
+	const float screennear,
+	const float screenfar
+)
 {
-	XMStoreFloat4x4(&m_projection, XMMatrixPerspectiveFovLH(fow,screenaspect,screennear,screenfar));
+	DirectX::XMStoreFloat4x4(&m_projection, DirectX::XMMatrixPerspectiveFovLH(fow,screenaspect,screennear,screenfar));
 }
 
-void Camera::SetPosition(const float x,const float y,const float z)
+void Camera::SetPosition(
+	const float x,
+	const float y,
+	const float z
+)
 {
 	m_position = _mm_set_ps(x, y, z, 0.f);
 }
-void Camera::SetPosition(const float x,const float y)
+void Camera::SetPosition(
+	const float x,
+	const float y
+)
 {
 	m_position = _mm_set_ps(x, y, 0.f, 0.f);
 }
-void Camera::SetPosition(XMVECTOR position)
+void Camera::SetPosition(
+	const DirectX::XMVECTOR position
+)
 {
 	m_position = position;
 }
-void Camera::SetRotation(const float x,const float y,const float z)
+void Camera::SetRotation(
+	const float x,
+	const float y,
+	const float z
+)
 {
 	m_rotation = _mm_set_ps(x*(float)XM_PI/180.f, y*(float)XM_PI / 180.f, z*XM_PI / 180.f, 0.f);
 }
-XMVECTOR Camera::GetPosition() const noexcept
+const DirectX::XMVECTOR Camera::GetPosition() const noexcept
 {
 	return m_position;
 }
-XMVECTOR Camera::GetRotation()const noexcept
+const DirectX::XMVECTOR Camera::GetRotation()const noexcept
 {
 	return m_rotation;
 }
-XMFLOAT4X4 Camera::GetView()const noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetView() noexcept
 {
 	return m_view;
 }
-XMFLOAT4X4 Camera::GetProjection()const noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetProjection() noexcept
 {
 	return m_projection;
 }
-XMFLOAT4X4 Camera::GetOrtho()const noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetOrtho() noexcept
 {
 	return m_ortho;
 }
@@ -84,11 +107,15 @@ XMFLOAT4X4 Camera::GetOrtho()const noexcept
 void Camera::Update()
 {
 
-XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(m_rotation.m128_f32[0],m_rotation.m128_f32[1],m_rotation.m128_f32[2]);
+const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(
+	m_rotation.m128_f32[0],
+	m_rotation.m128_f32[1],
+	m_rotation.m128_f32[2]
+);
 
-XMVECTOR lookat = XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
-XMVECTOR up = XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
+DirectX::XMVECTOR lookat = DirectX::XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
+DirectX::XMVECTOR up = DirectX::XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
 
 lookat += m_position;
-XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
+DirectX::XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
 }

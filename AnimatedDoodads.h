@@ -24,6 +24,12 @@ public:
 		const struct XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) override;
+	void PreRender(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix,
+		const struct ShaderPackage &shader
+	) override;
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
