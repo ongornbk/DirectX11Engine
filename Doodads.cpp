@@ -84,15 +84,15 @@ void Doodads::PreRender(ID3D11DeviceContext * const deviceContext, const DirectX
 	{
 		if (m_flags.m_cast_shadow)
 		{
-			shader.standard->End(deviceContext);
+			//shader.standard->End(deviceContext);
 
-			shader.shadow->Begin(deviceContext);
+			//shader.shadow->Begin(deviceContext);
 			shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
 			shader.shadow->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 			m_vertexBuffer->Render(deviceContext);
-			shader.shadow->End(deviceContext);
+			//shader.shadow->End(deviceContext);
 
-			shader.standard->Begin(deviceContext);
+			//shader.standard->Begin(deviceContext);
 		}
 	}
 }
