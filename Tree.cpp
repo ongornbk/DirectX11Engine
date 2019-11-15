@@ -87,8 +87,8 @@ void Tree::PreRender(
 {
 	if (m_flags.m_rendering && m_flags.m_cast_shadow)
 	{
-		shader.standard->End(deviceContext);
-		shader.shadow->Begin(deviceContext);
+		//shader.standard->End(deviceContext);
+		//shader.shadow->Begin(deviceContext);
 
 		const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
 
@@ -109,8 +109,8 @@ void Tree::PreRender(
 		shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
 
-		shader.shadow->End(deviceContext);
-		shader.standard->Begin(deviceContext);
+		//shader.shadow->End(deviceContext);
+		//shader.standard->Begin(deviceContext);
 	}
 }
 
@@ -119,7 +119,7 @@ void Tree::Update(const float dt)
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
+		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
 	}
 }
 
