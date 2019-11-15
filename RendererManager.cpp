@@ -113,11 +113,12 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 	void RendererManager::Render(
 		struct ID3D11DeviceContext * const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
 		struct ShaderPackage pck;
+		pck.m_context = deviceContext;
 		pck.select = m_selectShader;
 		pck.shadow = m_shadowShader;
 		pck.standard = m_unitsShader;
@@ -126,11 +127,11 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 			GRAPHICS EnableAlphaBlending(true);
 
-			m_unitsShader->Begin(deviceContext);
+			//m_unitsShader->Begin(deviceContext);
 			
 			g_units.Render(deviceContext, viewMatrix, projectionMatrix, pck);
 			
-			m_unitsShader->End(deviceContext);
+			//m_unitsShader->End(deviceContext);
 
 
 			m_shader->Begin(deviceContext);
@@ -193,7 +194,7 @@ void RendererManager::LoadInstanceToFile(std::string filename)
 	m_map->LoadFromFile(filename);
 }
 
-std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * object,const float range) noexcept
+std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
 {
 	return g_units.GetUnitsInRange(object, range);
 }

@@ -1,4 +1,0 @@
-ImportPackage("conio")
-ImportPackage("system")
-SetConsoleTitle("Code")
-System("code -n lua/")

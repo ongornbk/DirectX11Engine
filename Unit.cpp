@@ -75,8 +75,8 @@ void Unit::Render(
 
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
-			shader.standard->End(deviceContext);
-			shader.select->Begin(deviceContext);
+
+			shader.BeginSelect();
 
 			class Shader* const csh = shader.select;
 
@@ -84,8 +84,8 @@ void Unit::Render(
 			csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 			m_vertexBuffer->Render(deviceContext);
 
-			shader.select->End(deviceContext);
-			shader.standard->Begin(deviceContext);
+			//shader.End();
+			shader.BeginStandard();
 		}
 
 		class Shader* const csh = shader.standard;
@@ -104,27 +104,25 @@ void Unit::PreRender(
 	const struct ShaderPackage & shader
 )
 {
-	if (m_flags.m_rendering)
+	if (m_flags.m_rendering && m_flags.m_cast_shadow)
 	{
-		if (m_flags.m_cast_shadow)
-		{
-			shader.standard->End(deviceContext);
-			shader.shadow->Begin(deviceContext);
 
-			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
+			//shader.standard->End(deviceContext);
+			//shader.BeginShadow();
+
+			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
 			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
 
 			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
-			XMFLOAT4X4 shadowMatrix;
-			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
+			DirectX::XMFLOAT4X4 shadowMatrix;
+			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 			m_vertexBuffer->Render(deviceContext);
 
-			shader.shadow->End(deviceContext);
-			shader.standard->Begin(deviceContext);
-		}
+			//shader.End();
+			//shader.standard->Begin(deviceContext);
 	}
 }
 

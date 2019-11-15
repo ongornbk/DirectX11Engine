@@ -20,8 +20,8 @@ public:
 
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix,
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) override;
 	void PreRender(
@@ -30,24 +30,24 @@ public:
 		const struct DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) override;
-	void Update(float dt) override;
-	void SetZ(float z = 0.0f) override;
+	void Update(const float dt) override;
+	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const noexcept override;
 
-	void SetNumberOfFrames(float frames);
+	void SetNumberOfFrames(const float frames);
 
 private:
 
-	ID3D11DeviceContext* m_deviceContext;
+	struct ID3D11DeviceContext* m_deviceContext;
 
-	XMFLOAT3      m_lastPosition;
+	struct DirectX::XMFLOAT3      m_lastPosition;
 
-	XMFLOAT4X4    m_worldMatrix;
+	struct DirectX::XMFLOAT4X4    m_worldMatrix;
 	float         m_size;
 
-	Texture*      m_texture;
-	VertexBuffer* m_vertexBuffer;
+	class Texture*      m_texture;
+	class VertexBuffer* m_vertexBuffer;
 
 	//Animated stuff
 

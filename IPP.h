@@ -76,6 +76,7 @@ namespace ipp
 		void __Println(uint64_t number);
 		void __Print(std::string text);
 		void __Print(const char* text);
+		void __Print(const wchar_t* text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
 		void __Print(std::string text,const int32_t value);
@@ -103,6 +104,7 @@ namespace ipp
 		static Console* GetInstance();
 		static void Release();
 		static void Println(std::string text);
+		static void Println(std::wstring text);
 		static void Println(std::string text, TextColors color);
 		static void Println(std::string text,std::wstring wide, TextColors color);
 		static void Println(std::string text, const int value);
@@ -111,6 +113,7 @@ namespace ipp
 		static void Println(uint64_t number);
 		static void Print(std::string text);
 		static void Print(const char* text);
+		static void Print(const wchar_t* text);
 		static void Print(float number);
 		static void Print(int number);
 		static void Print(void* address);

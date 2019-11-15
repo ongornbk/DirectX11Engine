@@ -181,7 +181,11 @@ Tile::~Tile()
 	
 }
 
-void Tile::SetGlobals(ID3D11Device* device,Shader * shader, RendererManager* renderer)
+void Tile::SetGlobals(
+	struct ID3D11Device* const device,
+	class Shader * const shader,
+	class RendererManager* const renderer
+)
 {
 
 	m_renderer = renderer;
@@ -506,13 +510,13 @@ void TileMap::LoadFromFile(std::string filename)
 }
 
 int32 TileMap::CollisionAt(
-	const struct XMFLOAT3& position
+	const struct DirectX::XMFLOAT3& position
 )
 {
 	class array< int32, 2> index;
 	const int32 collision = TransformXMFLOAT3ToTileMapINDEX2WithCheck(position,index);
 	if (collision)return 1;
-	const class Tile* tilep = m_currentTileMap->map[index[0]][index[1]];
+	const class Tile* const tilep = m_currentTileMap->map[index[0]][index[1]];
 	if (tilep)
 	{
 		return (int32)tilep->m_collision;
@@ -529,7 +533,9 @@ void TileMap::SetCurrentTileMap(
 	m_currentTileMap = tilemap;
 }
 
-void TileMap::Update(const float dt)
+void TileMap::Update(
+	const float dt
+)
 {
 	for (int32 j = renderInts[2]; j <renderInts[3]; ++j)
 	{

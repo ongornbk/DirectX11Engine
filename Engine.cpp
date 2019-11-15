@@ -106,17 +106,29 @@ bool Engine::InitializeGraphics(HWND hwnd)
 
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
+
+	ipp::Console::Println("Engine::Initialize");
+
 	Initialize_CPU();
+
+	ipp::Console::Println("Engine::InitializeCpu");
 
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define END );
+
 
 
 	m_global = Global::GetInstance();
 	Tree::SetGlobal(m_global);
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();
+
+	ipp::Console::Println("Engine::InitializeRM");
+
 	lua_callback::Initialize(this);
+
+	ipp::Console::Println("Engine::InitializeLCB");
+
 	lua_callback::SetResourceManager(m_resourceManager);
 	lua_callback::SetCamera(m_camera);
 
@@ -126,6 +138,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	lua_callback::RegisterFunctions();
 	lua::Execute(lua::LUA_LOCATION_ENGINE_INITIALIZATION);
 
+	ipp::Console::Println("Engine::Lua Open and exec");
 
 #pragma region
 	LOADSHADER  L"../Shaders/texture.fx"                              END
@@ -282,9 +295,17 @@ Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 
 Sound * Engine::CreateSound(string name, float volume, bool looping)
 {
-	Sound* sound = m_resourceManager->GetSoundByName((char*)name.c_str());
-	sound->SetVolume(volume);
-	sound->SetLooping(looping);
+	class Sound* const sound = m_resourceManager->GetSoundByName((char*)name.c_str());
+	if (sound)
+	{
+		sound->SetVolume(volume);
+		sound->SetLooping(looping);
+	}
+	else
+	{
+		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::Println("Cannot get sound : " + name);
+	}
 	return sound;
 }
 

@@ -63,10 +63,15 @@ uint32 group = 31u;
 for (auto& vec : mvpp)
 {
 
+	shader.BeginShadow();
+
 	for (auto& obj : *vec)
 	{
 		obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
 	}
+
+	//shader.End();
+	shader.BeginStandard();
 
 	uint32 index = 0u;
 	for (auto& obj : *vec)
@@ -77,6 +82,8 @@ for (auto& vec : mvpp)
 		index++;
 	}
 	group--;
+
+	//shader.End();
 }
 
 }

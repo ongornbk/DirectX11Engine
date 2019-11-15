@@ -61,7 +61,7 @@ public:
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
 
-	std::stack<Unit*> _vectorcall GetUnitsInRange(class Unit* object,const float range) noexcept;
+	std::stack<Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
 	static RendererManager* GetInstance();
 	static size_t GetNumberOfObjects();

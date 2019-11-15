@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "IPP.h"
+
 #pragma region
 using std::string;
 using std::vector;
@@ -15,6 +17,7 @@ using std::wstring;
 
 ModelPaths::ModelPaths()
 {
+	ZeroMemory(m_modelPath, sizeof(WCHAR*) * 13);
 }
 
 ModelPaths::ModelPaths(WCHAR * file)
@@ -29,12 +32,13 @@ ModelPaths::ModelPaths(WCHAR * file)
 	ifstream stream(file);
 	if (!stream.good())
 	{
-
+		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::Println("Bad stream : ");
 	}
-	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
+	std::string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 	istringstream ss(BUFFER);
-	vector<WCHAR*> animations;
-	string token;
+	std::vector<WCHAR*> animations;
+	std::string token;
 	while (getline(ss, token, '\n'))
 	{
 		wchar_t* wide_string = new wchar_t[token.length() + 1];
@@ -49,6 +53,16 @@ ModelPaths::ModelPaths(WCHAR * file)
 			animations.push_back(NULL);
 		}
 	}
+	//ipp::Console::SetTextColor(ipp::DARKGRAY);
+	//ipp::Console::Print("Loading started for : ");
+	//ipp::Console::Println(animations.size());
+	//for (size_t i = 0; i = min(animations.size(),13); i++)
+	//{
+	//	m_modelPath[i] = animations.at(i);
+	//	ipp::Console::SetTextColor(ipp::DARKGRAY);
+	//	ipp::Console::Print("Loading : ");
+	//	ipp::Console::Println(animations.at(i));
+	//}
 
 	ATTACK_1    = animations.at(0);
 	ATTACK_2    = animations.at(1);

@@ -50,6 +50,11 @@ void ipp::Console::Println(std::string text)
 	GetInstance()->__Print(text + "\n");
 }
 
+void ipp::Console::Println(std::wstring text)
+{
+	GetInstance()->__Print((const wchar_t*)(text + L"\n").c_str());
+}
+
 void ipp::Console::Println(std::string text, TextColors color)
 {
 	GetInstance()->__Print(text + "\n", color);
@@ -86,6 +91,11 @@ void ipp::Console::Print(std::string text)
 }
 
 void ipp::Console::Print(const char * text)
+{
+	GetInstance()->__Print(text);
+}
+
+void ipp::Console::Print(const wchar_t* text)
 {
 	GetInstance()->__Print(text);
 }
@@ -165,6 +175,11 @@ void ipp::__Console::__Print(std::string text)
 void ipp::__Console::__Print(const char * text)
 {
 	printf("%s", text);
+}
+
+void ipp::__Console::__Print(const wchar_t* text)
+{
+	wprintf(L"%s", text);
 }
 
 void ipp::__Console::__Print(std::string text, TextColors color)

@@ -1,11 +1,11 @@
 #include "Shader.h"
 #include "GlobalUtilities.h"
 #include "IPP.h"
-#include <d3dcompilerW.h>
+#include <d3dcompiler.h>
 #include "Defines.h"
 #include "gdef.h"
 
-#pragma comment(lib,"d3dcompilerW.lib")
+#pragma comment(lib,"d3dcompiler.lib")
 
 using namespace DirectX;
 

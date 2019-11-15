@@ -27,5 +27,11 @@ struct ShaderPackage
 
 	void Begin(const enum ShaderType type = ShaderType::STANDARD);
 
+	void BeginShadow() const;
+	void BeginStandard() const;
+	void BeginSelect() const;
 
+	void End() const;
+
+	mutable class Shader* current{};
 };

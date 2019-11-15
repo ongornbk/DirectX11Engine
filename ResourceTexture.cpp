@@ -19,7 +19,7 @@ ResourceTexture::~ResourceTexture(void)
 
 bool ResourceTexture::Load(ID3D11Device * device, WCHAR* textureFileName)
 {
-	m_texture = new Texture();
+	m_texture = new class Texture();
 	if (!m_texture->Initialize(device, textureFileName))
 	{
 		delete m_texture;

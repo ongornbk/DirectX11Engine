@@ -543,7 +543,8 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
+		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
 		if (unit)
 		{
 		std::string str = lua_tostring(state, 2);
@@ -571,25 +572,33 @@ namespace lua_callback
 		
 	}
 
-	static int32_t InitializeDoodads(lua_State* state) noexcept
+	static int32 InitializeDoodads(
+		struct lua_State* const state
+	) noexcept
 	{
-		Doodads* doodads = (Doodads*)m_global->m_lastCreatedRenderContainer;
+		class Doodads* const doodads = (class Doodads* const)lua_tointeger(state, 1);
 		if (doodads)
 		{
-			string str = lua_tostring(state, 1);
-			float size = (float)lua_tointeger(state, 2);
-			float collision = (float)lua_tointeger(state, 3);
-			float p_x = (float)lua_tointeger(state, 4);
-			float p_y = (float)lua_tointeger(state, 5);
-			float p_z = (float)lua_tointeger(state, 6);
+			std::string str = lua_tostring(state, 2);
+			const float p_x = (const float)lua_tointeger(state, 5);
+			const float p_y = (const float)lua_tointeger(state, 6);
+			const float p_z = (const float)lua_tointeger(state, 7);
 
-			XMFLOAT3 pos(p_x, p_y, p_z);
+			
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
+			doodads->Initialize(
+				m_device,
+				m_deviceContext,
+				m_unitsShader,
+				wide_string,
+				(const float)lua_tointeger(state, 3),
+				(const float)lua_tointeger(state, 4),
+				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+			);
 			m_renderer->PushDoodads(doodads, (int32)p_z);
 
 			delete wide_string;
@@ -598,27 +607,33 @@ namespace lua_callback
 
 	}
 
-	static int32_t InitializeAnimatedDoodads(lua_State* state) noexcept
+	static int32 InitializeAnimatedDoodads(
+		struct lua_State* const state
+	) noexcept
 	{
-		AnimatedDoodads* doodads = (AnimatedDoodads*)m_global->m_lastCreatedRenderContainer;
+		class AnimatedDoodads* const doodads = (class AnimatedDoodads* const)lua_tointeger(state, 1);
 		if (doodads)
 		{
-			string str = lua_tostring(state, 1);
-			float size = (float)lua_tointeger(state, 2);
-			float collision = (float)lua_tointeger(state, 3);
-			float p_x = (float)lua_tointeger(state, 4);
-			float p_y = (float)lua_tointeger(state, 5);
-			int8_t z = (int8_t)lua_tointeger(state, 6);
-			float p_z = (float)z;
-			
+			std::string str = lua_tostring(state, 2);
+			const float p_x = (const float)lua_tointeger(state, 5);
+			const float p_y = (const float)lua_tointeger(state, 6);
+			const int32 z   = (const int32)lua_tointeger(state, 7);
+			const float p_z = (const float)z;
 
-			XMFLOAT3 pos(p_x, p_y, p_z);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 
 
-			doodads->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
+			doodads->Initialize(
+				m_device,
+				m_deviceContext,
+				m_unitsShader,
+				wide_string,
+				(float)lua_tointeger(state, 3),
+				(float)lua_tointeger(state, 4),
+				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+			);
 			m_renderer->PushAnimatedDoodads(doodads,z);
 
 			delete wide_string;
@@ -627,24 +642,32 @@ namespace lua_callback
 
 	}
 
-	static int32_t InitializeTree(lua_State* state) noexcept
+	static int32 InitializeTree(
+		struct lua_State* const state
+	) noexcept
 	{
-		class Tree* tree = (class Tree*)m_global->m_lastCreatedRenderContainer;
+		class Tree* const tree = (class Tree* const)lua_tointeger(state, 1);
 		if (tree)
 		{
-			string str = lua_tostring(state, 1);
-			float size = (float)lua_tointeger(state, 2);
-			float collision = (float)lua_tointeger(state, 3);
-			float p_x = (float)lua_tointeger(state, 4);
-			float p_y = (float)lua_tointeger(state, 5);
-			float p_z = (float)lua_tointeger(state, 6);
+			string str = lua_tostring(state, 2);
+			const float p_x = (const float)lua_tointeger(state, 5);
+			const float p_y = (const float)lua_tointeger(state, 6);
+			const float p_z = (const float)lua_tointeger(state, 7);
 
-			XMFLOAT3 pos(p_x, p_y, p_z);
+			
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
 			wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 
-			tree->Initialize(m_device, m_deviceContext, m_unitsShader, wide_string, size, collision, pos);
+			tree->Initialize(
+				m_device,
+				m_deviceContext,
+				m_unitsShader,
+				wide_string,
+				(float)lua_tointeger(state, 3),
+				(float)lua_tointeger(state, 4),
+				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+			);
 			m_renderer->PushTree(tree, (int32)p_z);
 
 			delete wide_string;
@@ -654,7 +677,7 @@ namespace lua_callback
 
 	}
 
-	static int32_t SetRenderingFlag(
+	static int32 SetRenderingFlag(
 		struct lua_State* const state
 	) noexcept
 	{
@@ -887,22 +910,24 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int SetTile(lua_State* state) //EXPORTED
+	static int32 SetTile(
+		struct lua_State* const state
+	) //EXPORTED
 	{
-		XMFLOAT2 position;
-		position.x= m_global->m_lastPoint.x;
-		position.y = m_global->m_lastPoint.y;
+		struct DirectX::XMFLOAT2 position(m_global->m_lastPoint.x, m_global->m_lastPoint.y);
 		m_renderer->SetTile(position,(int32)lua_tointeger(state, 1), (int32)lua_tointeger(state, 2));
 		return 0;
 	}
 
-	static int SaveInstance(lua_State* state)
+	static int32 SaveInstance(
+		struct lua_State* const state
+	)
 	{
 		m_renderer->SaveInstanceToFile(lua_tostring(state, 1));
 		return 0;
 	}
 
-	static int SetLastSelectedUnit(
+	static int32 SetLastSelectedUnit(
 		struct lua_State* const state
 	)
 	{
@@ -910,25 +935,31 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int LoadInstance(lua_State* state)
+	static int32 LoadInstance(
+		struct lua_State* const state
+	)
 	{
 		m_renderer->LoadInstanceToFile(lua_tostring(state, 1));
 		return 0;
 	}
 
-	static int GetInput(lua_State* state)
+	static int32 GetInput(
+		struct lua_State* const state
+	)
 	{
 		lua_pushstring(state, (ipp::Console::GetInput().c_str()));
 		return 1;
 	}
 
-	static int Println(lua_State* state)
+	static int32 Println(
+		struct lua_State* const state
+	)
 	{
 		ipp::Console::Println(lua_tostring(state, 1));
 		return 0;
 	}
 
-	static int GameChatMessageFront(
+	static int32 GameChatMessageFront(
 		struct lua_State* const state
 	)
 	{
@@ -978,7 +1009,7 @@ namespace lua_callback
 
 	static void RegisterFunctions()
 	{
-		lua_State* m_lua = lua::GetInstance();
+		struct lua_State* const m_lua = lua::GetInstance();
 
 		//Resources
 		lua_register(m_lua, "LoadTexture", lua_callback::Resources::LoadTexture);

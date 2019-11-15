@@ -10,7 +10,7 @@ public:
 
 	bool Initialize();
 protected:
-	ENetAddress address;
-	ENetHost * server;
+	//ENetAddress address;
+	//ENetHost * server;
 };
 

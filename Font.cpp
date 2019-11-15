@@ -142,6 +142,14 @@ void Font::InitializeCoordinates(std::vector<float> coords)
 {
 	std::reverse(coords.begin(), coords.end());
 
+	if (coords.size() < 148)
+	{
+		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::Print("Font coords error - invalid number of coords : ");
+		ipp::Console::Println(coords.size());
+		return;
+	}
+
 
 	m_char['a'].m_left = coords.at(0);
 	m_char['a'].m_top = coords.at(1);

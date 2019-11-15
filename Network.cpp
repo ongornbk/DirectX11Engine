@@ -13,20 +13,20 @@ namespace
 bool Network::Initialize()
 {
 	
-	if (enet_initialize() != 0)
-	{
-		return false;
-	}
-	else
-	{
-		m_net = new Network();
+//	if (enet_initialize() != 0)
+//	{
+	//	return false;
+	//}
+//	else
+	//{
+	//	m_net = new Network();
 		return true;
-	}
+	//}
 }
 
 void Network::Release()
 {
-	enet_deinitialize();
+	//enet_deinitialize();
 	if (m_server)
 	{
 		delete m_server;

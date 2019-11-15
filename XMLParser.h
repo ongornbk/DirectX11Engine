@@ -1,5 +1,5 @@
 #pragma once
-#include <rapidxml.hpp>
+//#include <rapidxml.hpp>
 #include <string>
 
 
@@ -19,6 +19,6 @@ private:
 
 	
 
-	rapidxml::xml_document<> m_document;
+//	rapidxml::xml_document<> m_document;
 };
 

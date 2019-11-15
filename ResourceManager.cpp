@@ -145,7 +145,11 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 		//else
 		//{
 			delete resourceShader;
-			Console::Println("Load Failed : ",wstring(shaderFileName), ipp::RED);
+			Console::SetTextColor(ipp::RED);
+			Console::Print("Load Failed : ");
+			if (shaderFileName == L"")
+				shaderFileName = L"-empty wstring-";
+			Console::Println(wstring(shaderFileName));
 			return;
 		//}
 	}

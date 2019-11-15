@@ -35,26 +35,26 @@ AnimatedDoodads::~AnimatedDoodads()
 }
 
 void AnimatedDoodads::Initialize(
-	ID3D11Device * device,
-	ID3D11DeviceContext * deviceContext,
-	class Shader * shader,
+	struct ID3D11Device * const device,
+	struct ID3D11DeviceContext * const deviceContext,
+	class Shader * const shader,
 	WCHAR * paths,
 	const float size,
 	const float collision,
-	const XMFLOAT3 position
+	const struct DirectX::XMFLOAT3 position
 	)
 {
 	m_size = size;
 
 
-	m_vertexBuffer = new VertexBuffer();
+	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{
-		wstring tmp0 = wstring(paths);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_texture = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
@@ -68,8 +68,8 @@ void AnimatedDoodads::Initialize(
 
 void AnimatedDoodads::Render(
 	struct ID3D11DeviceContext * const deviceContext,
-	const struct XMFLOAT4X4& viewMatrix,
-	const struct XMFLOAT4X4& projectionMatrix,
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
 	const struct ShaderPackage &shader
 )
 {
