@@ -358,7 +358,7 @@ void _vectorcall TileMap::Render(
 {
 
 	float colors[4];
-	colors[0] = 1.f;
+	colors[0] = 0.f;
 	colors[1] = 1.f;
 	colors[2] = 1.f;
 	colors[3] = 1.f;

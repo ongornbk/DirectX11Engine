@@ -52,8 +52,7 @@ namespace ipp
 		void _fastcall clamp(int32 &value,const int32 min,const int32 max);
 		void _fastcall clamp(float &value,const float min,const float max);
 		int32 _fastcall range(int32 &value,const int32 min,const int32 max);
-
-		void SquashInt32Array(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
+		void SquashInt32Array(int32* const value,const int32 size,const int32 min,const int32 max) noexcept;
 		int32 SquashInt32ArrayWithCheck(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
 		uint8 _cdecl RandomUint8(const uint8 min,const uint8 max) noexcept;
 	}
