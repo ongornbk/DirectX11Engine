@@ -357,7 +357,7 @@ int32 _fastcall ipp::math::range(int32 &value,const int32 min,const int32 max)
 		return 1;
 }
 
-void  ipp::math::SquashInt32Array(int32 * const value,const int32 size,const int32 min,const int32 max) noexcept
+void  ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
 {
 		for (int32 i = 0; i < size; ++i)
 		{

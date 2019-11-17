@@ -24,7 +24,7 @@ private:
 
 	struct ColorBufferType
 	{
-		XMVECTOR colorVector;
+	XMFLOAT4 colorVector;
 	};
 public:
 	Shader(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);

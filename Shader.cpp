@@ -238,13 +238,13 @@ bool Shader::SetShaderColorParameters(
 	}
 	
 	dataPtr = (ColorBufferType*)mappedResource.pData;
-	dataPtr->colorVector = vec;
+	_mm_store_ps((float*)&dataPtr->colorVector, vec);
 
 	
 	deviceContext->Unmap(m_colorBuffer, 0);
 	
 	
-	deviceContext->VSSetConstantBuffers(1, 1, &m_colorBuffer);
+	deviceContext->PSSetConstantBuffers(1, 1, &m_colorBuffer);
 
 	return true;
 }
