@@ -10,6 +10,11 @@ Unit::Unit()
 	m_floats[0] = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_floats[1] = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
+	m_colors[0] = 1.f;
+	m_colors[1] = 1.f;
+	m_colors[2] = 1.f;
+	m_colors[3] = 1.f;
+
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(MS_TOWNNEUTRAL);
 	m_vertexBuffer = nullptr;
@@ -92,6 +97,7 @@ void Unit::Render(
 		
 		csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		csh->SetShaderColorParameters(deviceContext, m_colors);
 		m_vertexBuffer->Render(deviceContext);
 	}
 
@@ -372,6 +378,18 @@ void Unit::SetRotation(float rotation)
 void Unit::SetVelocity(const float x,const float y,const float z)
 {
 	m_floats[0] = { x,y,z };
+}
+
+void Unit::SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept
+{
+	if (redfilter >= 0.f)
+		m_colors[0] = redfilter;
+	if (greenfilter >= 0.f)
+		m_colors[1] = greenfilter;
+	if (bluefilter >= 0.f)
+		m_colors[2] = bluefilter;
+	if (alphafilter >= 0.f)
+		m_colors[3] = alphafilter;
 }
 
 void Unit::DiscardTasks()

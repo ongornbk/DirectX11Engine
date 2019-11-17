@@ -352,6 +352,18 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int32 ApplyColorFilter(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
+		if (unit)
+		{
+			unit->SetColorFilter(LUA_FLOAT(state, 2), LUA_FLOAT(state, 3), LUA_FLOAT(state, 4), LUA_FLOAT(state, 5));
+		}
+		return 0;
+	}
+
 	static int32 DeleteObject(
 		struct lua_State* const state
 	) noexcept
@@ -1057,6 +1069,7 @@ namespace lua_callback
 		lua_register(m_lua, "DeleteObject", lua_callback::DeleteObject);//@@
 		lua_register(m_lua, "IsSelected", lua_callback::IsSelected);//@@
 		lua_register(m_lua, "SetFootstepsSound", lua_callback::SetFootstepsSound);
+		lua_register(m_lua, "ApplyColorFilter", lua_callback::ApplyColorFilter);
 		lua_register(m_lua, "BeginRunning", lua_callback::BeginRunning);
 		lua_register(m_lua, "EndRunning", lua_callback::EndRunning);
 		lua_register(m_lua, "SetLastSelectedUnit", lua_callback::SetLastSelectedUnit);

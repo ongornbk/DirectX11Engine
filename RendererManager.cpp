@@ -123,9 +123,11 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 		pck.shadow = m_shadowShader;
 		pck.standard = m_unitsShader;
 
+		
+		GRAPHICS EnableAlphaBlending(true);
 			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
-			GRAPHICS EnableAlphaBlending(true);
+			
 
 			//m_unitsShader->Begin(deviceContext);
 			
@@ -141,7 +143,6 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 			m_shader->End(deviceContext);
 
-			GRAPHICS EnableAlphaBlending(false);
 }
 
 void RendererManager::Update()

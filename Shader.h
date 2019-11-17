@@ -55,7 +55,7 @@ public:
 
 	bool Shader::SetShaderColorParameters(
 		struct ID3D11DeviceContext* const deviceContext,
-		_In_ DirectX::FXMVECTOR vec
+		float * const colors
 	);
 
 

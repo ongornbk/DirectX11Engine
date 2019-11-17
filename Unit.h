@@ -8,7 +8,7 @@
 
 #pragma endregion
 
-
+#define COLOR_FILTER_NOCHANGE -1.f
 
 class Unit : public EObject
 {
@@ -126,6 +126,7 @@ public:
 	void SetRotations(const int32 rotations);
 	void SetRotation(const float rotation);
 	void SetVelocity(const float x,const float y,const float z);
+	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept;
 	void DiscardTasks(); 
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
@@ -163,6 +164,7 @@ private:
 	class sf::Sound*    m_footstepsHandle{};
 
 	ID3D11DeviceContext * m_deviceContext;
+	float               m_colors[4];
 	float m_currentFrame;
 	float m_previousFrame;
 

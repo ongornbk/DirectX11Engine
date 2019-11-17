@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "Vector.h"
 #include "ThreadPool.h"
+#include "Engine.h"
 #include <thread>
 
 typedef int32_t Boolean;
@@ -62,13 +63,18 @@ std::reverse(mvpp.begin(), mvpp.end());
 uint32 group = 31u;
 for (auto& vec : mvpp)
 {
+	GRAPHICS EnableAlphaBlending(false);
 
 	shader.BeginShadow();
+
 
 	for (auto& obj : *vec)
 	{
 		obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
 	}
+
+	GRAPHICS EnableAlphaBlending(false);
+
 
 	//shader.End();
 	shader.BeginStandard();

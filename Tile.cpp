@@ -357,14 +357,9 @@ void _vectorcall TileMap::Render(
 )
 {
 
-	float colors[4];
-	colors[0] = 0.f;
-	colors[1] = 1.f;
-	colors[2] = 1.f;
-	colors[3] = 1.f;
 
 	m_tileShader->Begin(deviceContext);
-	m_tileShader->SetShaderColorParameters(deviceContext, _mm_load_ps(colors));
+
 	//GRAPHICS EnableAlphaBlending(true);
 	 float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 	 

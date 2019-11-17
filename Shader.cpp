@@ -221,7 +221,7 @@ bool Shader::SetShaderParameters(
 
 bool Shader::SetShaderColorParameters(
 	struct ID3D11DeviceContext* const deviceContext,
-	_In_ DirectX::FXMVECTOR vec
+	float * const colors
 )
 {
 	HRESULT result;
@@ -238,8 +238,10 @@ bool Shader::SetShaderColorParameters(
 	}
 	
 	dataPtr = (ColorBufferType*)mappedResource.pData;
-	_mm_store_ps((float*)&dataPtr->colorVector, vec);
-
+	dataPtr->colorVector.x = colors[0];
+	dataPtr->colorVector.y = colors[1];
+	dataPtr->colorVector.z = colors[2];
+	dataPtr->colorVector.w = colors[3];
 	
 	deviceContext->Unmap(m_colorBuffer, 0);
 	
