@@ -237,6 +237,7 @@ bool Shader::SetShaderColorParameters(
 		return false;
 	}
 	
+	dataPtr = (ColorBufferType*)mappedResource.pData;
 	dataPtr->colorVector = vec;
 
 	
