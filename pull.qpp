@@ -1,0 +1,7 @@
+import("conio")
+conio.SetTitle("pulling dx11")
+conio.ShowCursor(false)
+import("system")
+system.System("@git status -s")
+system.System("@git pull")
+
