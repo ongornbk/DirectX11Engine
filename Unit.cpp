@@ -110,7 +110,7 @@ void Unit::PreRender(
 			//shader.standard->End(deviceContext);
 			//shader.BeginShadow();
 
-			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
+			//const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
 			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
 

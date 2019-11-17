@@ -21,6 +21,7 @@ Shader::Shader(ID3D11Device * device, HWND hwnd,WCHAR* shaderFileName)
 	m_layout = NULL;
 	m_matrixBuffer = NULL;
 	m_cameraBuffer = NULL;
+	m_colorBuffer = NULL;
 
 	m_initialized = Initialize(device, hwnd, shaderFileName);
 
@@ -90,6 +91,11 @@ Shader::~Shader(void)
 	{
 		(void)m_cameraBuffer->Release();
 		m_cameraBuffer = NULL;
+	}
+	if (m_colorBuffer)
+	{
+		(void)m_colorBuffer->Release();
+		m_colorBuffer = NULL;
 	}
 	if (m_layout)
 	{
@@ -213,6 +219,36 @@ bool Shader::SetShaderParameters(
 	return true;
 }
 
+bool Shader::SetShaderColorParameters(
+	struct ID3D11DeviceContext* const deviceContext,
+	_In_ DirectX::FXMVECTOR vec
+)
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	ColorBufferType* dataPtr;
+	
+	
+	
+	
+	result = deviceContext->Map(m_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	
+	dataPtr->colorVector = vec;
+
+	
+	deviceContext->Unmap(m_colorBuffer, 0);
+	
+	
+	deviceContext->VSSetConstantBuffers(1, 1, &m_colorBuffer);
+
+	return true;
+}
+
+
 string Shader::GetName()
 {
 	return m_name;
@@ -232,6 +268,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
+	D3D11_BUFFER_DESC colorBufferDesc;
 
 	result = D3DCompileFromFile(shaderFileName, NULL,NULL,"VSMain", "vs_4_0",D3DCOMPILE_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
@@ -321,6 +358,19 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	matrixBufferDesc.StructureByteStride = 0;
 
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	colorBufferDesc.ByteWidth = sizeof(ColorBufferType);
+	colorBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	colorBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	colorBufferDesc.MiscFlags = 0;
+	colorBufferDesc.StructureByteStride = 0;
+
+	result = device->CreateBuffer(&colorBufferDesc, NULL, &m_colorBuffer);
 	if (FAILED(result))
 	{
 		return false;

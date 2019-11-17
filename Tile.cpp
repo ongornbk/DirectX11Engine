@@ -356,8 +356,16 @@ void _vectorcall TileMap::Render(
 	const XMVECTOR cameraPosition
 )
 {
+
+	float colors[4];
+	colors[0] = 1.f;
+	colors[1] = 1.f;
+	colors[2] = 1.f;
+	colors[3] = 1.f;
+
 	m_tileShader->Begin(deviceContext);
-	GRAPHICS EnableAlphaBlending(true);
+	m_tileShader->SetShaderColorParameters(deviceContext, _mm_load_ps(colors));
+	//GRAPHICS EnableAlphaBlending(true);
 	 float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
 	 
 	_f[0] += cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
@@ -393,7 +401,7 @@ void _vectorcall TileMap::Render(
 			
 		}
 	}
-	GRAPHICS EnableAlphaBlending(false);
+	//GRAPHICS EnableAlphaBlending(false);
 	m_tileShader->End(deviceContext);
 	
 }
