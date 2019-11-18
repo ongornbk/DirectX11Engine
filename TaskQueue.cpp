@@ -10,7 +10,7 @@ XMFLOAT3 _vectorcall RandomizeXMFLOAT3(XMFLOAT3 object, float x, float y) noexce
 	float yy = object.y;
 	xx += random(-x, x);
 	yy += random(-y, y);
-	return XMFLOAT3(xx, yy, 0.0f);
+	return DirectX::XMFLOAT3(xx, yy, 0.0f);
 }
 
 TaskQueue::TaskQueue()

@@ -108,40 +108,40 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 }
 
 bool VertexBuffer::InitializeAnchorBottom(
-	ID3D11Device * device,
-	Shader * shader,
+	struct ID3D11Device * const device,
+	class Shader * const shader,
 	float size[2],
 	bool writeable)
 {
 	m_shader = shader;
 	uint32_t* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	struct D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	struct D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
 	m_vertexCount = 4;
 	m_indexCount = 6;
 
-	m_vertices = new SpriteVertexType[m_vertexCount];
+	m_vertices = new struct SpriteVertexType[m_vertexCount];
 	indices = new uint32_t[m_indexCount];
 	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
 
 	float halfSizex = size[0] / 2.0f;
 
-	m_vertices[0].position = XMFLOAT3(-halfSizex, 0.0f, 0.0f);
-	m_vertices[0].uv = XMFLOAT2(0.0f, 1.0f);
+	m_vertices[0].position = DirectX::XMFLOAT3(-halfSizex, 0.0f, 0.0f);
+	m_vertices[0].uv = DirectX::XMFLOAT2(0.0f, 1.0f);
 
-	m_vertices[1].position = XMFLOAT3(-halfSizex, size[1], 0.0f);
-	m_vertices[1].uv = XMFLOAT2(0.0f, 0.0f);
+	m_vertices[1].position = DirectX::XMFLOAT3(-halfSizex, size[1], 0.0f);
+	m_vertices[1].uv = DirectX::XMFLOAT2(0.0f, 0.0f);
 
-	m_vertices[2].position = XMFLOAT3(halfSizex, size[1], 0.0f);
-	m_vertices[2].uv = XMFLOAT2(1.0f, 0.0f);
+	m_vertices[2].position = DirectX::XMFLOAT3(halfSizex, size[1], 0.0f);
+	m_vertices[2].uv = DirectX::XMFLOAT2(1.0f, 0.0f);
 
-	m_vertices[3].position = XMFLOAT3(halfSizex, 0.0f, 0.0f);
-	m_vertices[3].uv = XMFLOAT2(1.0f, 1.0f);
+	m_vertices[3].position = DirectX::XMFLOAT3(halfSizex, 0.0f, 0.0f);
+	m_vertices[3].uv = DirectX::XMFLOAT2(1.0f, 1.0f);
 
 	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(struct SpriteVertexType)*m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -181,18 +181,23 @@ bool VertexBuffer::InitializeAnchorBottom(
 	return true;
 }
 
-bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float size[2], float coords[6], bool writeable)
+bool VertexBuffer::InitializePart(
+	struct ID3D11Device * const device,
+	class Shader * const shader,
+	float size[2],
+	float coords[6],
+	bool writeable)
 {
 	m_shader = shader;
 	uint32_t* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	struct D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	struct D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
 	m_vertexCount = 4;
 	m_indexCount = 6;
 
-	m_vertices = new SpriteVertexType[m_vertexCount];
+	m_vertices = new struct SpriteVertexType[m_vertexCount];
 	indices = new uint32_t[m_indexCount];
 	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
 
@@ -206,22 +211,22 @@ bool VertexBuffer::InitializePart(ID3D11Device * device, Shader * shader, float 
 	float right = coords[4];
 	float bottom = coords[5];
 
-	m_vertices[0].position = XMFLOAT3(-halfSizex, -halfSizey, 0.0f);
-	m_vertices[0].uv = XMFLOAT2(left/width, bottom/height);
+	m_vertices[0].position = DirectX::XMFLOAT3(-halfSizex, -halfSizey, 0.0f);
+	m_vertices[0].uv = DirectX::XMFLOAT2(left/width, bottom/height);
 
-	m_vertices[1].position = XMFLOAT3(-halfSizex, halfSizey, 0.0f);
-	m_vertices[1].uv = XMFLOAT2(left/width, top/height);
+	m_vertices[1].position = DirectX::XMFLOAT3(-halfSizex, halfSizey, 0.0f);
+	m_vertices[1].uv = DirectX::XMFLOAT2(left/width, top/height);
 
-	m_vertices[2].position = XMFLOAT3(halfSizex, halfSizey, 0.0f);
-	m_vertices[2].uv = XMFLOAT2(right/width,top/height);
+	m_vertices[2].position = DirectX::XMFLOAT3(halfSizex, halfSizey, 0.0f);
+	m_vertices[2].uv = DirectX::XMFLOAT2(right/width,top/height);
 
-	m_vertices[3].position = XMFLOAT3(halfSizex, -halfSizey, 0.0f);
-	m_vertices[3].uv = XMFLOAT2(right/width, bottom/height);
+	m_vertices[3].position = DirectX::XMFLOAT3(halfSizex, -halfSizey, 0.0f);
+	m_vertices[3].uv = DirectX::XMFLOAT2(right/width, bottom/height);
 
 
 
 	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(SpriteVertexType)*m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(struct SpriteVertexType)*m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -355,12 +360,12 @@ bool VertexBuffer::ResizeTexture(
 	return true;
 }
 
-SpriteVertexType * VertexBuffer::GetVertices()
+struct SpriteVertexType * VertexBuffer::GetVertices()
 {
 	return m_vertices;
 }
 
-ID3D11Buffer * VertexBuffer::GetVertexBuffer()
+struct ID3D11Buffer * VertexBuffer::GetVertexBuffer()
 {
 	return m_vertexBuffer;
 }

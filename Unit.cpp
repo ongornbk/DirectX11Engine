@@ -40,18 +40,18 @@ Unit::~Unit()
 }
 
 void Unit::Initialize(
-	ID3D11Device * device,
-	ID3D11DeviceContext * deviceContext,
-	class Shader * shader,
+	struct ID3D11Device * const device,
+	struct ID3D11DeviceContext * const deviceContext,
+	class Shader * const shader,
 	WCHAR* paths,
 	const float modelsize,
 	const float collision,
-	const XMFLOAT3 position,
+	const DirectX::XMFLOAT3 position,
 	const bool wander)
 {
-	wstring tmp0 = wstring(paths);
-	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	ModelPaths* ptr = S_ModelPaths::GetModelPaths(tmp1);
+	std::wstring tmp0 = std::wstring(paths);
+	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
+	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(tmp1);
 
 
 
@@ -69,8 +69,8 @@ void Unit::Initialize(
 
 void Unit::Render(
 	struct ID3D11DeviceContext* const deviceContext,
-	const struct XMFLOAT4X4& viewMatrix,
-	const struct XMFLOAT4X4& projectionMatrix,
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
 	const struct ShaderPackage &shader)
 {
 	if (m_flags.m_rendering)
@@ -106,7 +106,7 @@ void Unit::Render(
 void Unit::PreRender(
 	struct ID3D11DeviceContext * const deviceContext,
 	const struct DirectX::XMFLOAT4X4 & viewMatrix,
-	const struct XMFLOAT4X4 & projectionMatrix,
+	const struct DirectX::XMFLOAT4X4 & projectionMatrix,
 	const struct ShaderPackage & shader
 )
 {
@@ -253,8 +253,8 @@ void Unit::Update(const float dt)
 				return;
 			}
 
-			struct SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
-			memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
+			struct SpriteVertexType* const verticesPtr = (struct SpriteVertexType* const)mappedResource.pData;
+			memcpy(verticesPtr, (void*)vertices, sizeof(struct SpriteVertexType) * m_vertexBuffer->GetVertexCount());
 			m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 
 			m_previousFrame = m_currentFrame;
@@ -397,7 +397,7 @@ void Unit::DiscardTasks()
 	m_tasks.Discard();
 }
 
-void Unit::SetPosition(const struct XMFLOAT3 position)
+void Unit::SetPosition(const struct DirectX::XMFLOAT3 position)
 {
 	m_boundingSphere.Center = position;
 }
@@ -407,7 +407,7 @@ void Unit::GoBack()
 	m_boundingSphere.Center = m_floats[1];
 }
 
-void Unit::SetFootstepsSound(class Sound * sound)
+void Unit::SetFootstepsSound(class Sound * const sound)
 {
 	m_footstepsSound = sound;
 }
@@ -442,14 +442,20 @@ class Sound * Unit::GetFootstepsSound() const noexcept
 	return m_footstepsSound;
 }
 
-void Unit::Resize(ID3D11Device * device, Shader * shader,const float resize)
+void Unit::Resize(
+	struct ID3D11Device * const device,
+	class Shader * const shader,
+	const float resize
+)
 {
 	m_size *= resize;
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 }
 
-void Unit::PlayAnimation(const enum ModelStance animation)
+void Unit::PlayAnimation(
+	const enum ModelStance animation
+)
 {
 	if (m_flags.m_rendering&&!m_stop)
 	{
@@ -462,7 +468,9 @@ void Unit::PlayAnimation(const enum ModelStance animation)
 	}
 }
 
-void Unit::SetAnimation(const enum ModelStance animation)
+void Unit::SetAnimation(
+	const enum ModelStance animation
+)
 {
 	if (m_flags.m_rendering && !m_stop&&(animation!=m_modelVariant.GetVariant()))
 	{
@@ -472,7 +480,9 @@ void Unit::SetAnimation(const enum ModelStance animation)
 	}
 }
 
-void Unit::SetAnimationSpeed(const float speed)
+void Unit::SetAnimationSpeed(
+	const float speed
+)
 {
 	m_previousSpeed = m_animationSpeed;
 	m_animationSpeed = speed;
@@ -490,100 +500,108 @@ int32 Unit::isReleased() const noexcept
 	}
 }
 
-void Unit::InitializeModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, ModelPaths * paths)
+void Unit::InitializeModel(
+	struct ID3D11Device * const device,
+	struct ID3D11DeviceContext * const deviceContext,
+	class Shader * const shader,
+	struct ModelPaths * const paths
+)
 {
-	m_vertexBuffer = new VertexBuffer();
-	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
-
+	{
+		m_vertexBuffer = new class VertexBuffer();
+		float sizexy[2] = { m_size,m_size };
+		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+	}
 
 	if (paths->TOWNWALK != NULL)
 	{
-		wstring tmp0 = wstring(paths->TOWNWALK);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->TOWNWALK);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[0] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 	if (paths->TOWNNEUTRAL != NULL)
 	{
-		wstring tmp0 = wstring(paths->TOWNNEUTRAL);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->TOWNNEUTRAL);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[1] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 	if (paths->SPECIALCAST != NULL)
 	{
-		wstring tmp0 = wstring(paths->SPECIALCAST);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->SPECIALCAST);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[2] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 	if (paths->GETHIT != NULL)
 	{
-		wstring tmp0 = wstring(paths->GETHIT);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->GETHIT);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[3] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->KICK != NULL)
 	{
-		wstring tmp0 = wstring(paths->KICK);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->KICK);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[4] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->SPECIAL_1 != NULL)
 	{
-		wstring tmp0 = wstring(paths->SPECIAL_1);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->SPECIAL_1);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[5] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->WALK != NULL)
 	{
-		wstring tmp0 = wstring(paths->WALK);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->WALK);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[6] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->ATTACK_1 != NULL)
 	{
-		wstring tmp0 = wstring(paths->ATTACK_1);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->ATTACK_1);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[7] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->NEUTRAL != NULL)
 	{
-		wstring tmp0 = wstring(paths->NEUTRAL);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->NEUTRAL);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[8] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->ATTACK_2 != NULL)
 	{
-		wstring tmp0 = wstring(paths->ATTACK_2);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->ATTACK_2);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[9] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->RUN != NULL)
 	{
-		wstring tmp0 = wstring(paths->RUN);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->RUN);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[10] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->SPECIAL_3 != NULL)
 	{
-		wstring tmp0 = wstring(paths->SPECIAL_3);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->SPECIAL_3);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[11] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->SPECIAL_4 != NULL)
 	{
-		wstring tmp0 = wstring(paths->SPECIAL_4);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths->SPECIAL_4);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[12] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 
+	{
+		m_deviceContext = deviceContext;
+		m_currentFrame = 0.0f;
+		m_previousFrame = -1.0f;
+	}
 
-	m_deviceContext = deviceContext;
-	m_currentFrame = 0.0f;
-	m_previousFrame = -1.0f;
 }
 
 

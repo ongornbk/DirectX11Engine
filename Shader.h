@@ -59,6 +59,8 @@ public:
 	);
 
 
+
+
 	string GetName();
 	bool IsInitialized();
 
@@ -86,7 +88,6 @@ private:
 	ID3D11InputLayout* m_layout;
 	ID3D11Buffer* m_matrixBuffer;
 	ID3D11Buffer* m_colorBuffer;
-	ID3D11Buffer* m_cameraBuffer;
 	ID3D11BlendState* m_alphaBlendState;
 	ID3D11DepthStencilState* m_depthStencilState;
 	string m_name;

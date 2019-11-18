@@ -11,21 +11,24 @@ using namespace DirectX;
 
 namespace
 {
-	ID3D11SamplerState* m_samplerState;
+	struct ID3D11SamplerState* m_samplerState;
 }
 
-Shader::Shader(ID3D11Device * device, HWND hwnd,WCHAR* shaderFileName)
+Shader::Shader(
+	struct ID3D11Device * const device,
+	HWND hwnd,
+	WCHAR* shaderFileName
+)
 {
 	m_vertexShader = NULL;
 	m_pixelShader = NULL;
 	m_layout = NULL;
 	m_matrixBuffer = NULL;
-	m_cameraBuffer = NULL;
 	m_colorBuffer = NULL;
 
 	m_initialized = Initialize(device, hwnd, shaderFileName);
 
-	D3D11_SAMPLER_DESC samplerDesc;
+	struct D3D11_SAMPLER_DESC samplerDesc;
 	HRESULT result;
 
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -44,7 +47,7 @@ Shader::Shader(ID3D11Device * device, HWND hwnd,WCHAR* shaderFileName)
 
 	result = device->CreateSamplerState(&samplerDesc, &m_samplerState);
 
-	D3D11_BLEND_DESC omDesc;
+	struct D3D11_BLEND_DESC omDesc;
 	ZeroMemory(&omDesc,sizeof(D3D11_BLEND_DESC));
 	omDesc.RenderTarget[0].BlendEnable = true;
 	omDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -57,7 +60,7 @@ Shader::Shader(ID3D11Device * device, HWND hwnd,WCHAR* shaderFileName)
 
 	result = device->CreateBlendState(&omDesc, &m_alphaBlendState);
 
-	D3D11_DEPTH_STENCIL_DESC dsDesc;
+	struct D3D11_DEPTH_STENCIL_DESC dsDesc;
 
 	dsDesc.DepthEnable = FALSE;
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -87,11 +90,7 @@ Shader::~Shader(void)
 		(void)m_matrixBuffer->Release();
 		m_matrixBuffer = NULL;
 	}
-	if (m_cameraBuffer)
-	{
-		(void)m_cameraBuffer->Release();
-		m_cameraBuffer = NULL;
-	}
+	
 	if (m_colorBuffer)
 	{
 		(void)m_colorBuffer->Release();
@@ -125,11 +124,15 @@ Shader::~Shader(void)
 	m_name.clear();
 }
 
-bool Shader::Initialize(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileName)
+bool Shader::Initialize(
+	struct ID3D11Device* const device,
+	HWND hwnd,
+	WCHAR* shaderFileName
+)
 {
 
-	wstring shaderFilePath(shaderFileName);
-	m_name = string(shaderFilePath.begin(),shaderFilePath.end());
+	std::wstring shaderFilePath(shaderFileName);
+	m_name = std::string(shaderFilePath.begin(),shaderFilePath.end());
 	int pos = (int)m_name.find_last_of("/");
 	if (pos >= 0)
 	{
@@ -250,6 +253,7 @@ bool Shader::SetShaderColorParameters(
 
 	return true;
 }
+
 
 
 string Shader::GetName()
@@ -378,6 +382,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	{
 		return false;
 	}
+
 
 	return true;
 }

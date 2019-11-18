@@ -223,9 +223,9 @@ namespace lua_callback
 		static  int32 PlayMusic(lua_State* state) noexcept
 		{
 #pragma warning(disable : 4996)
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_engine->PlayMusic(wide_string);
 			delete wide_string;
@@ -234,7 +234,7 @@ namespace lua_callback
 
 		static  int32 AddInterfaceSound(lua_State* state)
 		{
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			m_engine->AddInterfaceSound(str, LUA_FLOAT(state, 2));
 			return 0;
 		}
@@ -242,9 +242,9 @@ namespace lua_callback
 		static  int32 PlaySound(lua_State* state) noexcept
 		{
 #pragma warning(disable : 4996)
-			string str = LUA_STRING(state, 1);
+			std::string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_engine->PlaySound(wide_string);
 			delete wide_string;
@@ -379,14 +379,18 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t PickUnit(lua_State* state) noexcept
+	static int32_t PickUnit(
+		struct lua_State* const state
+	) noexcept
 	{
-		m_global->m_pickedObject = m_global->m_lastPickedUnit = 
-			(Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
+		m_global->m_pickedObject = m_global->m_lastPickedUnit = (class Unit* const)(lua_tointeger(state, 1));//dynamic cast?
+			//(class Unit* const )LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
 		return 0;
 	}
 
-	static int32_t PickObject(lua_State* state) noexcept
+	static int32_t PickObject(
+		struct lua_State* const state
+	) noexcept
 	{
 		m_global->m_pickedObject = (Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
 		return 0;
@@ -410,17 +414,21 @@ namespace lua_callback
 	{
 		class Doodads* const doodads = new class Doodads();
 		m_global->m_lastCreatedRenderContainer = doodads;
-		const union LuaPointer lptr(doodads);
-		lua_pushinteger(state, lptr.lua.first);
-		lua_pushinteger(state, lptr.lua.second);
-		return 2;
+		lua_pushinteger(state, (lua_Integer)(doodads));
+		//const union LuaPointer lptr(doodads);
+		//lua_pushinteger(state, lptr.lua.first);
+		//lua_pushinteger(state, lptr.lua.second);
+		return 1;
 	}
 
-	static int32_t CreateAnimatedDoodads(lua_State* state) noexcept
+	static int32_t CreateAnimatedDoodads(
+		struct lua_State* const state
+	) noexcept
 	{
-		AnimatedDoodads* doodads = new AnimatedDoodads();
+		class AnimatedDoodads* const doodads = new class AnimatedDoodads();
 		m_global->m_lastCreatedRenderContainer = doodads;
-		return 0;
+		lua_pushinteger(state, (lua_Integer)(doodads));
+		return 1;
 	}
 
 	static int32 CreateTree(
@@ -429,10 +437,11 @@ namespace lua_callback
 	{
 		class Tree* const tree = new class Tree();
 		m_global->m_lastCreatedRenderContainer = tree;
-		const union LuaPointer lptr(tree);
-		lua_pushinteger(state, lptr.lua.first);
-		lua_pushinteger(state, lptr.lua.second);
-		return 2;
+		lua_pushinteger(state, (lua_Integer)(tree));
+		//const union LuaPointer lptr(tree);
+		//lua_pushinteger(state, lptr.lua.first);
+		//lua_pushinteger(state, lptr.lua.second);
+		return 1;
 	}
 
 	//static int32_t SetZ(lua_State* state) noexcept
@@ -446,11 +455,13 @@ namespace lua_callback
 	//	return 0;
 	//}
 
-	static int32_t GetMousePosition(lua_State* state) noexcept
+	static int32_t GetMousePosition(
+		struct lua_State* const state
+	) noexcept
 	{
 		int32 xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
-		m_global->m_lastPoint = XMFLOAT3((float)xm,(float)ym, 0.0f);
+		m_global->m_lastPoint = DirectX::XMFLOAT3((float)xm,(float)ym, 0.0f);
 		lua_pushinteger(state, (int32_t)xm);
 		lua_pushinteger(state, (int32_t)ym);
 		return 2;
@@ -465,7 +476,9 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int32_t PickLastCreatedUnit(struct lua_State* const) noexcept
+	static int32_t PickLastCreatedUnit(
+		struct lua_State* const
+	) noexcept
 	{
 		class Unit* const unit = (class Unit*)m_global->m_lastCreatedRenderContainer;
 		if (unit)
@@ -519,9 +532,11 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t BeginRunning(lua_State* state) noexcept
+	static int32_t BeginRunning(
+		struct lua_State* const state
+	) noexcept
 	{
-		Unit* unit = m_global->m_lastPickedUnit;
+		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			unit->BeginRunning();
@@ -529,9 +544,11 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t EndRunning(lua_State* state) noexcept
+	static int32_t EndRunning(
+		struct lua_State* const state
+	) noexcept
 	{
-		Unit* unit = m_global->m_lastPickedUnit;
+		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
 			unit->EndRunning();

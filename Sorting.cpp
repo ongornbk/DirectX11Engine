@@ -477,7 +477,7 @@ for ( int32 i = 0u; i < 32; i++)
 }
 }
 
-bool _stdcall __sort__SortByY::operator()(EObject * A, EObject * B) const noexcept
+bool _stdcall __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
 
 
@@ -544,7 +544,7 @@ bool _stdcall __sort__SortByY::operator()(EObject * A, EObject * B) const noexce
 	return Ay > By;
 }
 
-bool _stdcall __sort__SortByX::operator()(class EObject * A,class EObject * B) const noexcept
+bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -606,27 +606,27 @@ bool _stdcall __sort__SortByX::operator()(class EObject * A,class EObject * B) c
 	return Ax > Bx;
 }
 
-void _cdecl sortPyV(class EObject** begin,class EObject** end) noexcept
+void _cdecl sortPyV(class EObject** const begin,class EObject** const end) noexcept
 {
 	std::sort(begin, end, __sort__SortByY());
 }
 
-void _cdecl sortPxV(class EObject** begin,class EObject** end) noexcept
+void _cdecl sortPxV(class EObject** const begin,class EObject** const end) noexcept
 {
 	std::sort(begin, end, __sort__SortByX());
 }
 
-void _stdcall sortPxVTP(class EObject** begin,class EObject** end) noexcept
+void _stdcall sortPxVTP(class EObject** const begin,class EObject** const end) noexcept
 {
 	std::sort(begin, end, __sort__SortByX());
 }
 
-void _stdcall sortPyVTP(class EObject** begin,class EObject** end) noexcept
+void _stdcall sortPyVTP(class EObject** const begin,class EObject** const end) noexcept
 {
 	std::sort(begin, end, __sort__SortByY());
 }
 
-void _vectorcall SortByYV(class Vector<EObject*> vec[2][32]) noexcept
+void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	for (int32 i = 0; i < 32; ++i)
 		vec[1][i].clear();
@@ -651,14 +651,14 @@ void _vectorcall SortByYV(class Vector<EObject*> vec[2][32]) noexcept
 
 }
 
-void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept
+void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
-	for (uint32_t i = 0u; i < 32u; i++)
+	for (int32_t i = 0; i < 32; i++)
 		vec[0][i].clear();
 
-	for (uint32_t i = 0u; i < 32u; i++)
+	for (int32_t i = 0; i < 32; i++)
 	{
 		for (auto && RC : vec[1][i])
 		{
@@ -668,7 +668,7 @@ void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept
 
 	struct ThreadPoolHandle pool;
 
-	for (uint32_t i = 0u; i < 32u; i++)
+	for (int32 i = 0; i < 32; i++)
 	{
 		if (xta[i])
 		{
@@ -677,7 +677,7 @@ void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept
 	}
 }
 
-void _vectorcall __CleanUp(class Vector<EObject*> vec[2][32]) noexcept
+void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	for (int32 i = 0; i < 32; ++i)
 	{
