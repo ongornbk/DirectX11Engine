@@ -85,10 +85,14 @@ public:
 	TaskAttack();
 	~TaskAttack() = default;
 
+	void Initialize();
+
 	bool          Update() override;
 	void          Release() override;
 	class  Unit*         object{};
 	class  EObject*      target{};
+
+	bool inrange;
 };
 
 

@@ -9,6 +9,8 @@
 #include "Network.h"
 #include "LuaPointer.h"
 #include "Sorting.h"
+#include "UnitGroup.h"
+#include "Math.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -536,13 +538,26 @@ namespace lua_callback
 			{
 				if (object->GetTaskType() == Task::Type::TASKATTACK)
 				{
-					lua_pushboolean(state, true);
+					const TaskAttack* const task = (class TaskAttack* const)object->GetTask();
+					if (task)
+					{
+						if (task->inrange)
+							lua_pushboolean(state, false);
+						else
+							lua_pushboolean(state, true);
+					}
+					else
+					{
+						lua_pushboolean(state, true);
+					}
+					
 				}
 				else
 				{
 					class TaskAttack* const task = new TaskAttack();
 					task->object = object;
 					task->target = target;
+					task->Initialize();
 					object->SetTask(task);
 					lua_pushboolean(state, false);
 				}
@@ -814,12 +829,14 @@ namespace lua_callback
 		return 1;
 	}
 
-	static int32_t SetNumberOfFrames(lua_State* state) noexcept
+	static int32_t SetNumberOfFrames(
+		struct lua_State* const state
+	) noexcept
 	{
-		AnimatedDoodads* ad = (AnimatedDoodads*)m_global->m_lastCreatedRenderContainer;
-		if (ad)
+		class AnimatedDoodads* const animatedDoodad = (AnimatedDoodads*)lua_tointeger(state, 1);
+		if (animatedDoodad)
 		{
-			ad->SetNumberOfFrames(LUA_FLOAT(state, 1));
+			animatedDoodad->SetNumberOfFrames(LUA_FLOAT(state, 2));
 		}
 		return 0;
 	}
@@ -1080,6 +1097,86 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 CreateUnitGroup(
+		struct lua_State* const state
+	)
+	{
+		class UnitGroup* const unit_group = new UnitGroup();
+		lua_pushinteger(state, (lua_Integer)unit_group);
+		return 1;
+	}
+
+	static int32 DeleteUnitGroup(
+		struct lua_State* const state
+	)
+	{
+		class UnitGroup* const unit_group = (class UnitGroup* const)lua_tointeger(state, 1);
+		if (unit_group)
+		{
+			unit_group->clear();
+			delete unit_group;
+		}
+		return 0;
+	}
+
+	static int32 GetUnitsInGroup(
+		struct lua_State* const state
+	)
+	{
+		class UnitGroup* const unit_group = (class UnitGroup* const)lua_tointeger(state, 1);
+		if (unit_group)
+		{
+			m_global->m_stack = unit_group->GetStack();
+			m_global->m_size = (uint32)m_global->m_stack.size();
+		}
+		return 0;
+	}
+
+	static int32 AddUnitToGroup(
+		struct lua_State* const state
+	)
+	{
+		class UnitGroup* const unit_group = (class UnitGroup* const)lua_tointeger(state, 1);
+		class Unit* const unit = (class Unit* const)lua_tointeger(state, 2);
+		
+		if (unit_group&& unit)
+		{
+			unit_group->Insert(unit);
+		}
+		return 0;
+	}
+
+	static int32 RemoveUnitFromGroup(
+		struct lua_State* const state
+	)
+	{
+		class UnitGroup* const unit_group = (class UnitGroup* const)lua_tointeger(state, 1);
+		class Unit* const unit = (class Unit* const)lua_tointeger(state, 2);
+
+		if (unit_group && unit)
+		{
+			unit_group->Remove(unit);
+		}
+		return 0;
+	}
+
+	static int32 GetDistanceBetweenUnits(
+		struct lua_State* const state
+	)
+	{
+		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
+		class Unit* const unit1 = (class Unit* const)lua_tointeger(state, 2);
+
+		if (unit0 && unit1)
+		{
+			const float distance = XMFloat3Distance2D(unit0->GetPosition(), unit1->GetPosition());
+			lua_pushnumber(state, (lua_Number)distance);
+		}
+		else
+			lua_pushnumber(state, 0.);
+		return 1;
+	}
+
 	static void RegisterFunctions()
 	{
 		struct lua_State* const m_lua = lua::GetInstance();
@@ -1134,6 +1231,7 @@ namespace lua_callback
 		lua_register(m_lua, "BeginRunning", lua_callback::BeginRunning);
 		lua_register(m_lua, "EndRunning", lua_callback::EndRunning);
 		lua_register(m_lua, "SetLastSelectedUnit", lua_callback::SetLastSelectedUnit);
+		lua_register(m_lua, "GetDistanceBetweenUnits", lua_callback::GetDistanceBetweenUnits);
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);
@@ -1177,6 +1275,12 @@ namespace lua_callback
 		lua_register(m_lua, "ClearGameChat", lua_callback::ClearGameChat);
 		lua_register(m_lua, "GameChatMessageBack", lua_callback::GameChatMessageBack);
 		lua_register(m_lua, "GameChatMessageFront", lua_callback::GameChatMessageFront);
+		//UnitGroup
+		lua_register(m_lua, "CreateUnitGroup", lua_callback::CreateUnitGroup);
+		lua_register(m_lua, "DeleteUnitGroup", lua_callback::DeleteUnitGroup);
+		lua_register(m_lua, "GetUnitsInGroup", lua_callback::GetUnitsInGroup);
+		lua_register(m_lua, "AddUnitToGroup", lua_callback::AddUnitToGroup);
+		lua_register(m_lua, "RemoveUnitFromGroup", lua_callback::RemoveUnitFromGroup);
 	}
 
 }

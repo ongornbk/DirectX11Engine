@@ -3,12 +3,18 @@ SamplerState SampleType;
 
 
 
-cbuffer MatrixBuffer
+cbuffer MatrixBuffer : register(b0)
 {
-matrix worldMatrix;
-matrix viewMatrix;
-matrix projectionMatrix;
+	matrix worldMatrix;
+	matrix viewMatrix;
+	matrix projectionMatrix;
 };
+
+cbuffer ColorBuffer : register(b1)
+{
+	float4 colorVector;
+};
+
 
 
 struct VertexInputType
@@ -27,7 +33,7 @@ PixelInputType VSMain(VertexInputType input)
 {
 PixelInputType output;
 
-input.position.w = 1.0f;
+input.position.w = 1.f;
 
 output.position = mul(input.position, worldMatrix);
 output.position = mul(output.position,viewMatrix);
@@ -45,9 +51,9 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
 float alpha = textureColor[3];
-textureColor[0] = 0.0f;
-textureColor[1] = 0.0f;
-textureColor[2] = 0.0f;
-textureColor[3] = mul(textureColor[3],0.33f);
+textureColor[0] = 0.f;
+textureColor[1] = 0.f;
+textureColor[2] = 0.f;
+textureColor[3] = mul(textureColor[3],0.5f);
 return textureColor;
 }

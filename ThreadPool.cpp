@@ -2,7 +2,7 @@
 
 namespace
 {
-	static ThreadPool* m_instance = nullptr;
+	static class ThreadPool* m_instance = nullptr;
 }
 
 ThreadPoolHandle::ThreadPoolHandle()
@@ -37,7 +37,7 @@ ThreadPool::ThreadPool(const size_t num_threads) :
 	auto thread_loop = [&](size_t id) {
 		
 		while (_running.load()) {
-			unique_lock<mutex> lk(_mutex);
+			class std::unique_lock<class std::mutex> lk(_mutex);
 		//	_mutex.lock();
 			if (!_taskQueue.empty()) {
 				auto work = _taskQueue.front();
@@ -54,7 +54,7 @@ ThreadPool::ThreadPool(const size_t num_threads) :
 	};
 	_threads.reserve(num_threads);
 	for (size_t i = 0; i < num_threads; i++) {
-		_threads.push_back(std::thread(thread_loop, i));
+		_threads.push_back(class std::thread(thread_loop, i));
 	}
 }
 
@@ -65,15 +65,15 @@ ThreadPool::~ThreadPool() {
 }
 
 void ThreadPool::push(tpTask work) {
-	unique_lock<mutex> lk(_mutex);
+	class std::unique_lock<class std::mutex> lk(_mutex);
 	_taskQueue.push(work);
 	_taskNum++;
 	cv.notify_one();
 }
 
 void ThreadPool::clear() {
-	std::queue<tpTask> empty;
-	unique_lock<mutex> lk(_mutex);
+	class std::queue<tpTask> empty;
+	class std::unique_lock<class std::mutex> lk(_mutex);
 	_taskNum -= _taskQueue.size();
 	std::swap(_taskQueue, empty);
 }

@@ -2,13 +2,21 @@ require "core/Unit"
 require "core/Game"
 require "core/Music"
 require "core/Camera"
+require "core/Chat"
 
 Game.Start()
 Music.Play("lakeland")
 Camera.Up(0.0,1.0,0.0,0.0)
 Camera.LookAt(0.0,0.0,1.0,0.0)
 hero = Unit.new()
-SetFlags("10100100")
+Unit.Pick(hero)
 Unit.SetWalkingStance(1)
-Unit.SetSpeed(320)
-Unit.Initialize("barbarian",100,20,0,0,0,false)
+Unit.SetSpeed(300)
+Object.SetRenderingFlag(true)
+Object.SetSelectableFlag(false)
+Object.SetPushableFlag(true)
+Object.SetShadowFlag(true)
+Object.SetCollisionPriority(2)
+Unit.Initialize("barbarian",100,25,0,0,0,false)
+
+

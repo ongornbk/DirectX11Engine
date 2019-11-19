@@ -15,6 +15,7 @@ public:
 	void Wander(Unit* unit);
 	void SetOwner(class Unit* object);
 	enum Task::Type GetActiveType() const noexcept;
+	class Task* const GetActiveTask() const noexcept;
 private:
 	queue<Task*> m_tasks;
 	class Unit*  m_owner{};

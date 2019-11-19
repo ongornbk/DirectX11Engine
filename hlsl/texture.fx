@@ -3,11 +3,16 @@ SamplerState SampleType;
 
 
 
-cbuffer MatrixBuffer
+cbuffer MatrixBuffer : register(b0)
 {
 matrix worldMatrix;
 matrix viewMatrix;
 matrix projectionMatrix;
+};
+
+cbuffer ColorBuffer : register(b1)
+{
+float4 color;
 };
 
 
@@ -43,5 +48,5 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
 
-return mul(1.05f,textureColor);
+return mul(0.85f,textureColor);
 }

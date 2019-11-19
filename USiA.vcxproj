@@ -247,6 +247,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="UnitGroup.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
@@ -325,6 +326,7 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="UnitGroup.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceGameMenu.cpp" />

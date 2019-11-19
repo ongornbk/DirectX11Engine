@@ -4,7 +4,7 @@
 
 using::GlobalUtilities::random;
 
-XMFLOAT3 _vectorcall RandomizeXMFLOAT3(XMFLOAT3 object, float x, float y) noexcept
+DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) noexcept
 {
 	float xx = object.x;
 	float yy = object.y;
@@ -104,4 +104,11 @@ Task::Type TaskQueue::GetActiveType() const noexcept
 		return Task::Type::NONE;
 	else
 		return m_tasks.front()->m_type;
+}
+
+Task* const TaskQueue::GetActiveTask() const noexcept
+{
+	if (m_tasks.empty())
+		return nullptr;
+	else return m_tasks.front();
 }

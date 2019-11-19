@@ -3,11 +3,16 @@ SamplerState SampleType;
 
 
 
-cbuffer MatrixBuffer
+cbuffer MatrixBuffer : register(b0)
 {
-matrix worldMatrix;
-matrix viewMatrix;
-matrix projectionMatrix;
+	matrix worldMatrix;
+	matrix viewMatrix;
+	matrix projectionMatrix;
+};
+
+cbuffer ColorBuffer : register(b1)
+{
+	float4 color;
 };
 
 

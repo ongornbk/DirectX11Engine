@@ -4,6 +4,7 @@ Doodads = {}
 
 function Doodads.new ()
 local tptrA,tptrB = CreateDoodads()
+PickObject(tptrA,tptrB)
 return {ptrA = tptrA,ptrB = tptrB}
 end
 

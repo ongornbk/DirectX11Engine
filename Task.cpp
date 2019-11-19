@@ -182,6 +182,21 @@ TaskAttack::TaskAttack()
 {
 	m_type = Type::TASKATTACK;
 	m_stance = TSRUNNING;
+
+	
+}
+
+void TaskAttack::Initialize()
+{
+	if(object&&target)
+	{
+		const DirectX::XMFLOAT3 position = object->GetPosition();
+		const DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
+
+		const Attack atk = object->GetAttack();
+
+		inrange = (XMFloat3Distance2D(position, destination) > atk.range);
+	}
 }
 
 bool TaskAttack::Update()
@@ -191,9 +206,11 @@ bool TaskAttack::Update()
 	
 	const Attack atk = object->GetAttack();
 
-	
-	
 	if (XMFloat3Distance2D(position, destination) > atk.range)
+		inrange = true;
+	else inrange = false;
+	
+	if (inrange)
 	{
 		atk.active = false;
 		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;

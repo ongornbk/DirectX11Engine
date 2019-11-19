@@ -135,6 +135,7 @@ public:
 	Attack& GetAttack();
 
 	enum Task::Type GetTaskType() const noexcept;
+	class Task* GetTask() const noexcept;
 
 	bool IsAttacking() const noexcept;
 
@@ -173,13 +174,13 @@ private:
 	class Sound*        m_footstepsSound{};
 	class sf::Sound*    m_footstepsHandle{};
 
-	ID3D11DeviceContext * m_deviceContext;
+	struct ID3D11DeviceContext * m_deviceContext;
 	float               m_colors[4];
 	float m_currentFrame;
 	float m_previousFrame;
 
-	XMFLOAT4X4   m_worldMatrix;
-	XMFLOAT3     m_floats[2];
+	DirectX::XMFLOAT4X4   m_worldMatrix;
+	DirectX::XMFLOAT3     m_floats[2];
 	float        m_size;
 	float        m_lastSize;
 
@@ -189,8 +190,8 @@ private:
 	float         m_framesPerSecond;
 	bool          m_isLooping;
 	float         m_rotation;
-	VertexBuffer* m_vertexBuffer;
-	ModelVariant  m_modelVariant;
+	class VertexBuffer* m_vertexBuffer;
+	struct ModelVariant  m_modelVariant;
 	float         m_previousSpeed;
 	float         m_rotations;
 	int           m_stopped;

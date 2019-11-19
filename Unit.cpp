@@ -7,8 +7,8 @@
 
 Unit::Unit()
 {
-	m_floats[0] = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_floats[1] = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_floats[0] = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_floats[1] = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	m_colors[0] = 1.f;
 	m_colors[1] = 1.f;
@@ -25,7 +25,7 @@ Unit::Unit()
 	m_currentSpeed = 0.0f;
 	m_stop = false;
 	m_rotations = 16.0f;
-	m_attack.range = 100.f;
+	m_attack.range = 80.f;
 	m_attack.active = false;
 
 	m_tasks.SetOwner(this);
@@ -187,7 +187,7 @@ void Unit::Update(const float dt)
 			{
 				m_floats[1] = m_boundingSphere.Center;
 			}
-				XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
+				DirectX::XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
 
 				m_flags.m_collided = TileMap::CollisionAt(niuPos);
 
@@ -243,7 +243,7 @@ void Unit::Update(const float dt)
 
 
 
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			struct D3D11_MAPPED_SUBRESOURCE mappedResource;
 			struct SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 			vertices[0].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
@@ -279,7 +279,7 @@ void Unit::Update(const float dt)
 
 		int32 mousePosition[2];
 		UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
-		FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
+		DirectX::FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
 		if (m_boundingSphere.Contains(point))
 		{
 			m_flags.m_selected = true;
@@ -429,6 +429,13 @@ Attack& Unit::GetAttack()
 Task::Type Unit::GetTaskType() const noexcept
 {
 	return m_tasks.GetActiveType();
+}
+
+Task* Unit::GetTask()const noexcept
+{
+	if (m_tasks.GetActiveType() != Task::Type::NONE)
+		return m_tasks.GetActiveTask();
+	else return nullptr;
 }
 
 bool Unit::IsAttacking() const noexcept
