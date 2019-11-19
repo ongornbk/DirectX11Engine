@@ -19,4 +19,6 @@ Object.SetShadowFlag(true)
 Object.SetCollisionPriority(2)
 Unit.Initialize("barbarian",100,25,0,0,0,false)
 
+pullgroup = CreateUnitGroup()
+
 

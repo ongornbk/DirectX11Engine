@@ -6,7 +6,23 @@ require "core/Game"
 require "core/Chat"
 require "core/Pointer"
 
+function AttackSound()
 
+    local rn = math.random(1,3)
+    if rn == 1
+    then
+
+    PlaySound("attack1")
+    else if rn == 2
+    then
+
+    PlaySound("attack2")
+    else
+    PlaySound("attack3")
+    end
+    end
+end
+end
 
 local x,y = GetMousePosition()
 if GetMouseState(0) == true
@@ -22,18 +38,7 @@ then
 
 if Unit.Attack(selected) == false
 then
-local rn = math.random(1,3)
-if rn == 1
-then    
-PlaySound("attack1")
-else if rn == 2
-then
-PlaySound("attack2")
-else
-PlaySound("attack3")
-end
-end
-end
+AttackSound()
 else
 Unit.Goto(x,y)
 end
@@ -124,7 +129,7 @@ Object.SetPushableFlag(true)
 Object.SetCollisionPriority(1)
 Unit.SetWalkingStance(0)
 
-local rn = math.random(0,3)
+local rn = math.random(3,3)
 
 if rn == 0
 then
@@ -234,3 +239,20 @@ end
 --Music.Play("place")
 --end
 
+GetUnitsInGroup(pullgroup)
+local unit = PopGroup()
+while(unit > 0)
+do
+Unit.Pick(unit)
+local distance = GetDistanceBetweenUnits(unit,hero)
+
+if distance > 300.0
+then
+RemoveUnitFromGroup(pullgroup,unit)
+Unit.CleanTasks()
+else
+
+end
+
+unit = PopGroup()
+end

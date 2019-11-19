@@ -56,4 +56,8 @@ function Unit.ApplyColorFilter(red,green,blue,alpha)
     ApplyColorFilter(Unit.pickedUnit,red,green,blue,alpha)
     end
 
+function Unit.GetUnitsInRange(range)
+GetUnitsInRange(Unit.pickedUnit,range)
+end
+
 
