@@ -8,6 +8,7 @@ using namespace DirectX;
 
 #pragma region
 class  Unit;
+class  EObject;
 #pragma endregion
 
 class Task
@@ -20,9 +21,11 @@ virtual void Release() = 0;
 
 enum Type
 {
+	NONE,
 	TASKGOTOPOINT,
 	TASKPATROL,
-	TASKFOLLOW
+	TASKFOLLOW,
+	TASKATTACK
 } m_type;
 
 enum Stance
@@ -42,8 +45,8 @@ public:
 
 	bool     Update() override;
 	void     Release() override;
-	Unit*    object;
-	XMFLOAT3 destination;
+	class Unit*    object;
+	DirectX::XMFLOAT3 destination;
 };
 
 class TaskPatrol : public Task
@@ -54,9 +57,9 @@ public:
 
 	bool     Update() override;
 	void     Release() override;
-	Unit*    object;
-	XMFLOAT3 pointA;
-	XMFLOAT3 pointB;
+	class Unit*    object;
+	DirectX::XMFLOAT3 pointA;
+	DirectX::XMFLOAT3 pointB;
 private:
 	bool m_target;
 };
@@ -71,8 +74,21 @@ public:
 
 	bool          Update() override;
 	void          Release() override;
-	Unit*         object;
-	Unit*         target;
+	class Unit*         object;
+	class Unit*         target;
+};
+
+class TaskAttack : public Task
+{
+public:
+
+	TaskAttack();
+	~TaskAttack() = default;
+
+	bool          Update() override;
+	void          Release() override;
+	class  Unit*         object{};
+	class  EObject*      target{};
 };
 
 

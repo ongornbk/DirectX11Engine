@@ -5,13 +5,14 @@
 #include <cmath>
 
 
-
+#define CONTINUE_TASK return true
+#define CLOSE_TASK return false
 	 
 
-	 XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation) noexcept
+	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation) noexcept
 	{
 #define ANGLE (3.14f / 8.0f)
-		 XMFLOAT3 f3;
+		 DirectX::XMFLOAT3 f3;
 		f3.x = sin(3.14f + ANGLE * rotation)*Settings::GetAspectRatio()*speed;
 		f3.y = cos(ANGLE*rotation)*speed * -1.0f;
 		f3.z = 0.0f;
@@ -57,11 +58,11 @@ bool TaskGotoPoint::Update()
 			object->SetRotation(rotation);
 			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 			object->SetVelocity(f3.x, f3.y, f3.z);
-			return true;
+			CONTINUE_TASK;
 		}
 		else
 		{
-			return false;
+			CLOSE_TASK;
 		}
 }
 
@@ -115,13 +116,13 @@ bool TaskPatrol::Update()
 		object->SetRotation(rotation);
 		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 		object->SetVelocity(f3.x, f3.y, f3.z);
-		return true;
+		CONTINUE_TASK;
 	}
 	else
 	{
 		m_target = false;
 	}
-	return false;
+	CLOSE_TASK;
 }
 
 void TaskPatrol::Release()
@@ -162,17 +163,72 @@ bool TaskFollow::Update()
 		object->SetRotation(rotation);
 		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
 		object->SetVelocity(f3.x, f3.y, f3.z);
-		return true;
+		CONTINUE_TASK;
 	}
 	else
 	{
 		object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
 		object->SetVelocity(0.0f,0.0f,0.0f);
 	}
-	return false;
+	CLOSE_TASK;
 }
 
 void TaskFollow::Release()
 {
+	delete this;
+}
+
+TaskAttack::TaskAttack()
+{
+	m_type = Type::TASKATTACK;
+	m_stance = TSRUNNING;
+}
+
+bool TaskAttack::Update()
+{
+	DirectX::XMFLOAT3 position = object->GetPosition();
+	DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
+	
+	const Attack atk = object->GetAttack();
+
+	
+	
+	if (XMFloat3Distance2D(position, destination) > atk.range)
+	{
+		atk.active = false;
+		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
+		rotation += 180.0f;
+		rotation /= 22.5f;
+		rotation = 20 - rotation;
+		object->SetRotation(rotation);
+		switch (object->GetWalkingStance())
+		{
+		case Unit::WalkingStance::WS_RUN:
+		{
+			object->SetAnimation(Unit::ModelStance::MS_RUN);
+			break;
+		}
+		case Unit::WalkingStance::WS_WALK:
+		{
+			object->SetAnimation(Unit::ModelStance::MS_WALK);
+			break;
+		}
+		}
+		
+		DirectX::XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		object->SetVelocity(f3.x, f3.y, f3.z);
+		CONTINUE_TASK;
+	}
+	else
+	{
+		return object->Attack(target);
+	}
+	CLOSE_TASK;
+}
+
+void TaskAttack::Release()
+{
+	const Attack atk = object->GetAttack();
+	atk.active = false;
 	delete this;
 }

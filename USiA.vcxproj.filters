@@ -342,6 +342,12 @@
     <ClInclude Include="IBidirectionalElement.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Attack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -555,6 +561,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Footsteps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

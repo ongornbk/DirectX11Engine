@@ -392,7 +392,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		m_global->m_pickedObject = (Unit*)LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
+		m_global->m_pickedObject = (class EObject* const)lua_tointeger(state, 1);
 		return 0;
 	}
 
@@ -520,13 +520,51 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t SetFootstepsSound(lua_State* state) noexcept
+	static int32 SetTaskAttack(
+		struct lua_State* const state
+	) noexcept
 	{
-		Unit* unit = m_global->m_lastPickedUnit;
+		class Unit* const object = (class Unit* const)lua_tointeger(state, 1);
+		class EObject* const target = (class EObject* const)lua_tointeger(state, 2);
+		if (object&&target&&target->m_type==EObject::EObjectType::UNIT)
+		{
+			if (object->IsAttacking())
+			{
+				lua_pushboolean(state, true);
+			}
+			else
+			{
+				if (object->GetTaskType() == Task::Type::TASKATTACK)
+				{
+					lua_pushboolean(state, true);
+				}
+				else
+				{
+					class TaskAttack* const task = new TaskAttack();
+					task->object = object;
+					task->target = target;
+					object->SetTask(task);
+					lua_pushboolean(state, false);
+				}
+			}
+				
+		}
+		else
+		{
+			return true;
+		}
+		return 1;
+	}
+
+	static int32_t SetFootstepsSound(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Unit* const unit = m_global->m_lastPickedUnit;
 		if (unit)
 		{
-			string  str = lua_tostring(state, 1);
-			class Sound* sound = Canals::GetInstance()->__GetSound(str);
+			std::string  str = lua_tostring(state, 1);
+			class Sound* const sound = Canals::GetInstance()->__GetSound(str);
 			unit->SetFootstepsSound(sound);
 		}
 		return 0;
@@ -921,19 +959,25 @@ namespace lua_callback
 
 	
 
-	static int LoadFont(lua_State* state) //EXPORTED
+	static int LoadFont(
+		struct lua_State* const state
+	) //EXPORTED
 	{
 		m_engine->AddFont(lua_tostring(state, 1), LUA_FLOAT(state, 2), LUA_FLOAT(state, 3));
 		return 0;
 	}
 
-	static int32_t SetTilesMultiplier(lua_State* state) noexcept
+	static int32_t SetTilesMultiplier(
+		struct lua_State* const state
+	) noexcept
 	{
 		SetCellMultiplier(LUA_FLOAT(state, 1));
 		return 0;
 	}
 
-	static int32_t __LoadTilesResourceFromFile(lua_State* state)
+	static int32_t __LoadTilesResourceFromFile(
+		struct lua_State* const state
+	)
 	{
 		LoadTilesResourceFromFile(lua_tostring(state, 1));
 		return 0;
@@ -1105,6 +1149,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetLastSelectedUnit", lua_callback::GetLastSelectedUnit);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);//@@
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);//@@
+		lua_register(m_lua, "SetTaskAttack", lua_callback::SetTaskAttack);//@@
 		lua_register(m_lua,"CleanTasks", lua_callback::CleanTasks);//@@
 
 		lua_register(m_lua, "SetUnitPosition", lua_callback::SetUnitPosition);//@@

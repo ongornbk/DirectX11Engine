@@ -361,9 +361,12 @@ bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen,  int32 screenWid
 	return true;
 }
 
-bool DXManager::InitializeDepthBuffer(int screenWidth, int screenHeight)
+bool DXManager::InitializeDepthBuffer(
+	const int screenWidth,
+	const int screenHeight
+)
 {
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	struct D3D11_TEXTURE2D_DESC depthBufferDesc;
 	HRESULT result;
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 	depthBufferDesc.Width = screenWidth;
@@ -410,7 +413,7 @@ bool DXManager::InitializeStencilView()
 
 bool DXManager::InitializeDepthStencilBuffer()
 {
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	struct D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	HRESULT result;
 
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
@@ -446,7 +449,7 @@ bool DXManager::InitializeDepthStencilBuffer()
 
 bool DXManager::InitializeRasterizerState()
 {
-	D3D11_RASTERIZER_DESC rasterDesc;
+	struct D3D11_RASTERIZER_DESC rasterDesc;
 	HRESULT result;
 
 	rasterDesc.AntialiasedLineEnable = false;

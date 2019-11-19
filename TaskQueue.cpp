@@ -97,3 +97,11 @@ void TaskQueue::SetOwner(Unit * object)
 {
 	m_owner = object;
 }
+
+Task::Type TaskQueue::GetActiveType() const noexcept
+{
+	if (m_tasks.empty())
+		return Task::Type::NONE;
+	else
+		return m_tasks.front()->m_type;
+}

@@ -21,9 +21,9 @@ public:
 private:
 	ID3D11DeviceContext * m_deviceContext;
 
-	VertexBuffer* m_vertexBuffer;
-	Texture*      m_texture;
-	Shader*       m_shader;
+	class VertexBuffer* m_vertexBuffer;
+	class Texture*      m_texture;
+	class Shader*       m_shader;
 	float         m_size;
 	char          m_char;
 };

@@ -25,8 +25,12 @@ Unit::Unit()
 	m_currentSpeed = 0.0f;
 	m_stop = false;
 	m_rotations = 16.0f;
+	m_attack.range = 100.f;
+	m_attack.active = false;
 
 	m_tasks.SetOwner(this);
+
+	
 }
 
 
@@ -155,9 +159,18 @@ void Unit::Update(const float dt)
 			}
 			else
 			{
-				SetAnimation(ModelStance::MS_TOWNNEUTRAL);
-				SetVelocity(0.0f, 0.0f, 0.0f);
-				Unit::EndRunning();
+				if (m_stop)
+				{
+
+				}
+				else
+				{
+					m_attack.active = false;
+					SetAnimation(ModelStance::MS_TOWNNEUTRAL);
+					SetVelocity(0.0f, 0.0f, 0.0f);
+					Unit::EndRunning();
+				}
+				
 			}
 		}
 		
@@ -287,6 +300,7 @@ void Unit::SetZ(const float z)
 
 void Unit::SetTask(class Task* task)
 {
+	if(!m_attack.active)
 	m_tasks.SetTask(task);
 }
 
@@ -407,6 +421,43 @@ void Unit::GoBack()
 	m_boundingSphere.Center = m_floats[1];
 }
 
+Attack& Unit::GetAttack()
+{
+	return m_attack;
+}
+
+Task::Type Unit::GetTaskType() const noexcept
+{
+	return m_tasks.GetActiveType();
+}
+
+bool Unit::IsAttacking() const noexcept
+{
+	return m_attack.active;
+}
+
+bool Unit::Attack(EObject* const target)
+{
+	if (m_stop)
+	{
+		return false;
+	}
+	else
+	{
+		DirectX::XMFLOAT3 position = GetPosition();
+		DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
+		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
+		rotation += 180.0f;
+		rotation /= 22.5f;
+		rotation = 20 - rotation;
+		SetRotation(rotation);
+		PlayAnimation(Unit::ModelStance::MS_ATTACK_1);
+		SetVelocity(0.0f, 0.0f, 0.0f);
+		return true;
+	}
+
+}
+
 void Unit::SetFootstepsSound(class Sound * const sound)
 {
 	m_footstepsSound = sound;
@@ -465,7 +516,24 @@ void Unit::PlayAnimation(
 		m_modelVariant.SetVariant(animation);
 		m_isLooping = false;
 		m_stop = true;
+
+		switch (animation)
+		{
+		case	ModelStance::MS_ATTACK_1:
+			m_attack.active = true;
+			break;
+		case	ModelStance::MS_ATTACK_2:
+			m_attack.active = true;
+			break;
+
+
+		default:
+			m_attack.active = false;
+			break;
+		}
 	}
+
+	
 }
 
 void Unit::SetAnimation(

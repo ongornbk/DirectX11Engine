@@ -1,8 +1,9 @@
 #pragma once
-#include "RenderContainer.h"
+#include "AttackTarget.h"
 #include "S_ModelPaths.h"
 #include "Sprite.h"
 #include "Sound.h"
+#include "Attack.h"
 
 #pragma region
 
@@ -116,7 +117,7 @@ public:
 
 	float    GetCollisionRadius() const noexcept;
 
-	XMFLOAT3 GetPosition() const noexcept;
+	DirectX::XMFLOAT3 GetPosition() const noexcept;
 	float    GetSpeed() const noexcept;
 	float GetZ() const noexcept;
 	void SetSpeed(const float speed = 0.0f);
@@ -131,6 +132,14 @@ public:
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
 
+	Attack& GetAttack();
+
+	enum Task::Type GetTaskType() const noexcept;
+
+	bool IsAttacking() const noexcept;
+
+	bool Attack(class EObject* const target);
+
 	void SetFootstepsSound(class Sound* sound);
 
 	void BeginRunning();
@@ -142,6 +151,7 @@ public:
 	friend class TaskGotoPoint;
 	friend class TaskPatrol;
 	friend class TaskFollow;
+	friend class TaskAttack;
 	friend struct RenderObject;
 	friend struct SortByX;
 	friend struct SortByY;
@@ -185,5 +195,7 @@ private:
 	float         m_rotations;
 	int           m_stopped;
 	bool          m_stop;		
+
+	struct Attack        m_attack;
 };
 

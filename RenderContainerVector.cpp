@@ -63,7 +63,7 @@ std::reverse(mvpp.begin(), mvpp.end());
 uint32 group = 31u;
 for (auto& vec : mvpp)
 {
-	GRAPHICS EnableAlphaBlending(false);
+	GRAPHICS EnableAlphaBlending(true);
 
 	shader.BeginShadow();
 
