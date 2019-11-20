@@ -494,12 +494,6 @@
     <ClCompile Include="Enet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="2D\TextFormat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="2D\TextSize.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WindowHandle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

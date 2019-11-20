@@ -12,6 +12,8 @@
 #include "UnitGroup.h"
 #include "Math.h"
 
+#include <atlbase.h>
+
 #ifdef __cplusplus
 extern "C"
 #endif // __cplusplus
@@ -1177,6 +1179,23 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int32 StartCasting(
+		struct lua_State* const state
+	)
+	{
+		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
+		const DirectX::XMFLOAT2 point = DirectX::XMFLOAT2(LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+
+		if (unit0)
+		{
+			unit0->StartCasting(point);
+		}
+
+		return 0;
+	}
+
+
+
 	static void RegisterFunctions()
 	{
 		struct lua_State* const m_lua = lua::GetInstance();
@@ -1232,6 +1251,7 @@ namespace lua_callback
 		lua_register(m_lua, "EndRunning", lua_callback::EndRunning);
 		lua_register(m_lua, "SetLastSelectedUnit", lua_callback::SetLastSelectedUnit);
 		lua_register(m_lua, "GetDistanceBetweenUnits", lua_callback::GetDistanceBetweenUnits);
+		lua_register(m_lua, "StartCasting", lua_callback::StartCasting);
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);

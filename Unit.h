@@ -140,6 +140,8 @@ public:
 	bool IsAttacking() const noexcept;
 
 	bool Attack(class EObject* const target);
+	bool GetAttacked(class EObject* const attacker);
+	bool StartCasting(const DirectX::XMFLOAT2 target);
 
 	void SetFootstepsSound(class Sound* sound);
 

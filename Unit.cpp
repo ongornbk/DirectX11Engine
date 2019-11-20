@@ -443,7 +443,7 @@ bool Unit::IsAttacking() const noexcept
 	return m_attack.active;
 }
 
-bool Unit::Attack(EObject* const target)
+bool Unit::Attack(class EObject* const target)
 {
 	if (m_stop)
 	{
@@ -460,9 +460,44 @@ bool Unit::Attack(EObject* const target)
 		SetRotation(rotation);
 		PlayAnimation(Unit::ModelStance::MS_ATTACK_1);
 		SetVelocity(0.0f, 0.0f, 0.0f);
+		if(target)
+		((class Unit* const)target)->GetAttacked(this);
 		return true;
 	}
 
+}
+
+bool Unit::GetAttacked(class EObject* const attacker)
+{
+	if (m_stop)
+	{
+		return false;
+	}
+	{
+		PlayAnimation(Unit::ModelStance::MS_GETHIT);
+		SetVelocity(0.0f, 0.0f, 0.0f);
+		return true;
+	}
+}
+
+bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
+{
+	if (m_stop)
+	{
+		return false;
+	}
+	else
+	{
+		DirectX::XMFLOAT3 position = GetPosition();
+		float rotation = atan2(target.y - position.y, target.x - position.x) * 180.0f / 3.141f;
+		rotation += 180.0f;
+		rotation /= 22.5f;
+		rotation = 20 - rotation;
+		SetRotation(rotation);
+		PlayAnimation(Unit::ModelStance::MS_SPECIALCAST);
+		SetVelocity(0.0f, 0.0f, 0.0f);
+		return true;
+	}
 }
 
 void Unit::SetFootstepsSound(class Sound * const sound)

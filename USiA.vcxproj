@@ -262,8 +262,6 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2D\TextFormat.cpp" />
-    <ClCompile Include="2D\TextSize.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />
