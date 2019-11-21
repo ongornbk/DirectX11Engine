@@ -18,6 +18,7 @@ void EObjectVector::Update(
 	const float dt
 )
 {
+//#pragma omp parallel for //EASY CRASH
 	for (int32 i = 0; i < 32; ++i)
 	{
 		if(!xta[i])

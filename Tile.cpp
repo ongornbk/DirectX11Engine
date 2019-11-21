@@ -9,6 +9,7 @@
 #include <string>
 #include <streambuf>
 #include <sstream>
+#include <omp.h>
 
 #define TILE_MAP_HALF_SIZE_FLOAT TILE_MAP_SIZE / 2.0f
 #define TILE_MAP_HALF_SIZE_INT32 TILE_MAP_SIZE / 2
@@ -225,6 +226,7 @@ void Tile::SetGlobals(
 	tile::CAMERA_TILE_CUT      = tile::CAMERA_TILE_VIEW - tile::CAMERA_RENDER_CUT;
 	tile::CAMERA_TILE_DEEP_CUT = tile::CAMERA_TILE_CUT + sizes.at(4);
 
+#pragma omp parallel for
 	for (int i = 0; i < TILE_MAP_SIZE; ++i)
 		for (int j = 0; j < TILE_MAP_SIZE; ++j)
 		{
@@ -291,6 +293,7 @@ void Tile::Render()
 }
 TileMap::~TileMap()
 {
+#pragma omp parallel for
 	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
 		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
@@ -314,6 +317,8 @@ void TileMap::Initialize()
 {
 	float offsety = (TILE_MAP_RANGE) *tile::CELL_HALF_HEIGHT;
 	float offsetx = 0.0f;
+
+//#pragma omp parallel for
 	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
 		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
@@ -416,6 +421,8 @@ void _vectorcall TileMap::SetTile(
 )
 {
 	array< int32,2> pos = TransformXMFLOAT2ToTileMapINDEX2(position);
+
+//#pragma omp parallel for
 	for (int32 x = 0; x < brush; ++x)
 	{
 		for (int32 y = 0; y < brush; ++y)
@@ -431,45 +438,45 @@ void _vectorcall TileMap::SetTile(
 	}
 }
 
-void TileMap::SetTile(
-	array< int32, 2> index,
-	int32 tile)
-{
-	ipp::math::clamp(tile, 0, 8);
-	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;
-	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);
-	if (tile == 7)
-	{
-
-		if (map[index[0]][index[1]]->m_type == Tile::Type::TILE)
-		{
-
-			AnimatedTile* tilep = new AnimatedTile(map[index[0]][index[1]], m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);
-			delete map[index[0]][index[1]];
-			map[index[0]][index[1]] = (Tile*)tilep;
-			map[index[0]][index[1]]->m_type = Tile::Type::ANIMATEDTILE;
-			map[index[0]][index[1]]->m_collision = true;
-
-		}
-		else
-		{
-			((AnimatedTile*)map[index[0]][index[1]])->SetTexture(m_texture[tile][ipp::math::RandomUint8(0u,tile::tilesub[tile])]);
-		}
-	}
-	else
-	{
-		if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)
-		{
-			
-			Tile* tilep = new Tile((AnimatedTile*)map[index[0]][index[1]]);
-			delete dynamic_cast<AnimatedTile*>(map[index[0]][index[1]]);
-			map[index[0]][index[1]] = tilep;
-			map[index[0]][index[1]]->m_type = Tile::Type::TILE;
-			map[index[0]][index[1]]->m_collision = false;
-		}
-	}
-}
-
+void TileMap::SetTile(																																//BAD CODE
+	array< int32, 2> index,																															//BAD CODE
+	int32 tile)																																		//BAD CODE
+{																																					//BAD CODE
+	ipp::math::clamp(tile, 0, 8);																													//BAD CODE
+	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;																							//BAD CODE
+	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);													//BAD CODE
+	if (tile == 7)																																	//BAD CODE
+	{																																				//BAD CODE
+																																					//BAD CODE
+		if (map[index[0]][index[1]]->m_type == Tile::Type::TILE)																					//BAD CODE
+		{																																			//BAD CODE
+																																					//BAD CODE
+			AnimatedTile* tilep = new AnimatedTile(map[index[0]][index[1]], m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);		//BAD CODE
+			delete map[index[0]][index[1]];																											//BAD CODE
+			map[index[0]][index[1]] = (Tile*)tilep;																									//BAD CODE
+			map[index[0]][index[1]]->m_type = Tile::Type::ANIMATEDTILE;																				//BAD CODE
+			map[index[0]][index[1]]->m_collision = true;																							//BAD CODE
+																																					//BAD CODE
+		}																																			//BAD CODE
+		else																																		//BAD CODE
+		{																																			//BAD CODE
+			((AnimatedTile*)map[index[0]][index[1]])->SetTexture(m_texture[tile][ipp::math::RandomUint8(0u,tile::tilesub[tile])]);					//BAD CODE
+		}																																			//BAD CODE
+	}																																				//BAD CODE
+	else																																			//BAD CODE
+	{																																				//BAD CODE
+		if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)																			//BAD CODE
+		{																																			//BAD CODE
+																																					//BAD CODE
+			Tile* tilep = new Tile((AnimatedTile*)map[index[0]][index[1]]);																			//BAD CODE
+			delete dynamic_cast<AnimatedTile*>(map[index[0]][index[1]]);																			//BAD CODE
+			map[index[0]][index[1]] = tilep;																										//BAD CODE
+			map[index[0]][index[1]]->m_type = Tile::Type::TILE;																						//BAD CODE
+			map[index[0]][index[1]]->m_collision = false;																							//BAD CODE
+		}																																			//BAD CODE
+	}																																				//BAD CODE
+}																																					//BAD CODE
+																																					//BAD CODE
 void TileMap::SaveToFile(std::string filename)
 {
 	remove(filename.c_str());

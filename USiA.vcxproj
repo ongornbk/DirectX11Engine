@@ -157,6 +157,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -248,6 +249,7 @@
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitGroup.h" />
+    <ClInclude Include="UnitSounds.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
@@ -325,6 +327,7 @@
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitGroup.cpp" />
+    <ClCompile Include="UnitSounds.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceGameMenu.cpp" />

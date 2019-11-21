@@ -61,11 +61,11 @@ public:
 		{
 			return m_maxFrames[m_variant];
 		}
-		void SetVariant(const enum ModelStance variant = ModelStance::MS_NEUTRAL) noexcept
+		void SetVariant(const enum ModelStance variant = ModelStance::MS_NEUTRAL)const noexcept
 		{
 			this->m_variant = variant;
 		}
-		void SetVariant(const int32 variant)
+		void SetVariant(const int32 variant) const
 		{
 			this->m_variant = variant;
 		}
@@ -73,7 +73,7 @@ public:
 		Texture*             m_textures[13];
 		float                m_maxFrames[13] = { 8,16,15,5,0,0,8,16,8,0,8,0,0 };
 	private:
-		int32                m_variant;
+		mutable int32                m_variant;
 
 	};
 
@@ -148,6 +148,9 @@ public:
 	void BeginRunning();
 	void EndRunning();
 
+	void LoadSounds(WCHAR* path);
+	void LoadSounds(std::string* path);
+
 	class Sound* GetFootstepsSound() const noexcept;
 
 	friend class Task;
@@ -200,5 +203,7 @@ private:
 	bool          m_stop;		
 
 	struct Attack        m_attack;
+
+	class UnitSounds m_sounds;
 };
 

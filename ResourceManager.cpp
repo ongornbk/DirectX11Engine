@@ -35,8 +35,8 @@ extern "C"
 
 	namespace
 	{
-		map<string, string> m_resourcesURLS;
-		ID3D11Device*       m_device;
+		std::map<std::string, std::string> m_resourcesURLS;
+		struct ID3D11Device*       m_device;
 	}
 
 	namespace rm
@@ -259,7 +259,7 @@ void ResourceManager::Release()
 	delete(this);
 }
 
-Shader* ResourceManager::GetShaderByName(char * shaderName)
+class Shader* ResourceManager::GetShaderByName(const char * shaderName)
 {
 	for (int i = 0; i < (int)m_shaders.size(); ++i)
 	{
@@ -274,7 +274,7 @@ Shader* ResourceManager::GetShaderByName(char * shaderName)
 	return NULL;
 }
 
-Texture * ResourceManager::GetTextureByName(char* textureName)
+class Texture * ResourceManager::GetTextureByName(const char* textureName)
 {
 	for (int i = 0; i < (int)m_textures.size(); i++)
 	{
@@ -288,7 +288,7 @@ Texture * ResourceManager::GetTextureByName(char* textureName)
 	}
 	return NULL;
 }
-Sound  * ResourceManager::GetSoundByName(char* soundName)
+class Sound  * ResourceManager::GetSoundByName(const char* soundName)
 {
 	for (int i = 0; i < (int)m_sounds.size(); ++i)
 	{
@@ -305,8 +305,29 @@ Sound  * ResourceManager::GetSoundByName(char* soundName)
 	return NULL;
 }
 
+class Shader* ResourceManager::GetShaderByName(WCHAR* shaderName)
+{
+	std::wstring tmp0 = std::wstring(shaderName);
+	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
+	return GetShaderByName(tmp1.c_str());
+}
 
-ResourceManager * ResourceManager::GetInstance()
+class Texture* ResourceManager::GetTextureByName(WCHAR* textureName)
+{
+	std::wstring tmp0 = std::wstring(textureName);
+	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
+	return GetTextureByName(tmp1.c_str());
+}
+
+class Sound* ResourceManager::GetSoundByName(WCHAR* soundName)
+{
+	std::wstring tmp0 = std::wstring(soundName);
+	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
+	return GetSoundByName(tmp1.c_str());
+}
+
+
+class ResourceManager * ResourceManager::GetInstance()
 {
 	if (m_instance == NULL)
 	{

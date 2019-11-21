@@ -9,6 +9,7 @@
 #include <thread>
 #include <sstream>
 #include <sal.h>
+#include <omp.h>
 #include <DirectXMath.h>
 
 
@@ -628,24 +629,46 @@ void _stdcall sortPyVTP(class EObject** const begin,class EObject** const end) n
 
 void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 {
+	//for (int32 i = 0; i < 32; ++i)
+	//	vec[1][i].clear();
+	//
+	//for (int32 i = 0; i < 32; ++i)
+	//{
+	//	for (auto && object : vec[0][i])
+	//	{
+	//		vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+	//	}
+	//}
+
+#pragma omp parallel for
 	for (int32 i = 0; i < 32; ++i)
 		vec[1][i].clear();
 
+//#pragma omp pallalel for
 	for (int32 i = 0; i < 32; ++i)
 	{
-		for (auto && object : vec[0][i])
+		for (auto&& object : vec[0][i])
 		{
 			vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
 		}
 	}
 
-	struct ThreadPoolHandle pool;
+	//struct ThreadPoolHandle pool;
 
+	//for (int32 i = 0; i < 32; ++i)
+	//{
+	//	if (yta[i])
+	//	{
+	//		pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
+	//	}
+	//}
+
+#pragma omp parallel for
 	for (int32 i = 0; i < 32; ++i)
 	{
 		if (yta[i])
 		{
-			pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
+			sortPyVTP(vec[1][i].begin(), vec[1][i].end());
 		}
 	}
 
@@ -655,6 +678,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
+#pragma omp parallel for
 	for (int32_t i = 0; i < 32; i++)
 		vec[0][i].clear();
 
@@ -666,19 +690,29 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 		}
 	}
 
-	struct ThreadPoolHandle pool;
+	//struct ThreadPoolHandle pool;
+	//
+	//for (int32 i = 0; i < 32; i++)
+	//{
+	//	if (xta[i])
+	//	{
+	//		pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
+	//	}
+	//}
 
+#pragma omp parallel for
 	for (int32 i = 0; i < 32; i++)
 	{
 		if (xta[i])
 		{
-			pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
+		sortPxVTP(vec[0][i].begin(), vec[0][i].end());
 		}
 	}
 }
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {
+#pragma omp parallel for
 	for (int32 i = 0; i < 32; ++i)
 	{
 	class Vector<class EObject*>& vectemp = vec[1][i];

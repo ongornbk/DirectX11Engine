@@ -474,6 +474,7 @@ bool Unit::GetAttacked(class EObject* const attacker)
 		return false;
 	}
 	{
+		
 		PlayAnimation(Unit::ModelStance::MS_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;
@@ -528,6 +529,15 @@ void Unit::EndRunning()
 	//	m_footstepsHandle->stop();
 		//m_footstepsHandle = nullptr;
 	}
+}
+
+void Unit::LoadSounds(WCHAR* path)
+{
+	m_sounds.Load(path);
+}
+
+void Unit::LoadSounds(std::string* path)
+{
 }
 
 class Sound * Unit::GetFootstepsSound() const noexcept

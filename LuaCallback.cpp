@@ -133,6 +133,17 @@ namespace lua_callback
 			m_engine->AddModelPaths(str);
 			return 0;
 		}
+
+		static  int32 AddSoundsPaths(
+			struct lua_State* const state
+		)
+		{
+			class Unit* const unit = (class Unit* const)(lua_tointeger(state, 1));
+			std::string str = LUA_STRING(state, 2);
+			if (unit)
+				unit->LoadSounds(str);
+			return 0;
+		}
 	}
 
 	namespace Cameras

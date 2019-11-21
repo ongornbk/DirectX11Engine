@@ -29,20 +29,24 @@ public:
 	void PrintOutTextures();
 	void Release();
 
-	Shader* GetShaderByName(char* shaderName);
-	Texture* GetTextureByName(char* textureName);
-	Sound* GetSoundByName(char* soundName);
+	class Shader* GetShaderByName(const char* shaderName);
+	class Texture* GetTextureByName(const char* textureName);
+	class Sound* GetSoundByName(const char* soundName);
+
+	class Shader* GetShaderByName(WCHAR* shaderName);
+	class Texture* GetTextureByName(WCHAR* textureName);
+	class Sound* GetSoundByName(WCHAR* soundName);
 
 
-	static ResourceManager* GetInstance();
+	static class ResourceManager* GetInstance();
 private:
-	vector<ResourceTexture*> m_textures;
-	vector<ResourceShader*>  m_shaders;
-	vector<ResourceSound*>   m_sounds;
+	vector<class ResourceTexture*> m_textures;
+	vector<class ResourceShader*>  m_shaders;
+	vector<class ResourceSound*>   m_sounds;
 
 	mutex m_shaderMutex;
 
-	static ResourceManager* m_instance;
+	static class ResourceManager* m_instance;
 
 
 
