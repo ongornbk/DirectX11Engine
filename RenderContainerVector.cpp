@@ -180,69 +180,89 @@ ENDLOOP:
 
 std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float range) noexcept
 {
-	std::stack<Unit*> units;
+	class std::stack<class Unit*> unitsLeft;
+	class std::stack<class Unit*> unitsCenter;
+	class std::stack<class Unit*> unitsRight;
 
 	//std::stack<Unit*> unitsA[3];
 
 	//ThreadPoolHandle pool; TO DO
 
-	const uint32 cVec = object->m_vector;
+	uint32 cVec = object->m_vector;
+
 
 	switch (cVec)
 	{
 	case 0U:
 	{
 
-
-		for (auto &obj : m_objectsXY[1][cVec])
+#pragma omp parallel
 		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
-		}
-		for (auto &obj : m_objectsXY[1][cVec+1])
-		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec + 1])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsRight.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
-		}
+	}
 		break;
 	}
 	case 31U:
 	{
-		for (auto &obj : m_objectsXY[1][cVec - 1])
+#pragma omp parallel
 		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsLeft.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
-		}
-		for (auto &obj : m_objectsXY[1][cVec])
-		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -250,39 +270,51 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	default:
 	{
-		for (auto &obj : m_objectsXY[1][cVec - 1])
+#pragma omp parallel
 		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsLeft.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
-		}
-		for (auto &obj : m_objectsXY[1][cVec])
-		{
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
+				for (auto& obj : m_objectsXY[1][cVec])
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					{
+						switch (CheckDistance(obj, object, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
 				}
 			}
-		}
-		{
-			for (auto &obj : m_objectsXY[1][cVec + 1])
-			if (obj&&obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+#pragma omp single
 			{
-				switch (CheckDistance(obj, object, range))
 				{
-				case 2:
-					units.push((Unit*)obj);
-					break;
+					for (auto& obj : m_objectsXY[1][cVec + 1])
+						if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+						{
+							switch (CheckDistance(obj, object, range))
+							{
+							case 2:
+								unitsRight.push((Unit*)obj);
+								break;
+							}
+						}
 				}
 			}
 		}
@@ -290,6 +322,15 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	}
 	
+	while (!unitsLeft.empty()) {
+		unitsCenter.push(unitsLeft.top());
+		unitsLeft.pop();
+	}
 
-	return units;
+	while (!unitsRight.empty()) {
+		unitsCenter.push(unitsRight.top());
+		unitsRight.pop();
+	}
+
+	return unitsCenter;
 }

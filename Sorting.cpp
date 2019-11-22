@@ -19,8 +19,8 @@ namespace
 {
 using ipp::SQRT2;
 #define HALF_MAP_SIZE (TILE_MAP_SIZE / 2.0f)
-	constexpr float MAP_XEND = HALF_MAP_SIZE * (80.0f  * SQRT2);
-	constexpr float MAP_XBEG = HALF_MAP_SIZE * (-80.0f * SQRT2);
+	constexpr float MAP_XEND = HALF_MAP_SIZE * (80.0f  * SQRT2);//1
+	constexpr float MAP_XBEG = HALF_MAP_SIZE * (-80.0f * SQRT2);//1
 	constexpr float MAP_XENDd14 = HALF_MAP_SIZE * (20.0f  * SQRT2);
 	constexpr float MAP_XBEGd14 = HALF_MAP_SIZE * (-20.0f * SQRT2);
 	constexpr float MAP_XENDd2 = HALF_MAP_SIZE * (40.0f  * SQRT2);
@@ -89,8 +89,8 @@ using ipp::SQRT2;
 	constexpr float MAP_YENDd116 = HALF_MAP_SIZE * (2.5f   * SQRT2);
 	constexpr float MAP_YBEGd116 = HALF_MAP_SIZE * (-2.5f  * SQRT2);
 
-	std::atomic<void*> tp_p_one;
-	std::atomic<void*> tp_p_two;
+	//std::atomic<void*> tp_p_one;
+	//std::atomic<void*> tp_p_two;
 }
 
 
@@ -724,7 +724,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {
-#pragma omp parallel for schedule(dynamic)
+#pragma omp for schedule(dynamic)
 	for (int32 i = 0; i < 32; ++i)
 	{
 	class Vector<class EObject*>& vectemp = vec[1][i];

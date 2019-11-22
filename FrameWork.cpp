@@ -88,7 +88,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = m_hInstance;
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hIcon = LoadIcon(NULL,"IDI_ICON1");
 	wc.hIconSm = wc.hIcon;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);

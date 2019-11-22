@@ -55,9 +55,9 @@ static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
 static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
-static uint8_t tilesub[32] ={
-	3u,//GRASS
-	2u,//DIRT
+static int32_t tilesub[32] ={
+	3,//GRASS
+	2,//DIRT
 	0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u
 };
 
@@ -429,19 +429,19 @@ void TileMap::SetTile(
 	int32 tile)																																		
 {																																					
 	ipp::math::clamp(tile, 0, 8);																													
-	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;																							
-	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);													
+	m_tile[index[0]][index[1]].tile_type = tile;																							
+	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomInt32(0, tile::tilesub[tile]);													
 	if (tile == 7)																																	
 	{																																				
 																																					
 		//if (map[index[0]][index[1]]->m_type == Tile::Type::TILE)																					
 		//{																																			
-		class Tile* previous = map[index[0]][index[1]];																												
-			class AnimatedTile* const tilep = new AnimatedTile(previous->m_info, m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);	
-			delete previous;																											
-			map[index[0]][index[1]] = (Tile*)tilep;																									
-
-			map[index[0]][index[1]]->m_collision = true;																							
+		//class Tile* previous = map[index[0]][index[1]];																												
+		//	class AnimatedTile* const tilep = new AnimatedTile(previous->m_info, m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);	
+		//	delete previous;																											
+		//	map[index[0]][index[1]] = (Tile*)tilep;																									
+		//
+		//	map[index[0]][index[1]]->m_collision = true;																							
 																																					
 		//}																																			
 		//else																																		
@@ -469,9 +469,9 @@ void TileMap::SaveToFile(std::string filename)
 	std::ofstream myfile;
 	myfile.open(filename);
 	
-	for (uint16_t i = 0u; i < TILE_MAP_SIZE; ++i)
+	for (uint32_t i = 0u; i < TILE_MAP_SIZE; ++i)
 	{
-		for (uint16_t j = 0u; j < TILE_MAP_SIZE; ++j)
+		for (uint32_t j = 0u; j < TILE_MAP_SIZE; ++j)
 		{
 			myfile << m_tile[i][j].tile_type;
 		}

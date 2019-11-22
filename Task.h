@@ -95,4 +95,21 @@ public:
 	bool inrange;
 };
 
+class TaskCastAtPoint : public Task
+{
+public:
+
+	//TaskCastAtPoint();
+	//~TaskCastAtPoint() = default;
+	//
+	//void Initialize();
+	//
+	//bool              Update() override;
+	//void              Release() override;
+	//class  Unit*      object{};
+	//DirectX::XMFLOAT3 pointA;
+	//
+	//bool inrange;
+};
+
 
