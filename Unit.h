@@ -204,6 +204,6 @@ private:
 
 	struct Attack        m_attack;
 
-	class UnitSounds m_sounds;
+	//class UnitSounds m_sounds;
 };
 

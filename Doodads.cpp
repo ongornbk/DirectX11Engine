@@ -10,7 +10,7 @@ Doodads::Doodads()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_boundingSphere.Radius = 0.0f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
@@ -38,14 +38,14 @@ void Doodads::Initialize(
 
 	m_size = size;
 
-	m_vertexBuffer = new VertexBuffer();
+	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{
-		wstring tmp0 = wstring(paths);
-		string tmp1 = string(tmp0.begin(), tmp0.end());
+		std::wstring tmp0 = std::wstring(paths);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_texture = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	
@@ -70,15 +70,39 @@ void Doodads::Render(
 	const struct ShaderPackage &shader
 )
 {
+	
 	if (m_flags.m_rendering)
 	{
-		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		//if (m_flags.m_selectable && m_flags.m_selected)
+		//{
+		//
+		//	shader.BeginSelect();
+		//
+		//	class Shader* const csh = shader.select;
+		//
+		//	csh->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		//	csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		//	m_vertexBuffer->Render(deviceContext);
+		//
+		//	//shader.End();
+		//	shader.BeginStandard();
+		//}
+
+		class Shader* const csh = shader.standard;
+
+		csh->SetShaderParameters(deviceContext, m_texture->GetTexture());
+		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		//csh->SetShaderColorParameters(deviceContext, m_colors);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
 
-void Doodads::PreRender(ID3D11DeviceContext * const deviceContext, const DirectX::XMFLOAT4X4 & viewMatrix, const DirectX::XMFLOAT4X4 & projectionMatrix, const ShaderPackage & shader)
+void Doodads::PreRender(
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct DirectX::XMFLOAT4X4 & viewMatrix,
+	const struct DirectX::XMFLOAT4X4 & projectionMatrix,
+	const struct ShaderPackage & shader
+)
 {
 	if (m_flags.m_rendering)
 	{
@@ -87,8 +111,23 @@ void Doodads::PreRender(ID3D11DeviceContext * const deviceContext, const DirectX
 			//shader.standard->End(deviceContext);
 
 			//shader.shadow->Begin(deviceContext);
+			const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();
+
+			__m128 distance{};
+			distance.m128_f32[0] = cameraPosition.m128_f32[1] - m_boundingSphere.Center.y;
+			distance.m128_f32[1] = cameraPosition.m128_f32[0] - m_boundingSphere.Center.x;
+
+			float rotation = atan2(distance.m128_f32[0], distance.m128_f32[1]);
+
+			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(rotation + XM_PIDIV2);
+
+			float length = XMVector2Length(distance).m128_f32[0];
+
+			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
+			XMFLOAT4X4 shadowMatrix;
+			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
-			shader.shadow->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 			m_vertexBuffer->Render(deviceContext);
 			//shader.shadow->End(deviceContext);
 

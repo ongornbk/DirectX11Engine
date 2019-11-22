@@ -354,6 +354,12 @@
     <ClInclude Include="UnitSounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UnitFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Destructible.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -485,9 +491,6 @@
     <ClCompile Include="LuaCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -548,9 +551,6 @@
     <ClCompile Include="Math.inl">
       <Filter>Clean\Engine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="XMLParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -573,6 +573,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnitSounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Destructible.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

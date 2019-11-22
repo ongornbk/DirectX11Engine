@@ -640,79 +640,91 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 	//	}
 	//}
 
-#pragma omp parallel for
-	for (int32 i = 0; i < 32; ++i)
-		vec[1][i].clear();
-
-//#pragma omp pallalel for
-	for (int32 i = 0; i < 32; ++i)
+#pragma omp parallel
 	{
-		for (auto&& object : vec[0][i])
+#pragma omp for schedule(dynamic)
+		for (int32 i = 0; i < 32; ++i)
+			vec[1][i].clear();
+
+		//#pragma omp pallalel for shedule(dynamic)
+#pragma omp barrier
+#pragma omp single
+		for (int32 i = 0; i < 32; ++i)
 		{
-			vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+			for (auto&& object : vec[0][i])
+			{
+				vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+			}
+		}
+
+		//struct ThreadPoolHandle pool;
+
+		//for (int32 i = 0; i < 32; ++i)
+		//{
+		//	if (yta[i])
+		//	{
+		//		pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
+		//	}
+		//}
+#pragma omp barrier
+#pragma omp for schedule(dynamic)
+		for (int32 i = 0; i < 32; ++i)
+		{
+			if (yta[i])
+			{
+				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+			}
 		}
 	}
-
-	//struct ThreadPoolHandle pool;
-
-	//for (int32 i = 0; i < 32; ++i)
-	//{
-	//	if (yta[i])
-	//	{
-	//		pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
-	//	}
-	//}
-
-#pragma omp parallel for
-	for (int32 i = 0; i < 32; ++i)
-	{
-		if (yta[i])
-		{
-			sortPyVTP(vec[1][i].begin(), vec[1][i].end());
-		}
-	}
-
 }
 
 void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
-#pragma omp parallel for
-	for (int32_t i = 0; i < 32; i++)
-		vec[0][i].clear();
-
-	for (int32_t i = 0; i < 32; i++)
+#pragma omp parallel
 	{
-		for (auto && RC : vec[1][i])
-		{
-			vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
-		}
-	}
+#pragma omp for schedule(dynamic)
+		for (int32_t i = 0; i < 32; i++)
+			vec[0][i].clear();
 
-	//struct ThreadPoolHandle pool;
-	//
-	//for (int32 i = 0; i < 32; i++)
-	//{
-	//	if (xta[i])
-	//	{
-	//		pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
-	//	}
-	//}
+#pragma omp barrier
 
-#pragma omp parallel for
-	for (int32 i = 0; i < 32; i++)
-	{
-		if (xta[i])
+#pragma omp single
+		for (int32_t i = 0; i < 32; i++)
 		{
-		sortPxVTP(vec[0][i].begin(), vec[0][i].end());
+			for (auto&& RC : vec[1][i])
+			{
+				vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
+			}
 		}
+
+		//struct ThreadPoolHandle pool;
+		//
+		//for (int32 i = 0; i < 32; i++)
+		//{
+		//	if (xta[i])
+		//	{
+		//		pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
+		//	}
+		//}
+#pragma omp barrier
+
+#pragma omp for schedule(dynamic)
+		for (int32 i = 0; i < 32; i++)
+		{
+			if (xta[i])
+			{
+				sortPxVTP(vec[0][i].begin(), vec[0][i].end());
+			}
+		}
+
 	}
 }
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {
-#pragma omp parallel for
+#pragma omp parallel for schedule(dynamic)
 	for (int32 i = 0; i < 32; ++i)
 	{
 	class Vector<class EObject*>& vectemp = vec[1][i];

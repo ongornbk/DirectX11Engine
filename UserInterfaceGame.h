@@ -14,7 +14,7 @@ public:
 	UserInterfaceGame(class Engine* engine,class Shader* shader);
 	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
-    void GetMousePosition(int32 &x,int32 &y);
+    void GetMousePosition(float&x, float&y);
 	static GameChat* GetGameChat();
 	~UserInterfaceGame();
 
@@ -28,7 +28,7 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_uiMatrix;
 
-	array< int32, 2> m_mousePosition;
+	array< float, 2> m_mousePosition;
 	Text          m_fpsText;
 	//std::vector<Text*> m_objectsText;
 

@@ -12,6 +12,10 @@ UnitSounds::UnitSounds(void)
 		m_sounds[i] = 0;
 }
 
+UnitSounds::~UnitSounds(void)
+{
+}
+
 void UnitSounds::Play(const enum UnitSoundType type)
 {
 	if (m_sounds[type])

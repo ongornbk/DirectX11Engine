@@ -2,7 +2,6 @@
 #include "GameScene.h"
 #include "SettingsC.h"
 #include "IPP.h"
-#include "XMLParser.h"
 #include "LUAManager.h"
 #include <thread>
 #include <fstream>
@@ -19,18 +18,10 @@ using std::string;
 
 
 
-void main(int argc,char** argv)
+void main(const int argc,char** const argv)
 {
-#pragma region
-	using std::ifstream;
-	using std::getline;
-	using std::atoi;
-	using std::atof;
-#pragma endregion
 
-
-
-	ifstream stream(SETTINGS_LOCATION);
+	std::ifstream stream(SETTINGS_LOCATION);
 	if (!stream.good())
 	{
 		ipp::Console::SetTextColor(ipp::RED);
@@ -60,8 +51,8 @@ void main(int argc,char** argv)
 		ipp::Console::Println(settings.at(2));
 		ipp::Console::Print("Settings::VSync : ");
 		ipp::Console::Println(settings.at(3));
-		Settings::Initialize(atoi(settings.at(0).c_str()), atoi(settings.at(1).c_str()), GetSystemMetrics(SM_CXSCREEN),
-			GetSystemMetrics(SM_CYSCREEN), (int32_t)std::thread::hardware_concurrency(), (bool)atoi(settings.at(2).c_str()), (bool)atoi(settings.at(3).c_str()));
+		Settings::Initialize(std::atoi(settings.at(0).c_str()), std::atoi(settings.at(1).c_str()), GetSystemMetrics(SM_CXSCREEN),
+			GetSystemMetrics(SM_CYSCREEN), (int32_t)std::thread::hardware_concurrency(), (bool)std::atoi(settings.at(2).c_str()), (bool)std::atoi(settings.at(3).c_str()));
 	}
 	else
 	{
@@ -73,9 +64,9 @@ void main(int argc,char** argv)
 	}
 	
 
-	FrameWork* frameWork = new FrameWork();
+	class FrameWork* const frameWork = new class FrameWork();
 
-	if (frameWork->Initialize(new GameScene))
+	if (frameWork->Initialize(new class GameScene))
 	{
 		frameWork->Run();
 	}

@@ -1,5 +1,5 @@
 #pragma once
-#include "VulcanManager.h"
+
 #include "DXManager.h"
 #include "Defines.h"
 

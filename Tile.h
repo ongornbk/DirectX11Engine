@@ -12,8 +12,36 @@
 	extern array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(const struct XMFLOAT2 floats) noexcept;
 	extern array< int32,2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(const struct XMFLOAT3 floats) noexcept;
 
-class Tile;
 class RendererManager;
+
+struct TileInfo
+{
+	DirectX::XMFLOAT4X4    m_world;
+	int32                  m_index[2];
+	DirectX::XMFLOAT2      m_position;
+};
+
+class Tile
+{
+public:
+
+
+	static void SetGlobals(struct ID3D11Device* const device, class Shader* const shader, class RendererManager* const renderer);
+	static void SetVolatileGlobals(const struct DirectX::XMFLOAT4X4 viewMatrix, const struct DirectX::XMFLOAT4X4 projectionMatrix);
+	static void SetDeviceContext(struct ID3D11DeviceContext* const context);
+
+	virtual void Update(const float dt) = 0;
+	virtual void Render() = 0;
+
+	bool m_collision;
+
+	TileInfo m_info;
+
+protected:
+	virtual void LoadTexture() = 0;
+public:
+};
+
 
 struct TileMap
 {
@@ -29,7 +57,7 @@ struct TileMap
 
 	static int32 CollisionAt(const struct XMFLOAT3& position);
 	static void SetCurrentTileMap(struct TileMap* tilemap);
-	class Tile* map[TILE_MAP_SIZE][TILE_MAP_SIZE];
+	Tile* map[TILE_MAP_SIZE][TILE_MAP_SIZE];
 
 	void Update(float dt);
 
@@ -58,62 +86,69 @@ class _Tile //To do
 	XMFLOAT2      m_position;
 };
 
-class Tile
+
+class SimpleTile : public Tile
 {
 public:
-	Tile(const float x,const float y,const int32 ix,const int32 iy);
-	Tile(const struct XMFLOAT2 position, array< int32, 2> index);
-	explicit Tile(class AnimatedTile* tile);
-	explicit Tile(class Tile* tile);
-	virtual ~Tile();
+	SimpleTile(const float x,const float y,const int32 ix,const int32 iy);
+	SimpleTile(const struct DirectX::XMFLOAT2 position, int32* const index);
+    explicit SimpleTile(struct TileInfo& info);
+	~SimpleTile();
 
-	static void SetGlobals(struct ID3D11Device* device,class Shader* shader,class RendererManager* renderer);
-	static void SetVolatileGlobals(const struct XMFLOAT4X4 viewMatrix,const struct XMFLOAT4X4 projectionMatrix);
-	static void SetDeviceContext(struct ID3D11DeviceContext* context);
-	
-	virtual void Update();
-	virtual void Render();
+	void SetTexture(class Texture* const texture);
+	void Update(const float dt) override;
+	void Render() override;
 
-	enum Type
-	{
-		TILE,
-		ANIMATEDTILE,
-		EMPTY
-	}m_type;
-
-protected:
 
 	friend class AnimatedTile;
 
-	void LoadTexture();
-	XMFLOAT4X4    m_world;
-	array< int32, 2> m_index;
-	XMFLOAT2      m_position;
 
-public:
 
-	bool m_collision;
+private:
+	void LoadTexture() override;
+
+
+
+	//Texture* m_texture;
+
+
+
 
 };
 
-class AnimatedTile : Tile
+class AnimatedTile : public Tile
 {
 public:
 	AnimatedTile(const float x,const float y,const int32 ix,const int32 iy,class Texture* texture);
-	explicit AnimatedTile(class Tile* tile,class Texture* texture);
+	explicit AnimatedTile(struct TileInfo& info,class Texture* texture);
 	~AnimatedTile();
 
 	void SetTexture(class Texture* texture);
-	void Update(const float dt);
-	void Render();
+	void Update(const float dt) override;
+	void Render() override;
+
+	
+
+	friend class SimpleTile;
+
 private:
 	void LoadTexture();
 
-	Texture* m_texture;
+	//Texture* m_texture;
 
-protected:
+};
 
-	friend class Tile;
+class EmptyTile : public Tile
+{
+public:
+	EmptyTile(const float x, const float y, const int32 ix, const int32 iy);
+	//	explicit SimpleTile(class Tile* tile, class Texture* texture);
+	~EmptyTile();
 
+	//void SetTexture(class Texture* const texture);
+	void Update(const float dt) override;
+	void Render() override;
+
+	bool m_collision;
 };
 

@@ -133,51 +133,44 @@ namespace
 	static struct TileMap*             m_currentTileMap;
 }
 
-Tile::Tile(
+SimpleTile::SimpleTile(
 	const float x,
 	const float y,
 	const int32 ix,
 	const int32 iy
-) : 
-	m_position(x, y),
-	m_index{ ix,iy },
-	m_collision(false)
+)
 {
-	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(x,y, CELL_ZERO_Z));
+	m_info.m_position.x = x;
+	m_info.m_position.y = y;
+	m_info.m_index[0] = ix;
+	m_info.m_index[1] = iy;
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(x,y, CELL_ZERO_Z));
+m_collision = false;
 }
 
-Tile::Tile(
+SimpleTile::SimpleTile(
 	const struct XMFLOAT2 position,
-	class array< int32, 2> index
-) : 
-	m_index(index),
-	m_collision(false)
+	int32* const index
+)
 {
-	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
+
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
+	m_collision = false;
 }
 
-Tile::Tile(
-	class AnimatedTile* tile
-): 
-	m_position(tile->m_position),
-	m_index(tile->m_index),
-	m_collision(false)
+SimpleTile::SimpleTile(
+	struct TileInfo& info
+)
 {
-	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
-}
-
-Tile::Tile(
-	class Tile * tile
-) : 
-	m_position(tile->m_position),
-	m_index(tile->m_index),
-	m_collision(false)
-{
-	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranslation(m_position.x, m_position.y, CELL_ZERO_Z));
+	m_info.m_position = info.m_position;
+	m_info.m_index[0] = info.m_index[0];
+	m_info.m_index[1] = info.m_index[1];
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(m_info.m_position.x, m_info.m_position.y, CELL_ZERO_Z));
+	m_collision = false;
 }
 
 
-Tile::~Tile()
+SimpleTile::~SimpleTile()
 {
 	
 }
@@ -226,7 +219,7 @@ void Tile::SetGlobals(
 	tile::CAMERA_TILE_CUT      = tile::CAMERA_TILE_VIEW - tile::CAMERA_RENDER_CUT;
 	tile::CAMERA_TILE_DEEP_CUT = tile::CAMERA_TILE_CUT + sizes.at(4);
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (int i = 0; i < TILE_MAP_SIZE; ++i)
 		for (int j = 0; j < TILE_MAP_SIZE; ++j)
 		{
@@ -270,30 +263,29 @@ void Tile::SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix
 
 
 
-void Tile::LoadTexture()
+void SimpleTile::LoadTexture()
 {
-	current = m_tile[m_index[0]][m_index[1]];
+	current = m_tile[m_info.m_index[0]][m_info.m_index[1]];
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
-
 }
 
-void Tile::Update()
+void SimpleTile::Update(const float dt)
 {
 }
 
-void Tile::Render()
+void SimpleTile::Render()
 {
-	const TileType type = m_tile[m_index[0]][m_index[1]];
+	const TileType type = m_tile[m_info.m_index[0]][m_info.m_index[1]];
 	if (current != type)
 	{
 		LoadTexture();
 	}
-	m_tileShader->SetShaderParameters(m_deviceContext,m_world, m_viewMatrix, m_projectionMatrix);
+	m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
 	m_vertexBuffer->Render(m_deviceContext);
 }
 TileMap::~TileMap()
 {
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
 		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
@@ -323,8 +315,8 @@ void TileMap::Initialize()
 	{
 		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
-			map[i][j] = new Tile(offsetx + (tile::CELL_HALF_WIDTH*j), offsety - (tile::CELL_HALF_HEIGHT*j), i, j);
-			map[i][j]->m_type = Tile::Type::TILE;
+			map[i][j] = new SimpleTile(offsetx + (tile::CELL_HALF_WIDTH*j), offsety - (tile::CELL_HALF_HEIGHT*j), i, j);
+			//map[i][j]->m_type = Tile::Type::TILE;
 
 			//if (m_tile[i][j])
 			//{
@@ -389,15 +381,9 @@ void _vectorcall TileMap::Render(
 			const  int32 tempB = i + j;
 			if (((tempB) > (tempA)) || ((tempB) < (tempC)))
 				continue;
-			switch (map[j][i]->m_type)
-			{
-			case Tile::Type::TILE:
 				map[j][i]->Render();
-				break;
-			case Tile::Type::ANIMATEDTILE:
-				map[j][i]->Render();
-				break;
-			}
+
+			
 			
 		}
 	}
@@ -438,45 +424,45 @@ void _vectorcall TileMap::SetTile(
 	}
 }
 
-void TileMap::SetTile(																																//BAD CODE
-	array< int32, 2> index,																															//BAD CODE
-	int32 tile)																																		//BAD CODE
-{																																					//BAD CODE
-	ipp::math::clamp(tile, 0, 8);																													//BAD CODE
-	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;																							//BAD CODE
-	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);													//BAD CODE
-	if (tile == 7)																																	//BAD CODE
-	{																																				//BAD CODE
-																																					//BAD CODE
-		if (map[index[0]][index[1]]->m_type == Tile::Type::TILE)																					//BAD CODE
-		{																																			//BAD CODE
-																																					//BAD CODE
-			AnimatedTile* tilep = new AnimatedTile(map[index[0]][index[1]], m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);		//BAD CODE
-			delete map[index[0]][index[1]];																											//BAD CODE
-			map[index[0]][index[1]] = (Tile*)tilep;																									//BAD CODE
-			map[index[0]][index[1]]->m_type = Tile::Type::ANIMATEDTILE;																				//BAD CODE
-			map[index[0]][index[1]]->m_collision = true;																							//BAD CODE
-																																					//BAD CODE
-		}																																			//BAD CODE
-		else																																		//BAD CODE
-		{																																			//BAD CODE
-			((AnimatedTile*)map[index[0]][index[1]])->SetTexture(m_texture[tile][ipp::math::RandomUint8(0u,tile::tilesub[tile])]);					//BAD CODE
-		}																																			//BAD CODE
-	}																																				//BAD CODE
-	else																																			//BAD CODE
-	{																																				//BAD CODE
-		if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)																			//BAD CODE
-		{																																			//BAD CODE
-																																					//BAD CODE
-			Tile* tilep = new Tile((AnimatedTile*)map[index[0]][index[1]]);																			//BAD CODE
-			delete dynamic_cast<AnimatedTile*>(map[index[0]][index[1]]);																			//BAD CODE
-			map[index[0]][index[1]] = tilep;																										//BAD CODE
-			map[index[0]][index[1]]->m_type = Tile::Type::TILE;																						//BAD CODE
-			map[index[0]][index[1]]->m_collision = false;																							//BAD CODE
-		}																																			//BAD CODE
-	}																																				//BAD CODE
-}																																					//BAD CODE
-																																					//BAD CODE
+void TileMap::SetTile(																																
+	array< int32, 2> index,																															
+	int32 tile)																																		
+{																																					
+	ipp::math::clamp(tile, 0, 8);																													
+	m_tile[index[0]][index[1]].tile_type = (uint8_t)tile;																							
+	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomUint8(0, tile::tilesub[(uint8_t)tile]);													
+	if (tile == 7)																																	
+	{																																				
+																																					
+		//if (map[index[0]][index[1]]->m_type == Tile::Type::TILE)																					
+		//{																																			
+		class Tile* previous = map[index[0]][index[1]];																												
+			class AnimatedTile* const tilep = new AnimatedTile(previous->m_info, m_texture[tile][ipp::math::RandomUint8(0u, tile::tilesub[tile])]);	
+			delete previous;																											
+			map[index[0]][index[1]] = (Tile*)tilep;																									
+
+			map[index[0]][index[1]]->m_collision = true;																							
+																																					
+		//}																																			
+		//else																																		
+		//{																																			
+		//	((AnimatedTile*)map[index[0]][index[1]])->SetTexture(m_texture[tile][ipp::math::RandomUint8(0u,tile::tilesub[tile])]);					
+		//}																																			
+	}																																				
+	else																																			
+	{																																				
+		//if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)																			
+		//{																																			
+																																					
+		class Tile* previous = map[index[0]][index[1]];
+		class SimpleTile* const tilep = new SimpleTile(previous->m_info);
+		delete previous;
+		map[index[0]][index[1]] = (Tile*)tilep;
+		map[index[0]][index[1]]->m_collision = false;																					
+		//}																																			
+	}																																				
+}																																					
+																																					
 void TileMap::SaveToFile(std::string filename)
 {
 	remove(filename.c_str());
@@ -547,16 +533,16 @@ void TileMap::Update(
 	const float dt
 )
 {
-	for (int32 j = renderInts[2]; j <renderInts[3]; ++j)
-	{
-		for (int32 i = renderInts[0]; i < renderInts[1]; ++i)
-		{
-			int32 sum = i + j;
-			if ((sum >(renderInts[4])) || (sum < (renderInts[5])))
-				continue;
-			map[j][i]->Update();
-		}
-	}
+	//for (int32 j = renderInts[2]; j <renderInts[3]; ++j)
+	//{
+	//	for (int32 i = renderInts[0]; i < renderInts[1]; ++i)
+	//	{
+	//		int32 sum = i + j;
+	//		if ((sum >(renderInts[4])) || (sum < (renderInts[5])))
+	//			continue;
+	//		map[j][i]->Update(dt);
+	//	}
+	//}
 	if (m_maxFrames == 1.0f) return;
 	if (m_currentFrame < m_maxFrames)
 	{
@@ -617,20 +603,23 @@ AnimatedTile::AnimatedTile(
 	const int32 ix,
 	const int32 iy,
 	class Texture* const texture
-) : 
-	Tile(x, y, ix, iy), m_texture(texture)
+) 
 {
-
+	m_info.m_position = DirectX::XMFLOAT2(x, y);
+	m_info.m_index[0] = ix;
+	m_info.m_index[1] = iy;
+	m_texture[ix][iy] = texture;
 }
 
 AnimatedTile::AnimatedTile(
-	class Tile * const tile,
+	struct TileInfo& info,
 	class Texture * const texture
-) : 
-	Tile(tile->m_position,tile->m_index),
-	m_texture(texture)
+)
 {
-
+	m_info.m_position = info.m_position;
+	m_info.m_index[0] = info.m_index[0];
+	m_info.m_index[1] = info.m_index[1];
+m_texture[m_info.m_index[0]][m_info.m_index[1]] = texture;
 }
 
 AnimatedTile::~AnimatedTile()
@@ -641,28 +630,28 @@ void AnimatedTile::SetTexture(
 	class Texture * const texture
 )
 {
-	m_texture = texture;
+	m_texture[current.tile_type][current.tile_sub] = texture;
 }
 
 void AnimatedTile::Update(
 	const float dt
 )
 {
-	Tile::Update();
+	
 }
 
 void AnimatedTile::Render()
 {
-	if (current.tile_type != m_tile[m_index[0]][m_index[1]].tile_type)
+	if (current.tile_type != m_tile[m_info.m_index[0]][m_info.m_index[1]].tile_type)
 	{
 		LoadTexture();
 	}
-	m_tileShader->SetShaderParameters(m_deviceContext, m_world, m_viewMatrix, m_projectionMatrix);
+	m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
 	m_animatedVertexBuffer->Render(m_deviceContext);
 }
 
 void AnimatedTile::LoadTexture()
 {
-	current = m_tile[m_index[0]][m_index[1]];
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture->GetTexture());
+	current = m_tile[m_info.m_index[0]][m_info.m_index[1]];
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
 }

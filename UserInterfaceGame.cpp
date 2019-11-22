@@ -60,7 +60,7 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
-	//m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
+	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
@@ -80,10 +80,10 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	xm -= xr;
 	ym -= yr;
 	m_mousePosition = {
-		(int32)(cameraPosition.m128_f32[0] + xm),
-		(int32)(cameraPosition.m128_f32[1] - ym)
+		(cameraPosition.m128_f32[0] + xm),
+		(cameraPosition.m128_f32[1] - ym)
 	};
-	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation((float)m_mousePosition[0], (float)m_mousePosition[1],cameraPosition.m128_f32[2]));
+	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition[0], m_mousePosition[1],cameraPosition.m128_f32[2]));
 	stringstream ssfps;
 	ssfps << m_fps;
 	string fps = "FPS " + string(ssfps.str());
@@ -158,7 +158,7 @@ void UserInterfaceGame::SetFPS(const int32 fps) noexcept
 	m_fps = fps;
 }
 
-void UserInterfaceGame::GetMousePosition(int32 & x,int32 & y)
+void UserInterfaceGame::GetMousePosition(float & x, float& y)
 {
 	x = m_mousePosition[0];
 	y = m_mousePosition[1];

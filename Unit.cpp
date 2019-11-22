@@ -259,17 +259,18 @@ void Unit::Update(const float dt)
 			vertices[3].uv.y = (m_rotation + 1.0f) / m_rotations;
 
 
-
-			HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			if (FAILED(result))
+#pragma omp critical
 			{
-				return;
+				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+				if (FAILED(result))
+				{
+					return;
+				}
+
+				struct SpriteVertexType* const verticesPtr = (struct SpriteVertexType* const)mappedResource.pData;
+				memcpy(verticesPtr, (void*)vertices, sizeof(struct SpriteVertexType) * m_vertexBuffer->GetVertexCount());
+				m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 			}
-
-			struct SpriteVertexType* const verticesPtr = (struct SpriteVertexType* const)mappedResource.pData;
-			memcpy(verticesPtr, (void*)vertices, sizeof(struct SpriteVertexType) * m_vertexBuffer->GetVertexCount());
-			m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
-
 			m_previousFrame = m_currentFrame;
 
 		}
@@ -277,12 +278,13 @@ void Unit::Update(const float dt)
 
 
 
-		int32 mousePosition[2];
+		float mousePosition[2];
 		UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
-		DirectX::FXMVECTOR point = XMVectorSet((float)mousePosition[0], (float)mousePosition[1], 0.0f, 0.0f);
+		DirectX::FXMVECTOR point = XMVectorSet(mousePosition[0],mousePosition[1], 0.0f, 0.0f);
 		if (m_boundingSphere.Contains(point))
 		{
 			m_flags.m_selected = true;
+#pragma omp critical
 			GLOBAL m_lastSelectedUnit = this;
 		}
 		else
@@ -458,7 +460,11 @@ bool Unit::Attack(class EObject* const target)
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		SetRotation(rotation);
+		//const int32 atkt = ipp::math::RandomInt32(0, 1);
+		//if(atkt)
 		PlayAnimation(Unit::ModelStance::MS_ATTACK_1);
+		//else
+		//PlayAnimation(Unit::ModelStance::MS_ATTACK_2);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		if(target)
 		((class Unit* const)target)->GetAttacked(this);
@@ -533,7 +539,7 @@ void Unit::EndRunning()
 
 void Unit::LoadSounds(WCHAR* path)
 {
-	m_sounds.Load(path);
+	//m_sounds.Load(path);
 }
 
 void Unit::LoadSounds(std::string* path)

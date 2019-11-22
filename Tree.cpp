@@ -14,7 +14,7 @@ Tree::Tree()
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
 
-	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_boundingSphere.Radius = 0.0f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());

@@ -134,16 +134,16 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 AddSoundsPaths(
-			struct lua_State* const state
-		)
-		{
-			class Unit* const unit = (class Unit* const)(lua_tointeger(state, 1));
-			std::string str = LUA_STRING(state, 2);
-			if (unit)
-				unit->LoadSounds(str);
-			return 0;
-		}
+		//static  int32 AddSoundsPaths(
+		//	struct lua_State* const state
+	//	)
+		//{
+			//class Unit* const unit = (class Unit* const)(lua_tointeger(state, 1));
+			//std::string str = LUA_STRING(state, 2);
+			//if (unit)
+			//	//unit->LoadSounds(str);
+			//return 0;
+		//}
 	}
 
 	namespace Cameras
@@ -474,11 +474,11 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		int32 xm, ym;
+		float xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
-		m_global->m_lastPoint = DirectX::XMFLOAT3((float)xm,(float)ym, 0.0f);
-		lua_pushinteger(state, (int32_t)xm);
-		lua_pushinteger(state, (int32_t)ym);
+		m_global->m_lastPoint = DirectX::XMFLOAT3(xm,ym, 0.0f);
+		lua_pushnumber(state,(double)xm);
+		lua_pushnumber(state,(double)ym);
 		return 2;
 	}
 
@@ -1195,7 +1195,7 @@ namespace lua_callback
 	)
 	{
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
-		const DirectX::XMFLOAT2 point = DirectX::XMFLOAT2(LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+		const DirectX::XMFLOAT2 point = DirectX::XMFLOAT2((float)lua_tonumber(state, 2), (float)lua_tonumber(state, 3));
 
 		if (unit0)
 		{

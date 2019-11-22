@@ -9,6 +9,7 @@ class UnitSounds
 public:
 
 	UnitSounds(void);
+	~UnitSounds(void);
 
 	enum UnitSoundType
 	{

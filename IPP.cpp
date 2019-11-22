@@ -391,6 +391,11 @@ uint8 _cdecl ipp::math::RandomUint8(const uint8 min,const uint8 max) noexcept
 	return min + (rand() % int32(max - min + 1));
 }
 
+int32 _stdcall ipp::math::RandomInt32(const int32 min, const int32 max) noexcept
+{
+	return min + (rand() % int32(max - min + 1));
+}
+
 int32 ipp::System::GetScreenWidth() noexcept
 {
 	return GetSystemMetrics(SM_CXSCREEN);

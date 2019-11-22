@@ -184,6 +184,7 @@
     <ClInclude Include="Connection.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="Destructible.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
@@ -248,6 +249,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="UnitFactory.h" />
     <ClInclude Include="UnitGroup.h" />
     <ClInclude Include="UnitSounds.h" />
     <ClInclude Include="UserInterface.h" />
@@ -268,8 +270,8 @@
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />
     <ClCompile Include="BinaryTree.c" />
-    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
     <ClCompile Include="Footsteps.cpp" />
@@ -326,6 +328,7 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="UnitFactory.cpp" />
     <ClCompile Include="UnitGroup.cpp" />
     <ClCompile Include="UnitSounds.cpp" />
     <ClCompile Include="UserInterface.cpp" />
@@ -336,7 +339,6 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowHandle.cpp" />
-    <ClCompile Include="XMLParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
