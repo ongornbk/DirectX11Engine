@@ -1,28 +1,21 @@
 #pragma once
 #include <DirectXMath.h>
 
-struct SimpleVertexType
+struct SpriteVertexType
 {
 	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 uv;
 };
 
-struct ScreenVertexType
+struct TextureVertexType
 {
 	DirectX::XMFLOAT2 position;
-};
-
-struct SpriteVertexType : public SimpleVertexType
-{
 	DirectX::XMFLOAT2 uv;
 };
 
-struct TextureVertexType : public ScreenVertexType
+struct ColorVertexType
 {
-	DirectX::XMFLOAT2 uv;
-};
-
-struct ColorVertexType : public SimpleVertexType
-{
+	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 color;
 };
 

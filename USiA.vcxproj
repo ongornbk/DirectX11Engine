@@ -175,6 +175,7 @@
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="Allocator.h" />
     <ClInclude Include="AnimatedDoodads.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="AttackTarget.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />

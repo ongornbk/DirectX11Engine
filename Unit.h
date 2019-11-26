@@ -46,7 +46,8 @@ public:
 	{
 		ModelVariant()
 		{
-
+			ZeroMemory(m_textures, sizeof(Texture*) * 13);
+			m_variant = 0;
 		}
 
 		ID3D11ShaderResourceView* GetTexture() const
@@ -186,6 +187,7 @@ private:
 
 	DirectX::XMFLOAT4X4   m_worldMatrix;
 	DirectX::XMFLOAT3     m_floats[2];
+	DirectX::XMFLOAT4     m_scale;
 	float        m_size;
 	float        m_lastSize;
 

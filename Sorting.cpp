@@ -640,8 +640,6 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 	//	}
 	//}
 
-#pragma omp parallel
-	{
 #pragma omp for schedule(dynamic)
 		for (int32 i = 0; i < 32; ++i)
 			vec[1][i].clear();
@@ -674,7 +672,7 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 			{
 				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
 			}
-		}
+		
 	}
 }
 
@@ -682,8 +680,6 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	__intersect_test__();
 
-#pragma omp parallel
-	{
 #pragma omp for schedule(dynamic)
 		for (int32_t i = 0; i < 32; i++)
 			vec[0][i].clear();
@@ -719,7 +715,6 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 			}
 		}
 
-	}
 }
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept

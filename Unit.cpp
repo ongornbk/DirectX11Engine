@@ -7,8 +7,10 @@
 
 Unit::Unit()
 {
-	m_floats[0] = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_floats[1] = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_floats[0] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+	m_scale = DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f);
 
 	m_colors[0] = 1.f;
 	m_colors[1] = 1.f;
@@ -102,6 +104,7 @@ void Unit::Render(
 		csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		csh->SetShaderColorParameters(deviceContext, m_colors);
+		//csh->SetShaderScaleParameters(deviceContext, m_scale);
 		m_vertexBuffer->Render(deviceContext);
 	}
 
@@ -129,6 +132,7 @@ void Unit::PreRender(
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+			//shader.shadow->SetShaderScaleParameters(deviceContext,m_scale);
 			m_vertexBuffer->Render(deviceContext);
 
 			//shader.End();
@@ -200,17 +204,17 @@ void Unit::Update(const float dt)
 		if (m_flags.m_rendering)
 		{
 
-			XMStoreFloat4x4(
+			DirectX::XMStoreFloat4x4(
 				&m_worldMatrix,
 				XMMatrixTranslation(
 					m_boundingSphere.Center.x,
 					m_boundingSphere.Center.y + (m_size / 1.5f),
-					m_boundingSphere.Center.z - (m_size / 1.5f)
+					m_boundingSphere.Center.z //- (m_size / 1.5f)
 				)
 			);
 
 
-			if (m_modelVariant.GetMaxFrames() == 1.0f) return;
+			if (m_modelVariant.GetMaxFrames() == 1.f) return;
 			if (m_currentFrame < m_modelVariant.GetMaxFrames())
 			{
 				m_currentSpeed += m_animationSpeed - dt;
@@ -218,19 +222,19 @@ void Unit::Update(const float dt)
 				if (m_currentSpeed > m_framesPerSecond)
 				{
 					m_currentFrame++;
-					m_currentSpeed = 0.0f;
+					m_currentSpeed = 0.f;
 					if (m_currentFrame >= m_modelVariant.GetMaxFrames())
 					{
 						if (m_isLooping)
 						{
-							m_currentFrame = 0.0f;
+							m_currentFrame = 0.f;
 						}
 						else
 						{
 							m_stop = false;
 							m_isLooping = true;
-							m_currentFrame = 0.0f;
-							m_previousFrame = -1.0f;
+							m_currentFrame = 0.f;
+							m_previousFrame = -1.f;
 							m_modelVariant.SetVariant(m_stopped);
 						}
 					}
@@ -247,21 +251,21 @@ void Unit::Update(const float dt)
 			struct SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 			vertices[0].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
-			vertices[0].uv.y = (m_rotation + 1.0f) / m_rotations;
+			vertices[0].uv.y = (m_rotation + 1.f) / m_rotations;
 
 			vertices[1].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
 			vertices[1].uv.y = m_rotation / m_rotations;
 
-			vertices[2].uv.x = (m_currentFrame + 1.0f) / m_modelVariant.GetMaxFrames();
+			vertices[2].uv.x = (m_currentFrame + 1.f) / m_modelVariant.GetMaxFrames();
 			vertices[2].uv.y = m_rotation / m_rotations;
 
-			vertices[3].uv.x = (m_currentFrame + 1.0f) / m_modelVariant.GetMaxFrames();
-			vertices[3].uv.y = (m_rotation + 1.0f) / m_rotations;
+			vertices[3].uv.x = (m_currentFrame + 1.f) / m_modelVariant.GetMaxFrames();
+			vertices[3].uv.y = (m_rotation + 1.f) / m_rotations;
 
 
 #pragma omp critical
 			{
-				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 				if (FAILED(result))
 				{
 					return;
@@ -285,7 +289,7 @@ void Unit::Update(const float dt)
 		{
 			m_flags.m_selected = true;
 #pragma omp critical
-			GLOBAL m_lastSelectedUnit = this;
+			GLOBAL m_lastSelectedUnit = this;//atomic?
 		}
 		else
 		{
@@ -300,13 +304,13 @@ void Unit::SetZ(const float z)
 	m_boundingSphere.Center.z = z;
 }
 
-void Unit::SetTask(class Task* task)
+void Unit::SetTask(class Task* const task)
 {
 	if(!m_attack.active)
 	m_tasks.SetTask(task);
 }
 
-void Unit::GiveTask(class Task * task)
+void Unit::GiveTask(class Task * const task)
 {
 	m_tasks.QueueTask(task);
 }

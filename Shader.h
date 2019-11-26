@@ -26,6 +26,11 @@ private:
 	{
 	XMFLOAT4 colorVector;
 	};
+
+	struct TempBufferType
+	{
+		XMFLOAT4 scaleVector;
+	};
 public:
 	Shader(ID3D11Device* device, HWND hwnd, WCHAR* shaderFileName);
 	Shader(Shader &shader);
@@ -58,6 +63,15 @@ public:
 		float * const colors
 	);
 
+	bool Shader::SetShaderScaleParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		float* const scale
+	);
+
+	bool Shader::SetShaderScaleParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		const DirectX::XMFLOAT4 scale
+	);
 
 
 
@@ -88,6 +102,7 @@ private:
 	ID3D11InputLayout* m_layout;
 	ID3D11Buffer* m_matrixBuffer;
 	ID3D11Buffer* m_colorBuffer;
+	ID3D11Buffer* m_tempBuffer;
 	ID3D11BlendState* m_alphaBlendState;
 	ID3D11DepthStencilState* m_depthStencilState;
 	string m_name;

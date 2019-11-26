@@ -4,6 +4,7 @@
 
 DXManager::DXManager(void)
 {
+	m_videoCardMemory = 0;
 	m_swapChain = NULL;
 	m_device = NULL;
 	m_deviceContext = NULL;
@@ -15,6 +16,7 @@ DXManager::DXManager(void)
 	m_alphaDisableBlendingState = NULL;
 	m_alphaEnableBlendingState = NULL;
 	m_depthDisabledStencilState = NULL;
+	vsync_enabled = false;
 
 }
 
@@ -125,11 +127,11 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 			return true;
 		}
 
-		for (auto i = 0u; i < numModes; ++i)
+		for (UINT i = 0u; i < numModes; ++i)
 		{
-			if (displayModeList[i].Width == (unsigned int)screenWidth)
+			if (displayModeList[i].Width == (UINT)screenWidth)
 			{
-				if (displayModeList[i].Height == (unsigned int)screenHeight)
+				if (displayModeList[i].Height == (UINT)screenHeight)
 				{
 					numerator = displayModeList[i].RefreshRate.Numerator;
 					denominator = displayModeList[i].RefreshRate.Denominator;

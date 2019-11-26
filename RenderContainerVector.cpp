@@ -18,7 +18,7 @@ void EObjectVector::Update(
 	const float dt
 )
 {
-#pragma omp parallel for schedule(dynamic)//EASY CRASH
+#pragma omp for schedule(dynamic)//EASY CRASH
 	for (int32 i = 0; i < 32; ++i)
 	{
 		if(!xta[i])
@@ -38,6 +38,7 @@ void EObjectVector::CleanUp()
 void EObjectVector::Sort()
 {
 	SortByXV(m_objectsXY);
+#pragma omp barrier
 	SortByYV(m_objectsXY);
 }
 
@@ -97,7 +98,7 @@ for (auto& vec : mvpp)
 
 void EObjectVector::Clear()
 {
-	for (uint32 cv = 0u; cv < 32u; cv++)
+	for (int32 cv = 0; cv < 32; cv++)
 	{
 		for (auto &&object : m_objectsXY[0][cv])
 		{
@@ -113,22 +114,30 @@ void EObjectVector::Clear()
 
 }
 
-void EObjectVector::Push(Unit * unit)
+void EObjectVector::Push(
+	class Unit * const unit
+)
 {
 	m_objectsXY[1][0].push_back(unit);
 }
 
-void EObjectVector::Push(Doodads * doodads)
+void EObjectVector::Push(
+	class Doodads * const doodads
+)
 {
 	m_objectsXY[1][0].push_back(doodads);
 }
 
-void EObjectVector::Push(AnimatedDoodads* animated)
+void EObjectVector::Push(
+	class AnimatedDoodads* const animated
+)
 {
 	m_objectsXY[1][0].push_back(animated);
 }
 
-void EObjectVector::Push(Tree * tree)
+void EObjectVector::Push(
+	class Tree * const tree
+)
 {
 	m_objectsXY[1][0].push_back(tree);
 }

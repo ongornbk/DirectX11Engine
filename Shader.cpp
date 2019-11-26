@@ -25,6 +25,7 @@ Shader::Shader(
 	m_layout = NULL;
 	m_matrixBuffer = NULL;
 	m_colorBuffer = NULL;
+	m_tempBuffer = NULL;
 
 	m_initialized = Initialize(device, hwnd, shaderFileName);
 
@@ -95,6 +96,11 @@ Shader::~Shader(void)
 	{
 		(void)m_colorBuffer->Release();
 		m_colorBuffer = NULL;
+	}
+	if (m_tempBuffer)
+	{
+		(void)m_tempBuffer->Release();
+		m_tempBuffer = NULL;
 	}
 	if (m_layout)
 	{
@@ -254,6 +260,72 @@ bool Shader::SetShaderColorParameters(
 	return true;
 }
 
+bool Shader::SetShaderScaleParameters(
+	struct ID3D11DeviceContext* const deviceContext,
+	float* const scale
+)
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	TempBufferType* dataPtr;
+
+
+
+
+	result = deviceContext->Map(m_tempBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	dataPtr = (TempBufferType*)mappedResource.pData;
+	dataPtr->scaleVector.x = scale[0];
+	dataPtr->scaleVector.y = scale[1];
+	dataPtr->scaleVector.z = scale[2];
+	dataPtr->scaleVector.w = scale[3];
+
+	deviceContext->Unmap(m_tempBuffer, 0);
+
+
+	deviceContext->PSSetConstantBuffers(2, 1, &m_tempBuffer);
+
+	return true;
+}
+
+bool Shader::SetShaderScaleParameters(
+	struct ID3D11DeviceContext* const deviceContext,
+	const DirectX::XMFLOAT4 scale
+)
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	TempBufferType* dataPtr;
+
+
+
+
+	result = deviceContext->Map(m_tempBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	dataPtr = (TempBufferType*)mappedResource.pData;
+	dataPtr->scaleVector.x = scale.x;
+	dataPtr->scaleVector.y = scale.y;
+	dataPtr->scaleVector.z = scale.z;
+	dataPtr->scaleVector.w = scale.w;
+
+	deviceContext->Unmap(m_tempBuffer, 0);
+
+
+	deviceContext->PSSetConstantBuffers(2, 1, &m_tempBuffer);
+
+	return true;
+}
+
+
+
 
 
 string Shader::GetName()
@@ -276,6 +348,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_BUFFER_DESC colorBufferDesc;
+	D3D11_BUFFER_DESC tempBufferDesc;
 
 	result = D3DCompileFromFile(shaderFileName, NULL,NULL,"VSMain", "vs_4_0",D3DCOMPILE_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
@@ -378,6 +451,19 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	colorBufferDesc.StructureByteStride = 0;
 
 	result = device->CreateBuffer(&colorBufferDesc, NULL, &m_colorBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	tempBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	tempBufferDesc.ByteWidth = sizeof(TempBufferType);
+	tempBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	tempBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	tempBufferDesc.MiscFlags = 0;
+	tempBufferDesc.StructureByteStride = 0;
+
+	result = device->CreateBuffer(&tempBufferDesc, NULL, &m_tempBuffer);
 	if (FAILED(result))
 	{
 		return false;

@@ -18,16 +18,18 @@ RenderZMap::~RenderZMap()
 
 void RenderZMap::Update(const float dt)
 {
-#pragma omp parallel for schedule(dynamic)
-	for (auto vector : m_zVectors)
+#pragma omp parallel
 	{
-		vector.second->Update(dt);
+		for (auto vector : m_zVectors)
+		{
+			vector.second->Update(dt);
+		}
 	}
 }
 
 void RenderZMap::CleanUp()
 {
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel
 	for (auto vector : m_zVectors)
 	{
 		vector.second->CleanUp();
@@ -36,7 +38,7 @@ void RenderZMap::CleanUp()
 
 void RenderZMap::Sort()
 {
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel
 	for (auto vector : m_zVectors)
 	{
 		vector.second->Sort();
