@@ -63,7 +63,7 @@ public:
 
 	struct EObjectFlags m_flags;
 
-	enum EObjectType
+	enum class EObjectType
 	{
 		UNIT,
 		DOODADS,

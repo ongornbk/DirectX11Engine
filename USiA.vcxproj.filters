@@ -367,6 +367,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Allocator.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -591,6 +594,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Allocator.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -403,13 +403,13 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t PickObject(
-		struct lua_State* const state
-	) noexcept
-	{
-		m_global->m_pickedObject = (class EObject* const)lua_tointeger(state, 1);
-		return 0;
-	}
+	//static int32_t PickObject(
+	//	struct lua_State* const state
+	//) noexcept
+	//{
+	//	m_global->m_pickedObject = (class EObject* const)lua_tointeger(state, 1);
+	//	return 0;
+	//}
 
 	static int32 IsSelected(
 		struct lua_State* const state
@@ -832,13 +832,16 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32_t GetRenderContainerFlag(lua_State* state) noexcept
+	static int32_t GetRenderContainerFlag(
+		struct lua_State* const state
+	) noexcept
 	{
-		//RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
-	//	if (rc)
-		{
-			//lua_pushboolean(state, rc->m_flag[lua_tointeger(state,1)]);
-		}
+		//class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		//if (object)
+		//{
+		//	lua_pushboolean(state, object->m_flags[(int64)lua_tointeger(state, 2)]);
+		//}
+		//else lua_pushboolean(state, false);
 		return 1;
 	}
 
@@ -1244,7 +1247,7 @@ namespace lua_callback
 		lua_register(m_lua, "SetShadowFlag", lua_callback::SetShadowFlag);//@@
 		lua_register(m_lua, "SetSelectableFlag", lua_callback::SetSelectableFlag);//@@
 		lua_register(m_lua, "SetCollisionPriority", lua_callback::SetCollisionPriority);//@@
-		lua_register(m_lua, "PickObject", lua_callback::PickObject);
+		//lua_register(m_lua, "PickObject", lua_callback::PickObject);
 		//lua_register(m_lua, "SetZ", lua_callback::SetZ);
 		//Units
 		lua_register(m_lua,"CreateUnit", lua_callback::CreateUnit);//@@

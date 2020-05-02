@@ -5,17 +5,12 @@
 #include "IPP.h"
 #include "Math.h"
 
-Unit::Unit()
+Unit::Unit() : 
+	m_colorFilter(1.f, 1.f, 1.f, 1.f),
+	m_scale(1.f,1.f,1.f,1.f)
 {
 	m_floats[0] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
-
-	m_scale = DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f);
-
-	m_colors[0] = 1.f;
-	m_colors[1] = 1.f;
-	m_colors[2] = 1.f;
-	m_colors[3] = 1.f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(MS_TOWNNEUTRAL);
@@ -31,6 +26,7 @@ Unit::Unit()
 	m_attack.active = false;
 
 	m_tasks.SetOwner(this);
+
 
 	
 }
@@ -52,7 +48,7 @@ void Unit::Initialize(
 	WCHAR* paths,
 	const float modelsize,
 	const float collision,
-	const DirectX::XMFLOAT3 position,
+	const struct DirectX::XMFLOAT3& position,
 	const bool wander)
 {
 	std::wstring tmp0 = std::wstring(paths);
@@ -103,7 +99,7 @@ void Unit::Render(
 		
 		csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
-		csh->SetShaderColorParameters(deviceContext, m_colors);
+		csh->SetShaderColorParameters(deviceContext, m_colorFilter);
 		//csh->SetShaderScaleParameters(deviceContext, m_scale);
 		m_vertexBuffer->Render(deviceContext);
 	}
@@ -403,13 +399,13 @@ void Unit::SetVelocity(const float x,const float y,const float z)
 void Unit::SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept
 {
 	if (redfilter >= 0.f)
-		m_colors[0] = redfilter;
+		m_colorFilter.x = redfilter;
 	if (greenfilter >= 0.f)
-		m_colors[1] = greenfilter;
+		m_colorFilter.y = greenfilter;
 	if (bluefilter >= 0.f)
-		m_colors[2] = bluefilter;
+		m_colorFilter.z = bluefilter;
 	if (alphafilter >= 0.f)
-		m_colors[3] = alphafilter;
+		m_colorFilter.w = alphafilter;
 }
 
 void Unit::DiscardTasks()

@@ -63,6 +63,11 @@ public:
 		float * const colors
 	);
 
+	bool Shader::SetShaderColorParameters(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct DirectX::XMFLOAT4& colors
+	);
+
 	bool Shader::SetShaderScaleParameters(
 		struct ID3D11DeviceContext* const deviceContext,
 		float* const scale
@@ -70,7 +75,7 @@ public:
 
 	bool Shader::SetShaderScaleParameters(
 		struct ID3D11DeviceContext* const deviceContext,
-		const DirectX::XMFLOAT4 scale
+		const struct DirectX::XMFLOAT4 &scale
 	);
 
 

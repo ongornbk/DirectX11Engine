@@ -82,16 +82,16 @@ public:
 	~Unit();
 
 	void Initialize(
-		ID3D11Device* device,
-		ID3D11DeviceContext* deviceContext,
-		class Shader* shader,
+		struct ID3D11Device* const device,
+		struct ID3D11DeviceContext* const deviceContext,
+		class Shader* const shader,
 		WCHAR* paths,
 		const float size,
 		const float collision,
-		const XMFLOAT3 position,
+		const struct DirectX::XMFLOAT3 &position,
 		const bool wander = true
 	);
-	void Resize(ID3D11Device * device, Shader * shader,const float resize);
+	void Resize(struct ID3D11Device * const device,class Shader * const shader,const float resize);
 	void PlayAnimation(const enum ModelStance animation);
 	void SetAnimation(const enum ModelStance animation);
 	void SetAnimationSpeed(float speed);
@@ -113,8 +113,8 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 
-	void SetTask(class Task* task);
-	void GiveTask(class Task* task);
+	void SetTask(class Task* const task);
+	void GiveTask(class Task* const task);
 
 	float    GetCollisionRadius() const noexcept;
 
@@ -181,13 +181,13 @@ private:
 	class sf::Sound*    m_footstepsHandle{};
 
 	struct ID3D11DeviceContext * m_deviceContext;
-	float               m_colors[4];
+	struct DirectX::XMFLOAT4     m_colorFilter;;
 	float m_currentFrame;
 	float m_previousFrame;
 
-	DirectX::XMFLOAT4X4   m_worldMatrix;
-	DirectX::XMFLOAT3     m_floats[2];
-	DirectX::XMFLOAT4     m_scale;
+	struct DirectX::XMFLOAT4X4   m_worldMatrix;
+	struct DirectX::XMFLOAT3     m_floats[2];
+	struct DirectX::XMFLOAT4     m_scale;
 	float        m_size;
 	float        m_lastSize;
 

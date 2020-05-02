@@ -367,6 +367,14 @@ void  ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min
 		return;
 }
 
+void ipp::math::SquashInt32Array(DirectX::XMINT2& int2, const int32 min, const int32 max) noexcept
+{
+	if (int2.x > max) int2.x = max;
+	else if (int2.x < min) int2.x = min;
+	if (int2.y > max) int2.y = max;
+	else if (int2.y < min) int2.y = min;
+}
+
 int32 ipp::math::SquashInt32ArrayWithCheck(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
 {
 	int32 out = 0;

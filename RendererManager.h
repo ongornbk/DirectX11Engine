@@ -56,8 +56,8 @@ public:
 	);
 	void Update();
 	void SetInterface(const uint32 type,class Shader* shader);
-	void SetTile(XMFLOAT2 position, const int32 tile);
-	void SetTile(XMFLOAT2 position, const int32 tile,const int32 brush);
+	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);
+	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
 

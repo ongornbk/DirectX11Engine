@@ -76,29 +76,28 @@ static int32_t tilesub[32] ={
 
 
 
-	class array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(
-		const struct XMFLOAT2 floats
+	struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(
+		const struct DirectX::XMFLOAT2& floats
 	) noexcept
 	{
-		class array< int32, 2> _indexes = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
-		_indexes[0] -= (int32)(floats.x / tile::CELL_WIDTH);
-		_indexes[0] -= (int32)(floats.y / tile::CELL_HEIGHT);
-		_indexes[1] += (int32)(floats.x / tile::CELL_WIDTH);
-		_indexes[1] -= (int32)(floats.y / tile::CELL_HEIGHT);
-		ipp::math::SquashInt32Array(_indexes.data(), 2, 0, TILE_MAP_RANGE);
+		struct DirectX::XMINT2 _indexes = {
+
+		};
+
+
+		ipp::math::SquashInt32Array(_indexes, 0, TILE_MAP_RANGE);
 		return _indexes;
 	}
 
-	class array< int32, 2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(
-		const struct XMFLOAT3 floats
+	struct DirectX::XMINT2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(
+		const struct DirectX::XMFLOAT3& floats
 	) noexcept
 	{
-		class array< int32, 2> _indexes = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
-		_indexes[0] -= (int32)(floats.x / tile::CELL_WIDTH);
-		_indexes[0] -= (int32)(floats.y / tile::CELL_HEIGHT);
-		_indexes[1] += (int32)(floats.x / tile::CELL_WIDTH);
-		_indexes[1] -= (int32)(floats.y / tile::CELL_HEIGHT);
-		ipp::math::SquashInt32Array(_indexes.data(), 2, 0, TILE_MAP_RANGE);
+		struct DirectX::XMINT2 _indexes = {
+		TILE_MAP_HALF_SIZE_INT32 - (int32)(floats.x / tile::CELL_WIDTH) - (int32)(floats.y / tile::CELL_HEIGHT),
+			TILE_MAP_HALF_SIZE_INT32 + (int32)(floats.x / tile::CELL_WIDTH) - (int32)(floats.y / tile::CELL_HEIGHT)
+		};
+		ipp::math::SquashInt32Array(_indexes,0, TILE_MAP_RANGE);
 		return _indexes;
 	}
 
@@ -142,14 +141,14 @@ SimpleTile::SimpleTile(
 {
 	m_info.m_position.x = x;
 	m_info.m_position.y = y;
-	m_info.m_index[0] = ix;
-	m_info.m_index[1] = iy;
+	m_info.m_index.x = ix;
+	m_info.m_index.y = iy;
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(x,y, CELL_ZERO_Z));
 m_collision = false;
 }
 
 SimpleTile::SimpleTile(
-	const struct XMFLOAT2 position,
+	const struct DirectX:: XMFLOAT2& position,
 	int32* const index
 )
 {
@@ -163,8 +162,7 @@ SimpleTile::SimpleTile(
 )
 {
 	m_info.m_position = info.m_position;
-	m_info.m_index[0] = info.m_index[0];
-	m_info.m_index[1] = info.m_index[1];
+	m_info.m_index = info.m_index;
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(m_info.m_position.x, m_info.m_position.y, CELL_ZERO_Z));
 	m_collision = false;
 }
@@ -253,7 +251,7 @@ void Tile::SetDeviceContext(ID3D11DeviceContext * context)
 	m_deviceContext = context;
 }
 
-void Tile::SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
+void Tile::SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix,const struct DirectX::XMFLOAT4X4& projectionMatrix)
 {
 	m_viewMatrix = viewMatrix;
 	m_projectionMatrix = projectionMatrix;
@@ -265,7 +263,7 @@ void Tile::SetVolatileGlobals(XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix
 
 void SimpleTile::LoadTexture()
 {
-	current = m_tile[m_info.m_index[0]][m_info.m_index[1]];
+	current = m_tile[m_info.m_index.x][m_info.m_index.y];
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
 }
 
@@ -275,7 +273,7 @@ void SimpleTile::Update(const float dt)
 
 void SimpleTile::Render()
 {
-	const TileType type = m_tile[m_info.m_index[0]][m_info.m_index[1]];
+	const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
 	if (current != type)
 	{
 		LoadTexture();
@@ -347,10 +345,10 @@ TileMap::TileMap(float size, float framesPerSecond, float animationSpeed, bool i
 }
 
 void _vectorcall TileMap::Render(
-	struct ID3D11DeviceContext * deviceContext,
-	const struct XMFLOAT4X4 viewMatrix,
-	const struct XMFLOAT4X4 projectionMatrix,
-	const XMVECTOR cameraPosition
+	struct ID3D11DeviceContext * const deviceContext,
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
+	DirectX::XMVECTOR& cameraPosition
 )
 {
 
@@ -358,18 +356,17 @@ void _vectorcall TileMap::Render(
 	m_tileShader->Begin(deviceContext);
 
 	//GRAPHICS EnableAlphaBlending(true);
-	 float _f[2] = { TILE_MAP_HALF_SIZE_FLOAT,TILE_MAP_HALF_SIZE_FLOAT };
-	 
-	_f[0] += cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
-	_f[0] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
-	_f[1] -= cameraPosition.m128_f32[0] / tile::CELL_WIDTH;
-	_f[1] -= cameraPosition.m128_f32[1] / tile::CELL_HEIGHT;
-	renderInts[2] = ( int32)_f[1] - tile::CAMERA_TILE_VIEW;
-	renderInts[3] = ( int32)_f[1] + tile::CAMERA_TILE_VIEW;
-	renderInts[0] = ( int32)_f[0] - tile::CAMERA_TILE_VIEW;
-	renderInts[1] = ( int32)_f[0] + tile::CAMERA_TILE_VIEW;
-	int tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
-	int tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
+	struct DirectX::XMFLOAT2 _f = { 
+		TILE_MAP_HALF_SIZE_FLOAT + (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT),
+		TILE_MAP_HALF_SIZE_FLOAT - (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT)
+	};
+	
+	renderInts[2] = ( int32)_f.y - tile::CAMERA_TILE_VIEW;
+	renderInts[3] = ( int32)_f.y + tile::CAMERA_TILE_VIEW;
+	renderInts[0] = ( int32)_f.x - tile::CAMERA_TILE_VIEW;
+	renderInts[1] = ( int32)_f.x + tile::CAMERA_TILE_VIEW;
+	int32 tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
+	int32 tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
 	ipp::math::SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
 	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
 	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
@@ -393,7 +390,7 @@ void _vectorcall TileMap::Render(
 }
 
 void TileMap::SetTile(
-	const struct XMFLOAT2 position,
+	const struct XMFLOAT2 &position,
 	const int32 tile
 )
 {
@@ -401,12 +398,12 @@ void TileMap::SetTile(
 }
 
 void _vectorcall TileMap::SetTile(
-	const struct XMFLOAT2 position,
+	const struct DirectX::XMFLOAT2 &position,
 	const int32 tile,
 	const int32 brush
 )
 {
-	array< int32,2> pos = TransformXMFLOAT2ToTileMapINDEX2(position);
+	struct DirectX::XMINT2 pos = TransformXMFLOAT2ToTileMapINDEX2(position);
 
 //#pragma omp parallel for
 	for (int32 x = 0; x < brush; ++x)
@@ -415,8 +412,8 @@ void _vectorcall TileMap::SetTile(
 		{
 			if (x + y < brush)
 			{
-				pos[0] += x;
-				pos[1] += y;
+				pos.x += x;
+				pos.y += y;
 				SetTile(pos, tile);
 			}
 
@@ -425,12 +422,12 @@ void _vectorcall TileMap::SetTile(
 }
 
 void TileMap::SetTile(																																
-	array< int32, 2> index,																															
+	const struct DirectX::XMINT2& position,																															
 	int32 tile)																																		
 {																																					
 	ipp::math::clamp(tile, 0, 8);																													
-	m_tile[index[0]][index[1]].tile_type = tile;																							
-	m_tile[index[0]][index[1]].tile_sub = ipp::math::RandomInt32(0, tile::tilesub[tile]);													
+	m_tile[position.x][position.y].tile_type = tile;
+	m_tile[position.x][position.y].tile_sub = ipp::math::RandomInt32(0, tile::tilesub[tile]);
 	if (tile == 7)																																	
 	{																																				
 																																					
@@ -454,11 +451,11 @@ void TileMap::SetTile(
 		//if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)																			
 		//{																																			
 																																					
-		class Tile* previous = map[index[0]][index[1]];
+		class Tile* const previous = map[position.x][position.y];
 		class SimpleTile* const tilep = new SimpleTile(previous->m_info);
 		delete previous;
-		map[index[0]][index[1]] = (Tile*)tilep;
-		map[index[0]][index[1]]->m_collision = false;																					
+		map[position.x][position.y] = (class Tile*)tilep;
+		map[position.x][position.y]->m_collision = false;																					
 		//}																																			
 	}																																				
 }																																					
@@ -494,7 +491,7 @@ void TileMap::LoadFromFile(std::string filename)
 		{
 
 			myfile.get(ch);
-			array< int32, 2> pos = { i,j };
+			DirectX::XMINT2 pos = { i,j };
 			SetTile(pos, (int32)ch);
 		}
 		myfile.get(ch);
@@ -569,7 +566,7 @@ void TileMap::Update(
 	if (m_currentFrame == m_previousFrame) return;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	SpriteVertexType* vertices = m_animatedVertexBuffer->GetVertices();
+	class SpriteVertexType* const vertices = m_animatedVertexBuffer->GetVertices();
 
 	vertices[0].uv.x = m_currentFrame / m_maxFrames;
 	vertices[0].uv.y = 1.0f;
@@ -606,8 +603,8 @@ AnimatedTile::AnimatedTile(
 ) 
 {
 	m_info.m_position = DirectX::XMFLOAT2(x, y);
-	m_info.m_index[0] = ix;
-	m_info.m_index[1] = iy;
+	m_info.m_index.x = ix;
+	m_info.m_index.y = iy;
 	m_texture[ix][iy] = texture;
 }
 
@@ -617,9 +614,9 @@ AnimatedTile::AnimatedTile(
 )
 {
 	m_info.m_position = info.m_position;
-	m_info.m_index[0] = info.m_index[0];
-	m_info.m_index[1] = info.m_index[1];
-m_texture[m_info.m_index[0]][m_info.m_index[1]] = texture;
+	m_info.m_index.x = info.m_index.x;
+	m_info.m_index.y = info.m_index.y;
+m_texture[m_info.m_index.x][m_info.m_index.y] = texture;
 }
 
 AnimatedTile::~AnimatedTile()
@@ -642,7 +639,7 @@ void AnimatedTile::Update(
 
 void AnimatedTile::Render()
 {
-	if (current.tile_type != m_tile[m_info.m_index[0]][m_info.m_index[1]].tile_type)
+	if (current.tile_type != m_tile[m_info.m_index.x][m_info.m_index.y].tile_type)
 	{
 		LoadTexture();
 	}
@@ -652,6 +649,6 @@ void AnimatedTile::Render()
 
 void AnimatedTile::LoadTexture()
 {
-	current = m_tile[m_info.m_index[0]][m_info.m_index[1]];
+	current = m_tile[m_info.m_index.x][m_info.m_index.y];
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
 }

@@ -96,7 +96,7 @@ using ipp::SQRT2;
 
 
 _Use_decl_annotations_
- int32 _Out_opt_ _fastcall GetXCell(const _In_opt_ float x) noexcept
+ int32 _Out_ _stdcall GetXCell(const _In_ float x) noexcept
 {
 	 int32 r;
 	if (x < 0.0f)
@@ -319,7 +319,7 @@ _Use_decl_annotations_
 }
 
 _Use_decl_annotations_
- int32 _Out_opt_ _fastcall GetYCell(const _In_opt_ float y)
+ int32 _Out_ _stdcall GetYCell(const _In_ float y)
 {
 	 int32 r;
 
@@ -436,7 +436,7 @@ _Use_decl_annotations_
 
 _Use_decl_annotations_
 template <class T>
-int32 _Out_opt_ _fastcall __validate_Xrendering__(const T& _In_opt_ index) noexcept
+int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index) noexcept
 {
 	const int32 t0 = xp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -451,7 +451,7 @@ int32 _Out_opt_ _fastcall __validate_Xrendering__(const T& _In_opt_ index) noexc
 
 _Use_decl_annotations_
 template <class T>
-int32 _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexcept
+int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
 {
 	const int32 t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -464,7 +464,7 @@ int32 _Out_opt_ _fastcall __validate_Yrendering__(const T& _In_opt_ index) noexc
 	}
 }
 
-void _cdecl __intersect_test__() noexcept
+void _stdcall __intersect_test__() noexcept
 {
 	float cameraPosition[4];
 	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
@@ -681,8 +681,11 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 	__intersect_test__();
 
 #pragma omp for schedule(dynamic)
-		for (int32_t i = 0; i < 32; i++)
-			vec[0][i].clear();
+	for (int32_t i = 0; i < 32; i++)
+	{
+		vec[0][i].clear();
+		vec[1][i].shrink();
+	}
 
 #pragma omp barrier
 
@@ -716,6 +719,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 		}
 
 }
+
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {

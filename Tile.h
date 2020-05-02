@@ -9,15 +9,15 @@
 
 	extern void SetCellMultiplier(const float multiplier = 1.0f) noexcept;
 	extern void LoadTilesResourceFromFile(std::string filename);
-	extern array< int32,2> _vectorcall TransformXMFLOAT2ToTileMapINDEX2(const struct XMFLOAT2 floats) noexcept;
-	extern array< int32,2> _vectorcall TransformXMFLOAT3ToTileMapINDEX2(const struct XMFLOAT3 floats) noexcept;
+	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(const struct XMFLOAT2 & floats) noexcept;
+	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(const struct XMFLOAT3 & floats) noexcept;
 
 class RendererManager;
 
 struct TileInfo
 {
 	DirectX::XMFLOAT4X4    m_world;
-	int32                  m_index[2];
+	DirectX::XMINT2        m_index;
 	DirectX::XMFLOAT2      m_position;
 };
 
@@ -27,7 +27,7 @@ public:
 
 
 	static void SetGlobals(struct ID3D11Device* const device, class Shader* const shader, class RendererManager* const renderer);
-	static void SetVolatileGlobals(const struct DirectX::XMFLOAT4X4 viewMatrix, const struct DirectX::XMFLOAT4X4 projectionMatrix);
+	static void SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix, const struct DirectX::XMFLOAT4X4& projectionMatrix);
 	static void SetDeviceContext(struct ID3D11DeviceContext* const context);
 
 	virtual void Update(const float dt) = 0;
@@ -48,10 +48,10 @@ struct TileMap
 	TileMap(const float size,const float framesPerSecond,const float animationSpeed,const bool isLooping);
 	~TileMap();
 	void Initialize();
-	void _vectorcall Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix,XMVECTOR cameraPosition);
-	void _vectorcall SetTile(const struct XMFLOAT2 position,const int32 tile);
-	void _vectorcall SetTile(const struct XMFLOAT2 position,const int32 tile,const int32 brush);
-	void _vectorcall SetTile(array< int32, 2> index, int32 tile);
+	void _vectorcall Render(ID3D11DeviceContext * const deviceContext,const struct DirectX::XMFLOAT4X4& viewMatrix,const struct DirectX::XMFLOAT4X4& projectionMatrix,DirectX::XMVECTOR& cameraPosition);
+	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const int32 tile);
+	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const int32 tile,const int32 brush);
+	void _vectorcall SetTile(const struct DirectX::XMINT2& position, int32 tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 
@@ -91,7 +91,7 @@ class SimpleTile : public Tile
 {
 public:
 	SimpleTile(const float x,const float y,const int32 ix,const int32 iy);
-	SimpleTile(const struct DirectX::XMFLOAT2 position, int32* const index);
+	SimpleTile(const struct DirectX::XMFLOAT2 &position, int32* const index);
     explicit SimpleTile(struct TileInfo& info);
 	~SimpleTile();
 

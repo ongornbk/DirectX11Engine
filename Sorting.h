@@ -24,7 +24,11 @@ struct  __sort__SortByX
 	bool operator()(class EObject *a,class EObject *b) const noexcept;
 };
 
-void _vectorcall SortByYV(class Vector<EObject*> vec[2][32]) noexcept;
-void _vectorcall SortByXV(class Vector<EObject*> vec[2][32]) noexcept;
+_Use_decl_annotations_
+void _vectorcall SortByYV(class Vector<EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
 
-void _vectorcall __CleanUp(class Vector<EObject*> vec[2][32]) noexcept;
+_Use_decl_annotations_
+void _vectorcall SortByXV(class Vector<EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+
+_Use_decl_annotations_
+void _vectorcall __CleanUp(class Vector<EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;

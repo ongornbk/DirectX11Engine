@@ -99,6 +99,15 @@ public:
 		m_size = 0;
 	}
 
+	void shrink() noexcept
+	{
+		if (m_capacity > (m_size * 2) + 1)
+		{
+			m_capacity = m_size + 1;
+			m_data = (T*)realloc(m_data, sizeof(T) * m_capacity);
+		}
+	}
+
 	void remove(const int32 index)
 	{
 		if (index > m_size || m_size < 1)

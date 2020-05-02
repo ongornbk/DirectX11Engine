@@ -260,6 +260,32 @@ bool Shader::SetShaderColorParameters(
 	return true;
 }
 
+bool Shader::SetShaderColorParameters(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4& colors)
+{
+	HRESULT result;
+	struct D3D11_MAPPED_SUBRESOURCE mappedResource;
+	struct ColorBufferType* dataPtr;
+
+
+
+
+	result = deviceContext->Map(m_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	dataPtr = (ColorBufferType*)mappedResource.pData;
+	dataPtr->colorVector = colors;
+
+	deviceContext->Unmap(m_colorBuffer, 0);
+
+
+	deviceContext->PSSetConstantBuffers(1, 1, &m_colorBuffer);
+
+	return true;
+}
+
 bool Shader::SetShaderScaleParameters(
 	struct ID3D11DeviceContext* const deviceContext,
 	float* const scale
@@ -294,7 +320,7 @@ bool Shader::SetShaderScaleParameters(
 
 bool Shader::SetShaderScaleParameters(
 	struct ID3D11DeviceContext* const deviceContext,
-	const DirectX::XMFLOAT4 scale
+	const DirectX::XMFLOAT4& scale
 )
 {
 	HRESULT result;

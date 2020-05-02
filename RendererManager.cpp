@@ -174,12 +174,12 @@ void RendererManager::SetInterface(const uint32 type,class Shader* shader)
 	m_ui->SetScene(type, shader);
 }
 
-void RendererManager::SetTile(XMFLOAT2 position,const int32 tile)
+void RendererManager::SetTile(struct DirectX::XMFLOAT2 &position,const int32 tile)
 {
 	m_map->SetTile(position, tile);
 }
 
-void RendererManager::SetTile(XMFLOAT2 position,const int32 tile,const int32 brush)
+void RendererManager::SetTile(struct DirectX::XMFLOAT2 &position,const int32 tile,const int32 brush)
 {
 	if(brush)
 	m_map->SetTile(position, tile,brush);
