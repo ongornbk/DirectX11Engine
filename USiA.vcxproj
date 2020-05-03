@@ -178,6 +178,8 @@
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="ActionMap.h" />
+    <ClInclude Include="ActionRemoveUnit.h" />
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="AnimatedDoodads.h" />
     <ClInclude Include="Attack.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsManager.h" />
+    <ClInclude Include="IAction.h" />
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="Input.h" />
@@ -254,6 +257,7 @@
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitFactory.h" />
@@ -273,6 +277,8 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionMap.cpp" />
+    <ClCompile Include="ActionRemoveUnit.cpp" />
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="Attack.cpp" />
@@ -286,6 +292,7 @@
     <ClCompile Include="Footsteps.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
+    <ClCompile Include="IAction.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
@@ -335,6 +342,7 @@
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitFactory.cpp" />

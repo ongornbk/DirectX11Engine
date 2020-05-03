@@ -10,6 +10,7 @@
 #include "ShadowShader.h"
 #include "CPU.h"
 #include "String.h"
+#include "ActionRemoveUnit.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -442,4 +443,24 @@ void Engine::Render()
 	
 
 	m_graphics->EndScene();
+}
+
+extern "C"
+{
+
+	_Use_decl_annotations_
+	class _Out_ IAction* _stdcall __action__remove__unit__(class ActionMap* _In_ map)
+	{
+		class Unit* unit = (class Unit*)(map->Pop());
+		class IAction* action = new ActionRemoveUnit((unit));
+		return action;
+	}
+
+}
+
+void Engine::InitializeActionMap()
+{
+	class ActionMap* const map = ActionMap::GetInstance();
+	map->AddAction(__action__remove__unit__, "RemoveUnit");
+
 }

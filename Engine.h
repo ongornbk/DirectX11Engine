@@ -12,6 +12,7 @@
 #include "FrameWork.h"
 #include "Canals.h"
 #include "ThreadPool.h"
+#include "ActionMap.h"
 
 class RendererManager;
 class FrameWork;
@@ -61,6 +62,8 @@ private:
 
 	void Update();
 	void Render();
+
+	void InitializeActionMap();
 
 	bool m_gamePaused;
 
