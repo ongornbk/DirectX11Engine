@@ -3,15 +3,17 @@
 #include "Unit.h"
 #include "RendererManager.h"
 #include "Global.h"
-class ActionRemoveUnit :
+class ActionRemoveObject :
 	public IAction
 {
-	class Unit* m_unit;
+	class EObject* m_object;
+
+	ActionRemoveObject() = delete;
 
 public:
 
-	ActionRemoveUnit(class Unit* const unit);
-	~ActionRemoveUnit();
+	ActionRemoveObject(class EObject* const object);
+	~ActionRemoveObject();
 	
 	void execute() override;
 

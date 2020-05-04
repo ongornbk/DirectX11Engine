@@ -46,7 +46,12 @@ void Text::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 }
 
-void Text::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
+void Text::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	DirectX::XMFLOAT4X4& worldMatrix,
+	DirectX::XMFLOAT4X4& viewMatrix,
+	DirectX::XMFLOAT4X4& projectionMatrix
+)
 {
 	for (auto&& letter : m_letters)
 	{

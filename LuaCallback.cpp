@@ -11,6 +11,7 @@
 #include "Sorting.h"
 #include "UnitGroup.h"
 #include "Math.h"
+#include "Timer.h"
 
 #include <atlbase.h>
 
@@ -49,6 +50,7 @@ namespace lua_callback
 		static struct ID3D11DeviceContext* m_deviceContext;
 		static class TextureShader*       m_unitsShader;
 		static class RendererManager*     m_renderer;
+		static class ActionMap*           m_actionMap;
 
 	}
 
@@ -86,6 +88,7 @@ namespace lua_callback
 	{
 		m_engine = engine;
 		m_global = Global::GetInstance();
+		m_actionMap = ActionMap::GetInstance();
 	}
 
 	static void SetInput(
@@ -1208,7 +1211,26 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 PushParameter(
+		struct lua_State* const state
+	)
+	{
+		m_actionMap->Push((void* const)lua_tointeger(state, 1));
+		return 0;
+	}
 
+	static int32 CreateTimer(
+		struct lua_State* const state
+	)
+	{
+		class IAction* const action = m_actionMap->GetAction(lua_tostring(state, 1))(m_actionMap);
+		if (action)
+		{
+			Timer::CreateTimer(action, (float)(lua_tonumber(state, 2)));
+		}
+		
+		return 0;
+	}
 
 	static void RegisterFunctions()
 	{
@@ -1315,6 +1337,9 @@ namespace lua_callback
 		lua_register(m_lua, "GetUnitsInGroup", lua_callback::GetUnitsInGroup);
 		lua_register(m_lua, "AddUnitToGroup", lua_callback::AddUnitToGroup);
 		lua_register(m_lua, "RemoveUnitFromGroup", lua_callback::RemoveUnitFromGroup);
+		//Timers actions
+		lua_register(m_lua, "PushParameter", lua_callback::PushParameter);
+		lua_register(m_lua, "CreateTimer", lua_callback::CreateTimer);
 	}
 
 }

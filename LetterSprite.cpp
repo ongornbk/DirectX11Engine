@@ -49,7 +49,12 @@ void LetterSprite::Initialize(
 	(void)m_vertexBuffer->InitializePart(device, shader, sizexy,coords.__f32, true);
 }
 
-void LetterSprite::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
+void LetterSprite::Render(
+	struct ID3D11DeviceContext * const deviceContext,
+	DirectX::XMFLOAT4X4& worldMatrix,
+	DirectX::XMFLOAT4X4& viewMatrix,
+	DirectX::XMFLOAT4X4& projectionMatrix
+)
 {
 	m_shader->SetShaderParameters(deviceContext,m_texture->GetTexture());
 	m_shader->SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);

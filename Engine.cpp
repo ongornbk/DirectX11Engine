@@ -10,7 +10,7 @@
 #include "ShadowShader.h"
 #include "CPU.h"
 #include "String.h"
-#include "ActionRemoveUnit.h"
+#include "ActionRemoveObject.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -125,6 +125,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_resourceManager = ResourceManager::GetInstance();
 
 	ipp::Console::Println("Engine::InitializeRM");
+
+	InitializeActionMap();
 
 	lua_callback::Initialize(this);
 
@@ -407,18 +409,20 @@ Engine * Engine::GetEngine()
 void Engine::Update()
 {
 	{
-		Canals* canals = Canals::GetInstance();
+		class Canals* const canals = Canals::GetInstance();
 		if (canals)
 			canals->Update();
 	}
-		if (m_gameComponent != NULL)
+		if (m_gameComponent != nullptr)
 		{
 			m_gameComponent->Update();
 		}
 	float dt = ipp::Timer::GetDeltaTime();
 	m_cameraControl.Update(dt);
+	Timer::Update(dt);
 	m_rendererManager->Update();
 	(void)m_input->Update();
+	
 }
 
 void Engine::Render()
@@ -449,10 +453,10 @@ extern "C"
 {
 
 	_Use_decl_annotations_
-	class _Out_ IAction* _stdcall __action__remove__unit__(class ActionMap* _In_ map)
+	class _Out_ IAction* _stdcall __action__remove__object__(class ActionMap* _In_ map)
 	{
-		class Unit* unit = (class Unit*)(map->Pop());
-		class IAction* action = new ActionRemoveUnit((unit));
+		class EObject* const object = (class EObject*)(map->Pop());
+		class IAction* const action = new ActionRemoveObject((object));
 		return action;
 	}
 
@@ -461,6 +465,6 @@ extern "C"
 void Engine::InitializeActionMap()
 {
 	class ActionMap* const map = ActionMap::GetInstance();
-	map->AddAction(__action__remove__unit__, "RemoveUnit");
+	map->AddAction(__action__remove__object__, "RemoveObject");
 
 }

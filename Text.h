@@ -35,7 +35,7 @@ public:
 
 	void Update();
 	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, Font* font);
-	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	void Render(struct ID3D11DeviceContext* const deviceContext, DirectX::XMFLOAT4X4& worldMatrix, DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix);
 
 	void SetPosition(XMFLOAT3 position);
 	void SetText(std::string text);

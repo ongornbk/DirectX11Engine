@@ -28,10 +28,10 @@ struct EObjectVector
 		const struct ShaderPackage &shader
 	) noexcept;
 	void Clear();
-	void Push(Unit* unit);
-	void Push(Doodads* doodads);
-	void Push(AnimatedDoodads* animated);
-	void Push(Tree* tree);
-	std::stack<Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
+	void Push(class Unit* const unit);
+	void Push(class Doodads* const doodads);
+	void Push(class AnimatedDoodads* const animated);
+	void Push(class Tree* const tree);
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
 
 };

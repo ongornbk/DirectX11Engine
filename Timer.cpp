@@ -20,9 +20,12 @@ Timer::Timer()
 
 Timer::~Timer()
 {
-	action->execute();
-	delete action;
-	action = nullptr;
+	if (action)
+	{
+		action->execute();
+		delete action;
+		action = nullptr;
+	}
 }
 
 void Timer::Update(const float dt)

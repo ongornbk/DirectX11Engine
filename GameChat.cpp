@@ -72,7 +72,7 @@ void GameChat::Update() noexcept
 	}
 }
 
-void GameChat::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix) noexcept
+void GameChat::Render(struct ID3D11DeviceContext * const deviceContext, DirectX::XMFLOAT4X4& worldMatrix, DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix) noexcept
 {
 	for (auto&& text : m_texts)
 	{

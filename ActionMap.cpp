@@ -34,6 +34,10 @@ std::function<class IAction* (class ActionMap*)> const ActionMap::GetAction(std:
 
 void* ActionMap::Pop()
 {
+	if (m_stack.empty())
+	{
+		return nullptr;
+	}
 	void* const top = m_stack.top();
 	m_stack.pop();
 	return top;
