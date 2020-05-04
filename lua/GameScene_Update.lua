@@ -6,23 +6,11 @@ require "core/Game"
 require "core/Chat"
 require "core/Pointer"
 
-function AttackSound()
 
-    local rn = math.random(1,3)
-    if rn == 1
-    then
 
-    PlaySound("attack1")
-    else if rn == 2
-    then
+    
 
-    PlaySound("attack2")
-    else
-    PlaySound("attack3")
-    end
-    end
-end
-end
+
 
 local x,y = GetMousePosition()
 if GetMouseState(0) == true
@@ -38,7 +26,20 @@ then
 
 if Unit.Attack(selected) == false
 then
-AttackSound()
+    local rn = math.random(1,3)
+    if rn == 1--1
+    then
+
+    PlaySound("attack1")
+   else if rn == 2--2
+   then
+
+   PlaySound("attack2")
+   else
+    PlaySound("attack3")
+   end--2
+end--1
+end
 else
 Unit.Goto(x,y)
 end
@@ -54,9 +55,11 @@ if GetMousePressed(1) == true
 then
 local x,y = GetMousePosition()
 Unit.Pick(hero)
-Unit.SetPosition(x,y)
-Unit.CleanTasks()
+
 PlaySound("teleport")
+StartCasting(hero,x,y)
+Unit.SetPosition(x,y)
+--Unit.CleanTasks()
 end
 --
 --
@@ -127,6 +130,7 @@ Object.SetSelectableFlag(true)
 Object.SetShadowFlag(true)
 Object.SetPushableFlag(true)
 Object.SetCollisionPriority(1)
+Object.AddExpirationTimer(1)
 Unit.SetWalkingStance(0)
 
 local rn = math.random(3,3)
@@ -183,11 +187,15 @@ end
 --if IsKeyPressed(23) == true
 --then
 --local x,y = GetMousePosition()
---Doodads.new()
---SetRenderingFlag(true)
---SetPushableFlag(true)
+--local doodads = Doodads.new()
+--Object.SetRenderingFlag(true)
+--Object.SetSelectableFlag(false)
+--Object.SetShadowFlag(true)
+--Object.SetPushableFlag(true)
+--Object.SetCollisionPriority(4)
 --Doodads.Initialize("barell0",105,18,x,y,0)
 --Chat.Print("barell0 Has Been Created!")
+--Music.Play("place")
 --end
 --if IsKeyPressed(24) == true
 --then
@@ -210,6 +218,8 @@ end
 --Music.Play("place")
 ----SetZ(1)
 --end
+
+
 if IsKeyHit(27) == true
 then
 local x,y = GetMousePosition()
@@ -239,20 +249,20 @@ end
 --Music.Play("place")
 --end
 
-GetUnitsInGroup(pullgroup)
-local unit = PopGroup()
-while(unit > 0)
-do
-Unit.Pick(unit)
-local distance = GetDistanceBetweenUnits(unit,hero)
+--GetUnitsInGroup(pullgroup)
+--local unit = PopGroup()
+--while(unit > 0)
+--do
+--Unit.Pick(unit)
+--local distance = GetDistanceBetweenUnits(unit,hero)
 
-if distance > 300.0
-then
-RemoveUnitFromGroup(pullgroup,unit)
-Unit.CleanTasks()
-else
+--if distance > 300.0
+--then
+--RemoveUnitFromGroup(pullgroup,unit)
+--Unit.CleanTasks()
+--else
 
-end
+--end
 
-unit = PopGroup()
-end
+--unit = PopGroup()
+--end

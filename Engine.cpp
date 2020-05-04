@@ -460,6 +460,14 @@ extern "C"
 		return action;
 	}
 
+	_Use_decl_annotations_
+		class _Out_ IAction* _stdcall __action__remove__object__(class ActionMap* _In_ map)
+	{
+		class EObject* const object = (class EObject*)(map->Pop());
+		class IAction* const action = new ActionRemoveObject((object));
+		return action;
+	}
+
 }
 
 void Engine::InitializeActionMap()

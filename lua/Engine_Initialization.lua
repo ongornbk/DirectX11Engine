@@ -3,13 +3,17 @@ require "core/Model"
 
 io.write(string.format("Hello from %s\n", _VERSION))
 --StartServer(1234)
-SetTilesMultiplier(135)
+SetTilesMultiplier(123)
+LoadTexture("../../content/Textures/system/sys.png")
+
 
 Model.Load("barbarian")
 Model.LoadTexture("barbarian","attack1")
+Model.LoadTexture("barbarian","gethit")
 Model.LoadTexture("barbarian","run")
 Model.LoadTexture("barbarian","townneutral")
 Model.LoadTexture("barbarian","townwalk")
+Model.LoadTexture("barbarian","specialcast")
 
 Model.Load("enemy")
 Model.LoadTexture("enemy","walk")
