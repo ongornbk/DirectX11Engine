@@ -22,6 +22,7 @@ public:
 	std::function<class IAction* (class ActionMap*)> const GetAction(std::string);
 
 	void* Pop();
+
 	void Push(void* const ptr);
 };
 

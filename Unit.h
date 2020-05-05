@@ -129,6 +129,7 @@ public:
 	void SetRotation(const float rotation);
 	void SetVelocity(const float x,const float y,const float z);
 	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept;
+	void SetColorFilter(const struct DirectX::XMFLOAT4& color) noexcept;
 	void DiscardTasks(); 
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();

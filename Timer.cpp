@@ -3,42 +3,18 @@
 namespace
 {
 
-	static std::deque<Timer*> m_timers;
+	static std::deque<class ITimer*> m_timers;
 }
 
-bool Timer::update(const float dt)
-{
-	time -= dt;
-	return (time < 0.f);
-}
 
-Timer::Timer()
-{
-	action = nullptr;
-	time = 0.f;
-}
-
-Timer::~Timer()
-{
-	if (action)
-	{
-		action->execute();
-		delete action;
-		action = nullptr;
-	}
-}
 
 void Timer::Update(const float dt)
 {
 
 	for (auto first = m_timers.begin(); first < m_timers.end(); ++first)
 	{
-		if ((*first)->update(dt))
-		{
-			delete* first;
-			m_timers.erase(first);
-		}
-
+	if((*first)->update(dt))
+				m_timers.erase(first);
 	}
 
 	//for (auto timer : m_timers)
@@ -51,10 +27,19 @@ void Timer::Update(const float dt)
 //	}
 }
 
-void Timer::CreateTimer(IAction* const action, const float time)
+void Timer::CreateExpiringTimer(IAction* const action, const float time)
 {
-	Timer* timer = new Timer();
+	class ExpiringTimer* const timer = new ExpiringTimer();
 	timer->action = action;
 	timer->time = time;
+	m_timers.push_back(timer);
+}
+
+void Timer::CreatePeriodicTimer(IAction* const action, const float time,const float period)
+{
+	class PeriodicTimer* const timer = new PeriodicTimer();
+	timer->action = action;
+	timer->time = time;
+	timer->period = period;
 	m_timers.push_back(timer);
 }

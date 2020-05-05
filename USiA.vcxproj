@@ -178,8 +178,10 @@
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="ActionApplyColorFilter.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionRemoveObject.h" />
+    <ClInclude Include="ActionSetCellMultiplier.h" />
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="AnimatedDoodads.h" />
     <ClInclude Include="Attack.h" />
@@ -200,6 +202,7 @@
     <ClInclude Include="Enet.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Engine\Core\Containers\Pair.h" />
+    <ClInclude Include="ExpiringTimer.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Footsteps.h" />
     <ClInclude Include="FrameWork.h" />
@@ -216,6 +219,7 @@
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ITimer.h" />
     <ClInclude Include="LetterSprite.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="LUAManager.h" />
@@ -227,6 +231,7 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PeriodicTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RenderContainerVector.h" />
@@ -277,8 +282,10 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
+    <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="Attack.cpp" />
@@ -289,10 +296,12 @@
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
+    <ClCompile Include="ExpiringTimer.cpp" />
     <ClCompile Include="Footsteps.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="ITimer.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
@@ -315,6 +324,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="IPP.cpp" />
+    <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />

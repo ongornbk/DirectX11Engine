@@ -1219,16 +1219,29 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32 CreateTimer(
+	static int32 CreateExpiringTimer(
 		struct lua_State* const state
 	)
 	{
 		class IAction* const action = m_actionMap->GetAction(lua_tostring(state, 1))(m_actionMap);
 		if (action)
 		{
-			Timer::CreateTimer(action, (float)(lua_tonumber(state, 2)));
+			Timer::CreateExpiringTimer(action, (float)(lua_tonumber(state, 2)));
 		}
 		
+		return 0;
+	}
+
+	static int32 CreatePeriodicTimer(
+		struct lua_State* const state
+	)
+	{
+		class IAction* const action = m_actionMap->GetAction(lua_tostring(state, 1))(m_actionMap);
+		if (action)
+		{
+			Timer::CreatePeriodicTimer(action, (float)(lua_tonumber(state, 2)),(float)(lua_tonumber(state,3)));
+		}
+
 		return 0;
 	}
 
@@ -1339,7 +1352,8 @@ namespace lua_callback
 		lua_register(m_lua, "RemoveUnitFromGroup", lua_callback::RemoveUnitFromGroup);
 		//Timers actions
 		lua_register(m_lua, "PushParameter", lua_callback::PushParameter);
-		lua_register(m_lua, "CreateTimer", lua_callback::CreateTimer);
+		lua_register(m_lua, "CreateExpiringTimer", lua_callback::CreateExpiringTimer);
+		lua_register(m_lua, "CreatePeriodicTimer", lua_callback::CreatePeriodicTimer);
 	}
 
 }

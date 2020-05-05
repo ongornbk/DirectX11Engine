@@ -11,6 +11,7 @@
 #include "CPU.h"
 #include "String.h"
 #include "ActionRemoveObject.h"
+#include "ActionApplyColorFilter.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -461,10 +462,15 @@ extern "C"
 	}
 
 	_Use_decl_annotations_
-		class _Out_ IAction* _stdcall __action__remove__object__(class ActionMap* _In_ map)
+		class _Out_ IAction* _stdcall __action__apply__color__filter__(class ActionMap* _In_ map)
 	{
-		class EObject* const object = (class EObject*)(map->Pop());
-		class IAction* const action = new ActionRemoveObject((object));
+		class Unit* const object = (class Unit*)map->Pop();
+		struct DirectX::XMFLOAT4 color;
+		color.x = (float)(int)(int64_t)map->Pop();
+		color.y = (float)(int)(int64_t)map->Pop();
+		color.z = (float)(int)(int64_t)map->Pop();
+		color.w = (float)(int)(int64_t)map->Pop();
+		class IAction* const action = new ActionApplyColorFilter(object,color);
 		return action;
 	}
 
@@ -474,5 +480,6 @@ void Engine::InitializeActionMap()
 {
 	class ActionMap* const map = ActionMap::GetInstance();
 	map->AddAction(__action__remove__object__, "RemoveObject");
+	map->AddAction(__action__apply__color__filter__, "ApplyColorFilter");
 
 }

@@ -2,21 +2,16 @@
 #include <deque>
 
 #include "IAction.h"
+#include "ExpiringTimer.h"
+#include "PeriodicTimer.h"
 
-class Timer
+class Timer : public ITimer
 {
-	float time;
-	class IAction* action;
-
-	
-	bool update(const float dt);
-
-	Timer();
-	~Timer();
-
 public:
 
 	static void Update(const float dt);
-	static void CreateTimer(class IAction* const action, const float time);
+	static void CreateExpiringTimer(class IAction* const action, const float time);
+	static void CreatePeriodicTimer(class IAction* const action, const float time, const float period);
 };
+
 

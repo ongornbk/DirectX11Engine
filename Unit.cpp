@@ -102,6 +102,7 @@ void Unit::Render(
 		csh->SetShaderColorParameters(deviceContext, m_colorFilter);
 		//csh->SetShaderScaleParameters(deviceContext, m_scale);
 		m_vertexBuffer->Render(deviceContext);
+		csh->SetShaderColorParameters(deviceContext, XMFLOAT4(1.f,1.f,1.f,1.f));
 	}
 
 }
@@ -121,10 +122,10 @@ void Unit::PreRender(
 
 			//const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
-			DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
+			struct DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
 
 			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
-			DirectX::XMFLOAT4X4 shadowMatrix;
+			struct DirectX::XMFLOAT4X4 shadowMatrix;
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
@@ -406,6 +407,18 @@ void Unit::SetColorFilter(const float redfilter, const float greenfilter, const 
 		m_colorFilter.z = bluefilter;
 	if (alphafilter >= 0.f)
 		m_colorFilter.w = alphafilter;
+}
+
+void Unit::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
+{
+	if (color.x >= 0.f)
+		m_colorFilter.x = color.x;
+	if (color.y >= 0.f)
+		m_colorFilter.y = color.y;
+	if (color.z >= 0.f)
+		m_colorFilter.z = color.z;
+	if (color.w >= 0.f)
+		m_colorFilter.w = color.w;
 }
 
 void Unit::DiscardTasks()
