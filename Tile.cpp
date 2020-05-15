@@ -75,13 +75,11 @@ static int32_t tilesub[32] ={
 
 
 
-
 	struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(
 		const struct DirectX::XMFLOAT2& floats
 	) noexcept
 	{
 		struct DirectX::XMINT2 _indexes = {
-
 		};
 
 
@@ -565,8 +563,8 @@ void TileMap::Update(
 	}
 	if (m_currentFrame == m_previousFrame) return;
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	class SpriteVertexType* const vertices = m_animatedVertexBuffer->GetVertices();
+	struct D3D11_MAPPED_SUBRESOURCE mappedResource;
+	struct SpriteVertexType* const vertices = m_animatedVertexBuffer->GetVertices();
 
 	vertices[0].uv.x = m_currentFrame / m_maxFrames;
 	vertices[0].uv.y = 1.0f;

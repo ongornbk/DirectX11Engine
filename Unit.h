@@ -96,17 +96,20 @@ public:
 	void SetAnimation(const enum ModelStance animation);
 	void SetAnimationSpeed(float speed);
 	int32 isReleased() const noexcept override;
-
-	void Render(
-		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix,
-		const struct ShaderPackage &shader
+	
+	_Use_decl_annotations_
+	void _vectorcall Render(
+		struct _In_ ID3D11DeviceContext* const deviceContext,
+		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
+		const struct _In_ ShaderPackage &shader
 	) override;
-	void PreRender(
+
+	_Use_decl_annotations_
+	void _vectorcall PreRender(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct DirectX::XMFLOAT4X4& viewMatrix,
-		const struct DirectX::XMFLOAT4X4& projectionMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) override;
 	void Update(const float dt) override;

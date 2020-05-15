@@ -12,6 +12,7 @@
 #include "String.h"
 #include "ActionRemoveObject.h"
 #include "ActionApplyColorFilter.h"
+#include "ActionMessageFront.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -456,7 +457,7 @@ extern "C"
 	_Use_decl_annotations_
 	class _Out_ IAction* _stdcall __action__remove__object__(class ActionMap* _In_ map)
 	{
-		class EObject* const object = (class EObject*)(map->Pop());
+		class EObject* const object = (class EObject* const)(map->PopPointer());
 		class IAction* const action = new ActionRemoveObject((object));
 		return action;
 	}
@@ -464,13 +465,21 @@ extern "C"
 	_Use_decl_annotations_
 		class _Out_ IAction* _stdcall __action__apply__color__filter__(class ActionMap* _In_ map)
 	{
-		class Unit* const object = (class Unit*)map->Pop();
+		class Unit* const object = (class Unit* const)map->PopPointer();
 		struct DirectX::XMFLOAT4 color;
-		color.x = (float)(int)(int64_t)map->Pop();
-		color.y = (float)(int)(int64_t)map->Pop();
-		color.z = (float)(int)(int64_t)map->Pop();
-		color.w = (float)(int)(int64_t)map->Pop();
+		color.x = (float)(int)(int64_t)map->PopBasic().type__int64;
+		color.y = (float)(int)(int64_t)map->PopBasic().type__int64;
+		color.z = (float)(int)(int64_t)map->PopBasic().type__int64;
+		color.w = (float)(int)(int64_t)map->PopBasic().type__int64;
 		class IAction* const action = new ActionApplyColorFilter(object,color);
+		return action;
+	}
+
+	_Use_decl_annotations_
+		class _Out_ IAction* _stdcall __action__message__front(class ActionMap* const _In_ map)
+	{
+		class EObject* const object = (class EObject* const)map->PopPointer();
+		class IAction* const action = new ActionMessageFront(object);
 		return action;
 	}
 
@@ -481,5 +490,5 @@ void Engine::InitializeActionMap()
 	class ActionMap* const map = ActionMap::GetInstance();
 	map->AddAction(__action__remove__object__, "RemoveObject");
 	map->AddAction(__action__apply__color__filter__, "ApplyColorFilter");
-
+	map->AddAction(__action__message__front, "MessageFront");
 }

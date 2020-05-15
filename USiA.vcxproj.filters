@@ -399,6 +399,21 @@
     <ClInclude Include="ActionApplyColorFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointerParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMessageFront.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ITrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -651,6 +666,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionApplyColorFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IParameter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointerParameter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicParameter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionMessageFront.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

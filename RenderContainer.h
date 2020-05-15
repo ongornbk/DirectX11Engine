@@ -33,16 +33,19 @@ class EObject
 {
 public:
 
-	virtual void            Render(
+	_Use_decl_annotations_
+	virtual void _vectorcall            Render(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) = 0;
-	virtual void            PreRender(
+
+	_Use_decl_annotations_
+	virtual void _vectorcall           PreRender(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
+		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
 	) = 0;
 	virtual void            SetZ(const float z = 0.f) = 0;

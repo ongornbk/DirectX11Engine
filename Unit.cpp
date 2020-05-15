@@ -12,7 +12,7 @@ Unit::Unit() :
 	m_floats[0] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
-	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(MS_TOWNNEUTRAL);
 	m_vertexBuffer = nullptr;
 	m_rotation = DEFAULT_ROTATION;

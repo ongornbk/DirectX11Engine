@@ -1,8 +1,10 @@
 #include "Global.h"
-
+#include "ActionMap.h"
+#include <map>
 namespace
 {
 	Global* m_instance;
+	std::map<std::string, void*> m_gmap;
 }
 
 Global::Global()
@@ -15,6 +17,8 @@ Global::Global()
 	m_lastPoint = XMFLOAT3(0.0F, 0.0F, 0.0F);
 	camera_up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	camera_lookat = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+
+	m_gmap["pickedObject"] = m_pickedObject;
 }
 
 
@@ -27,5 +31,10 @@ Global* Global::GetInstance()
 	if(m_instance)
 	return m_instance;
 	else return new Global();
+}
+
+void Global::getS(std::string name) const
+{
+	ActionMap::GetInstance()->PushPointer(m_gmap[name]);
 }
 

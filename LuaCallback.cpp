@@ -365,7 +365,7 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const unit = new class Unit();
-		//m_global->m_lastCreatedRenderContainer = unit;
+		m_global->m_pickedObject = unit;
 		lua_pushinteger(state,(lua_Integer)unit);
 		return 1;
 	}
@@ -1211,11 +1211,19 @@ namespace lua_callback
 		return 0;
 	}
 
-	static int32 PushParameter(
+	static int32 PushPointerParameter(
 		struct lua_State* const state
 	)
 	{
-		m_actionMap->Push((void* const)lua_tointeger(state, 1));
+		m_actionMap->PushPointer((void* const)lua_tointeger(state, 1));
+		return 0;
+	}
+
+	static int32 PushBasicParameter(
+		struct lua_State* const state
+	)
+	{
+		m_actionMap->PushBasic(lua_tointeger(state, 1));
 		return 0;
 	}
 
@@ -1351,7 +1359,8 @@ namespace lua_callback
 		lua_register(m_lua, "AddUnitToGroup", lua_callback::AddUnitToGroup);
 		lua_register(m_lua, "RemoveUnitFromGroup", lua_callback::RemoveUnitFromGroup);
 		//Timers actions
-		lua_register(m_lua, "PushParameter", lua_callback::PushParameter);
+		lua_register(m_lua, "PushPointerParameter", lua_callback::PushPointerParameter);
+		lua_register(m_lua, "PushBasicParameter", lua_callback::PushBasicParameter);
 		lua_register(m_lua, "CreateExpiringTimer", lua_callback::CreateExpiringTimer);
 		lua_register(m_lua, "CreatePeriodicTimer", lua_callback::CreatePeriodicTimer);
 	}
