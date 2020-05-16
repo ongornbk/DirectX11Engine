@@ -10,7 +10,6 @@ ActionApplyColorFilter::~ActionApplyColorFilter()
 
 void ActionApplyColorFilter::execute()
 {
-#pragma omp single
 	if (m_object)
 	{
 		m_object->SetColorFilter(m_color);

@@ -327,6 +327,8 @@ void TileMap::Initialize()
 
 TileMap::TileMap(float size, float framesPerSecond, float animationSpeed, bool isLooping)
 {
+	m_rendering = true;
+
 	renderInts[0] = 0;
 	renderInts[1] = 0;
 	renderInts[2] = 0;
@@ -349,42 +351,43 @@ void _vectorcall TileMap::Render(
 	DirectX::XMVECTOR& cameraPosition
 )
 {
-
-
-	m_tileShader->Begin(deviceContext);
-
-	//GRAPHICS EnableAlphaBlending(true);
-	struct DirectX::XMFLOAT2 _f = { 
-		TILE_MAP_HALF_SIZE_FLOAT + (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT),
-		TILE_MAP_HALF_SIZE_FLOAT - (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT)
-	};
-	
-	renderInts[2] = ( int32)_f.y - tile::CAMERA_TILE_VIEW;
-	renderInts[3] = ( int32)_f.y + tile::CAMERA_TILE_VIEW;
-	renderInts[0] = ( int32)_f.x - tile::CAMERA_TILE_VIEW;
-	renderInts[1] = ( int32)_f.x + tile::CAMERA_TILE_VIEW;
-	int32 tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
-	int32 tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
-	ipp::math::SquashInt32Array(renderInts,4,0,TILE_MAP_RANGE);
-	renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
-	renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
-	Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
-	for ( int32 j = renderInts[2]; j <renderInts[3]; ++j)
+	if (m_rendering)
 	{
-		for ( int32 i = renderInts[0]; i < renderInts[1]; ++i)
+
+		m_tileShader->Begin(deviceContext);
+
+		//GRAPHICS EnableAlphaBlending(true);
+		struct DirectX::XMFLOAT2 _f = {
+			TILE_MAP_HALF_SIZE_FLOAT + (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT),
+			TILE_MAP_HALF_SIZE_FLOAT - (cameraPosition.m128_f32[0] / tile::CELL_WIDTH) - (cameraPosition.m128_f32[1] / tile::CELL_HEIGHT)
+		};
+
+		renderInts[2] = (int32)_f.y - tile::CAMERA_TILE_VIEW;
+		renderInts[3] = (int32)_f.y + tile::CAMERA_TILE_VIEW;
+		renderInts[0] = (int32)_f.x - tile::CAMERA_TILE_VIEW;
+		renderInts[1] = (int32)_f.x + tile::CAMERA_TILE_VIEW;
+		int32 tempA = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
+		int32 tempC = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_CUT;
+		ipp::math::SquashInt32Array(renderInts, 4, 0, TILE_MAP_RANGE);
+		renderInts[4] = renderInts[3] + renderInts[1] - tile::CAMERA_TILE_DEEP_CUT;
+		renderInts[5] = renderInts[0] + renderInts[2] + tile::CAMERA_TILE_DEEP_CUT;
+		Tile::SetVolatileGlobals(viewMatrix, projectionMatrix);
+		for (int32 j = renderInts[2]; j < renderInts[3]; ++j)
 		{
-			const  int32 tempB = i + j;
-			if (((tempB) > (tempA)) || ((tempB) < (tempC)))
-				continue;
+			for (int32 i = renderInts[0]; i < renderInts[1]; ++i)
+			{
+				const  int32 tempB = i + j;
+				if (((tempB) > (tempA)) || ((tempB) < (tempC)))
+					continue;
 				map[j][i]->Render();
 
-			
-			
+
+
+			}
 		}
+		//GRAPHICS EnableAlphaBlending(false);
+		m_tileShader->End(deviceContext);
 	}
-	//GRAPHICS EnableAlphaBlending(false);
-	m_tileShader->End(deviceContext);
-	
 }
 
 void TileMap::SetTile(
@@ -498,6 +501,11 @@ void TileMap::LoadFromFile(std::string filename)
 
 
 	myfile.close();
+}
+
+void TileMap::SetRendering(const bool rendering)
+{
+	m_rendering = rendering;
 }
 
 int32 TileMap::CollisionAt(

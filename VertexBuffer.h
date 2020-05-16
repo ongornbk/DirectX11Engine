@@ -13,7 +13,7 @@ public:
 	bool Initialize(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializeAnchorBottom(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializePart(ID3D11Device* device, Shader* shader, float size[2],float coords[6], bool writeable = false);
-	void Render(ID3D11DeviceContext* deviceContext);
+	void _stdcall Render(struct ID3D11DeviceContext* const deviceContext) noexcept;
 	bool ResizeTexture(ID3D11Device * device, float size, bool writeable = false);
 
 	SpriteVertexType* GetVertices();

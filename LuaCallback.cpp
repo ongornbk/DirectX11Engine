@@ -1028,6 +1028,15 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 SetTileMapRendering(
+		struct lua_State* const state
+	) //EXPORTED
+	{
+		if(m_renderer)
+		m_renderer->SetTileMapRendering((bool)lua_toboolean(state, 1));
+		return 0;
+	}
+
 	static int32 SaveInstance(
 		struct lua_State* const state
 	)
@@ -1343,6 +1352,7 @@ namespace lua_callback
 		lua_register(m_lua, "SetTilesMultiplier", lua_callback::SetTilesMultiplier);
 		lua_register(m_lua, "SetTile", lua_callback::SetTile);
 		lua_register(m_lua, "LoadTilesResourceFromFile", lua_callback::__LoadTilesResourceFromFile);
+		lua_register(m_lua, "SetTileMapRendering", lua_callback::SetTileMapRendering);
 		//Console
 		lua_register(m_lua, "GetInput", lua_callback::GetInput);
 		lua_register(m_lua, "Println", lua_callback::Println);

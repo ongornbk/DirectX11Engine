@@ -1,9 +1,6 @@
 #include "ShaderPackage.h"
 
-namespace
-{
-	std::mutex m_lock;
-}
+
 
 void ShaderPackage::BeginShadow() const
 {
@@ -28,16 +25,6 @@ if (current)
 select->Begin(m_context);
 current = select;
 
-}
-
-void ShaderPackage::lock() const
-{
-	m_lock.lock();
-}
-
-void ShaderPackage::unlock() const
-{
-	m_lock.unlock();
 }
 
 void ShaderPackage::End() const

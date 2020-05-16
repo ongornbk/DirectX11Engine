@@ -195,6 +195,12 @@ void RendererManager::LoadInstanceToFile(std::string filename)
 	m_map->LoadFromFile(filename);
 }
 
+void RendererManager::SetTileMapRendering(const bool render)
+{
+	if(m_map)
+	m_map->SetRendering(render);
+}
+
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
 {
 	return g_units.GetUnitsInRange(object, range);

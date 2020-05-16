@@ -464,12 +464,13 @@ int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
 	}
 }
 
-void _stdcall __intersect_test__() noexcept
+void _cdecl __intersect_test__() noexcept
 {
 	float cameraPosition[4];
 	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
 	xp = GetXCell(cameraPosition[0]);
 	yp = GetYCell(cameraPosition[1]);
+
 
 for ( int32 i = 0u; i < 32; i++)
 {
@@ -607,40 +608,37 @@ bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject 
 	return Ax > Bx;
 }
 
-_Use_decl_annotations_
+
 void _fastcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	_Adl_verify_range(begin, end);
-	const auto _UFirst = _Get_unwrapped(begin);
-	const auto _ULast = _Get_unwrapped(end);
-	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByY());
+	_Sort_unchecked(begin, end, end - begin,__sort__SortByY());
+
+	//	_Make_heap_unchecked(begin, end, __sort__SortByY());
+	//	_Sort_heap_unchecked(begin, end, __sort__SortByY());
+
 }
 
-_Use_decl_annotations_
+
 void _fastcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	_Adl_verify_range(begin, end);
-	const auto _UFirst = _Get_unwrapped(begin);
-	const auto _ULast = _Get_unwrapped(end);
-	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByX());
+	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
+
+	//_Make_heap_unchecked(begin, end, __sort__SortByX());
+	//_Sort_heap_unchecked(begin, end, __sort__SortByX());
 }
 
-_Use_decl_annotations_
+
 void _fastcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	_Adl_verify_range(begin, end);
-	const auto _UFirst = _Get_unwrapped(begin);
-	const auto _ULast = _Get_unwrapped(end);
-	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByX());
+	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
+
+
 }
 
-_Use_decl_annotations_
+
 void _fastcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	_Adl_verify_range(begin, end);
-	const auto _UFirst = _Get_unwrapped(begin);
-	const auto _ULast = _Get_unwrapped(end);
-	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByY());
+	_Sort_unchecked(begin, end, end - begin, __sort__SortByY());
 }
 
 void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
@@ -663,6 +661,7 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 		//#pragma omp pallalel for shedule(dynamic)
 #pragma omp barrier
 #pragma omp single
+
 		for (int32 i = 0; i < 32; ++i)
 		{
 			for (auto&& object : vec[0][i])
@@ -704,7 +703,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 	}
 
 #pragma omp barrier
-
+#pragma omp single
 
 		for (int32_t i = 0; i < 32; i++)
 		{

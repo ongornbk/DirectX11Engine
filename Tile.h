@@ -55,6 +55,8 @@ struct TileMap
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 
+	void SetRendering(const bool rendering = true);
+
 	static int32 CollisionAt(const struct XMFLOAT3& position);
 	static void SetCurrentTileMap(struct TileMap* tilemap);
 	Tile* map[TILE_MAP_SIZE][TILE_MAP_SIZE];
@@ -72,6 +74,7 @@ private:
 	float m_currentSpeed;
 	float m_framesPerSecond;
 	bool m_isLooping;
+	bool m_rendering;
 };
 
 class AnimatedTile;

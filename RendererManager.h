@@ -60,10 +60,11 @@ public:
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
+	void SetTileMapRendering(const bool render = true);
 
-	std::stack<Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
-	static RendererManager* GetInstance();
+	static class RendererManager* GetInstance();
 	static size_t GetNumberOfObjects();
 	static __m128 GetNumberOfObjectsX4();
 	static std::vector<int64> GetNumberOfObjectsVector();

@@ -17,9 +17,6 @@ struct ShaderPackage
 	void BeginStandard() const;
 	void BeginSelect() const;
 
-	void lock() const;
-	void unlock() const;
-
 	void End() const;
 
 	mutable class Shader* current{};
