@@ -96,9 +96,8 @@ using ipp::SQRT2;
 
 
 _Use_decl_annotations_
- int32 _Out_ _stdcall GetXCell(const _In_ float x) noexcept
+ __forceinline constexpr int32 _Out_ _stdcall GetXCell(const _In_ float x) noexcept
 {
-	 int32 r;
 	if (x < 0.0f)
 	{
 		if (x < MAP_XBEGd2)
@@ -109,21 +108,21 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XBEGd1516)
 					{
-						r = 0;
+						return 0;
 					}
 					else
 					{
-						r = 1;
+						return 1;
 					}
 					
 				}
 				if (x < MAP_XBEGd1316)
 				{
-					r = 2;
+					return 2;
 				}
 				else
 				{
-					r = 3;
+					return 3;
 				}
 			}
 			else
@@ -132,22 +131,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XBEGd1116)
 					{
-						r = 4;
+						return 4;
 					}
 					else
 					{
-						r = 5;
+						return 5;
 					}
 				}
 				else
 				{
 					if (x < MAP_XBEGd916)
 					{
-						r = 6;
+						return 6;
 					}
 					else
 					{
-						r = 7;
+						return 7;
 					}
 				}
 			}
@@ -160,22 +159,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XBEGd716)
 					{
-						r = 8;
+						return 8;
 					}
 					else
 					{
-						r = 9;
+						return 9;
 					}
 				}
 				else
 				{
 					if (x < MAP_XBEGd516)
 					{
-						r = 10;
+						return 10;
 					}
 					else
 					{
-						r = 11;
+						return 11;
 					}
 				}
 			}
@@ -185,22 +184,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XBEGd316)
 					{
-						r = 12;
+						return 12;
 					}
 					else
 					{
-						r = 13;
+						return 13;
 					}
 				}
 				else
 				{
 					if (x < MAP_XBEGd116)
 					{
-						r = 14;
+						return 14;
 					}
 					else
 					{
-						r = 15;
+						return 15;
 					}
 				}
 			}
@@ -216,22 +215,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XENDd116)
 					{
-						r = 16;
+						return 16;
 					}
 					else
 					{
-						r = 17;
+						return 17;
 					}
 				}
 				else
 				{
 					if (x < MAP_XENDd316)
 					{
-						r = 18;
+						return 18;
 					}
 					else
 					{
-						r = 19;
+						return 19;
 					}
 				}
 			}
@@ -241,22 +240,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XENDd516)
 					{
-						r = 20;
+						return 20;
 					}
 					else
 					{
-						r = 21;
+						return 21;
 					}
 				}
 				else
 				{
 					if (x < MAP_XENDd716)
 					{
-						r = 22;
+						return 22;
 					}
 					else
 					{
-						r = 23;
+						return 23;
 					}
 				}
 			}
@@ -269,22 +268,22 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XENDd916)
 					{
-						r = 24;
+						return 24;
 					}
 					else
 					{
-						r = 25;
+						return 25;
 					}
 				}
 				else
 				{
 					if (x < MAP_XENDd1116)
 					{
-						r = 26;
+						return 26;
 					}
 					else
 					{
-						r = 27;
+						return 27;
 					}
 				}
 			}
@@ -294,35 +293,32 @@ _Use_decl_annotations_
 				{
 					if (x < MAP_XENDd1316)
 					{
-						r = 28;
+						return 28;
 					}
 					else
 					{
-						r = 29;
+						return 29;
 					}
 				}
 				else
 				{
 					if (x < MAP_XENDd1516)
 					{
-						r = 30;
+						return 30;
 					}
 					else
 					{
-						r = 31;
+						return 31;
 					}
 				}
 			}
 		}
 	}
-	return r;
 }
 
 _Use_decl_annotations_
- int32 _Out_ _stdcall GetYCell(const _In_ float y)
+__forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexcept
 {
-	 int32 r;
-
 	if (y < 0.0f)
 	{
 		if (y < MAP_YBEGd2)
@@ -331,22 +327,22 @@ _Use_decl_annotations_
 			{
 				if (y < MAP_YBEGd78)
 				{
-					r = 0;
+					return 0;
 				}
 				else
 				{
-					r = 1;
+					return 1;
 				}
 			}
 			else
 			{
 				if (y < MAP_YBEGd58)
 				{
-					r = 2;
+					return 2;
 				}
 				else
 				{
-					r = 3;
+					return 3;
 				}
 			}
 		}
@@ -356,22 +352,22 @@ _Use_decl_annotations_
 			{
 				if (y < MAP_YBEGd38)
 				{
-					r = 4;
+					return 4;
 				}
 				else
 				{
-					r = 5;
+					return 5;
 				}
 			}
 			else
 			{
 				if (y < MAP_YBEGd18)
 				{
-					r = 6;
+					return 6;
 				}
 				else
 				{
-					r = 7;
+					return 7;
 				}
 			}
 		}
@@ -384,22 +380,22 @@ _Use_decl_annotations_
 			{
 				if (y < MAP_YENDd18)
 				{
-					r = 8;
+					return 8;
 				}
 				else
 				{
-					r = 9;
+					return 9;
 				}
 			}
 			else
 			{
 				if (y < MAP_YENDd38)
 				{
-					r = 10;
+					return 10;
 				}
 				else
 				{
-					r = 11;
+					return 11;
 				}
 				
 			}
@@ -410,33 +406,31 @@ _Use_decl_annotations_
 			{
 				if (y < MAP_YENDd58)
 				{
-					r = 12;
+					return 12;
 				}
 				else
 				{
-					r = 13;
+					return 13;
 				}
 			}
 			else
 			{
 				if (y < MAP_YENDd78)
 				{
-					r = 14;
+					return 14;
 				}
 				else
 				{
-					r = 15;
+					return 15;
 				}
 			}
 		}
 	}
-
-	return r;
 }
 
 _Use_decl_annotations_
 template <class T>
-int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index) noexcept
 {
 	const int32 t0 = xp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -451,7 +445,7 @@ int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index) noexcept
 
 _Use_decl_annotations_
 template <class T>
-int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
 {
 	const int32 t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -464,7 +458,7 @@ int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
 	}
 }
 
-void _cdecl __intersect_test__() noexcept
+__forceinline void _stdcall __intersect_test__() noexcept
 {
 	float cameraPosition[4];
 	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
@@ -609,7 +603,7 @@ bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject 
 }
 
 
-void _fastcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _stdcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
 	_Sort_unchecked(begin, end, end - begin,__sort__SortByY());
 
@@ -619,7 +613,7 @@ void _fastcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ con
 }
 
 
-void _fastcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _stdcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
 
@@ -628,7 +622,7 @@ void _fastcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ con
 }
 
 
-void _fastcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _stdcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
 
@@ -636,7 +630,7 @@ void _fastcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ c
 }
 
 
-void _fastcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _stdcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__SortByY());
 }
