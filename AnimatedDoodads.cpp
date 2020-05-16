@@ -14,8 +14,10 @@ AnimatedDoodads::AnimatedDoodads()
 
 	m_boundingSphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_boundingSphere.Radius = 0.0f;
+	m_lastPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
+	m_currentFrame = 0.f;
 	m_isLooping = true;
 	m_animationSpeed = 0.20f;
 	m_framesPerSecond = 1.0f;

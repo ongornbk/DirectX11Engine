@@ -98,7 +98,7 @@ public:
 	int32 isReleased() const noexcept override;
 	
 	_Use_decl_annotations_
-	void _vectorcall Render(
+	void _fastcall Render(
 		struct _In_ ID3D11DeviceContext* const deviceContext,
 		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
 		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
@@ -106,7 +106,7 @@ public:
 	) override;
 
 	_Use_decl_annotations_
-	void _vectorcall PreRender(
+	void _fastcall PreRender(
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
 		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,

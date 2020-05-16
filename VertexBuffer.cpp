@@ -9,6 +9,8 @@ namespace
 
 VertexBuffer::VertexBuffer()
 {
+	m_indexCount = 0;
+	m_vertexBuffer = 0;
 	m_vertices = nullptr;
 	m_vertexBuffer = nullptr;
 	m_indexBuffer = nullptr;

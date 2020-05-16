@@ -339,7 +339,7 @@ void Engine::AddModelPaths(string name)
 	wstring ws = std::wstring(name.begin(), name.end()).c_str();
 	wcscpy(wide_string, ws.c_str());
 	S_ModelPaths::AddModelPaths(token, wide_string);
-	delete wide_string;
+	delete[] wide_string;
 }
 
 void Engine::AddFont(string filename, float width, float height)

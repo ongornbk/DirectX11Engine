@@ -110,7 +110,7 @@ namespace lua_callback
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_resources->LoadTextureResource(wide_string);
-			delete wide_string;
+			delete[] wide_string;
 			return 0;
 		}
 
@@ -124,7 +124,7 @@ namespace lua_callback
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_resources->LoadSoundResource(wide_string);
-			delete wide_string;
+			delete[] wide_string;
 			return 0;
 		}
 
@@ -246,7 +246,7 @@ namespace lua_callback
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_engine->PlayMusic(wide_string);
-			delete wide_string;
+			delete[] wide_string;
 			return 0;
 		}
 
@@ -265,7 +265,7 @@ namespace lua_callback
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
 			m_engine->PlaySound(wide_string);
-			delete wide_string;
+			delete[] wide_string;
 			return 0;
 		}
 	}
@@ -664,7 +664,7 @@ namespace lua_callback
 			);
 			m_renderer->PushUnit(unit,(int32)p_z);
 
-			delete wide_string;
+			delete[] wide_string;
 		}
 		return 0;
 		
@@ -699,7 +699,7 @@ namespace lua_callback
 			);
 			m_renderer->PushDoodads(doodads, (int32)p_z);
 
-			delete wide_string;
+			delete[] wide_string;
 		}
 		return 0;
 
@@ -734,7 +734,7 @@ namespace lua_callback
 			);
 			m_renderer->PushAnimatedDoodads(doodads,z);
 
-			delete wide_string;
+			delete[] wide_string;
 		}
 		return 0;
 
@@ -768,7 +768,7 @@ namespace lua_callback
 			);
 			m_renderer->PushTree(tree, (int32)p_z);
 
-			delete wide_string;
+			delete[] wide_string;
 				
 		}
 		return 0;
@@ -874,6 +874,8 @@ namespace lua_callback
 			case 1:
 				ws = Unit::WalkingStance::WS_RUN;
 				break;
+			default:
+				ws = Unit::WalkingStance::WS_WALK;
 			}
 			unit->SetWalkingStance(ws);
 		return 0;

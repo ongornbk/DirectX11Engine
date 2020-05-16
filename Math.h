@@ -1,5 +1,13 @@
 #pragma once
 
+namespace Math
+{
+	constexpr double     PI_extended = 3.14159265358979323844;
+	constexpr float      PI = 3.14159f;
+	constexpr float      SQRT2 = 1.41421f;
+	constexpr float      E = 2.71828f;
+}
+
 using DirectX::XMFLOAT3;
 
 inline XMFLOAT3 XM_CALLCONV XMFloat3Multiply (
