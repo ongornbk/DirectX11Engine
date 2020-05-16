@@ -1,9 +1,9 @@
 #pragma once
 #include "Shader.h"
+#include <mutex>
 
 struct ShaderPackage
 {
-	
 		struct
 		{
 			class Shader* standard;
@@ -17,7 +17,14 @@ struct ShaderPackage
 	void BeginStandard() const;
 	void BeginSelect() const;
 
+	void lock() const;
+	void unlock() const;
+
 	void End() const;
 
 	mutable class Shader* current{};
+
+private:
+
+	
 };

@@ -54,6 +54,8 @@ void _vectorcall EObjectVector::Render(
 ) noexcept
 {
 class Vector<class Vector<class EObject*>*> mvpp;
+
+
 for (int32 i = 0; i < 32; i++)
 	{
 	if(!yta[i])

@@ -139,7 +139,7 @@ bool Shader::Initialize(
 
 	std::wstring shaderFilePath(shaderFileName);
 	m_name = std::string(shaderFilePath.begin(),shaderFilePath.end());
-	int pos = (int)m_name.find_last_of("/");
+	size_t pos = (size_t)m_name.find_last_of("/");
 	if (pos >= 0)
 	{
 		m_name = m_name.substr(pos + 1, m_name.length());

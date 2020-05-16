@@ -52,6 +52,7 @@ void _vectorcall RenderZMap::Render(
 	struct ShaderPackage &shader
 ) noexcept
 {
+
 	for (auto vector : m_zVectors)
 	{
 		vector.second->Render(deviceContext, viewMatrix, projectionMatrix, shader);

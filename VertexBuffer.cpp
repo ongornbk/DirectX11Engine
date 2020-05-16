@@ -1,10 +1,11 @@
 #include "VertexBuffer.h"
 #include "GlobalUtilities.h"
 #include "IPP.h"
-
+#include <mutex>
 namespace
 {
 	static constexpr uint32 t_indices6[6] = { 0u,1u,2u,0u,2u,3u };
+	std::mutex m_lock;
 }
 
 VertexBuffer::VertexBuffer()
@@ -38,6 +39,7 @@ VertexBuffer::~VertexBuffer()
 
 bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size[2], bool writeable)
 {
+	std::lock_guard<std::mutex> lock(m_lock);
 	m_shader = shader;
 	uint32_t* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -113,6 +115,7 @@ bool VertexBuffer::InitializeAnchorBottom(
 	float size[2],
 	bool writeable)
 {
+	std::lock_guard<std::mutex> lock(m_lock);
 	m_shader = shader;
 	uint32_t* indices;
 	struct D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -188,6 +191,7 @@ bool VertexBuffer::InitializePart(
 	float coords[6],
 	bool writeable)
 {
+	std::lock_guard<std::mutex> lock(m_lock);
 	m_shader = shader;
 	uint32_t* indices;
 	struct D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -270,6 +274,7 @@ void VertexBuffer::Render(
 	struct ID3D11DeviceContext * const deviceContext
 )
 {
+	std::lock_guard<std::mutex> lock(m_lock);
 	constexpr uint32 stride = sizeof(SpriteVertexType);
 	constexpr uint32 offset = 0u;
 
@@ -283,7 +288,7 @@ bool VertexBuffer::ResizeTexture(
 	const float size,
 	const bool writeable)
 {
-
+	std::lock_guard<std::mutex> lock(m_lock);
 	uint32* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;

@@ -78,8 +78,6 @@ void Unit::Render(
 	if (m_flags.m_rendering)
 	{
 
-		
-
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
 
@@ -103,6 +101,7 @@ void Unit::Render(
 		//csh->SetShaderScaleParameters(deviceContext, m_scale);
 		m_vertexBuffer->Render(deviceContext);
 		csh->SetShaderColorParameters(deviceContext, XMFLOAT4(1.f,1.f,1.f,1.f));
+
 	}
 
 }

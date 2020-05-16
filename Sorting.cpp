@@ -607,24 +607,40 @@ bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject 
 	return Ax > Bx;
 }
 
-void _cdecl sortPyV(class EObject** const begin,class EObject** const end) noexcept
+_Use_decl_annotations_
+void _fastcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	std::sort(begin, end, __sort__SortByY());
+	_Adl_verify_range(begin, end);
+	const auto _UFirst = _Get_unwrapped(begin);
+	const auto _ULast = _Get_unwrapped(end);
+	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByY());
 }
 
-void _cdecl sortPxV(class EObject** const begin,class EObject** const end) noexcept
+_Use_decl_annotations_
+void _fastcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	std::sort(begin, end, __sort__SortByX());
+	_Adl_verify_range(begin, end);
+	const auto _UFirst = _Get_unwrapped(begin);
+	const auto _ULast = _Get_unwrapped(end);
+	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByX());
 }
 
-void _stdcall sortPxVTP(class EObject** const begin,class EObject** const end) noexcept
+_Use_decl_annotations_
+void _fastcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	std::sort(begin, end, __sort__SortByX());
+	_Adl_verify_range(begin, end);
+	const auto _UFirst = _Get_unwrapped(begin);
+	const auto _ULast = _Get_unwrapped(end);
+	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByX());
 }
 
-void _stdcall sortPyVTP(class EObject** const begin,class EObject** const end) noexcept
+_Use_decl_annotations_
+void _fastcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
-	std::sort(begin, end, __sort__SortByY());
+	_Adl_verify_range(begin, end);
+	const auto _UFirst = _Get_unwrapped(begin);
+	const auto _ULast = _Get_unwrapped(end);
+	_Sort_unchecked(_UFirst, _ULast, _ULast - _UFirst, __sort__SortByY());
 }
 
 void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
@@ -689,7 +705,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 #pragma omp barrier
 
-#pragma omp single
+
 		for (int32_t i = 0; i < 32; i++)
 		{
 			for (auto&& RC : vec[1][i])
