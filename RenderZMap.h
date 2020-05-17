@@ -19,6 +19,7 @@ struct RenderZMap
 
 	bool m_zStance[256];
 
+	void UpdateFps(const int32 fps);
 	void Update(const float dt);
 	void CleanUp();
 	void Sort();
@@ -38,4 +39,8 @@ struct RenderZMap
 	std::vector<int64> GetSizeVector();
 	std::stack<Unit*> GetUnitsInRange(class Unit* object,const float range);
 
+private:
+
+	int32 m_fps;
+	int32 m_sortingDepth;
 };

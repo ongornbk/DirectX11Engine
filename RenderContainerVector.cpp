@@ -38,8 +38,13 @@ void EObjectVector::CleanUp()
 void EObjectVector::Sort()
 {
 	SortByXV(m_objectsXY);
-#pragma omp barrier
 	SortByYV(m_objectsXY);
+}
+
+void _stdcall EObjectVector::QSort()
+{
+	QSortByXV(m_objectsXY);
+	QSortByYV(m_objectsXY);
 }
 
 //static uint32_t sizeg = 0u;

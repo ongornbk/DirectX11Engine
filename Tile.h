@@ -55,7 +55,7 @@ struct TileMap
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 
-	void SetRendering(const bool rendering = true);
+	void SetRendering(const int64 rendering = 1);
 
 	static int32 CollisionAt(const struct XMFLOAT3& position);
 	static void SetCurrentTileMap(struct TileMap* tilemap);

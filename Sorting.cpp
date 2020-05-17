@@ -669,15 +669,30 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 		//	}
 		//}
 #pragma omp barrier
+//#pragma omp for schedule(dynamic)
+//		for (int32 i = 0; i < 32; ++i)
+//		{
+//			if (yta[i])
+//			{
+//				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+//			}
+//		
+//	}
+}
+
+void _vectorcall QSortByYV(Vector<class EObject*> vec[2][32]) noexcept
+{
+
 #pragma omp for schedule(dynamic)
-		for (int32 i = 0; i < 32; ++i)
+	for (int32 i = 0; i < 32; ++i)
+	{
+		if (yta[i])
 		{
-			if (yta[i])
-			{
-				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
-			}
-		
+			sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+		}
+
 	}
+#pragma omp barrier
 }
 
 void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
@@ -712,16 +727,28 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 		//	}
 		//}
 #pragma omp barrier
+//
+//#pragma omp for schedule(dynamic)
+//		for (int32 i = 0; i < 32; i++)
+//		{
+//			if (xta[i])
+//			{
+//				sortPxVTP(vec[0][i].begin(), vec[0][i].end());
+//			}
+//		}
 
+}
+
+void _vectorcall QSortByXV(Vector<class EObject*> vec[2][32]) noexcept
+{
 #pragma omp for schedule(dynamic)
-		for (int32 i = 0; i < 32; i++)
+	for (int32 i = 0; i < 32; i++)
+	{
+		if (xta[i])
 		{
-			if (xta[i])
-			{
-				sortPxVTP(vec[0][i].begin(), vec[0][i].end());
-			}
+			sortPxVTP(vec[0][i].begin(), vec[0][i].end());
 		}
-
+	}
 }
 
 

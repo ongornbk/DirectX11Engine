@@ -121,9 +121,7 @@ void Unit::PreRender(
 
 			//const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
-			struct DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f);
-
-			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
+			const struct DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix);
 			struct DirectX::XMFLOAT4X4 shadowMatrix;
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());

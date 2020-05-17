@@ -28,7 +28,13 @@ _Use_decl_annotations_
 void _vectorcall SortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
 
 _Use_decl_annotations_
+void _vectorcall QSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+
+_Use_decl_annotations_
 void _vectorcall SortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
 
 _Use_decl_annotations_
+void _vectorcall QSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+
+	_Use_decl_annotations_
 void _vectorcall __CleanUp(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;

@@ -15,6 +15,7 @@ public:
 	{
 		LetterSpriteStruct()
 		{
+			m_char = ' ';
 			m_sprite = nullptr;
 		}
 		~LetterSpriteStruct()

@@ -25,9 +25,9 @@ struct TileMap;
 struct RenderContainerVector;
 #pragma endregion
 
-
-	int32 _vectorcall validateRendering(
-		const struct XMFLOAT3& object
+_Use_decl_annotations_
+	const _Out_ int32 _stdcall validateRendering(
+		const struct XMFLOAT3& _In_ object
 	) noexcept;
 
 	void _cdecl CleanupFrame();
@@ -60,7 +60,8 @@ public:
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
 	void SaveInstanceToFile(std::string filename);
 	void LoadInstanceToFile(std::string filename);
-	void SetTileMapRendering(const bool render = true);
+	void SetTileMapRendering(const int64 rendering = 1);
+	void SetFps(const int32 fps);
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 

@@ -99,7 +99,7 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 
 
-	int32 _vectorcall validateRendering(const struct XMFLOAT3& object) noexcept
+	const _Out_ int32 _stdcall validateRendering(const struct XMFLOAT3& _In_ object) noexcept
 	{
 		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
 		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
@@ -195,10 +195,16 @@ void RendererManager::LoadInstanceToFile(std::string filename)
 	m_map->LoadFromFile(filename);
 }
 
-void RendererManager::SetTileMapRendering(const bool render)
+void RendererManager::SetTileMapRendering(const int64 render)
 {
 	if(m_map)
 	m_map->SetRendering(render);
+}
+
+void RendererManager::SetFps(const int32 fps)
+{
+	g_units.UpdateFps(fps);
+	UserInterfaceGame::SetFPS(fps);
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept

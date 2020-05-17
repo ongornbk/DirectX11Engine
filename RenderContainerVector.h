@@ -21,6 +21,7 @@ struct EObjectVector
 	void Update(float dt);
 	void CleanUp();
 	void Sort();
+	void _stdcall QSort();
 	void _vectorcall Render(
 		struct ID3D11DeviceContext * const deviceContext,
 		const struct XMFLOAT4X4& viewMatrix,

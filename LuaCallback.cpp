@@ -1034,8 +1034,17 @@ namespace lua_callback
 		struct lua_State* const state
 	) //EXPORTED
 	{
+		const int64 value = (int64)lua_tointeger(state, 1);
 		if(m_renderer)
-		m_renderer->SetTileMapRendering((bool)lua_toboolean(state, 1));
+		m_renderer->SetTileMapRendering(value);
+
+		class GameChat* const game_chat = UserInterfaceGame::GetGameChat();
+		if (game_chat)
+		{
+			std::string str = "Tile Map Rendering: " + std::to_string((bool)value);
+			game_chat->PushTextFront(str);
+		}
+
 		return 0;
 	}
 

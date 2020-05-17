@@ -503,9 +503,20 @@ void TileMap::LoadFromFile(std::string filename)
 	myfile.close();
 }
 
-void TileMap::SetRendering(const bool rendering)
+void TileMap::SetRendering(const int64 rendering)
 {
-	m_rendering = rendering;
+	switch (rendering)
+	{
+	case -1:
+		m_rendering = !m_rendering;
+		break;
+	case 0:
+		m_rendering = false;
+		break;
+	default:
+		m_rendering = true;
+		break;
+}
 }
 
 int32 TileMap::CollisionAt(

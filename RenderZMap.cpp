@@ -3,6 +3,8 @@
 RenderZMap::RenderZMap()
 {
 	ZeroMemory(&m_zStance, sizeof(bool) * 256);
+	m_fps = 60;
+	m_sortingDepth = 1;
 }
 
 RenderZMap::~RenderZMap()
@@ -14,6 +16,11 @@ RenderZMap::~RenderZMap()
 		m_zStance[vector.first] = false;
 	}
 	m_zVectors.clear();
+}
+
+void RenderZMap::UpdateFps(const int32 fps)
+{
+	m_fps = fps;
 }
 
 void RenderZMap::Update(const float dt)
@@ -38,11 +45,29 @@ void RenderZMap::CleanUp()
 
 void RenderZMap::Sort()
 {
+
+
 #pragma omp parallel
-	for (auto vector : m_zVectors)
-	{
-		vector.second->Sort();
-	}
+		for (auto vector : m_zVectors)
+		{
+			vector.second->Sort();
+		}
+#pragma omp barrier
+
+		if (m_fps > 180)
+			m_sortingDepth = 3;
+		else if (m_fps > 120)
+			m_sortingDepth = 2;
+		else m_sortingDepth = 1;
+
+		for (int32 i = 0; i < m_sortingDepth; i++)
+		{
+			for (auto vector : m_zVectors)
+			{
+				vector.second->QSort();
+			}
+		}
+
 }
 
 void _vectorcall RenderZMap::Render(
@@ -67,7 +92,7 @@ void RenderZMap::Clear()
 	}
 }
 
-void RenderZMap::Push(Unit * unit,const int64 z)
+void RenderZMap::Push(class Unit * const unit,const int64 z)
 {
 	if (m_zStance[z])
 	{

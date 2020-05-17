@@ -214,6 +214,7 @@
     <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GarbageCollector.h" />
     <ClInclude Include="gdef.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GlobalUtilities.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Sorting.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="S_ModelPaths.h" />
     <ClInclude Include="Task.h" />
@@ -309,6 +311,7 @@
     <ClCompile Include="ExpiringTimer.cpp" />
     <ClCompile Include="Footsteps.cpp" />
     <ClCompile Include="GameChat.cpp" />
+    <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="ITimer.cpp" />
@@ -356,6 +359,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="S_ModelPaths.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskQueue.cpp" />

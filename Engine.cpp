@@ -231,7 +231,7 @@ void Engine::Run()
 
 		const  int32 fps = ( int32)(1000 / averageFrameTimeMilliseconds);
 
-		UserInterfaceGame::SetFPS(fps);
+		m_rendererManager->SetFps(fps);
 
 	}
 
