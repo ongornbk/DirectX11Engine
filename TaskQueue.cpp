@@ -1,6 +1,7 @@
 #include "TaskQueue.h"
 #include "GlobalUtilities.h"
 #include "Unit.h"
+#include "GarbageCollector.h"
 
 using::GlobalUtilities::random;
 
@@ -32,7 +33,7 @@ void TaskQueue::Discard()
 {
 	while (!m_tasks.empty())
 	{
-		delete m_tasks.front();
+		GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
 		m_tasks.pop();
 	}
 	//if (m_owner)

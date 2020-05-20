@@ -467,9 +467,9 @@ void TileMap::SaveToFile(std::string filename)
 	std::ofstream myfile;
 	myfile.open(filename);
 	
-	for (uint32_t i = 0u; i < TILE_MAP_SIZE; ++i)
+	for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 	{
-		for (uint32_t j = 0u; j < TILE_MAP_SIZE; ++j)
+		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
 			myfile << m_tile[i][j].tile_type;
 		}

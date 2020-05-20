@@ -199,6 +199,8 @@
     <ClInclude Include="Connection.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="DeleteAction.h" />
+    <ClInclude Include="DeleteTrash.h" />
     <ClInclude Include="Destructible.h" />
     <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="Doodads.h" />
@@ -211,6 +213,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="Footsteps.h" />
     <ClInclude Include="FrameWork.h" />
+    <ClInclude Include="FreeTrash.h" />
     <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameScene.h" />
@@ -226,6 +229,7 @@
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="ITimer.h" />
+    <ClInclude Include="ITrash.h" />
     <ClInclude Include="ITrigger.h" />
     <ClInclude Include="LetterSprite.h" />
     <ClInclude Include="List.h" />
@@ -305,16 +309,20 @@
     <ClCompile Include="BinaryTree.c" />
     <ClCompile Include="ColorFilter.cpp" />
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="DeleteAction.cpp" />
+    <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="Enet.cpp" />
     <ClCompile Include="ExpiringTimer.cpp" />
     <ClCompile Include="Footsteps.cpp" />
+    <ClCompile Include="FreeTrash.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="ITimer.cpp" />
+    <ClCompile Include="ITrash.cpp" />
     <ClCompile Include="ITrigger.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />

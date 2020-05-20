@@ -1,5 +1,6 @@
 #pragma once
 #include "gdef.h"
+#include "GarbageCollector.h"
 
 template <class T>
 class Vector
@@ -21,7 +22,7 @@ public:
 	
 	~Vector()
 	{
-		free(m_data);
+		GarbageCollector::GetInstance()->AsyncFree(m_data);
 	}
 
 	T* begin()

@@ -749,6 +749,7 @@ void _vectorcall QSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 			sortPxVTP(vec[0][i].begin(), vec[0][i].end());
 		}
 	}
+#pragma omp barrier
 }
 
 
@@ -765,7 +766,7 @@ void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 		{
 			if (obj->isReleased())
 			{
-				delete obj;
+				GarbageCollector::GetInstance()->AsyncDelete(obj);
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;

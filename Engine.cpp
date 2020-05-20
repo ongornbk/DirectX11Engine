@@ -13,6 +13,7 @@
 #include "ActionRemoveObject.h"
 #include "ActionApplyColorFilter.h"
 #include "ActionMessageFront.h"
+#include "GarbageCollector.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -424,31 +425,47 @@ void Engine::Update()
 	Timer::Update(dt);
 	m_rendererManager->Update();
 	(void)m_input->Update();
+
+
 	
 }
 
 void Engine::Render()
 {
-	m_camera->Update();
-	m_graphics->BeginScene(0.0f,0.0f,0.0f,0.0f);
-
-	
-	XMFLOAT4X4 viewMatrix       = m_camera->GetView();
-	XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
-
-	m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
-	
-	if (m_gameComponent != NULL)
+#pragma omp parallel
 	{
-		m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+		{
+			class GarbageCollector* gbc = GarbageCollector::GetInstance();
+			gbc->Update();
+		}
+		
+
+#pragma omp single
+		{
+
+			m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
+			m_camera->Update();
+
+			XMFLOAT4X4 viewMatrix = m_camera->GetView();
+			XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
+
+			m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+
+			if (m_gameComponent != NULL)
+			{
+				m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+			}
+
+
+
+
+
+
+			m_graphics->EndScene();
+
+		}
 	}
-
-
-
-
-	
-
-	m_graphics->EndScene();
+#pragma omp barrier
 }
 
 extern "C"

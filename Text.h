@@ -1,6 +1,7 @@
 #pragma once
 #include "LetterSprite.h"
 #include "Vector.h"
+#include "GarbageCollector.h"
 #include <string>
 
 
@@ -22,7 +23,7 @@ public:
 		{
 			if (m_sprite)
 			{
-				delete m_sprite;
+				GarbageCollector::GetInstance()->AsyncDelete(m_sprite);
 				m_sprite = nullptr;
 			}
 		}

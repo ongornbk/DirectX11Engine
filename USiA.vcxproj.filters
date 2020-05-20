@@ -420,6 +420,18 @@
     <ClInclude Include="GarbageCollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ITrash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeTrash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteTrash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -693,6 +705,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GarbageCollector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITrash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeTrash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteTrash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

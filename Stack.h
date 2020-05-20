@@ -4,7 +4,7 @@ template <class T>
 struct StackElement
 {
 	T data;
-	StackElement* next;
+	StackElement<T>* next;
 
 	StackElement() = delete;
 	StackElement(T t) : data(t)
@@ -16,22 +16,22 @@ struct StackElement
 template <class T>
 class Stack
 {
-	StackElement* __top;
+	StackElement<T>* __top;
 
 public:
 
 	void push(T t)
 	{
-		StackElement* temp = __top;
-		__top = new StackElement(t);
+		StackElement<T>* temp = __top;
+		__top = new StackElement<T>(t);
 		__top->next = temp;
 	}
 
-	void pop
+	void pop()
 	{
 		if (__top)
 		{
-			StackElement* temp = __top.next;
+			StackElement<T>* temp = __top.next;
 			delete __top;
 			__top = temp;
 		}

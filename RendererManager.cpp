@@ -5,6 +5,7 @@
 #include "ShadowShader.h"
 #include "Global.h"
 #include "ShaderPackage.h"
+#include "GarbageCollector.h"
 #include <future>
 #include <mutex>
 #include <stack>
@@ -112,27 +113,33 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 
 	void RendererManager::Render(
-		struct ID3D11DeviceContext * const deviceContext,
+		struct ID3D11DeviceContext* const deviceContext,
 		const struct DirectX::XMFLOAT4X4& viewMatrix,
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
+
+
 		struct ShaderPackage pck;
 		pck.m_context = deviceContext;
 		pck.select = m_selectShader;
 		pck.shadow = m_shadowShader;
 		pck.standard = m_unitsShader;
 
-		
+
 		GRAPHICS EnableAlphaBlending(true);
+
+
+
+
 			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
-			
+
 
 			//m_unitsShader->Begin(deviceContext);
-			
+
 			g_units.Render(deviceContext, viewMatrix, projectionMatrix, pck);
-			
+
 			//m_unitsShader->End(deviceContext);
 
 
@@ -142,7 +149,8 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 
 			m_shader->End(deviceContext);
-
+		
+	
 }
 
 void RendererManager::Update()

@@ -20,13 +20,19 @@ struct EObjectVector
 
 	void Update(float dt);
 	void CleanUp();
-	void Sort();
+	void _stdcall Sort();
 	void _stdcall QSort();
 	void _vectorcall Render(
 		struct ID3D11DeviceContext * const deviceContext,
 		const struct XMFLOAT4X4& viewMatrix,
 		const struct XMFLOAT4X4& projectionMatrix,
 		const struct ShaderPackage &shader
+	) noexcept;
+	void _vectorcall PreRender(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		const struct ShaderPackage& shader
 	) noexcept;
 	void Clear();
 	void Push(class Unit* const unit);

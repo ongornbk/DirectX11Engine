@@ -1,4 +1,5 @@
 #include "RenderZMap.h"
+#include "GarbageCollector.h"
 
 RenderZMap::RenderZMap()
 {
@@ -12,7 +13,7 @@ RenderZMap::~RenderZMap()
 	for (auto vector : m_zVectors)
 	{
 		vector.second->Clear();
-		delete vector.second;
+		GarbageCollector::GetInstance()->AsyncDelete(vector.second);
 		m_zStance[vector.first] = false;
 	}
 	m_zVectors.clear();
@@ -25,7 +26,7 @@ void RenderZMap::UpdateFps(const int32 fps)
 
 void RenderZMap::Update(const float dt)
 {
-#pragma omp parallel
+//#pragma omp parallel
 	{
 		for (auto vector : m_zVectors)
 		{
@@ -51,22 +52,23 @@ void RenderZMap::Sort()
 		for (auto vector : m_zVectors)
 		{
 			vector.second->Sort();
+			vector.second->QSort();
 		}
 #pragma omp barrier
 
-		if (m_fps > 180)
-			m_sortingDepth = 3;
-		else if (m_fps > 120)
-			m_sortingDepth = 2;
-		else m_sortingDepth = 1;
-
-		for (int32 i = 0; i < m_sortingDepth; i++)
-		{
-			for (auto vector : m_zVectors)
-			{
-				vector.second->QSort();
-			}
-		}
+		//if (m_fps > 180)
+		//	m_sortingDepth = 3;
+		//else if (m_fps > 120)
+		//	m_sortingDepth = 2;
+		//else m_sortingDepth = 1;
+		//
+		//for (int32 i = 0; i < m_sortingDepth; i++)
+		//{
+		//	for (auto vector : m_zVectors)
+		//	{
+		//		vector.second->QSort();
+		//	}
+		//}
 
 }
 

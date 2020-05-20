@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include "GarbageCollector.h"
 
 namespace
 {
@@ -11,10 +12,15 @@ namespace
 void Timer::Update(const float dt)
 {
 
+	class GarbageCollector* gbc = GarbageCollector::GetInstance();
 	for (auto first = m_timers.begin(); first < m_timers.end(); ++first)
 	{
-	if((*first)->update(dt))
-				m_timers.erase(first);
+		if ((*first)->update(dt))
+		{
+			m_timers.erase(first);
+			gbc->AsyncDelete(*first);
+		}
+
 	}
 
 	//for (auto timer : m_timers)

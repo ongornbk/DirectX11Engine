@@ -18,7 +18,7 @@ void EObjectVector::Update(
 	const float dt
 )
 {
-#pragma omp for schedule(dynamic)//EASY CRASH
+//#pragma omp for schedule(dynamic)//EASY CRASH
 	for (int32 i = 0; i < 32; ++i)
 	{
 		if(!xta[i])
@@ -35,7 +35,7 @@ void EObjectVector::CleanUp()
 	__CleanUp(m_objectsXY);
 }
 
-void EObjectVector::Sort()
+void _stdcall EObjectVector::Sort()
 {
 	SortByXV(m_objectsXY);
 	SortByYV(m_objectsXY);
@@ -101,6 +101,10 @@ for (auto& vec : mvpp)
 	//shader.End();
 }
 
+}
+
+void _vectorcall EObjectVector::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+{
 }
 
 void EObjectVector::Clear()
