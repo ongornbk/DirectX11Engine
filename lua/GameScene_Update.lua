@@ -6,12 +6,6 @@ require "core/Game"
 require "core/Chat"
 require "core/Pointer"
 
-
-
-    
-
-
-
 local x,y = GetMousePosition()
 if GetMouseState(0) == true
 then
@@ -59,6 +53,7 @@ Unit.Pick(hero)
 PlaySound("teleport")
 StartCasting(hero,x,y)
 Unit.SetPosition(x,y)
+
 --Unit.CleanTasks()
 end
 --
@@ -80,45 +75,9 @@ end
 
 if IsKeyHit(2) == true
 then
-tileSelected = 0
+SetTileMapRendering((-1))
 end
-if IsKeyHit(3) == true
-then
-tileSelected = 1
-end
-if IsKeyHit(4) == true
-then
-tileSelected = 2
-end
-if IsKeyHit(5) == true
-then
-tileSelected = 3
-end
-if IsKeyHit(5) == true
-then
-tileSelected = 4
-end
-if IsKeyHit(6) == true
-then
-tileSelected = 5
-end
-if IsKeyHit(7) == true
-then
-tileSelected = 6
-end
-if IsKeyHit(8) == true
-then
-tileSelected = 7
-end
-if IsKeyHit(9) == true
-then
-tileSelected = 8
-end
-if IsKeyPressed(19) == true
-then
-GetMousePosition()
-SetTile(tileSelected,2)
-end
+
 if IsKeyPressed(20) == true
 then
 local rs = math.random(0,50)
@@ -130,10 +89,10 @@ Object.SetSelectableFlag(true)
 Object.SetShadowFlag(true)
 Object.SetPushableFlag(true)
 Object.SetCollisionPriority(1)
-Object.AddExpirationTimer(1)
+Object.AddExpirationTimer(3)
 Unit.SetWalkingStance(0)
 
-local rn = math.random(3,3)
+local rn = math.random(0,3)
 
 if rn == 0
 then

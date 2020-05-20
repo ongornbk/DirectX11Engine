@@ -3,6 +3,9 @@ require "core/Game"
 require "core/Music"
 require "core/Camera"
 require "core/Chat"
+require "core/Tree"
+
+--SetTileMapRendering(false)
 
 Game.Start()
 Music.Play("lakeland")
@@ -18,7 +21,11 @@ Object.SetPushableFlag(true)
 Object.SetShadowFlag(true)
 Object.SetCollisionPriority(2)
 Unit.Initialize("barbarian",100,25,0,0,0,false)
+--PushSPointerParameter("pickedObject")
+--CreatePeriodicTimer("MessageFront",0,1)
 
 pullgroup = CreateUnitGroup()
+
+
 
 

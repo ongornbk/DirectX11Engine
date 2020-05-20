@@ -32,6 +32,6 @@ function Object.SetCollisionPriority(priority)
 end
 
 function Object.AddExpirationTimer(time)
-    PushParameter(Object.pickedObject)
-    CreateTimer("RemoveObject",time)
+    PushPointerParameter(Object.pickedObject)
+    CreateExpiringTimer("RemoveObject",time)
     end
