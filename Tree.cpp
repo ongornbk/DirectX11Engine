@@ -149,6 +149,10 @@ int32 Tree::isReleased() const noexcept
 	}
 }
 
+void _cdecl Tree::Intersect(class EObject* const other)
+{
+}
+
 void Tree::SetGlobal(Global * global) noexcept
 {
 	m_global = global;

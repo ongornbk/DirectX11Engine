@@ -37,14 +37,28 @@ void EObjectVector::CleanUp()
 
 void _stdcall EObjectVector::Sort()
 {
-	SortByXV(m_objectsXY);
-	SortByYV(m_objectsXY);
+SortByXV(m_objectsXY);
+SortByYV(m_objectsXY);
+
 }
 
 void _stdcall EObjectVector::QSort()
 {
 	QSortByXV(m_objectsXY);
 	QSortByYV(m_objectsXY);
+
+}
+
+void _stdcall EObjectVector::StaticSort()
+{
+	StaticSortByXV(m_objectsXY);
+	StaticSortByYV(m_objectsXY);
+}
+
+void _stdcall EObjectVector::StaticQSort()
+{
+	StaticQSortByXV(m_objectsXY);
+	StaticQSortByYV(m_objectsXY);
 }
 
 //static uint32_t sizeg = 0u;

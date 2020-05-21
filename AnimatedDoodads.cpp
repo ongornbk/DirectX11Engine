@@ -187,6 +187,11 @@ int32 AnimatedDoodads::isReleased() const noexcept
 	}
 }
 
+void _stdcall AnimatedDoodads::Intersect(class EObject* const other)
+{
+
+}
+
 void AnimatedDoodads::SetNumberOfFrames(float frames)
 {
 	m_maxFrames = frames;

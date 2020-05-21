@@ -31,7 +31,7 @@ _Use_decl_annotations_
 	) noexcept;
 
 	void _cdecl CleanupFrame();
-
+	void _cdecl EditFrame();
 
 class RendererManager
 {

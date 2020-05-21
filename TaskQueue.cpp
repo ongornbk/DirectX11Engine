@@ -11,7 +11,7 @@ DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const f
 	float yy = object.y;
 	xx += random(-x, x);
 	yy += random(-y, y);
-	return DirectX::XMFLOAT3(xx, yy, 0.0f);
+	return DirectX::XMFLOAT3(xx, yy, object.z);
 }
 
 TaskQueue::TaskQueue()
@@ -88,10 +88,10 @@ void TaskQueue::QueueTask(Task * task)
 }
 void TaskQueue::Wander(Unit * unit)
 {
-	TaskGotoPoint* task = new TaskGotoPoint();
+	class TaskGotoPoint* task = new TaskGotoPoint();
 	task->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
 	task->object = unit;
-	SetTask(task);
+	QueueTask(task);
 }
 
 void TaskQueue::SetOwner(Unit * object)

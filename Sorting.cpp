@@ -86,6 +86,8 @@ namespace
 	constexpr float MAP_YBEGd316 = HALF_MAP_SIZE * (-7.5f * Math::SQRT2);
 	constexpr float MAP_YENDd116 = HALF_MAP_SIZE * (2.5f   * Math::SQRT2);
 	constexpr float MAP_YBEGd116 = HALF_MAP_SIZE * (-2.5f  * Math::SQRT2);
+
+
 }
 
 
@@ -468,10 +470,8 @@ for ( int32 i = 0u; i < 32; i++)
 }
 }
 
-bool _stdcall __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
+bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
-
-
 
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -486,6 +486,12 @@ bool _stdcall __sort__SortByY::operator()(class EObject * const A,class EObject 
 	const float Ydistance = Ay - By;
 	const float Sdistance = XMVector2Length({Xdistance,Ydistance}).m128_f32[0];
 	//const float Sdistance = sqrt((Xdistance*Xdistance) + (Ydistance*Ydistance));
+//
+	//if (A->m_boundingSphere.Intersects(B->m_boundingSphere))
+//	{
+	//	A->Intersect(B);
+	//	B->Intersect(A);
+//	}
 
 	if (Sdistance < Sradius)
 	{
@@ -535,8 +541,11 @@ bool _stdcall __sort__SortByY::operator()(class EObject * const A,class EObject 
 	return Ay > By;
 }
 
-bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
+bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
+
+
+
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
 	const float Aradius = A->m_boundingSphere.Radius;
@@ -549,6 +558,12 @@ bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject 
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
 	const float Sdistance = XMVector2Length({ Xdistance,Ydistance }).m128_f32[0];
+
+	//if (A->m_boundingSphere.Intersects(B->m_boundingSphere))
+	//{
+	//	A->Intersect(B);
+	//	B->Intersect(A);
+	//}
 
 	if (Sdistance < Sradius)
 	{
@@ -597,6 +612,26 @@ bool _stdcall __sort__SortByX::operator()(class EObject * const A,class EObject 
 	return Ax > Bx;
 }
 
+bool _cdecl __sort__StaticSortByY::operator()(class EObject* const A, class EObject* const B) const noexcept
+{
+	if (A && B)
+	{
+		A->Intersect(B);
+		B->Intersect(A);
+	}
+	else return false;
+}
+
+bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObject* const B) const noexcept
+{
+	if (A && B)
+	{
+		A->Intersect(B);
+		B->Intersect(A);
+		return (A->m_boundingSphere.Center.x) > (B->m_boundingSphere.Center.x);
+	}
+	else return false;
+}
 
 void _stdcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
 {
@@ -630,6 +665,17 @@ void _stdcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ co
 	_Sort_unchecked(begin, end, end - begin, __sort__SortByY());
 }
 
+void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
+{
+	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByX());
+}
+
+
+void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
+{
+	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByY());
+}
+
 void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	//for (int32 i = 0; i < 32; ++i)
@@ -643,22 +689,21 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 	//	}
 	//}
 
-#pragma omp for schedule(dynamic)
 		for (int32 i = 0; i < 32; ++i)
 			vec[1][i].clear();
 
 		//#pragma omp pallalel for shedule(dynamic)
-#pragma omp barrier
-#pragma omp single
 
-		for (int32 i = 0; i < 32; ++i)
+
 		{
-			for (auto&& object : vec[0][i])
+			for (int32 i = 0; i < 32; ++i)
 			{
-				vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+				for (auto&& object : vec[0][i])
+				{
+					vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+				}
 			}
 		}
-
 		//struct ThreadPoolHandle pool;
 
 		//for (int32 i = 0; i < 32; ++i)
@@ -668,7 +713,6 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 		//		pool<<([vec, i]() { sortPyVTP(vec[1][i].begin(), vec[1][i].end()); });
 		//	}
 		//}
-#pragma omp barrier
 //#pragma omp for schedule(dynamic)
 //		for (int32 i = 0; i < 32; ++i)
 //		{
@@ -684,31 +728,31 @@ void _vectorcall QSortByYV(Vector<class EObject*> vec[2][32]) noexcept
 {
 
 #pragma omp for schedule(dynamic)
-	for (int32 i = 0; i < 32; ++i)
-	{
-		if (yta[i])
+		for (int32 i = 0; i < 32; ++i)
 		{
-			sortPyVTP(vec[1][i].begin(), vec[1][i].end());
-		}
+			if (yta[i])
+			{
+				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+			}
 
-	}
+		}
 #pragma omp barrier
 }
 
 void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
+
 	__intersect_test__();
 
-#pragma omp for schedule(dynamic)
-	for (int32_t i = 0; i < 32; i++)
+
+		for (int32_t i = 0; i < 32; i++)
+		{
+			vec[0][i].clear();
+			vec[1][i].shrink();
+		}
+
+
 	{
-		vec[0][i].clear();
-		vec[1][i].shrink();
-	}
-
-#pragma omp barrier
-#pragma omp single
-
 		for (int32_t i = 0; i < 32; i++)
 		{
 			for (auto&& RC : vec[1][i])
@@ -716,7 +760,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 				vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
 			}
 		}
-
+	}
 		//struct ThreadPoolHandle pool;
 		//
 		//for (int32 i = 0; i < 32; i++)
@@ -726,7 +770,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 		//		pool<<([vec,i]() { sortPxVTP(vec[0][i].begin(), vec[0][i].end()); });
 		//	}
 		//}
-#pragma omp barrier
+
 //
 //#pragma omp for schedule(dynamic)
 //		for (int32 i = 0; i < 32; i++)
@@ -741,6 +785,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 void _vectorcall QSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 {
+
 #pragma omp for schedule(dynamic)
 	for (int32 i = 0; i < 32; i++)
 	{
@@ -752,10 +797,73 @@ void _vectorcall QSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 #pragma omp barrier
 }
 
+void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
+{
+	for (int32 i = 0; i < 32; ++i)
+		vec[1][i].clear();
+
+
+		for (int32 i = 0; i < 32; ++i)
+		{
+			for (auto&& object : vec[0][i])
+			{
+				vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
+			}
+		}
+
+}
+
+void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) noexcept
+{
+	for (int32 i = 0; i < 32; ++i)
+	{
+		if (yta[i])
+		{
+			_static_sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+		}
+
+	}
+}
+
+void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) noexcept
+{
+	__intersect_test__();
+
+	for (int32_t i = 0; i < 32; i++)
+	{
+		vec[0][i].clear();
+		vec[1][i].shrink();
+	}
+
+	{
+		for (int32_t i = 0; i < 32; i++)
+		{
+			for (auto&& RC : vec[1][i])
+			{
+				vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
+			}
+		}
+	}
+
+}
+
+void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
+{
+
+	for (int32 i = 0; i < 32; i++)
+	{
+		if (xta[i])
+		{
+			_static_sortPxVTP(vec[0][i].begin(), vec[0][i].end());
+		}
+	}
+
+}
+
 
 void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
 {
-#pragma omp for schedule(dynamic)
+
 	for (int32 i = 0; i < 32; ++i)
 	{
 	class Vector<class EObject*>& vectemp = vec[1][i];

@@ -48,13 +48,13 @@ void RenderZMap::Sort()
 {
 
 
-#pragma omp parallel
+
 		for (auto vector : m_zVectors)
 		{
 			vector.second->Sort();
 			vector.second->QSort();
 		}
-#pragma omp barrier
+
 
 		//if (m_fps > 180)
 		//	m_sortingDepth = 3;
@@ -69,6 +69,18 @@ void RenderZMap::Sort()
 		//		vector.second->QSort();
 		//	}
 		//}
+
+}
+
+void RenderZMap::StaticSort()
+{
+
+	for (auto vector : m_zVectors)
+	{
+		vector.second->StaticSort();
+		vector.second->StaticQSort();
+	}
+	
 
 }
 

@@ -115,6 +115,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
+	void _cdecl Intersect(class EObject* const other) override;
 
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);
@@ -206,7 +207,8 @@ private:
 	float         m_previousSpeed;
 	float         m_rotations;
 	int           m_stopped;
-	bool          m_stop;		
+	bool          m_stop;
+	bool          m_intersection;
 
 	struct Attack        m_attack;
 

@@ -23,6 +23,7 @@ struct RenderZMap
 	void Update(const float dt);
 	void CleanUp();
 	void Sort();
+	void StaticSort();
 	void _vectorcall Render(
 		struct ID3D11DeviceContext * const deviceContext,
 		const struct XMFLOAT4X4& viewMatrix,

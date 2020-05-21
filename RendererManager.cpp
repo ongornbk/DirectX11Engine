@@ -22,11 +22,17 @@ namespace
 	static float                  m_rangeY;
 	static RenderZMap             g_units;
 	static atomic<int32>          m_cleanupMode;
+	static atomic<int32>          m_editMode;
 }
 
 void _cdecl CleanupFrame()
 {
 	m_cleanupMode.store(1, std::memory_order::memory_order_seq_cst);
+}
+
+void _cdecl EditFrame()
+{
+	m_editMode.store(1, std::memory_order::memory_order_seq_cst);
 }
 
 RendererManager::RendererManager(
@@ -80,21 +86,25 @@ void RendererManager::PushUnit(
 )
 {
 	g_units.Push(unit,z);
+	//EditFrame();
 }
 
 void RendererManager::PushDoodads(class Doodads * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
+	//EditFrame();
 }
 
 void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
+	//EditFrame();
 }
 
 void RendererManager::PushTree(class Tree * doodads,const int32 z)
 {
 	g_units.Push(doodads,z);
+	//EditFrame();
 }
 
 
@@ -119,7 +129,6 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 	)
 	{
 
-
 		struct ShaderPackage pck;
 		pck.m_context = deviceContext;
 		pck.select = m_selectShader;
@@ -137,7 +146,7 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 
 			//m_unitsShader->Begin(deviceContext);
-
+			
 			g_units.Render(deviceContext, viewMatrix, projectionMatrix, pck);
 
 			//m_unitsShader->End(deviceContext);
@@ -160,17 +169,32 @@ void RendererManager::Update()
 	const float dt = ipp::Timer::GetDeltaTime();
 	m_map->Update(dt);
 
-	if (m_engine->GetGameStance() == false)
-	{
-		if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+	//switch (m_editMode.load())
+	//{
+	//case 0:
+	//{
+		if (m_engine->GetGameStance() == false)
 		{
-			g_units.CleanUp();
-			m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
+			if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+			{
+				g_units.CleanUp();
+				m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
+			}
+			g_units.Update(dt);
 		}
-		g_units.Update(dt);
-	}
 
-	g_units.Sort();	
+		//g_units.Sort();
+		//g_units.StaticSort();
+		//break;
+	//}
+	//case 1:
+	//{
+	//	m_editMode.store(0, std::memory_order::memory_order_seq_cst);
+		g_units.Sort();
+	//	break;
+	//}
+	//}
+	
 
 }
 

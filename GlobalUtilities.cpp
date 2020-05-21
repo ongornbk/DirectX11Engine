@@ -10,11 +10,11 @@
 		return rand() % (max - min + 1) + min;
 	}
 
-	float GlobalUtilities::random(float min, float max)
-	{
-		assert(max > min);
-		float random = ((float)rand()) / (float)RAND_MAX;
-		float range = 2;
-		return ((((float)rand()) / (float)RAND_MAX)*2) - 1;
-	}
+	//float GlobalUtilities::random(float min, float max)
+	//{
+	//	assert(max > min);
+	//	float random = ((float)rand()) / (float)RAND_MAX;
+	//	float range = 2;
+	//	return ((((float)rand()) / (float)RAND_MAX)*2.f) - 1.f;
+	//}
 

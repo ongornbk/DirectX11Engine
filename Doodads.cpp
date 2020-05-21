@@ -172,3 +172,7 @@ int32 Doodads::isReleased() const noexcept
 		return 1;
 	}
 }
+
+void _stdcall Doodads::Intersect(class EObject* const other)
+{
+}

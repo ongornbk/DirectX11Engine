@@ -38,6 +38,7 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const noexcept override;
+	void _stdcall Intersect(class EObject* const other) override;
 
 private:
 

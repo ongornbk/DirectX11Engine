@@ -56,6 +56,12 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 	XMStoreFloat4x4(&m_uiMatrix, XMMatrixIdentity());
 	m_input = m_engine->GetInput();
 
+	xm = 0;
+	ym = 0;
+
+	m_mousePosition[0] = 0;
+	m_mousePosition[1] = 1;
+
 }
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
@@ -71,7 +77,7 @@ void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 v
 
 }
 
-void UserInterfaceGame::Update(XMVECTOR cameraPosition)
+void UserInterfaceGame::Update(DirectX::XMVECTOR cameraPosition)
 {
 	const  int32 xr = ((Settings::GetResolutionX())/2);
 	const  int32 yr = ((Settings::GetResolutionY())/2);
@@ -103,7 +109,10 @@ void UserInterfaceGame::Update(XMVECTOR cameraPosition)
 	med /= double(CPU_MED);
 
 	std::stringstream ss;
-	ss << ceilf((float)(100.0*med));
+	float tempcpuA = ceilf((float)(100.0 * med));
+	if (isnan(tempcpuA))
+		tempcpuA = 100.f;
+	ss << tempcpuA;
 	std::string cpu = "CPU " + string(ss.str());
 	m_cpuText.SetText(cpu);
 

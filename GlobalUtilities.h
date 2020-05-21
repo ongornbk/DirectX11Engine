@@ -74,7 +74,7 @@ namespace GlobalUtilities
 
 
 		int            random(int min, int max);
-		float          random(float min, float max);
+		//float          random(float min, float max);
 
 };
 

@@ -17,7 +17,7 @@ Unit::Unit() :
 	m_vertexBuffer = nullptr;
 	m_rotation = DEFAULT_ROTATION;
 	m_isLooping = true;
-	m_animationSpeed = 0.20f;
+	m_animationSpeed = 30.f;
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_stop = false;
@@ -139,7 +139,6 @@ void Unit::PreRender(
 void Unit::Update(const float dt)
 {
 
-	
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 
 	if (!m_flags.m_blocked)
@@ -185,7 +184,7 @@ void Unit::Update(const float dt)
 			{
 				m_floats[1] = m_boundingSphere.Center;
 			}
-				DirectX::XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
+				struct DirectX::XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
 
 				m_flags.m_collided = TileMap::CollisionAt(niuPos);
 
@@ -211,7 +210,7 @@ void Unit::Update(const float dt)
 			if (m_modelVariant.GetMaxFrames() == 1.f) return;
 			if (m_currentFrame < m_modelVariant.GetMaxFrames())
 			{
-				m_currentSpeed += m_animationSpeed - dt;
+				m_currentSpeed += m_animationSpeed * dt;
 
 				if (m_currentSpeed > m_framesPerSecond)
 				{
@@ -290,6 +289,8 @@ void Unit::Update(const float dt)
 			m_flags.m_selected = false;
 		}
 	}
+
+	m_intersection = false;
 }	
 
 
@@ -316,6 +317,12 @@ void Unit::Release()
 		delete m_vertexBuffer;
 		m_vertexBuffer = nullptr;
 	}
+}
+
+void _cdecl Unit::Intersect(class EObject* const other)
+{
+		m_intersection = true;
+		m_boundingSphere.Center = m_floats[1];
 }
 
 float Unit::GetCollisionRadius() const noexcept

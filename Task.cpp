@@ -34,7 +34,7 @@ bool TaskGotoPoint::Update()
 
 
 		
-		if (XMFloat3Distance2D(position, destination) > object->GetCollisionRadius())
+		if (XMFloat3Distance2D(position, destination) > object->GetCollisionRadius() && object->m_intersection == false)
 		{
 
 			switch (object->GetWalkingStance())

@@ -4,6 +4,13 @@
 #include "ShaderPackage.h"
 #include <DirectXCollision.h>
 
+enum class EObjectIntersectionInfo
+{
+	NONE,
+	INTERSECT,
+	STOP
+};
+
 enum EObjectAnchor
 {
 	BOTTOM_CENTRE,
@@ -53,6 +60,7 @@ public:
 	virtual void            Release() = 0;
 	virtual int32           isReleased() const noexcept = 0;
 
+	virtual void _cdecl Intersect(class EObject* const other) = 0;
 
 public:
 	uint32           m_index;
@@ -73,7 +81,8 @@ public:
 		ANIMATED_DOODADS,
 		TREE,
 		COLLISION_BOX,
-		SPECIAL_EFFECT
+		SPECIAL_EFFECT,
+		REGION_POINT
 	}m_type;
 };
 
