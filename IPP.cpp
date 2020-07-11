@@ -315,11 +315,27 @@ float ipp::math::Atan2(const float y,const float x)
 	return atan2(y, x) * (180.f / ipp::PI);
 }
 
+void _fastcall ipp::math::clamp(char& value, const char min, const char max)
+{
+	if (value > max)
+	{
+		Console::Println((uint32_t)value);
+		value = max;
+		return;
+	}
+	if (value < min)
+	{
+		value = min;
+		return;
+	}
+}
+
 
 void _fastcall ipp::math::clamp(int32 & value,const int32 min,const int32 max)
 {
 		if (value > max)
 		{
+			Console::Println((uint32_t)value);
 			value = max;
 			return;
 		}

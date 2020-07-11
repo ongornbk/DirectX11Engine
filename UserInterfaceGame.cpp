@@ -66,7 +66,7 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
-	m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
+	//m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
 	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 	m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
@@ -118,7 +118,7 @@ void UserInterfaceGame::Update(DirectX::XMVECTOR cameraPosition)
 
 
 
-	std::vector<int64> ts = RendererManager::GetNumberOfObjectsVector();
+	//std::vector<int64> ts = RendererManager::GetNumberOfObjectsVector();
 
 	//for (uint32_t i = 0u; i < 16u; i++)
 	//{

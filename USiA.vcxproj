@@ -246,6 +246,8 @@
     <ClInclude Include="PeriodicTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="PointerParameter.h" />
+    <ClInclude Include="Region.h" />
+    <ClInclude Include="RegionPointObject.h" />
     <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RenderContainerVector.h" />
     <ClInclude Include="RendererManager.h" />
@@ -349,6 +351,8 @@
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
+    <ClCompile Include="Region.cpp" />
+    <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />

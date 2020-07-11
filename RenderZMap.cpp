@@ -1,5 +1,7 @@
 #include "RenderZMap.h"
 #include "GarbageCollector.h"
+#include "RenderContainerVector.h"
+#include <map>
 
 RenderZMap::RenderZMap()
 {
@@ -47,13 +49,16 @@ void RenderZMap::CleanUp()
 void RenderZMap::Sort()
 {
 
+//#pragma omp parallel
+	//std::map<int64,EObjectVector*>::iterator it;
 
 
-		for (auto vector : m_zVectors)
-		{
-			vector.second->Sort();
-			vector.second->QSort();
-		}
+
+		//for (auto vector : m_zVectors)
+		//{
+		//	vector.second->Sort();
+		//	vector.second->QSort();
+		//}
 
 
 		//if (m_fps > 180)
@@ -158,6 +163,20 @@ void RenderZMap::Push(class Tree * tree, const int64 z)
 	{
 		m_zVectors[z] = new struct EObjectVector();
 		m_zVectors[z]->Push(tree);
+		m_zStance[z] = true;
+	}
+}
+
+void RenderZMap::Push(RegionPointObject* object, const int64 z)
+{
+	if (m_zStance[z])
+	{
+		m_zVectors[z]->Push(object);
+	}
+	else
+	{
+		m_zVectors[z] = new struct EObjectVector();
+		m_zVectors[z]->Push(object);
 		m_zStance[z] = true;
 	}
 }

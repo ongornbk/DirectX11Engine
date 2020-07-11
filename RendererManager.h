@@ -6,7 +6,8 @@
 #include "UserInterface.h"
 #include "Doodads.h"
 #include "Tree.h"
-#include "RenderZMap.h"
+#include "RegionPointObject.h"
+#include "RenderContainerVector.h"
 #include <stack>
 #include <map>
 
@@ -17,6 +18,7 @@ class Unit;
 class Doodads;
 class AnimatedDoodads;
 class Tree;
+class RegionPointObject;
 class UserInterfaceGame;
 class UserInterfaceGameMenu;
 class UserInterfaceMainMenu;
@@ -45,10 +47,11 @@ public:
 	~RendererManager();
 
 
-	void PushUnit(class Unit* unit,const int32 z = 0);
-	void PushDoodads(class Doodads* doodads,const int32 z = 0);
-	void PushAnimatedDoodads(class AnimatedDoodads* doodads,const int32 z = 0);
-	void PushTree(class Tree* doodads,const int32 z = 0);
+	void PushUnit(class Unit* unit);
+	void PushDoodads(class Doodads* doodads);
+	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
+	void PushTree(class Tree* doodads);
+	void PushRegionPointObject(class RegionPointObject* object);
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct XMFLOAT4X4& viewMatrix,
@@ -82,5 +85,7 @@ private:
 
 	TileMap* m_map;
 	UserInterface* m_ui;
+
+	EObjectVector m_objects;
 };
 

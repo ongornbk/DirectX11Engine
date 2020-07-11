@@ -32,7 +32,7 @@ void EObjectVector::Update(
 
 void EObjectVector::CleanUp()
 {
-	__CleanUp(m_objectsXY);
+	__CleanUp(m_objectsXY[1]);
 }
 
 void _stdcall EObjectVector::Sort()
@@ -51,14 +51,14 @@ void _stdcall EObjectVector::QSort()
 
 void _stdcall EObjectVector::StaticSort()
 {
-	StaticSortByXV(m_objectsXY);
-	StaticSortByYV(m_objectsXY);
+//	StaticSortByXV(m_objectsXY);
+//	StaticSortByYV(m_objectsXY);
 }
 
 void _stdcall EObjectVector::StaticQSort()
 {
-	StaticQSortByXV(m_objectsXY);
-	StaticQSortByYV(m_objectsXY);
+//	StaticQSortByXV(m_objectsXY);
+//	StaticQSortByYV(m_objectsXY);
 }
 
 //static uint32_t sizeg = 0u;
@@ -163,6 +163,11 @@ void EObjectVector::Push(
 void EObjectVector::Push(
 	class Tree * const tree
 )
+{
+	m_objectsXY[1][0].push_back(tree);
+}
+
+void EObjectVector::Push(RegionPointObject* const tree)
 {
 	m_objectsXY[1][0].push_back(tree);
 }

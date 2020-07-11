@@ -212,6 +212,29 @@ namespace lua_callback
 			return 0;
 		}
 
+		static  int32 GetCameraPosition(
+			struct lua_State* const state
+		)
+		{
+			DirectX::XMVECTOR position = m_camera->GetPosition();
+			lua_pushnumber(state, position.m128_f32[0]);
+			lua_pushnumber(state, position.m128_f32[1]);
+			lua_pushnumber(state, position.m128_f32[2]);
+			return 3;
+		}
+
+		static  int32 TranslateCamera(
+			struct lua_State* const state
+		)
+		{
+			DirectX::XMVECTOR position;
+			position.m128_f32[0] = LUA_FLOAT(state, 1);
+			position.m128_f32[1] = LUA_FLOAT(state, 2);
+			position.m128_f32[2] = LUA_FLOAT(state, 3);
+			m_camera->Translate(position);
+			return 0;
+		}
+
 		static  int32 LockCameraOnUnit(
 			struct lua_State* const state
 		) noexcept
@@ -548,7 +571,7 @@ namespace lua_callback
 		{
 			if (object->IsAttacking())
 			{
-				lua_pushboolean(state, true);
+				lua_pushinteger(state, 1);
 			}
 			else
 			{
@@ -558,13 +581,13 @@ namespace lua_callback
 					if (task)
 					{
 						if (task->inrange)
-							lua_pushboolean(state, false);
+							lua_pushinteger(state, 1);
 						else
-							lua_pushboolean(state, true);
+							lua_pushinteger(state, 2);
 					}
 					else
 					{
-						lua_pushboolean(state, true);
+						lua_pushinteger(state, 0);
 					}
 					
 				}
@@ -575,14 +598,17 @@ namespace lua_callback
 					task->target = target;
 					task->Initialize();
 					object->SetTask(task);
-					lua_pushboolean(state, false);
+					if (task->inrange)
+					lua_pushinteger(state, 0);
+					else
+					lua_pushinteger(state, 1);
 				}
 			}
 				
 		}
 		else
 		{
-			return true;
+			lua_pushinteger(state, 1);
 		}
 		return 1;
 	}
@@ -659,10 +685,10 @@ namespace lua_callback
 				wide_string,
 				(float)lua_tointeger(state, 3),
 				(float)lua_tointeger(state, 4),
-				struct DirectX::XMFLOAT3((float)lua_tointeger(state, 5),(float)lua_tointeger(state, 6),p_z),
+				struct DirectX::XMFLOAT3((float)lua_tointeger(state, 5),(float)lua_tointeger(state, 6),0.f),
 				lua_toboolean(state, 8)
 			);
-			m_renderer->PushUnit(unit,(int32)p_z);
+			m_renderer->PushUnit(unit);
 
 			delete[] wide_string;
 		}
@@ -695,9 +721,9 @@ namespace lua_callback
 				wide_string,
 				(const float)lua_tointeger(state, 3),
 				(const float)lua_tointeger(state, 4),
-				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+				struct DirectX::XMFLOAT3(p_x, p_y, 0.f)
 			);
-			m_renderer->PushDoodads(doodads, (int32)p_z);
+			m_renderer->PushDoodads(doodads);
 
 			delete[] wide_string;
 		}
@@ -730,9 +756,9 @@ namespace lua_callback
 				wide_string,
 				(float)lua_tointeger(state, 3),
 				(float)lua_tointeger(state, 4),
-				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+				struct DirectX::XMFLOAT3(p_x, p_y, 0.f)
 			);
-			m_renderer->PushAnimatedDoodads(doodads,z);
+			m_renderer->PushAnimatedDoodads(doodads);
 
 			delete[] wide_string;
 		}
@@ -764,9 +790,9 @@ namespace lua_callback
 				wide_string,
 				(float)lua_tointeger(state, 3),
 				(float)lua_tointeger(state, 4),
-				struct DirectX::XMFLOAT3(p_x, p_y, p_z)
+				struct DirectX::XMFLOAT3(p_x, p_y, 0.f)
 			);
-			m_renderer->PushTree(tree, (int32)p_z);
+			m_renderer->PushTree(tree);
 
 			delete[] wide_string;
 				
@@ -1025,8 +1051,8 @@ namespace lua_callback
 		struct lua_State* const state
 	) //EXPORTED
 	{
-		struct DirectX::XMFLOAT2 position(m_global->m_lastPoint.x, m_global->m_lastPoint.y);
-		m_renderer->SetTile(position,(int32)lua_tointeger(state, 1), (int32)lua_tointeger(state, 2));
+		struct DirectX::XMFLOAT2 position(LUA_FLOAT(state, 1), LUA_FLOAT(state, 2));
+		m_renderer->SetTile(position,(int32)lua_tointeger(state, 3), (int32)lua_tointeger(state, 4));
 		return 0;
 	}
 
@@ -1068,7 +1094,9 @@ namespace lua_callback
 		struct lua_State* const state
 	)
 	{
-		m_renderer->LoadInstanceToFile(lua_tostring(state, 1));
+		std::string path = lua_tostring(state, 1);
+		ipp::Console::Println("Loading: " + path);
+		m_renderer->LoadInstanceToFile(path);
 		return 0;
 	}
 
@@ -1285,6 +1313,8 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::Cameras::InitializeProjectionMatrix);
 		lua_register(m_lua, "InitializeOrthoMatrix", lua_callback::Cameras::InitializeOrthoMatrix);
 		lua_register(m_lua, "SetCameraPosition", lua_callback::Cameras::SetCameraPosition);
+		lua_register(m_lua, "GetCameraPosition", lua_callback::Cameras::GetCameraPosition);
+		lua_register(m_lua, "TranslateCamera", lua_callback::Cameras::TranslateCamera);
 		lua_register(m_lua, "LockCameraOnUnit", lua_callback::Cameras::LockCameraOnUnit);
 		lua_register(m_lua, "SetCameraLookAt", lua_callback::Cameras::SetCameraLookAt);
 		lua_register(m_lua, "SetCameraUp", lua_callback::Cameras::SetCameraUp);

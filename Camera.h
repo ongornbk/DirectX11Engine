@@ -37,6 +37,9 @@ public:
 	void SetPosition(
 		const DirectX::XMVECTOR position
 	);
+	void Translate(
+		const DirectX::XMVECTOR position
+	);
 	void SetRotation(
 		const float x,
 		const float y,

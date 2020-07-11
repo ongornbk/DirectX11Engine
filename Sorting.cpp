@@ -3,20 +3,28 @@
 #include "Camera.h"
 #include "Vector.h"
 #include "ThreadPool.h"
-#include "Math.h"
+//#include "Math.h"
 #include "Tile.h"
-#include <thread>
 #include <sstream>
 #include <sal.h>
 #include <omp.h>
 #include <DirectXMath.h>
 
 
-using std::thread;
 
 namespace
 {
+#define MAP_DIVISION 32
+#define NUM_OF_DIVIDES_X MAP_DIVISION
+#define NUM_OF_DIVIDES_Y MAP_DIVISION
+#define HALF_NUM_OF_DIVIDES_X (NUM_OF_DIVIDES_X / 2)
+#define HALF_NUM_OF_DIVIDES_Y (NUM_OF_DIVIDES_Y / 2)
 #define HALF_MAP_SIZE (TILE_MAP_SIZE / 2.0f)
+#define MAP_Y_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_Y
+#define MAP_X_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_X
+
+//DEPRECATED 25.05.2020 ongornbk
+/*
 	constexpr float MAP_XEND = HALF_MAP_SIZE * (80.0f  * Math::SQRT2);
 	constexpr float MAP_XBEG = HALF_MAP_SIZE * (-80.0f * Math::SQRT2);
 	constexpr float MAP_XENDd14 = HALF_MAP_SIZE * (20.0f  * Math::SQRT2);
@@ -87,14 +95,16 @@ namespace
 	constexpr float MAP_YENDd116 = HALF_MAP_SIZE * (2.5f   * Math::SQRT2);
 	constexpr float MAP_YBEGd116 = HALF_MAP_SIZE * (-2.5f  * Math::SQRT2);
 
-
+	*/
+	
 }
 
-
-
+//DEPRECATED 24.05.2020 ongornbk
+/*
 _Use_decl_annotations_
  __forceinline constexpr int32 _Out_ _stdcall GetXCell(const _In_ float x) noexcept
 {
+
 	if (x < 0.0f)
 	{
 		if (x < MAP_XBEGd2)
@@ -324,18 +334,40 @@ __forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexce
 			{
 				if (y < MAP_YBEGd78)
 				{
-					return 0;
+					
+					if (y < MAP_YBEGd1516)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
 				}
 				else
 				{
-					return 1;
+					if (y < MAP_YBEGd1316)
+					{
+						return 2;
+					}
+					else
+					{
+						return 3;
+					}
 				}
 			}
 			else
 			{
 				if (y < MAP_YBEGd58)
 				{
-					return 2;
+					if (y < MAP_YBEGd1116)
+					{
+						return 4;
+					}
+					else
+					{
+						return 5;
+					}
 				}
 				else
 				{
@@ -422,12 +454,46 @@ __forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexce
 				}
 			}
 		}
+
 	}
+}
+*/ 
+
+int32 GetXCell(const float x) noexcept
+{
+	 int32 i = (int32)x / MAP_X_CHUNK;
+	i += HALF_NUM_OF_DIVIDES_X;
+	if (i >= NUM_OF_DIVIDES_X)
+	{
+		return NUM_OF_DIVIDES_X - 1;
+	}
+	else
+		if (i < 0)
+		{
+			return 0;
+		}
+	return i;
+}
+
+int32 GetYCell(const float y) noexcept
+{
+	int32 i = (int32)y / MAP_Y_CHUNK;
+	i += HALF_NUM_OF_DIVIDES_Y;
+	if (i >= NUM_OF_DIVIDES_Y)
+	{
+		return NUM_OF_DIVIDES_Y - 1;
+	}
+	else
+		if (i < 0)
+		{
+			return 0;
+		}
+	return i;
 }
 
 _Use_decl_annotations_
 template <class T>
-__forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index, const int32 xp) noexcept
 {
 	const int32 t0 = xp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -442,7 +508,7 @@ __forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _I
 
 _Use_decl_annotations_
 template <class T>
-__forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index,const int32 yp) noexcept
 {
 	const int32 t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
@@ -455,7 +521,7 @@ __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _I
 	}
 }
 
-__forceinline void _stdcall __intersect_test__() noexcept
+__forceinline void _stdcall __intersect_test__(int32& xp,int32& yp) noexcept
 {
 	float cameraPosition[4];
 	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
@@ -465,8 +531,8 @@ __forceinline void _stdcall __intersect_test__() noexcept
 
 for ( int32 i = 0u; i < 32; i++)
 {
-	xta[i] = __validate_Xrendering__(i);
-	yta[i] = __validate_Yrendering__(i);
+	xta[i] = __validate_Xrendering__(i,xp);
+	yta[i] = __validate_Yrendering__(i,yp);
 }
 }
 
@@ -633,43 +699,21 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 	else return false;
 }
 
-void _stdcall sortPyV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _cdecl sortPxVTP(Vector<class EObject*>& vector) noexcept
 {
-	_Sort_unchecked(begin, end, end - begin,__sort__SortByY());
-
-	//	_Make_heap_unchecked(begin, end, __sort__SortByY());
-	//	_Sort_heap_unchecked(begin, end, __sort__SortByY());
-
+	_Sort_unchecked(vector.begin(), vector.end(),vector.size(), __sort__SortByX());
 }
 
 
-void _stdcall sortPxV(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
+void _cdecl sortPyVTP(Vector<class EObject*>& vector) noexcept
 {
-	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
-
-	//_Make_heap_unchecked(begin, end, __sort__SortByX());
-	//_Sort_heap_unchecked(begin, end, __sort__SortByX());
-}
-
-
-void _stdcall sortPxVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
-{
-	_Sort_unchecked(begin, end, end - begin, __sort__SortByX());
-
-
-}
-
-
-void _stdcall sortPyVTP(class EObject** _In_ const begin,class EObject** _In_ const end) noexcept
-{
-	_Sort_unchecked(begin, end, end - begin, __sort__SortByY());
+	_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByY());
 }
 
 void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByX());
 }
-
 
 void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
 {
@@ -689,21 +733,21 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 	//	}
 	//}
 
-		for (int32 i = 0; i < 32; ++i)
+		for (int32 i = 0; i < MAP_DIVISION; ++i)
 			vec[1][i].clear();
 
 		//#pragma omp pallalel for shedule(dynamic)
 
 
-		{
-			for (int32 i = 0; i < 32; ++i)
+	//	{
+			for (int32 i = 0; i < MAP_DIVISION; ++i)
 			{
-				for (auto&& object : vec[0][i])
+				for (auto object : vec[0][i])
 				{
 					vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
 				}
 			}
-		}
+		
 		//struct ThreadPoolHandle pool;
 
 		//for (int32 i = 0; i < 32; ++i)
@@ -724,15 +768,16 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 //	}
 }
 
-void _vectorcall QSortByYV(Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 
+//#pragma omp parallel
 #pragma omp for schedule(dynamic)
-		for (int32 i = 0; i < 32; ++i)
+		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
 			if (yta[i])
 			{
-				sortPyVTP(vec[1][i].begin(), vec[1][i].end());
+				sortPyVTP(vec[1][i]);
 			}
 
 		}
@@ -742,10 +787,12 @@ void _vectorcall QSortByYV(Vector<class EObject*> vec[2][32]) noexcept
 void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 
-	__intersect_test__();
+	int32 xp, yp;
+
+	__intersect_test__(xp,yp);
 
 
-		for (int32_t i = 0; i < 32; i++)
+		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
 			vec[0][i].clear();
 			vec[1][i].shrink();
@@ -753,9 +800,9 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 
 	{
-		for (int32_t i = 0; i < 32; i++)
+		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
-			for (auto&& RC : vec[1][i])
+			for (auto RC : vec[1][i])
 			{
 				vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
 			}
@@ -783,20 +830,22 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 }
 
-void _vectorcall QSortByXV(Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 {
-
+//#pragma omp parallel
 #pragma omp for schedule(dynamic)
-	for (int32 i = 0; i < 32; i++)
+	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
 		if (xta[i])
 		{
-			sortPxVTP(vec[0][i].begin(), vec[0][i].end());
+			sortPxVTP(vec[0][i]);
 		}
 	}
 #pragma omp barrier
 }
 
+//BUGGED
+/*
 void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 {
 	for (int32 i = 0; i < 32; ++i)
@@ -859,14 +908,14 @@ void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 	}
 
 }
+*/
 
-
-void _vectorcall __CleanUp(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall __CleanUp(class Vector<class EObject*>* const vec) noexcept
 {
 
-	for (int32 i = 0; i < 32; ++i)
+	for (int32 i = 0; i <	MAP_DIVISION; ++i)
 	{
-	class Vector<class EObject*>& vectemp = vec[1][i];
+	class Vector<class EObject*>& vectemp = vec[i];
 	for (int32 j = 0; j < vectemp.size(); ++j)
 	{
 		class EObject* obj = vectemp[j];

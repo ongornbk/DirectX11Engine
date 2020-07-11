@@ -49,9 +49,9 @@ struct TileMap
 	~TileMap();
 	void Initialize();
 	void _vectorcall Render(ID3D11DeviceContext * const deviceContext,const struct DirectX::XMFLOAT4X4& viewMatrix,const struct DirectX::XMFLOAT4X4& projectionMatrix,DirectX::XMVECTOR& cameraPosition);
-	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const int32 tile);
-	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const int32 tile,const int32 brush);
-	void _vectorcall SetTile(const struct DirectX::XMINT2& position, int32 tile);
+	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const char tile);
+	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const char tile,const int32 brush);
+	void _vectorcall SetTile(const struct DirectX::XMINT2& position,char tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 

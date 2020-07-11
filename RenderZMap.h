@@ -31,10 +31,11 @@ struct RenderZMap
 		struct ShaderPackage &shader
 	) noexcept;
 	void Clear();
-	void Push(Unit* unit,const int64 z);
-	void Push(Doodads* doodads,const int64 z);
-	void Push(AnimatedDoodads* animated,const int64 z);
-	void Push(Tree* tree, const int64 z);
+	void Push(class Unit* unit,const int64 z);
+	void Push(class Doodads* doodads,const int64 z);
+	void Push(class AnimatedDoodads* animated,const int64 z);
+	void Push(class Tree* tree, const int64 z);
+	void Push(class RegionPointObject* object, const int64 z);
 	uint32_t GetSize();
 	__m128 GetSizeX4();
 	std::vector<int64> GetSizeVector();

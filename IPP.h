@@ -50,6 +50,7 @@ namespace ipp
 		float Acos(const float degrees);
 		float Atan(const float degrees);
 		float Atan2(const float y,const float x);
+		void _fastcall clamp(char& value, const char min, const char max);
 		void _fastcall clamp(int32 &value,const int32 min,const int32 max);
 		void _fastcall clamp(float &value,const float min,const float max);
 		int32 _fastcall range(int32 &value,const int32 min,const int32 max);

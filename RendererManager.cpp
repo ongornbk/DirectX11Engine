@@ -6,6 +6,7 @@
 #include "Global.h"
 #include "ShaderPackage.h"
 #include "GarbageCollector.h"
+
 #include <future>
 #include <mutex>
 #include <stack>
@@ -20,7 +21,7 @@ namespace
 	static XMVECTOR               m_cameraPosition;
 	static float                  m_rangeX;
 	static float                  m_rangeY;
-	static RenderZMap             g_units;
+	//static RenderZMap             g_units;
 	static atomic<int32>          m_cleanupMode;
 	static atomic<int32>          m_editMode;
 }
@@ -65,7 +66,8 @@ RendererManager::RendererManager(
 
 RendererManager::~RendererManager()
 {
-	g_units.Clear();
+	//g_units.Clear();
+	m_objects.Clear();
 	if (m_ui)
 	{
 		delete m_ui;
@@ -81,30 +83,32 @@ RendererManager::~RendererManager()
 
 
 void RendererManager::PushUnit(
-	class Unit * const unit,
-	const int32 z
+	class Unit * const unit
 )
 {
-	g_units.Push(unit,z);
+	m_objects.Push(unit);
+
+}
+
+void RendererManager::PushDoodads(class Doodads * doodads)
+{
+	m_objects.Push(doodads);
+}
+
+void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads)
+{
+	m_objects.Push(doodads);
+}
+
+void RendererManager::PushTree(class Tree * tree)
+{
+	m_objects.Push(tree);
 	//EditFrame();
 }
 
-void RendererManager::PushDoodads(class Doodads * doodads,const int32 z)
+void RendererManager::PushRegionPointObject(RegionPointObject* object)
 {
-	g_units.Push(doodads,z);
-	//EditFrame();
-}
-
-void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads,const int32 z)
-{
-	g_units.Push(doodads,z);
-	//EditFrame();
-}
-
-void RendererManager::PushTree(class Tree * doodads,const int32 z)
-{
-	g_units.Push(doodads,z);
-	//EditFrame();
+	m_objects.Push(object);
 }
 
 
@@ -147,7 +151,7 @@ void RendererManager::PushTree(class Tree * doodads,const int32 z)
 
 			//m_unitsShader->Begin(deviceContext);
 			
-			g_units.Render(deviceContext, viewMatrix, projectionMatrix, pck);
+			m_objects.Render(deviceContext, viewMatrix, projectionMatrix, pck);
 
 			//m_unitsShader->End(deviceContext);
 
@@ -177,10 +181,11 @@ void RendererManager::Update()
 		{
 			if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
 			{
-				g_units.CleanUp();
+				m_objects.CleanUp();
 				m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
 			}
-			g_units.Update(dt);
+			//g_units.Update(dt);
+			m_objects.Update(dt);
 		}
 
 		//g_units.Sort();
@@ -190,7 +195,8 @@ void RendererManager::Update()
 	//case 1:
 	//{
 	//	m_editMode.store(0, std::memory_order::memory_order_seq_cst);
-		g_units.Sort();
+		m_objects.Sort();
+		m_objects.QSort();
 	//	break;
 	//}
 	//}
@@ -235,13 +241,13 @@ void RendererManager::SetTileMapRendering(const int64 render)
 
 void RendererManager::SetFps(const int32 fps)
 {
-	g_units.UpdateFps(fps);
+//	m_objects.UpdateFps(fps);
 	UserInterfaceGame::SetFPS(fps);
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
 {
-	return g_units.GetUnitsInRange(object, range);
+	return m_objects.GetUnitsInRange(object, range);
 }
 
 RendererManager * RendererManager::GetInstance()
@@ -251,17 +257,18 @@ RendererManager * RendererManager::GetInstance()
 
 size_t RendererManager::GetNumberOfObjects()
 {
-	return g_units.GetSize();
+	//return m_objects.GetSize();
 }
 
 __m128 RendererManager::GetNumberOfObjectsX4()
 {
-	return g_units.GetSizeX4();
+//	return m_objects.GetSizeX4();
 }
 
 std::vector<int64> RendererManager::GetNumberOfObjectsVector()
 {
-	return g_units.GetSizeVector();
+//	return m_objects.GetSizeVector();
+	return std::vector<int64>();
 }
 
 

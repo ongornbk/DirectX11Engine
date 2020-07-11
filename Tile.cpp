@@ -47,17 +47,17 @@ struct TileType
 	namespace tile
 	{
 
-static float CELL_WIDTH           = 320.0f;
-static float CELL_HALF_WIDTH      = 160.0f;
-static float CELL_HEIGHT          = 160.0f;
-static float CELL_HALF_HEIGHT     = 80.0f;
+static float CELL_WIDTH           = 160.0f;
+static float CELL_HALF_WIDTH      = 80.0f;
+static float CELL_HEIGHT          = 80.0f;
+static float CELL_HALF_HEIGHT     = 40.0f;
 static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
 static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 static int32_t tilesub[32] ={
 	3,//GRASS
-	2,//DIRT
+	3,//DIRT
 	0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u
 };
 
@@ -79,7 +79,9 @@ static int32_t tilesub[32] ={
 		const struct DirectX::XMFLOAT2& floats
 	) noexcept
 	{
-		struct DirectX::XMINT2 _indexes = {
+		struct DirectX::XMINT2 _indexes = { 
+			(INT32)(TILE_MAP_HALF_SIZE_FLOAT - (floats.x / tile::CELL_WIDTH) - (floats.y / tile::CELL_HEIGHT)),
+			(INT32)(TILE_MAP_HALF_SIZE_FLOAT + (floats.x / tile::CELL_WIDTH) - (floats.y / tile::CELL_HEIGHT))
 		};
 
 
@@ -117,17 +119,17 @@ namespace
 {
 	static struct ID3D11Device*        m_device;
 	static class Shader*               m_tileShader;
-	static class VertexBuffer*         m_vertexBuffer;
+	static class Vector<VertexBuffer*> m_vertexBuffer[32];
 	static class VertexBuffer*         m_animatedVertexBuffer;
-	static class Texture*              m_texture[32][8];
+	static class Texture*              m_texture[32];
 	static float                       m_size[2];
 	static struct ID3D11DeviceContext* m_deviceContext;
 	static struct XMFLOAT4X4           m_viewMatrix;
 	static struct XMFLOAT4X4           m_projectionMatrix;
-	static struct TileType             m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
-	static struct TileType             current = {0u,0u};
+	struct TileType             m_tile[TILE_MAP_SIZE][TILE_MAP_SIZE];
+	 struct TileType             current = {0u,0u};
 	static class RendererManager*      m_renderer;
-	static struct TileMap*             m_currentTileMap;
+	 struct TileMap*             m_currentTileMap;
 }
 
 SimpleTile::SimpleTile(
@@ -150,7 +152,10 @@ SimpleTile::SimpleTile(
 	int32* const index
 )
 {
-
+	m_info.m_position.x = position.x;
+	m_info.m_position.y = position.y;
+	m_info.m_index.x = index[0];
+	m_info.m_index.y = index[1];
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
 	m_collision = false;
 }
@@ -223,24 +228,41 @@ void Tile::SetGlobals(
 		}
 	m_tileShader = shader;
 	m_device = device;
-	m_vertexBuffer = new VertexBuffer();
-	(void)m_vertexBuffer->Initialize(device, shader, m_size, true);
+	
+	for (int32 i = 0; i < 32; i++)
+	{
+		const int32 indexl = tile::tilesub[i];
+		const int32 indexr = indexl + 1;
+		for (int32 j = 0; j < indexr; j++)
+		{
+			
+			VertexBuffer* const buffer = new VertexBuffer();
+			float coords[6] = { indexr * m_size[0],m_size[1],j * m_size[0],0,(j + 1) * m_size[0],m_size[1] };
+			buffer->InitializePart(device, shader, m_size,coords, true);
+			m_vertexBuffer[i].push_back(buffer);
+		}
+	}
+	
 	m_animatedVertexBuffer = new VertexBuffer();
 	(void)m_animatedVertexBuffer->Initialize(device, shader, m_size, true);
-	m_texture[0][0] = ResourceManager::GetInstance()->GetTextureByName("grass0");
-	m_texture[0][1] = ResourceManager::GetInstance()->GetTextureByName("grass1");
-	m_texture[0][2] = ResourceManager::GetInstance()->GetTextureByName("grass2");
-	m_texture[0][3] = ResourceManager::GetInstance()->GetTextureByName("grass3");
-	m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt0");
-	m_texture[1][1] = ResourceManager::GetInstance()->GetTextureByName("dirt1");
-	m_texture[1][2] = ResourceManager::GetInstance()->GetTextureByName("dirt2");
-	m_texture[2][0] = ResourceManager::GetInstance()->GetTextureByName("rock");
-	m_texture[3][0] = ResourceManager::GetInstance()->GetTextureByName("leaves");
-	m_texture[4][0] = ResourceManager::GetInstance()->GetTextureByName("paving");
-	m_texture[5][0] = ResourceManager::GetInstance()->GetTextureByName("paving2");
-	m_texture[6][0] = ResourceManager::GetInstance()->GetTextureByName("dust");
-	m_texture[7][0] = ResourceManager::GetInstance()->GetTextureByName("water");
-	m_texture[8][0] = ResourceManager::GetInstance()->GetTextureByName("sand0");
+
+	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");
+	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("dirt");
+
+	//m_texture[0][0] = ResourceManager::GetInstance()->GetTextureByName("grass0");
+	//m_texture[0][1] = ResourceManager::GetInstance()->GetTextureByName("grass1");
+	//m_texture[0][2] = ResourceManager::GetInstance()->GetTextureByName("grass2");
+	//m_texture[0][3] = ResourceManager::GetInstance()->GetTextureByName("grass3");
+	//m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt0");
+	//m_texture[1][1] = ResourceManager::GetInstance()->GetTextureByName("dirt1");
+	//m_texture[1][2] = ResourceManager::GetInstance()->GetTextureByName("dirt2");
+	//m_texture[2][0] = ResourceManager::GetInstance()->GetTextureByName("rock");
+	//m_texture[3][0] = ResourceManager::GetInstance()->GetTextureByName("leaves");
+	//m_texture[4][0] = ResourceManager::GetInstance()->GetTextureByName("paving");
+	//m_texture[5][0] = ResourceManager::GetInstance()->GetTextureByName("paving2");
+	//m_texture[6][0] = ResourceManager::GetInstance()->GetTextureByName("dust");
+	//m_texture[7][0] = ResourceManager::GetInstance()->GetTextureByName("water");
+	//m_texture[8][0] = ResourceManager::GetInstance()->GetTextureByName("sand0");
 
 }
 
@@ -254,7 +276,7 @@ void Tile::SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix,const
 	m_viewMatrix = viewMatrix;
 	m_projectionMatrix = projectionMatrix;
 	current.tile_type = 0u;
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
 }
 
 
@@ -262,7 +284,7 @@ void Tile::SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix,const
 void SimpleTile::LoadTexture()
 {
 	current = m_tile[m_info.m_index.x][m_info.m_index.y];
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
 }
 
 void SimpleTile::Update(const float dt)
@@ -272,12 +294,12 @@ void SimpleTile::Update(const float dt)
 void SimpleTile::Render()
 {
 	const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
-	if (current != type)
+	if (current.tile_type != type.tile_type)
 	{
 		LoadTexture();
 	}
 	m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
-	m_vertexBuffer->Render(m_deviceContext);
+	m_vertexBuffer[m_tile[m_info.m_index.x][m_info.m_index.y].tile_type][m_tile[m_info.m_index.x][m_info.m_index.y].tile_sub]->Render(m_deviceContext);
 }
 TileMap::~TileMap()
 {
@@ -289,10 +311,16 @@ TileMap::~TileMap()
 			delete map[i][j];
 		}
 	}
-	if (m_vertexBuffer)
+	for (int32 i = 0; i < 32; i++)
 	{
-		delete m_vertexBuffer;
-		m_vertexBuffer = NULL;
+		if (m_vertexBuffer)
+		{
+			for (auto& ele : m_vertexBuffer[i])
+			{
+				if(ele)
+				delete ele;
+			}
+		}
 	}
 	if (m_animatedVertexBuffer)
 	{
@@ -392,7 +420,7 @@ void _vectorcall TileMap::Render(
 
 void TileMap::SetTile(
 	const struct XMFLOAT2 &position,
-	const int32 tile
+	const char tile
 )
 {
 	SetTile(TransformXMFLOAT2ToTileMapINDEX2(position),tile);
@@ -400,13 +428,18 @@ void TileMap::SetTile(
 
 void _vectorcall TileMap::SetTile(
 	const struct DirectX::XMFLOAT2 &position,
-	const int32 tile,
+	const char tile,
 	const int32 brush
 )
 {
 	struct DirectX::XMINT2 pos = TransformXMFLOAT2ToTileMapINDEX2(position);
 
-//#pragma omp parallel for
+	if (brush == 1)
+	{
+		SetTile(pos, tile);
+		return;
+	}
+
 	for (int32 x = 0; x < brush; ++x)
 	{
 		for (int32 y = 0; y < brush; ++y)
@@ -424,11 +457,13 @@ void _vectorcall TileMap::SetTile(
 
 void TileMap::SetTile(																																
 	const struct DirectX::XMINT2& position,																															
-	int32 tile)																																		
-{																																					
-	ipp::math::clamp(tile, 0, 8);																													
-	m_tile[position.x][position.y].tile_type = tile;
+	char tile)
+{
+	ipp::math::clamp(tile, 0, 8);		
+
+	m_tile[position.x][position.y].tile_type = (int32)tile;
 	m_tile[position.x][position.y].tile_sub = ipp::math::RandomInt32(0, tile::tilesub[tile]);
+
 	if (tile == 7)																																	
 	{																																				
 																																					
@@ -452,11 +487,12 @@ void TileMap::SetTile(
 		//if (map[index[0]][index[1]]->m_type == Tile::Type::ANIMATEDTILE)																			
 		//{																																			
 																																					
-		class Tile* const previous = map[position.x][position.y];
-		class SimpleTile* const tilep = new SimpleTile(previous->m_info);
-		delete previous;
-		map[position.x][position.y] = (class Tile*)tilep;
-		map[position.x][position.y]->m_collision = false;																					
+		//class Tile* const previous = map[position.x][position.y];
+		//class SimpleTile* const tilep = new SimpleTile(previous->m_info);
+		//delete previous;
+		//map[position.x][position.y] = (class Tile*)tilep;
+		//map[position.x][position.y]->m_collision = false;
+
 		//}																																			
 	}																																				
 }																																					
@@ -485,22 +521,29 @@ void TileMap::LoadFromFile(std::string filename)
 {
 	std::ifstream myfile;
 	myfile.open(filename);
-	char ch;
-	for ( int32 i = 0; i < TILE_MAP_SIZE; ++i)
+	if (myfile.is_open())
 	{
-		for ( int32 j = 0; j < TILE_MAP_SIZE; ++j)
+		char ch;
+		for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
 		{
+			for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
+			{
 
+				myfile.get(ch);
+				DirectX::XMINT2 pos = { i,j };
+				SetTile(pos,ch - '0');
+			}
 			myfile.get(ch);
-			DirectX::XMINT2 pos = { i,j };
-			SetTile(pos, (int32)ch);
 		}
-		myfile.get(ch);
+
+
+
+		myfile.close();
 	}
-
-
-
-	myfile.close();
+	else
+	{
+		ipp::Console::Println("Unable to load " + filename);
+	}
 }
 
 void TileMap::SetRendering(const int64 rendering)
@@ -622,7 +665,7 @@ AnimatedTile::AnimatedTile(
 	m_info.m_position = DirectX::XMFLOAT2(x, y);
 	m_info.m_index.x = ix;
 	m_info.m_index.y = iy;
-	m_texture[ix][iy] = texture;
+	m_texture[ix] = texture;
 }
 
 AnimatedTile::AnimatedTile(
@@ -633,7 +676,7 @@ AnimatedTile::AnimatedTile(
 	m_info.m_position = info.m_position;
 	m_info.m_index.x = info.m_index.x;
 	m_info.m_index.y = info.m_index.y;
-m_texture[m_info.m_index.x][m_info.m_index.y] = texture;
+m_texture[m_info.m_index.x] = texture;
 }
 
 AnimatedTile::~AnimatedTile()
@@ -644,7 +687,7 @@ void AnimatedTile::SetTexture(
 	class Texture * const texture
 )
 {
-	m_texture[current.tile_type][current.tile_sub] = texture;
+	m_texture[current.tile_type] = texture;
 }
 
 void AnimatedTile::Update(
@@ -667,5 +710,5 @@ void AnimatedTile::Render()
 void AnimatedTile::LoadTexture()
 {
 	current = m_tile[m_info.m_index.x][m_info.m_index.y];
-	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type][current.tile_sub]->GetTexture());
+	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
 }

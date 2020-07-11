@@ -74,6 +74,10 @@ void Camera::SetPosition(
 {
 	m_position = position;
 }
+void Camera::Translate(const DirectX::XMVECTOR position)
+{
+	m_position += position;
+}
 void Camera::SetRotation(
 	const float x,
 	const float y,

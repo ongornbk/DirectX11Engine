@@ -15,7 +15,7 @@ struct EObjectVector
 
 	EObjectVector();
 
-	Vector<EObject*> m_objectsXY[2][32];
+	Vector<class EObject*> m_objectsXY[2][32];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);
@@ -41,6 +41,7 @@ struct EObjectVector
 	void Push(class Doodads* const doodads);
 	void Push(class AnimatedDoodads* const animated);
 	void Push(class Tree* const tree);
+	void Push(class RegionPointObject* const tree);
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept;
 
 };
