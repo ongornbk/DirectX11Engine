@@ -90,7 +90,7 @@ public:
 	bool          Update() override;
 	void          Release() override;
 	class  Unit*         object{};
-	class  EObject*      target{};
+	class  Unit*      target{};
 
 	bool inrange;
 };

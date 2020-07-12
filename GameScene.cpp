@@ -84,7 +84,7 @@ void GameScene::Update()
 
 
 
-	Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
+	//Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
 
 	
 

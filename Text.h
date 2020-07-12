@@ -2,7 +2,7 @@
 #include "LetterSprite.h"
 #include "Vector.h"
 #include "GarbageCollector.h"
-#include <string>
+
 
 
 using std::string;
@@ -46,7 +46,7 @@ public:
 private:
 
 	Vector<struct LetterSpriteStruct*> m_letters;
-	string                             m_text;
+	string                      m_text;
 
 
 	void Initialize();

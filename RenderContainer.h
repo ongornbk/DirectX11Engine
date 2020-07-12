@@ -4,6 +4,7 @@
 #include "ShaderPackage.h"
 #include <DirectXCollision.h>
 
+
 enum class EObjectIntersectionInfo
 {
 	NONE,

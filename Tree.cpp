@@ -157,3 +157,8 @@ void Tree::SetGlobal(Global * global) noexcept
 {
 	m_global = global;
 }
+
+RenderHandle Tree::GetRenderHandle()
+{
+	return RenderHandle(m_texture,m_vertexBuffer);
+}

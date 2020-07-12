@@ -9,6 +9,7 @@ namespace
 
 VertexBuffer::VertexBuffer()
 {
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER;
 	m_indexCount = 0;
 	m_vertexBuffer = 0;
 	m_vertices = nullptr;
@@ -359,6 +360,16 @@ bool VertexBuffer::ResizeTexture(
 
 
 	return true;
+}
+
+void VertexBuffer::SetAnchor(const enum ObjectAnchorType type) noexcept
+{
+	m_anchorType = type;
+}
+
+void VertexBuffer::SetNumberOfElements(const int32 elements) noexcept
+{
+	m_numOfElements = elements;
 }
 
 struct SpriteVertexType * VertexBuffer::GetVertices()

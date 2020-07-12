@@ -3,7 +3,10 @@
 #include "S_ModelPaths.h"
 #include "RendererManager.h"
 #include "IPP.h"
-#include "Math.h"
+#include "ActionAttack.h"
+#include "ActionRemoveObject.h"
+#include "modern/modern.h"
+#include "Timer.h"
 
 Unit::Unit() : 
 	m_colorFilter(1.f, 1.f, 1.f, 1.f),
@@ -13,7 +16,7 @@ Unit::Unit() :
 	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
-	m_modelVariant.SetVariant(MS_TOWNNEUTRAL);
+	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 	m_vertexBuffer = nullptr;
 	m_rotation = DEFAULT_ROTATION;
 	m_isLooping = true;
@@ -24,6 +27,7 @@ Unit::Unit() :
 	m_rotations = 16.0f;
 	m_attack.range = 80.f;
 	m_attack.active = false;
+	m_dead = false;
 
 	m_tasks.SetOwner(this);
 
@@ -141,9 +145,12 @@ void Unit::Update(const float dt)
 
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 
+	if (m_dead)
+		goto SKIP_BEGIN;
+
 	if (!m_flags.m_blocked)
 	{
-
+		
 		if (m_tasks.Update())
 		{
 
@@ -163,7 +170,7 @@ void Unit::Update(const float dt)
 				else
 				{
 					m_attack.active = false;
-					SetAnimation(ModelStance::MS_TOWNNEUTRAL);
+					SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 					SetVelocity(0.0f, 0.0f, 0.0f);
 					Unit::EndRunning();
 				}
@@ -184,7 +191,7 @@ void Unit::Update(const float dt)
 			{
 				m_floats[1] = m_boundingSphere.Center;
 			}
-				struct DirectX::XMFLOAT3 niuPos = XMFloat3Sum(m_boundingSphere.Center, XMFloat3Multiply(m_floats[0], dt));
+				struct DirectX::XMFLOAT3 niuPos = modern_xfloat3_sum(m_boundingSphere.Center, modern_xfloat3_multiply(m_floats[0], dt));
 
 				m_flags.m_collided = TileMap::CollisionAt(niuPos);
 
@@ -193,6 +200,8 @@ void Unit::Update(const float dt)
 					m_boundingSphere.Center = niuPos;
 				}
 		}
+
+		SKIP_BEGIN:
 
 		if (m_flags.m_rendering)
 		{
@@ -281,7 +290,6 @@ void Unit::Update(const float dt)
 		if (m_boundingSphere.Contains(point))
 		{
 			m_flags.m_selected = true;
-#pragma omp critical
 			GLOBAL m_lastSelectedUnit = this;//atomic?
 		}
 		else
@@ -352,7 +360,7 @@ void Unit::SetSpeed(const float speed)
 	m_speed[1] = speed;
 }
 
-Unit::WalkingStance Unit::GetWalkingStance() const noexcept
+enum WalkingStance Unit::GetWalkingStance() const noexcept
 {
 	return m_walkingStance;
 }
@@ -362,10 +370,10 @@ void Unit::SetWalkingStance(const enum WalkingStance stance)
 	this->m_walkingStance = stance;
 	switch (stance)
 	{
-	case WS_WALK:
+	case WalkingStance::WALKING_STANCE_WALK:
 		m_speed[0] = m_speed[1] / 2.0f;
 		break;
-	case WS_RUN: 
+	case WalkingStance::WALKING_STANCE_RUN:
 		m_speed[0] = m_speed[1];
 		break;
 	}
@@ -375,12 +383,12 @@ void Unit::ChangeWalkingStance()
 {
 	switch (m_walkingStance)
 	{
-	case Unit::WalkingStance::WS_RUN:
-			m_walkingStance = Unit::WalkingStance::WS_WALK;
+	case WalkingStance::WALKING_STANCE_RUN:
+			m_walkingStance = WalkingStance::WALKING_STANCE_WALK;
 			m_speed[0] = m_speed[1] / 2.0f;
 			break;
-	case Unit::WalkingStance::WS_WALK:
-		m_walkingStance = Unit::WalkingStance::WS_RUN;
+	case WalkingStance::WALKING_STANCE_WALK:
+		m_walkingStance = WalkingStance::WALKING_STANCE_RUN;
 		m_speed[0] = m_speed[1];
 		break;
 	}
@@ -440,6 +448,27 @@ void Unit::GoBack()
 	m_boundingSphere.Center = m_floats[1];
 }
 
+void Unit::Die(Unit* const killer)
+{
+	if (m_dead)
+		return;
+	m_attack.active = false;
+	SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
+	SetVelocity(0.0f, 0.0f, 0.0f);
+	Unit::EndRunning();
+	m_flags.m_cast_shadow = false;
+	m_flags.m_pushable = false;
+	m_flags.m_selectable = false;
+	m_dead = true;
+	class ActionRemoveObject* const action = new ActionRemoveObject(this);
+	Timer::CreateExpiringTimer(action, 10.f);
+}
+
+const UnitStats& Unit::GetStats()
+{
+	return m_stats;
+}
+
 Attack& Unit::GetAttack()
 {
 	return m_attack;
@@ -462,7 +491,12 @@ bool Unit::IsAttacking() const noexcept
 	return m_attack.active;
 }
 
-bool Unit::Attack(class EObject* const target)
+bool Unit::IsDead() const noexcept
+{
+	return m_dead;
+}
+
+bool Unit::BeginAttack(class Unit* const target)
 {
 	if (m_stop)
 	{
@@ -479,26 +513,38 @@ bool Unit::Attack(class EObject* const target)
 		SetRotation(rotation);
 		//const int32 atkt = ipp::math::RandomInt32(0, 1);
 		//if(atkt)
-		PlayAnimation(Unit::ModelStance::MS_ATTACK_1);
+		PlayAnimation(ModelStance::MODEL_STANCE_ATTACK_1);
 		//else
 		//PlayAnimation(Unit::ModelStance::MS_ATTACK_2);
 		SetVelocity(0.0f, 0.0f, 0.0f);
-		if(target)
-		((class Unit* const)target)->GetAttacked(this);
+		if (target)
+		{
+			class IAction* const action = new ActionAttack(this, target);
+			if (action)
+			{
+				Timer::CreateExpiringTimer(action, m_attack.m_attackDelay);
+			}
+		}
 		return true;
 	}
 
 }
 
-bool Unit::GetAttacked(class EObject* const attacker)
+bool Unit::Attack(class Unit* const target)
 {
+	return ((class Unit* const)target)->GetAttacked(this);
+}
+
+bool Unit::GetAttacked(class Unit* const attacker)
+{
+	DoDamage(attacker);
 	if (m_stop)
 	{
 		return false;
 	}
 	{
 		
-		PlayAnimation(Unit::ModelStance::MS_GETHIT);
+		PlayAnimation(ModelStance::MODEL_STANCE_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;
 	}
@@ -518,9 +564,23 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 		rotation /= 22.5f;
 		rotation = 20 - rotation;
 		SetRotation(rotation);
-		PlayAnimation(Unit::ModelStance::MS_SPECIALCAST);
+		PlayAnimation(ModelStance::MODEL_STANCE_SPECIALCAST);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;
+	}
+}
+
+void Unit::DoDamage(class Unit* const attacker)
+{
+	m_stats.m_health -= attacker->GetStats().m_attackDamage;
+	if (m_stats.m_health > 0.f)
+	{
+
+	}
+	else
+	{
+		Die(attacker);
+		m_stats.m_health = 0.f;
 	}
 }
 
@@ -594,10 +654,10 @@ void Unit::PlayAnimation(
 
 		switch (animation)
 		{
-		case	ModelStance::MS_ATTACK_1:
+		case	ModelStance::MODEL_STANCE_ATTACK_1:
 			m_attack.active = true;
 			break;
-		case	ModelStance::MS_ATTACK_2:
+		case	ModelStance::MODEL_STANCE_ATTACK_2:
 			m_attack.active = true;
 			break;
 
@@ -641,6 +701,14 @@ int32 Unit::isReleased() const noexcept
 	{
 		return 1;
 	}
+}
+
+bool Unit::CheckIfValid(Unit* const pointer)
+{
+	if (pointer)
+		if (pointer->m_type == EObject::EObjectType::UNIT)
+			return true;
+	return false;
 }
 
 void Unit::InitializeModel(

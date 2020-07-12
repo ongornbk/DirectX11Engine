@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include "VariablesManager.h"
 #include "Doodads.h"
+#include "gdef.h"
 #include <stack>
 
 class Global
@@ -10,12 +11,12 @@ class Global
 public:
 	Global(void);
 	~Global(void);
-	Unit*                m_lastPickedUnit;
-	Unit*                m_lastSelectedUnit;
-	EObject*             m_lastCreatedRenderContainer;
-	class EObject*       m_pickedObject{};
-	EObjectFlags         m_lastFlags{};
-	Task*                m_lastTask;
+	MSVC_VOLATILE Unit*                m_lastPickedUnit;
+	MSVC_VOLATILE Unit*                m_lastSelectedUnit;
+	MSVC_VOLATILE EObject*             m_lastCreatedRenderContainer;
+	MSVC_VOLATILE class EObject*       m_pickedObject{};
+	MSVC_VOLATILE EObjectFlags         m_lastFlags{};
+	MSVC_VOLATILE Task*                m_lastTask;
 	static Global*       GetInstance();
 	struct DirectX::XMFLOAT3             m_lastPoint;
 	std::stack<Unit*>    m_stack;

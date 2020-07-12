@@ -1,6 +1,6 @@
 #include "Task.h"
 #include "SettingsC.h"
-#include "Math.h"
+#include "modern/modern.h"
 #include "Unit.h"
 #include <cmath>
 
@@ -34,19 +34,19 @@ bool TaskGotoPoint::Update()
 
 
 		
-		if (XMFloat3Distance2D(position, destination) > object->GetCollisionRadius() && object->m_intersection == false)
+		if (modern_xfloat3_distance2(position, destination) > object->GetCollisionRadius() && object->m_intersection == false)
 		{
 
 			switch (object->GetWalkingStance())
 			{
-			case Unit::WalkingStance::WS_RUN:
+			case WalkingStance::WALKING_STANCE_RUN:
 			{
-				object->SetAnimation(Unit::ModelStance::MS_RUN);
+				object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
 				break;
 			}
-			case Unit::WalkingStance::WS_WALK:
+			case WalkingStance::WALKING_STANCE_WALK:
 			{
-				object->SetAnimation(Unit::ModelStance::MS_WALK);
+				object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
 				break;
 			}
 			}
@@ -94,18 +94,18 @@ bool TaskPatrol::Update()
 		destination = pointA;
 		break;
 	}
-	if (XMFloat3Distance2D(position, destination) > object->GetCollisionRadius())
+	if (modern_xfloat3_distance2(position, destination) > object->GetCollisionRadius())
 	{
 		switch (object->GetWalkingStance())
 		{
-		case Unit::WalkingStance::WS_RUN:
+		case WalkingStance::WALKING_STANCE_RUN:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_RUN);
+			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
 			break;
 		}
-		case Unit::WalkingStance::WS_WALK:
+		case WalkingStance::WALKING_STANCE_WALK:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_WALK);
+			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
 			break;
 		}
 		}
@@ -141,18 +141,18 @@ bool TaskFollow::Update()
 #define angle 3.14f / 8
 	XMFLOAT3 position = object->GetPosition();
 	XMFLOAT3 destination = target->GetPosition();
-	if (XMFloat3Distance2D(position, destination) > 200.0f)
+	if (modern_xfloat3_distance2(position, destination) > 200.0f)
 	{
 		switch (object->GetWalkingStance())
 		{
-		case Unit::WalkingStance::WS_RUN:
+		case WalkingStance::WALKING_STANCE_RUN:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_RUN);
+			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
 			break;
 		}
-		case Unit::WalkingStance::WS_WALK:
+		case WalkingStance::WALKING_STANCE_WALK:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_WALK);
+			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
 			break;
 		}
 		}
@@ -167,7 +167,7 @@ bool TaskFollow::Update()
 	}
 	else
 	{
-		object->SetAnimation(Unit::ModelStance::MS_TOWNNEUTRAL);
+		object->SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 		object->SetVelocity(0.0f,0.0f,0.0f);
 	}
 	CLOSE_TASK;
@@ -195,7 +195,7 @@ void TaskAttack::Initialize()
 
 		const Attack atk = object->GetAttack();
 
-		inrange = (XMFloat3Distance2D(position, destination) > atk.range);
+		inrange = (modern_xfloat3_distance2(position, destination) > atk.range);
 	}
 }
 
@@ -206,7 +206,7 @@ bool TaskAttack::Update()
 	
 	const Attack atk = object->GetAttack();
 
-	if (XMFloat3Distance2D(position, destination) > atk.range)
+	if (modern_xfloat3_distance2(position, destination) > atk.range)
 		inrange = true;
 	else inrange = false;
 	
@@ -220,14 +220,14 @@ bool TaskAttack::Update()
 		object->SetRotation(rotation);
 		switch (object->GetWalkingStance())
 		{
-		case Unit::WalkingStance::WS_RUN:
+		case WalkingStance::WALKING_STANCE_RUN:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_RUN);
+			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
 			break;
 		}
-		case Unit::WalkingStance::WS_WALK:
+		case WalkingStance::WALKING_STANCE_WALK:
 		{
-			object->SetAnimation(Unit::ModelStance::MS_WALK);
+			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
 			break;
 		}
 		}
@@ -238,7 +238,7 @@ bool TaskAttack::Update()
 	}
 	else
 	{
-		return object->Attack(target);
+		return object->BeginAttack(target);
 	}
 	CLOSE_TASK;
 }

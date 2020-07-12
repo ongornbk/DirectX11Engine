@@ -61,15 +61,6 @@
     <Filter Include="Source Files\C">
       <UniqueIdentifier>{0ba4ff76-b48f-4643-a0e1-23f04a7c9d4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Clean">
-      <UniqueIdentifier>{9e1b43e8-f054-4768-8bae-26e2db319828}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Clean\Engine">
-      <UniqueIdentifier>{be1cdf9d-99a0-4cd4-b772-7e044887cbbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Clean\Engine\Math">
-      <UniqueIdentifier>{11377f74-5f05-4ef7-add8-912216beb3d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
     </Filter>
@@ -216,25 +207,10 @@
     <ClInclude Include="DynamicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VulcanManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VariablesManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Connection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="2D\TextFormat.h">
@@ -294,12 +270,6 @@
     <ClInclude Include="CPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Clean\Engine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="XMLParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LuaPointersManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -329,9 +299,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Core\Containers\Pair.h">
       <Filter>Core\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Footsteps.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="List.h">
       <Filter>Core</Filter>
@@ -384,9 +351,6 @@
     <ClInclude Include="ITimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ExpiringTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -436,6 +400,57 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RegionPointObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectAnchorType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleIntersetionInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WidgetAnchor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WidgetFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_xmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkingStance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelStance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -569,15 +584,6 @@
     <ClCompile Include="LuaCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WindowHandle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -626,9 +632,6 @@
     <ClCompile Include="CPU.cpp">
       <Filter>Source Files\C</Filter>
     </ClCompile>
-    <ClCompile Include="Math.inl">
-      <Filter>Clean\Engine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -636,9 +639,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedDoodads.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Footsteps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Attack.cpp">
@@ -731,15 +731,37 @@
     <ClCompile Include="RegionPointObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\User\Downloads\game_icon.ico">
-      <Filter>Clean</Filter>
-    </Image>
+    <ClCompile Include="RenderHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HandleIntersetionInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WidgetFlags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="modern\modern_math.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="modern\modern_xmath.inl">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

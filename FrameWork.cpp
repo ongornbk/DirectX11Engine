@@ -3,6 +3,7 @@
 #include "IPP.h"
 #include "GlobalUtilities.h"
 #include "SettingsC.h"
+#include <omp.h>
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);
 
@@ -59,8 +60,10 @@ bool FrameWork::Initialize(GameComponent* gameComponent)
 
 void FrameWork::Run()
 {
+
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
+
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, NULL, 0u, 0u, PM_REMOVE))

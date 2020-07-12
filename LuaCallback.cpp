@@ -6,11 +6,10 @@
 #include "Global.h"
 #include "GameScene.h"
 #include "IPP.h"
-#include "Network.h"
 #include "LuaPointer.h"
 #include "Sorting.h"
 #include "UnitGroup.h"
-#include "Math.h"
+#include "modern/modern.h"
 #include "Timer.h"
 
 #include <atlbase.h>
@@ -239,10 +238,10 @@ namespace lua_callback
 			struct lua_State* const state
 		) noexcept
 		{
-			class Unit* const unit = m_global->m_lastPickedUnit;
-			if (unit)
+			MSVC_VOLATILE class Unit* unit = m_global->m_lastPickedUnit;
+			if (Unit::CheckIfValid((Unit*)(unit)))
 			{
-				m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);
+				m_engine->GetCameraControl()->LockCameraPositionOnUnit((Unit*)unit);
 			}
 			return 0;
 		}
@@ -512,7 +511,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		class Unit* const unit = m_global->m_lastSelectedUnit;
+		MSVC_VOLATILE class Unit* const unit = m_global->m_lastSelectedUnit;
 		lua_pushinteger(state, (lua_Integer)unit);
 		return 1;
 	}
@@ -566,30 +565,31 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const object = (class Unit* const)lua_tointeger(state, 1);
-		class EObject* const target = (class EObject* const)lua_tointeger(state, 2);
-		if (object&&target&&target->m_type==EObject::EObjectType::UNIT)
+		class Unit* const target = (class Unit* const)lua_tointeger(state, 2);
+		if (Unit::CheckIfValid(object)&&Unit::CheckIfValid(target))
 		{
-			if (object->IsAttacking())
+			if (object->IsAttacking()||target->IsDead())
 			{
 				lua_pushinteger(state, 1);
+					return 1;
 			}
 			else
 			{
 				if (object->GetTaskType() == Task::Type::TASKATTACK)
 				{
 					const TaskAttack* const task = (class TaskAttack* const)object->GetTask();
-					if (task)
-					{
-						if (task->inrange)
-							lua_pushinteger(state, 1);
+						if (task)
+						{
+							if (task->inrange)
+								lua_pushinteger(state, 1);
+							else
+								lua_pushinteger(state, 2);
+						}
 						else
-							lua_pushinteger(state, 2);
-					}
-					else
-					{
-						lua_pushinteger(state, 0);
-					}
-					
+						{
+							lua_pushinteger(state, 0);
+						}
+
 				}
 				else
 				{
@@ -599,17 +599,20 @@ namespace lua_callback
 					task->Initialize();
 					object->SetTask(task);
 					if (task->inrange)
-					lua_pushinteger(state, 0);
+						lua_pushinteger(state, 0);
 					else
-					lua_pushinteger(state, 1);
+						lua_pushinteger(state, 1);
 				}
 			}
-				
+
 		}
 		else
 		{
 			lua_pushinteger(state, 1);
 		}
+		
+
+			
 		return 1;
 	}
 
@@ -617,12 +620,12 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		class Unit* const unit = m_global->m_lastPickedUnit;
-		if (unit)
+		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		if (Unit::CheckIfValid((Unit*)unit))
 		{
 			std::string  str = lua_tostring(state, 1);
 			class Sound* const sound = Canals::GetInstance()->__GetSound(str);
-			unit->SetFootstepsSound(sound);
+			((Unit*)unit)->SetFootstepsSound(sound);
 		}
 		return 0;
 	}
@@ -631,10 +634,10 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		class Unit* const unit = m_global->m_lastPickedUnit;
-		if (unit)
+		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		if (Unit::CheckIfValid((Unit*)unit))
 		{
-			unit->BeginRunning();
+			((Unit*)unit)->BeginRunning();
 		}
 		return 0;
 	}
@@ -643,10 +646,10 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		class Unit* const unit = m_global->m_lastPickedUnit;
-		if (unit)
+		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		if (Unit::CheckIfValid((Unit*)unit))
 		{
-			unit->EndRunning();
+			((Unit*)unit)->EndRunning();
 		}
 		return 0;
 	}
@@ -801,6 +804,8 @@ namespace lua_callback
 
 	}
 
+	
+
 	static int32 SetRenderingFlag(
 		struct lua_State* const state
 	) noexcept
@@ -891,19 +896,21 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
-			enum Unit::WalkingStance ws;
+		if (!Unit::CheckIfValid(unit))
+		{
+			return 0;
+		}
 			switch (lua_tointeger(state, 2))
 			{
 			case 0:
-				ws = Unit::WalkingStance::WS_WALK;
+				unit->SetWalkingStance(WalkingStance::WALKING_STANCE_WALK);
 				break;
 			case 1:
-				ws = Unit::WalkingStance::WS_RUN;
+				unit->SetWalkingStance(WalkingStance::WALKING_STANCE_RUN);
 				break;
 			default:
-				ws = Unit::WalkingStance::WS_WALK;
+				unit->SetWalkingStance(WalkingStance::WALKING_STANCE_WALK);
 			}
-			unit->SetWalkingStance(ws);
 		return 0;
 	}
 
@@ -1236,7 +1243,7 @@ namespace lua_callback
 
 		if (unit0 && unit1)
 		{
-			const float distance = XMFloat3Distance2D(unit0->GetPosition(), unit1->GetPosition());
+			const float distance = modern_xfloat3_distance2(unit0->GetPosition(), unit1->GetPosition());
 			lua_pushnumber(state, (lua_Number)distance);
 		}
 		else

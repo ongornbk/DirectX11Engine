@@ -182,6 +182,7 @@
     <ClInclude Include="2D\Types.h" />
     <ClInclude Include="Ability.h" />
     <ClInclude Include="ActionApplyColorFilter.h" />
+    <ClInclude Include="ActionAttack.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionMessageFront.h" />
     <ClInclude Include="ActionRemoveObject.h" />
@@ -196,7 +197,6 @@
     <ClInclude Include="Canals.h" />
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="Connection.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
@@ -206,12 +206,10 @@
     <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="DynamicArray.h" />
-    <ClInclude Include="Enet.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Engine\Core\Containers\Pair.h" />
     <ClInclude Include="ExpiringTimer.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="Footsteps.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="FreeTrash.h" />
     <ClInclude Include="GameChat.h" />
@@ -224,6 +222,9 @@
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsManager.h" />
+    <ClInclude Include="Handle.h" />
+    <ClInclude Include="HandleIntersetionInfo.h" />
+    <ClInclude Include="HandleType.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
@@ -237,11 +238,15 @@
     <ClInclude Include="LuaPointer.h" />
     <ClInclude Include="LuaPointersManager.h" />
     <ClInclude Include="MainMenuScene.h" />
-    <ClInclude Include="Math.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Network.h" />
+    <ClInclude Include="ModelStance.h" />
+    <ClInclude Include="modern\modern.h" />
+    <ClInclude Include="modern\modern_def.h" />
+    <ClInclude Include="modern\modern_math.h" />
+    <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
+    <ClInclude Include="ObjectAnchorType.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RenderContainerVector.h" />
     <ClInclude Include="RendererManager.h" />
+    <ClInclude Include="RenderHandle.h" />
     <ClInclude Include="RenderZMap.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -258,7 +264,6 @@
     <ClInclude Include="ResourceSound.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ScreenShader.h" />
-    <ClInclude Include="Server.h" />
     <ClInclude Include="SettingsC.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderPackage.h" />
@@ -284,6 +289,7 @@
     <ClInclude Include="UnitFactory.h" />
     <ClInclude Include="UnitGroup.h" />
     <ClInclude Include="UnitSounds.h" />
+    <ClInclude Include="UnitStats.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
@@ -292,13 +298,16 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VulcanManager.h" />
+    <ClInclude Include="WalkingStance.h" />
     <ClInclude Include="WICTextureLoader.h" />
+    <ClInclude Include="Widget.h" />
+    <ClInclude Include="WidgetAnchor.h" />
+    <ClInclude Include="WidgetFlags.h" />
     <ClInclude Include="WindowHandle.h" />
-    <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionApplyColorFilter.cpp" />
+    <ClCompile Include="ActionAttack.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionMessageFront.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
@@ -315,13 +324,13 @@
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
-    <ClCompile Include="Enet.cpp" />
     <ClCompile Include="ExpiringTimer.cpp" />
-    <ClCompile Include="Footsteps.cpp" />
     <ClCompile Include="FreeTrash.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
+    <ClCompile Include="Handle.cpp" />
+    <ClCompile Include="HandleIntersetionInfo.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="ITimer.cpp" />
     <ClCompile Include="ITrash.cpp" />
@@ -344,9 +353,7 @@
     <ClCompile Include="LetterSprite.cpp" />
     <ClCompile Include="LUAManager.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
-    <ClCompile Include="Math.inl" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Network.cpp" />
     <ClCompile Include="IPP.cpp" />
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
@@ -356,12 +363,12 @@
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />
+    <ClCompile Include="RenderHandle.cpp" />
     <ClCompile Include="RenderZMap.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />
     <ClCompile Include="ResourceSound.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
-    <ClCompile Include="Server.cpp" />
     <ClCompile Include="SettingsC.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderPackage.cpp" />
@@ -387,6 +394,7 @@
     <ClCompile Include="UnitFactory.cpp" />
     <ClCompile Include="UnitGroup.cpp" />
     <ClCompile Include="UnitSounds.cpp" />
+    <ClCompile Include="UnitStats.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceGameMenu.cpp" />
@@ -394,12 +402,13 @@
     <ClCompile Include="VariablesManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
+    <ClCompile Include="Widget.cpp" />
+    <ClCompile Include="WidgetFlags.cpp" />
     <ClCompile Include="WindowHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\User\Downloads\game_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="modern\modern_math.inl" />
+    <None Include="modern\modern_xmath.inl" />
     <None Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>

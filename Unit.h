@@ -4,10 +4,10 @@
 #include "Sprite.h"
 #include "Sound.h"
 #include "Attack.h"
+#include "UnitStats.h"
 
-#pragma region
-
-#pragma endregion
+#include "WalkingStance.h"
+#include "ModelStance.h"
 
 #define COLOR_FILTER_NOCHANGE -1.f
 
@@ -19,28 +19,7 @@ public:
 #define DEFAULT_ROTATION       0.0f
 #define DEFAULT_ROTATION_SPEED 0.01f
 
-	enum WalkingStance
-	{
-		WS_WALK = 0,
-		WS_RUN = 1
-	};
-
-	enum ModelStance
-	{
-		MS_TOWNWALK = 0,
-		MS_TOWNNEUTRAL = 1,
-		MS_SPECIALCAST = 2,
-		MS_GETHIT = 3,
-		MS_KICK = 4,
-		MS_SPECIAL_1 = 5,
-		MS_WALK = 6,
-		MS_ATTACK_1 = 7,
-		MS_NEUTRAL = 8,
-		MS_ATTACK_2 = 9,
-		MS_RUN = 10,
-		MS_SPECIAL_3 = 11,
-		MS_SPECIAL_4 = 12,
-	};
+	
 
 	struct ModelVariant
 	{
@@ -62,7 +41,7 @@ public:
 		{
 			return m_maxFrames[m_variant];
 		}
-		void SetVariant(const enum ModelStance variant = ModelStance::MS_NEUTRAL)const noexcept
+		void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const noexcept
 		{
 			this->m_variant = variant;
 		}
@@ -127,7 +106,7 @@ public:
 	float GetZ() const noexcept;
 	void SetSpeed(const float speed = 0.0f);
 	WalkingStance GetWalkingStance() const noexcept;
-	void SetWalkingStance(const enum WalkingStance stance = WalkingStance::WS_RUN);
+	void SetWalkingStance(const enum WalkingStance stance = WalkingStance::WALKING_STANCE_RUN);
 	void ChangeWalkingStance();
 	void SetRotations(const int32 rotations);
 	void SetRotation(const float rotation);
@@ -137,6 +116,8 @@ public:
 	void DiscardTasks(); 
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
+	void Die(class Unit* const killer);
+	const UnitStats& GetStats();
 
 	Attack& GetAttack();
 
@@ -144,10 +125,13 @@ public:
 	class Task* GetTask() const noexcept;
 
 	bool IsAttacking() const noexcept;
+	bool IsDead() const noexcept;
 
-	bool Attack(class EObject* const target);
-	bool GetAttacked(class EObject* const attacker);
+	bool BeginAttack(class Unit* const target);
+	bool Attack(class Unit* const target);
+	bool GetAttacked(class Unit* const attacker);
 	bool StartCasting(const DirectX::XMFLOAT2 target);
+	void DoDamage(class Unit* const attacker);
 
 	void SetFootstepsSound(class Sound* sound);
 
@@ -168,6 +152,8 @@ public:
 	friend struct SortByX;
 	friend struct SortByY;
 	friend struct UnitsVector;
+
+	[[nodiscard]] static bool CheckIfValid(class Unit* const pointer);
 
 private:
 
@@ -209,7 +195,10 @@ private:
 	int           m_stopped;
 	bool          m_stop;
 	bool          m_intersection;
+	bool          m_dead;
 
+	
+	struct UnitStats     m_stats;
 	struct Attack        m_attack;
 
 	//class UnitSounds m_sounds;

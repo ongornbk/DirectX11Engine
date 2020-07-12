@@ -2,6 +2,7 @@
 #include "GlobalUtilities.h"
 #include "Unit.h"
 #include "GarbageCollector.h"
+#include "../modern/modern/modern.h"
 
 using::GlobalUtilities::random;
 
@@ -9,8 +10,8 @@ DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const f
 {
 	float xx = object.x;
 	float yy = object.y;
-	xx += random(-x, x);
-	yy += random(-y, y);
+	xx += modern_random(-x, x);
+	yy += modern_random(-y, y);
 	return DirectX::XMFLOAT3(xx, yy, object.z);
 }
 

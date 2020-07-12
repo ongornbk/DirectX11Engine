@@ -1,0 +1,12 @@
+#pragma once
+
+enum class HandleType
+{
+	UNIT,
+	DOODADS,
+	ANIMATED_DOODADS,
+	TREE,
+	COLLISION_BOX,
+	SPECIAL_EFFECT,
+	REGION_POINT
+};

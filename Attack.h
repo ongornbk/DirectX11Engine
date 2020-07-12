@@ -8,4 +8,5 @@ struct Attack
 
 	float range;
 	mutable bool active;
+	float m_attackDelay;
 };

@@ -14,3 +14,9 @@ typedef uint8_t  uint8;
 
 typedef uint8_t BYTE;
 
+#ifdef _MSC_VER
+#define MSVC_VOLATILE volatile
+#else
+#define MSVC_VOLATILE
+#endif
+

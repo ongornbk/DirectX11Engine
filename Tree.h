@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "RenderContainer.h"
 #include "Global.h"
+#include "RenderHandle.h"
 
 class Tree : public EObject
 {
@@ -40,7 +41,9 @@ public:
 	int32 isReleased() const noexcept override;
 	void _cdecl Intersect(class EObject* const other) override;
 
-	static void SetGlobal(Global* global) noexcept;
+	static void SetGlobal(class Global* global) noexcept;
+
+	RenderHandle GetRenderHandle();
 
 private:
 

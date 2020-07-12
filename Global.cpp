@@ -18,7 +18,7 @@ Global::Global()
 	camera_up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	camera_lookat = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
-	m_gmap["pickedObject"] = m_pickedObject;
+	m_gmap["pickedObject"] = (void*)m_pickedObject;
 }
 
 

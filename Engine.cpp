@@ -6,7 +6,6 @@
 #include "LuaCallback.cpp"
 #include "S_ModelPaths.h"
 #include "Font.h"
-#include "Network.h"
 #include "ShadowShader.h"
 #include "CPU.h"
 #include "String.h"
@@ -80,7 +79,6 @@ Engine::~Engine(void)
 		m_gameComponent = nullptr;
 	}
 	Font::ReleaseFonts();
-	Network::Release();
 	lua::Close();
 }
 
@@ -432,15 +430,13 @@ void Engine::Update()
 
 void Engine::Render()
 {
-#pragma omp parallel
+
 	{
 		{
 			class GarbageCollector* gbc = GarbageCollector::GetInstance();
 			gbc->Update();
 		}
 		
-
-#pragma omp single
 		{
 
 			m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
@@ -465,7 +461,7 @@ void Engine::Render()
 
 		}
 	}
-#pragma omp barrier
+
 }
 
 extern "C"

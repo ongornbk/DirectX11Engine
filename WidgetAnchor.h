@@ -1,0 +1,14 @@
+#pragma once
+
+enum class WidgetAnchor
+{
+	BOTTOM_CENTRE,
+	BOTTOM_LEFT,
+	BOTTOM_RIGHT,
+	TOP_LEFT,
+	TOP_CENTRE,
+	TOP_RIGHT,
+	RIGHT,
+	LEFT,
+	CENTRE
+};
