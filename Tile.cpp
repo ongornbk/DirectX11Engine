@@ -194,7 +194,7 @@ void Tile::SetGlobals(
 	using std::istreambuf_iterator;
 	using std::istringstream;
 #pragma endregion
-	ifstream stream("../settings/tile.file");
+	ifstream stream("x64/Release/bin/settings/tile.file");
 	if (!stream.good())
 	{
 

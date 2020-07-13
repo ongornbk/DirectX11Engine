@@ -10,6 +10,7 @@ UserInterface::UserInterface()
 {
 	m_instance = this;
 	m_engine = Engine::GetEngine();
+	m_type = TEMPNONE;
 }
 
 UserInterface::UserInterface(const enum Type type)
@@ -33,6 +34,8 @@ UserInterface::~UserInterface()
 	case GAMEMENU:
 		delete m_interface.m_gameMenu;
 		break;
+	default:
+		break;
 	}
 }
 void UserInterface::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
@@ -47,6 +50,8 @@ void UserInterface::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewM
 		break;
 	case GAMEMENU:
 		m_interface.m_gameMenu->Render(deviceContext, viewMatrix, projectionMatrix);
+		break;
+	default:
 		break;
 	}
 }
@@ -63,6 +68,8 @@ void UserInterface::Update(const XMVECTOR cameraPosition)
 		break;
 	case GAMEMENU:
 		m_interface.m_gameMenu->Update(cameraPosition);
+		break;
+	default:
 		break;
 	}
 }
@@ -92,6 +99,8 @@ void UserInterface::SetScene(const enum Type scene,class Shader* shader)
 			m_interface.m_gameMenu = NULL;
 		}
 		break;
+	default:
+		break;
 	}
 	
 	m_type = scene;
@@ -106,6 +115,8 @@ void UserInterface::SetScene(const enum Type scene,class Shader* shader)
 		break;
 	case GAMEMENU:
 		m_interface.m_gameMenu = new UserInterfaceGameMenu(m_engine, shader);
+		break;
+	default:
 		break;
 	}
 }
@@ -123,6 +134,8 @@ void UserInterface::SetScene(const uint32 scene,class Shader * shader)
 	case 2u:
 		SetScene(Type::GAMEMENU, shader);
 		break;
+	default:
+		break;
 	}
 }
 
@@ -138,6 +151,8 @@ void UserInterface::GetMousePosition(float& X, float& Y)
 		break;
 	case GAMEMENU:
 		//m_instance->m_interface.m_gameMenu->GetMousePosition(X, Y);
+		break;
+	default:
 		break;
 	}
 }

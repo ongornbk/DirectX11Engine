@@ -1,5 +1,6 @@
 #pragma once
 #include "IAction.h"
+
 class ActionMessageFront :
 	public IAction
 {

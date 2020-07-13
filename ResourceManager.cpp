@@ -14,6 +14,10 @@ using ipp::Console;
 #define RESOURCES_LOCATION  "../../Resources/Resources.file"
 #define DIRT_LOCATION       "../../content/textures/tiles/dirt.png"
 #define TILES_LOCATION      "../../content/textures/tiles/"
+#define TEXTURES_LOCATION2   "x64/Release/content/textures/"
+#define RESOURCES_LOCATION2  "x64/Release/Resources/Resources.file"
+#define DIRT_LOCATION2       "x64/Release/content/textures/tiles/dirt.png"
+#define TILES_LOCATION2      "x64/Release/content/textures/tiles/"
 #define RESOURCES_URL       "https://raw.githubusercontent.com/ongornbk/engine-0.1/master/Resources/Resources.file"
 #pragma endregion
 
@@ -63,14 +67,19 @@ ResourceManager::ResourceManager()
 	ifstream stream(RESOURCES_LOCATION);
 	if (!stream.good())
 	{
-		if (FAILED(GetItemByUrl(RESOURCES_URL,RESOURCES_LOCATION)))
+		stream.close();
+		stream.open(RESOURCES_LOCATION2);
+		if (!stream.good())
 		{
-				Console::Println(("Download Failed : " + string(RESOURCES_URL)),ipp::RED);
-			return;
-		}
-		else
-		{
-			stream = ifstream(RESOURCES_LOCATION);
+			if (FAILED(GetItemByUrl(RESOURCES_URL, RESOURCES_LOCATION)))
+			{
+				Console::Println(("Download Failed : " + string(RESOURCES_URL)), ipp::RED);
+				return;
+			}
+			else
+			{
+				stream = ifstream(RESOURCES_LOCATION);
+			}
 		}
 	}
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)),std::istreambuf_iterator<char>());
@@ -199,7 +208,9 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 		else
 		{
 			delete resourceTexture;
-            Console::Println(("Load Failed : " + string(m_resourcesURLS[str])), ipp::RED);
+			wstring wsac = L"Load Failed : " + std::wstring(textureFileName);
+			string strwsc(wsac.begin(), wsac.end());
+            Console::Println((strwsc), ipp::RED);
 			return;
 		}
 	}
@@ -281,6 +292,16 @@ class Texture * ResourceManager::GetTextureByName(const char* textureName)
 		ResourceTexture* resourceTexture = m_textures[i];
 		string resourceTextureName = resourceTexture->GetName();
 		if (!strcmp(textureName, resourceTextureName.c_str()))
+		{
+			return resourceTexture->GetTexture();
+		}
+
+	}
+	for (int i = 0; i < (int)m_textures.size(); i++)
+	{
+		ResourceTexture* resourceTexture = m_textures[i];
+		string resourceTextureName = resourceTexture->GetName();
+		if (!strcmp("sys", resourceTextureName.c_str()))
 		{
 			return resourceTexture->GetTexture();
 		}

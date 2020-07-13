@@ -1,10 +1,12 @@
 #include "Timer.h"
 #include "GarbageCollector.h"
+#include <list>
 
 namespace
 {
 
-	static std::deque<class ITimer*> m_timers;
+	static std::list<class ITimer*> m_timers;
+
 }
 
 
@@ -13,24 +15,16 @@ void Timer::Update(const float dt)
 {
 
 	class GarbageCollector* gbc = GarbageCollector::GetInstance();
-	for (auto first = m_timers.begin(); first < m_timers.end(); ++first)
-	{
-		if ((*first)->update(dt))
+
+		for (auto& element = m_timers.begin();element != m_timers.end();element++)
 		{
-			m_timers.erase(first);
-			gbc->AsyncDelete(*first);
+				if ((*element)->update(dt))
+				{
+					gbc->AsyncDelete(*element);
+					m_timers.erase(element);
+				}
 		}
 
-	}
-
-	//for (auto timer : m_timers)
-	//{
-		//if (timer->update(dt))
-		//{
-			//delete timer;
-			//m_timers.erase()
-		//}
-//	}
 }
 
 void Timer::CreateExpiringTimer(IAction* const action, const float time)

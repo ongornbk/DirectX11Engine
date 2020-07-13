@@ -145,11 +145,11 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	ipp::Console::Println("Engine::Lua Open and exec");
 
 #pragma region
-	LOADSHADER  L"../Shaders/texture.fx"                              END
-	LOADSHADER  L"../Shaders/tile.fx"                                 END
-	LOADSHADER  L"../Shaders/units.fx"                                END
-	LOADSHADER  L"../Shaders/shadow.fx"                               END
-	LOADSHADER  L"../Shaders/select.fx"                               END
+	LOADSHADER  L"x64/Release/bin/Shaders/texture.fx"                              END
+	LOADSHADER  L"x64/Release/bin/Shaders/tile.fx"                                 END
+	LOADSHADER  L"x64/Release/bin/Shaders/units.fx"                                END
+	LOADSHADER  L"x64/Release/bin/Shaders/shadow.fx"                               END
+	LOADSHADER  L"x64/Release/bin/Shaders/select.fx"                               END
 	TextureShader* uiShader  = GETSHADER "texture.fx"                END
 	TextureShader* unitsShader = GETSHADER "units.fx"                END
 	TextureShader* shadowsShader = GETSHADER "shadow.fx" END

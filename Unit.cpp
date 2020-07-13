@@ -5,6 +5,8 @@
 #include "IPP.h"
 #include "ActionAttack.h"
 #include "ActionRemoveObject.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionMessageFront.h"
 #include "modern/modern.h"
 #include "Timer.h"
 
@@ -460,8 +462,10 @@ void Unit::Die(Unit* const killer)
 	m_flags.m_pushable = false;
 	m_flags.m_selectable = false;
 	m_dead = true;
-	class ActionRemoveObject* const action = new ActionRemoveObject(this);
-	Timer::CreateExpiringTimer(action, 10.f);
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	action->push(new ActionMessageFront(this));
+	action->push(new ActionRemoveObject(this));
+	Timer::CreateExpiringTimer(action, 3.f);
 }
 
 const UnitStats& Unit::GetStats()

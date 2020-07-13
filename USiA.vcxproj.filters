@@ -67,6 +67,12 @@
     <Filter Include="Core\Engine">
       <UniqueIdentifier>{c8da5a35-4815-4118-a39a-8aa0a32a9569}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -453,6 +459,18 @@
     <ClInclude Include="ModelStance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="modern_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteActionArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -752,6 +770,12 @@
     <ClCompile Include="UnitStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionExecuteAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteActionArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -762,6 +786,27 @@
     </None>
     <None Include="modern\modern_xmath.inl">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="x64\Release\bin\settings\interface.ini">
+      <Filter>Settings</Filter>
+    </None>
+    <None Include="x64\Release\bin\settings\settings.file">
+      <Filter>Settings</Filter>
+    </None>
+    <None Include="x64\Release\bin\settings\tile.file">
+      <Filter>Settings</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
+      <Filter>Lua</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

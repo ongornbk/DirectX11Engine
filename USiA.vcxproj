@@ -183,6 +183,8 @@
     <ClInclude Include="Ability.h" />
     <ClInclude Include="ActionApplyColorFilter.h" />
     <ClInclude Include="ActionAttack.h" />
+    <ClInclude Include="ActionExecuteAction.h" />
+    <ClInclude Include="ActionExecuteActionArray.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionMessageFront.h" />
     <ClInclude Include="ActionRemoveObject.h" />
@@ -243,9 +245,11 @@
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_math.h" />
+    <ClInclude Include="modern\modern_memory.h" />
     <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
+    <ClInclude Include="modern_array.h" />
     <ClInclude Include="ObjectAnchorType.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
@@ -308,6 +312,8 @@
   <ItemGroup>
     <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionAttack.cpp" />
+    <ClCompile Include="ActionExecuteAction.cpp" />
+    <ClCompile Include="ActionExecuteActionArray.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionMessageFront.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
@@ -410,6 +416,13 @@
     <None Include="modern\modern_math.inl" />
     <None Include="modern\modern_xmath.inl" />
     <None Include="resource.rc" />
+    <None Include="x64\Release\bin\settings\interface.ini" />
+    <None Include="x64\Release\bin\settings\settings.file" />
+    <None Include="x64\Release\bin\settings\tile.file" />
+    <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua" />
+    <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua" />
+    <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua" />
+    <None Include="x64\Release\bin\x64\lua\Renderafter.lua" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc" />

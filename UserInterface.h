@@ -23,7 +23,8 @@ public:
 	{
 		MAINMENU = 0,
 		GAME = 1,
-		GAMEMENU = 2
+		GAMEMENU = 2,
+		TEMPNONE = 3
 	};
 private:
 	union Interface

@@ -66,9 +66,9 @@ void Text::SetPosition(XMFLOAT3 position)
 	{
 		XMStoreFloat4x4(&letter->m_world, XMMatrixTranslation((position.x+sumup),position.y,0.0f));
 		if(letter->m_char==' ')
-		sumup += ((m_font->GetWidthOfLetter('o'))*0.6f);
+		sumup += ((m_font->GetWidthOfLetter('o'))*0.4f);
 		else
-		sumup += ((m_font->GetWidthOfLetter(letter->m_char))*0.6f);
+		sumup += ((m_font->GetWidthOfLetter(letter->m_char))*0.4f);
 	}
 }
 
@@ -108,7 +108,7 @@ void Text::Initialize()
 	for (auto && letter : m_letters)
 	{
 		XMStoreFloat4x4(&(letter->m_world), XMMatrixIdentity());
-		letter->m_sprite = new LetterSprite(m_font, letter->m_char, 18.0f, m_shader);
+		letter->m_sprite = new LetterSprite(m_font, letter->m_char, 12.0f, m_shader);
 		letter->m_sprite->Initialize(m_device, m_deviceContext, m_shader, m_font);
 	}
 }

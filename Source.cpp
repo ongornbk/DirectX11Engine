@@ -11,12 +11,15 @@
 #pragma region
 #define SETTINGS Settings::get()->
 #define SETTINGS_LOCATION "../settings/settings.file"
+#define SETTINGS_LOCATION2 "X64/Release/bin/settings/settings.file"
 #define SETTINGS_NUMBER_OF_ARGUMENTS 4U
 #pragma endregion
 
 using std::string;
 
-
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
 
 void main(const int argc,char** const argv)
 {
@@ -26,7 +29,16 @@ void main(const int argc,char** const argv)
 	{
 		ipp::Console::SetTextColor(ipp::RED);
 		ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
+		stream.close();
+		stream.open(SETTINGS_LOCATION2);
+		if (!stream.good())
+		{
+			ipp::Console::SetTextColor(ipp::RED);
+			ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION2));
+			return;
+		}
 	}
+
 	std::string BUFFER((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
 	
 	//XMLParser xml;

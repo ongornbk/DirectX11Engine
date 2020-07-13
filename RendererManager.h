@@ -8,6 +8,7 @@
 #include "Tree.h"
 #include "RegionPointObject.h"
 #include "RenderContainerVector.h"
+#include "modern/modern_array.h"
 #include <stack>
 #include <map>
 
@@ -74,8 +75,6 @@ public:
 	static std::vector<int64> GetNumberOfObjectsVector();
 
 private:
-
-	
 
 	Engine* m_engine;
 	Shader* m_shader;
