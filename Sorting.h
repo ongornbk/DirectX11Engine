@@ -1,11 +1,10 @@
 #pragma once
 #include "RenderContainer.h"
-#include "Vector.h"
+#include "modern/modern.h"
 #include <forward_list>
 
 namespace
 {
-
 	static int32 xta[32]{};
 	static int32 yta[32]{};
 }
@@ -32,16 +31,16 @@ struct  __sort__StaticSortByX
 };
 
 _Use_decl_annotations_
-void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall QSortByYV(class Vector<class EObject*> vec[2][32]) noexcept;
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][32]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall QSortByXV(class Vector<class EObject*> vec[2][32]) noexcept;
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][32]) noexcept;
 
 //_Use_decl_annotations_
 //void _vectorcall StaticSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
@@ -56,4 +55,4 @@ void _vectorcall QSortByXV(class Vector<class EObject*> vec[2][32]) noexcept;
 //void _vectorcall StaticQSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
 
 	_Use_decl_annotations_
-void _vectorcall __CleanUp(class Vector<class EObject*>* const vec) noexcept;
+void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexcept;

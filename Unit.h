@@ -8,16 +8,17 @@
 
 #include "WalkingStance.h"
 #include "ModelStance.h"
+#include "UnitDefaults.h"
 
 #define COLOR_FILTER_NOCHANGE -1.f
+
+class UnitTemplate;
 
 class Unit : public EObject
 {
 public:
 
-#define STANDARDSTANCE 4
-#define DEFAULT_ROTATION       0.0f
-#define DEFAULT_ROTATION_SPEED 0.01f
+
 
 	
 
@@ -170,6 +171,7 @@ private:
 	bool                m_wanderingFlag;
 	class Sound*        m_footstepsSound{};
 	class sf::Sound*    m_footstepsHandle{};
+	class UnitTemplate* m_template;
 
 	struct ID3D11DeviceContext * m_deviceContext;
 	struct DirectX::XMFLOAT4     m_colorFilter;;

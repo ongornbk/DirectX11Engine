@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "RendererManager.h"
 #include "IPP.h"
+#include "modern/modern.h"
 #include <array>
 #include <fstream>
 #include <string>
@@ -41,7 +42,7 @@ struct TileType
 
 	namespace
 	{
-		static float        m_cellMultiplier = 1.00;
+		static float        m_cellMultiplier = 1.f;
 	}
 
 	namespace tile
@@ -58,7 +59,7 @@ static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 static int32_t tilesub[32] ={
 	3,//GRASS
 	3,//DIRT
-	0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u,0u
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
 	}
@@ -220,12 +221,11 @@ void Tile::SetGlobals(
 	tile::CAMERA_TILE_CUT      = tile::CAMERA_TILE_VIEW - tile::CAMERA_RENDER_CUT;
 	tile::CAMERA_TILE_DEEP_CUT = tile::CAMERA_TILE_CUT + sizes.at(4);
 
-//#pragma omp parallel for
-	for (int i = 0; i < TILE_MAP_SIZE; ++i)
-		for (int j = 0; j < TILE_MAP_SIZE; ++j)
-		{
-			m_tile[i][j].tile_type = 0u;
-		}
+	//for (int32 i = 0; i < TILE_MAP_SIZE; ++i)
+	//	for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
+	//	{
+		//	m_tile[i][j].tile_type = 0u;
+	//	}
 	m_tileShader = shader;
 	m_device = device;
 	
@@ -293,13 +293,15 @@ void SimpleTile::Update(const float dt)
 
 void SimpleTile::Render()
 {
+
 	const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
-	if (current.tile_type != type.tile_type)
+	if (current != type)
 	{
 		LoadTexture();
 	}
 	m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
-	m_vertexBuffer[m_tile[m_info.m_index.x][m_info.m_index.y].tile_type][m_tile[m_info.m_index.x][m_info.m_index.y].tile_sub]->Render(m_deviceContext);
+	m_vertexBuffer[type.tile_type][type.tile_sub]->Render(m_deviceContext);
+
 }
 TileMap::~TileMap()
 {
@@ -462,7 +464,7 @@ void TileMap::SetTile(
 	ipp::math::clamp(tile, 0, 8);		
 
 	m_tile[position.x][position.y].tile_type = (int32)tile;
-	m_tile[position.x][position.y].tile_sub = ipp::math::RandomInt32(0, tile::tilesub[tile]);
+	m_tile[position.x][position.y].tile_sub = modern_random(0, tile::tilesub[tile]);
 
 	if (tile == 7)																																	
 	{																																				

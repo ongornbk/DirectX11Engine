@@ -249,6 +249,10 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
 	m_sounds.push_back(resourceSound);
 }
 
+void ResourceManager::LoadUnitTemplateResource(modern_string& filename)
+{
+}
+
 void ResourceManager::PrintOutTextures()
 {
 

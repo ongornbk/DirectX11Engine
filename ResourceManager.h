@@ -2,6 +2,7 @@
 #include "ResourceShader.h"
 #include "ResourceTexture.h"
 #include "ResourceSound.h"
+#include "modern/modern.h"
 
 #include <iostream>
 #include <vector>
@@ -26,6 +27,7 @@ public:
 	void LoadShaderResource(Shader* shader);
 	void LoadTextureResource( WCHAR* textureFileName);
 	void LoadSoundResource(WCHAR* soundFileName);
+	void LoadUnitTemplateResource(modern_string& filename);
 	void PrintOutTextures();
 	void Release();
 

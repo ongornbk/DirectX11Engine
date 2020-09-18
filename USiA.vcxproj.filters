@@ -73,6 +73,9 @@
     <Filter Include="Lua">
       <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -285,9 +288,6 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadPool.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -471,6 +471,27 @@
     <ClInclude Include="modern\modern_memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UnitTemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_shared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_weak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_pair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitDefaults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -616,9 +637,6 @@
     </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BinaryTree.c">
-      <Filter>Source Files\C</Filter>
     </ClCompile>
     <ClCompile Include="RenderZMap.cpp">
       <Filter>Source Files</Filter>
@@ -776,6 +794,15 @@
     <ClCompile Include="ActionExecuteActionArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnitTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_string.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -808,10 +835,30 @@
     <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
       <Filter>Lua</Filter>
     </None>
+    <None Include="x64\Release\bin\x64\lua\core\Game.lua">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="x64\Release\bin\shaders\select.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="x64\Release\bin\shaders\shadow.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="x64\Release\bin\shaders\texture.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="x64\Release\bin\shaders\tile.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="x64\Release\bin\shaders\units.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

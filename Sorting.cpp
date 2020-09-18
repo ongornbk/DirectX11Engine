@@ -699,13 +699,13 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 	else return false;
 }
 
-void _cdecl sortPxVTP(Vector<class EObject*>& vector) noexcept
+void _cdecl sortPxVTP(class modern_array<class EObject*>& vector) noexcept
 {
 	_Sort_unchecked(vector.begin(), vector.end(),vector.size(), __sort__SortByX());
 }
 
 
-void _cdecl sortPyVTP(Vector<class EObject*>& vector) noexcept
+void _cdecl sortPyVTP(class modern_array<class EObject*>& vector) noexcept
 {
 	_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByY());
 }
@@ -720,7 +720,7 @@ void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject*
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByY());
 }
 
-void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcept
 {
 	//for (int32 i = 0; i < 32; ++i)
 	//	vec[1][i].clear();
@@ -768,7 +768,7 @@ void _vectorcall SortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 //	}
 }
 
-void _vectorcall QSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexcept
 {
 
 //#pragma omp parallel
@@ -784,7 +784,7 @@ void _vectorcall QSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
 #pragma omp barrier
 }
 
-void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][32]) noexcept
 {
 
 	int32 xp, yp;
@@ -830,7 +830,7 @@ void _vectorcall SortByXV(class Vector<class EObject*> vec[2][32]) noexcept
 
 }
 
-void _vectorcall QSortByXV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][32]) noexcept
 {
 //#pragma omp parallel
 #pragma omp for schedule(dynamic)
@@ -910,12 +910,12 @@ void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 }
 */
 
-void _vectorcall __CleanUp(class Vector<class EObject*>* const vec) noexcept
+void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexcept
 {
 
-	for (int32 i = 0; i <	MAP_DIVISION; ++i)
+	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
-	class Vector<class EObject*>& vectemp = vec[i];
+	class modern_array<class EObject*>& vectemp = vec[i];
 	for (int32 j = 0; j < vectemp.size(); ++j)
 	{
 		class EObject* obj = vectemp[j];

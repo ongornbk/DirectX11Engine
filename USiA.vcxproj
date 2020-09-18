@@ -244,8 +244,13 @@
     <ClInclude Include="ModelStance.h" />
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_def.h" />
+    <ClInclude Include="modern\modern_exception.h" />
     <ClInclude Include="modern\modern_math.h" />
     <ClInclude Include="modern\modern_memory.h" />
+    <ClInclude Include="modern\modern_pair.h" />
+    <ClInclude Include="modern\modern_shared.h" />
+    <ClInclude Include="modern\modern_string.h" />
+    <ClInclude Include="modern\modern_weak.h" />
     <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
@@ -290,16 +295,17 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="UnitDefaults.h" />
     <ClInclude Include="UnitFactory.h" />
     <ClInclude Include="UnitGroup.h" />
     <ClInclude Include="UnitSounds.h" />
     <ClInclude Include="UnitStats.h" />
+    <ClInclude Include="UnitTemplate.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
     <ClInclude Include="UserInterfaceMainMenu.h" />
     <ClInclude Include="VariablesManager.h" />
-    <ClInclude Include="Vector.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="WalkingStance.h" />
@@ -323,7 +329,6 @@
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />
     <ClCompile Include="BasicParameter.cpp" />
-    <ClCompile Include="BinaryTree.c" />
     <ClCompile Include="ColorFilter.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
@@ -362,6 +367,8 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="IPP.cpp" />
     <ClCompile Include="IParameter.cpp" />
+    <ClCompile Include="modern\modern_exception.cpp" />
+    <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
     <ClCompile Include="Region.cpp" />
@@ -401,6 +408,7 @@
     <ClCompile Include="UnitGroup.cpp" />
     <ClCompile Include="UnitSounds.cpp" />
     <ClCompile Include="UnitStats.cpp" />
+    <ClCompile Include="UnitTemplate.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="UserInterfaceGame.cpp" />
     <ClCompile Include="UserInterfaceGameMenu.cpp" />
@@ -419,6 +427,7 @@
     <None Include="x64\Release\bin\settings\interface.ini" />
     <None Include="x64\Release\bin\settings\settings.file" />
     <None Include="x64\Release\bin\settings\tile.file" />
+    <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua" />
@@ -426,6 +435,23 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Release\bin\shaders\select.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="x64\Release\bin\shaders\shadow.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="x64\Release\bin\shaders\texture.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="x64\Release\bin\shaders\tile.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="x64\Release\bin\shaders\units.fx">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,7 @@
 #include "ActionMessageFront.h"
 #include "modern/modern.h"
 #include "Timer.h"
+#include "UnitTemplate.h"
 
 Unit::Unit() : 
 	m_colorFilter(1.f, 1.f, 1.f, 1.f),
@@ -20,6 +21,7 @@ Unit::Unit() :
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 	m_vertexBuffer = nullptr;
+	m_template = nullptr;
 	m_rotation = DEFAULT_ROTATION;
 	m_isLooping = true;
 	m_animationSpeed = 30.f;

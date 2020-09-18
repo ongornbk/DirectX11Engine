@@ -72,7 +72,7 @@ void _vectorcall EObjectVector::Render(
 	const struct ShaderPackage &shader
 ) noexcept
 {
-class Vector<class Vector<class EObject*>*> mvpp;
+class modern_array<class modern_array<class EObject*>*> mvpp;
 
 
 for (int32 i = 0; i < 32; i++)

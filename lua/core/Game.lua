@@ -1,7 +1,7 @@
 Game = {}
 
 function Game.Start ()
-LoadInstance("../saves/map.save")
+LoadInstance("maps/map.save")
 tileSelected = 0
 SetInterface(1)
 ResumeGame()
@@ -16,7 +16,7 @@ PostQuitMessage(1)
 end
 
 function Game.Save()
-SaveInstance("../saves/map.save")
+SaveInstance("maps/map.save")
 end
 
 

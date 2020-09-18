@@ -4,7 +4,7 @@
 #include "Doodads.h"
 #include "Tree.h"
 #include "Unit.h"
-#include "Vector.h"
+#include "modern/modern.h"
 #include <stack>
 //#include <forward_list>
 
@@ -15,7 +15,7 @@ struct EObjectVector
 
 	EObjectVector();
 
-	Vector<class EObject*> m_objectsXY[2][32];
+	modern_array<class EObject*> m_objectsXY[2][32];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);

@@ -319,7 +319,6 @@ void _fastcall ipp::math::clamp(char& value, const char min, const char max)
 {
 	if (value > max)
 	{
-		Console::Println((uint32_t)value);
 		value = max;
 		return;
 	}

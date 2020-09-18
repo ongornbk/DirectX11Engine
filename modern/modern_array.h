@@ -13,8 +13,8 @@ modern is a trademark of ongornbk@gmail.com.
 */
 
 #pragma once
-#include "modern/modern_def.h"
-#include "modern/modern_memory.h"
+#include "modern_def.h"
+#include "modern_memory.h"
 
 template <class T>
 class modern_array
@@ -152,6 +152,15 @@ public:
 	void clear()
 	{
 		m_size = 0;
+	}
+
+	void shrink()
+	{
+		if (m_capacity > (m_size * 2) + 1)
+		{
+			m_capacity = m_size + 1;
+			m_data = mrealloc<T>(m_data,m_capacity);
+		}
 	}
 
 	void reverse()
