@@ -11,3 +11,5 @@ enemy_townneutral
 enemy_townneutral
 enemy_townneutral
 enemy_walk
+enemy_townneutral
+enemy_townneutral

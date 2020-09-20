@@ -2,7 +2,7 @@
 #include "modern_exception.h"
 #include "modern_math.h"
 
-constexpr wchar_t cs_number[10] = { '0','1','2','3','4','5','6','7','8','9' };
+constexpr wchar_t cs_number[10] = { L'0',L'1',L'2',L'3',L'4',L'5',L'6',L'7',L'8',L'9' };
 
 modern_string::modern_string()
 {
@@ -142,6 +142,30 @@ size_t modern_string::size() const noexcept
 	return m_string->size();
 }
 
+int32_t modern_string::to_int32() noexcept
+{
+	modern_array<int32_t> digits;
+	modern_weak<modern_array<wchar_t>> base;
+	base.make_weak(m_string);
+	for (auto  ch : *base)
+	{
+		if (modern_isdigit(ch))
+			digits.push_back(modern_todigit(ch));
+	}
+	int32_t value = 0;
+	for (int32_t i = 0; i < digits.size(); i++)
+	{
+		int32_t mult = (int32_t)digits.size() - i;
+		int32_t val10 = digits[i];
+		for (int32_t ii = 0; ii < mult - 1; ii++)
+		{
+			val10 *= 10;
+		}
+		value += val10;
+	}
+	return value;
+}
+
 modern_pair<modern_string, modern_string>& modern_string::SplitString(const wchar_t* string, wchar_t token)
 {
 	wchar_t currc;
@@ -217,4 +241,14 @@ void modern_string::load(const char* text)
 	m_string->resize(strlen(text) + 1);
 #pragma warning(disable : 4996)
 	mbstowcs(m_string->data(), text, strlen(text));
+}
+
+bool modern_isdigit(wchar_t ch) noexcept
+{
+	return (ch > L'0' && ch < L'9');
+}
+
+int32_t modern_todigit(wchar_t ch) noexcept
+{
+	return ch - L'0';
 }

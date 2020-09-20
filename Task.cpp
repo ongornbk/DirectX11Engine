@@ -52,11 +52,11 @@ bool TaskGotoPoint::Update()
 			}
 
 			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / XM_PI;
-			rotation += 180.0f;
-			rotation /= 22.5f;
-			rotation = 20 - rotation;
+			rotation += 90.0f;
+			rotation /= (360.f / object->GetNumberOfRotations());
+			rotation = object->GetNumberOfRotations() - rotation;
 			object->SetRotation(rotation);
-			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
 			object->SetVelocity(f3.x, f3.y, f3.z);
 			CONTINUE_TASK;
 		}
@@ -110,11 +110,11 @@ bool TaskPatrol::Update()
 		}
 		}
 		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
-		rotation += 180.0f;
-		rotation /= 22.5f;
-		rotation = 20 - rotation;
+		rotation += 90.0f;
+		rotation /= (360.f / object->GetNumberOfRotations());
+		rotation = object->GetNumberOfRotations() - rotation;
 		object->SetRotation(rotation);
-		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
 		object->SetVelocity(f3.x, f3.y, f3.z);
 		CONTINUE_TASK;
 	}
@@ -157,11 +157,11 @@ bool TaskFollow::Update()
 		}
 		}
 		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
-		rotation += 180.0f;
-		rotation /= 22.5f;
-		rotation = 20 - rotation;
+		rotation += 90.f;
+		rotation /= (360.f / object->GetNumberOfRotations());
+		rotation = object->GetNumberOfRotations() - rotation;
 		object->SetRotation(rotation);
-		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
 		object->SetVelocity(f3.x, f3.y, f3.z);
 		CONTINUE_TASK;
 	}
@@ -214,9 +214,9 @@ bool TaskAttack::Update()
 	{
 		atk.active = false;
 		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
-		rotation += 180.0f;
-		rotation /= 22.5f;
-		rotation = 20 - rotation;
+		rotation += 90.0f;
+		rotation /= (360.f / object->GetNumberOfRotations());
+		rotation = object->GetNumberOfRotations() - rotation;
 		object->SetRotation(rotation);
 		switch (object->GetWalkingStance())
 		{
@@ -232,7 +232,7 @@ bool TaskAttack::Update()
 		}
 		}
 		
-		DirectX::XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], rotation);
+		DirectX::XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
 		object->SetVelocity(f3.x, f3.y, f3.z);
 		CONTINUE_TASK;
 	}

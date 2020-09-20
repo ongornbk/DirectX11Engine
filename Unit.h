@@ -26,7 +26,7 @@ public:
 	{
 		ModelVariant()
 		{
-			ZeroMemory(m_textures, sizeof(Texture*) * 13);
+			ZeroMemory(m_textures, sizeof(Texture*) * 15);
 			m_variant = 0;
 		}
 
@@ -51,8 +51,8 @@ public:
 			this->m_variant = variant;
 		}
 
-		Texture*             m_textures[13];
-		float                m_maxFrames[13] = { 8,16,15,5,0,0,8,16,8,0,8,0,0 };
+		Texture*             m_textures[15];
+		float                m_maxFrames[15] = { 8,16,15,5,0,0,8,16,8,0,8,0,0,0,0 };
 	private:
 		mutable int32                m_variant;
 
@@ -105,6 +105,8 @@ public:
 	DirectX::XMFLOAT3 GetPosition() const noexcept;
 	float    GetSpeed() const noexcept;
 	float GetZ() const noexcept;
+	float GetNumberOfRotations() const noexcept;
+	float GetRotation() const noexcept;
 	void SetSpeed(const float speed = 0.0f);
 	WalkingStance GetWalkingStance() const noexcept;
 	void SetWalkingStance(const enum WalkingStance stance = WalkingStance::WALKING_STANCE_RUN);

@@ -9,6 +9,8 @@
 
 #include "IPP.h"
 
+#include "modern/modern_string.h"
+
 #pragma region
 using std::string;
 using std::vector;
@@ -17,7 +19,7 @@ using std::wstring;
 
 ModelPaths::ModelPaths()
 {
-	ZeroMemory(m_modelPath, sizeof(WCHAR*) * 13);
+	ZeroMemory(m_modelPath, sizeof(WCHAR*) * 15);
 }
 
 ModelPaths::ModelPaths(WCHAR * file)
@@ -64,19 +66,39 @@ ModelPaths::ModelPaths(WCHAR * file)
 	//	ipp::Console::Println(animations.at(i));
 	//}
 
-	ATTACK_1    = animations.at(0);
-	ATTACK_2    = animations.at(1);
-	GETHIT      = animations.at(2);
-	KICK        = animations.at(3);
-	NEUTRAL     = animations.at(4);
-	RUN         = animations.at(5);
-	SPECIALCAST = animations.at(6);
-	SPECIAL_1   = animations.at(7);
-	SPECIAL_3   = animations.at(8);
-	SPECIAL_4   = animations.at(9);
-	TOWNNEUTRAL = animations.at(10);
-	TOWNWALK    = animations.at(11);
-	WALK        = animations.at(12);
+	m_rotations = modern_string(animations.at(0)).to_int32();
+	m_frames[0] = modern_string(animations.at(1)).to_int32();
+	m_frames[1] = modern_string(animations.at(2)).to_int32();
+	m_frames[2] = modern_string(animations.at(3)).to_int32();
+	m_frames[3] = modern_string(animations.at(4)).to_int32();
+	m_frames[4] = modern_string(animations.at(5)).to_int32();
+	m_frames[5] = modern_string(animations.at(6)).to_int32();
+	m_frames[6] = modern_string(animations.at(7)).to_int32();
+	m_frames[7] = modern_string(animations.at(8)).to_int32();
+	m_frames[8] = modern_string(animations.at(9)).to_int32();
+	m_frames[9] = modern_string(animations.at(10)).to_int32();
+	m_frames[10] = modern_string(animations.at(11)).to_int32();
+	m_frames[11] = modern_string(animations.at(12)).to_int32();
+	m_frames[12] = modern_string(animations.at(13)).to_int32();
+	m_frames[13] = modern_string(animations.at(14)).to_int32();
+	m_frames[14] = modern_string(animations.at(15)).to_int32();
+
+	ATTACK_1    = animations.at(16);
+	ATTACK_2    = animations.at(17);
+	GETHIT      = animations.at(18);
+	KICK        = animations.at(19);
+	NEUTRAL     = animations.at(20);
+	RUN         = animations.at(21);
+	SPECIALCAST = animations.at(22);
+	SPECIAL_1   = animations.at(23);
+	SPECIAL_3   = animations.at(24);
+	SPECIAL_4   = animations.at(25);
+	TOWNNEUTRAL = animations.at(26);
+	TOWNWALK    = animations.at(27);
+	WALK        = animations.at(28);
+	DEATH       = animations.at(29);
+	DEAD        = animations.at(30);
+
 }
 
 

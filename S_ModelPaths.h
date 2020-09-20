@@ -25,12 +25,15 @@ struct ModelPaths
 			WCHAR* TOWNNEUTRAL;
 			WCHAR* TOWNWALK;
 			WCHAR* WALK;
+			WCHAR* DEATH;
+			WCHAR* DEAD;
 		};
 
-		WCHAR* m_modelPath[13];
+		WCHAR* m_modelPath[15];
 	};
 
-	
+	int32_t m_rotations;
+	int32_t m_frames[15];
 
 };
 

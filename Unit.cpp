@@ -63,7 +63,11 @@ void Unit::Initialize(
 	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
 	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(tmp1);
 
-
+	
+	m_rotations = (float)ptr->m_rotations;
+	assert(m_rotations >= 1.f);
+	if (m_rotations < 1.f)
+		m_rotations = 1.f;
 
 	m_size = modelsize;
 	m_lastSize = modelsize;
@@ -75,6 +79,7 @@ void Unit::Initialize(
 	InitializeModel(device, deviceContext, shader, ptr);
 	m_wanderingFlag = wander;
 	m_type = EObject::EObjectType::UNIT;
+
 }
 
 void Unit::Render(
@@ -358,6 +363,16 @@ float Unit::GetZ() const noexcept
 	return m_boundingSphere.Center.z;
 }
 
+float Unit::GetNumberOfRotations() const noexcept
+{
+	return m_rotations;
+}
+
+float Unit::GetRotation() const noexcept
+{
+	return m_rotation;
+}
+
 void Unit::SetSpeed(const float speed)
 {
 	m_speed[0] = speed;
@@ -513,9 +528,9 @@ bool Unit::BeginAttack(class Unit* const target)
 		DirectX::XMFLOAT3 position = GetPosition();
 		DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
 		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
-		rotation += 180.0f;
-		rotation /= 22.5f;
-		rotation = 20 - rotation;
+		rotation += 90.f;
+		rotation /= (360 / m_rotations);
+		rotation = m_rotations - rotation;
 		SetRotation(rotation);
 		//const int32 atkt = ipp::math::RandomInt32(0, 1);
 		//if(atkt)
@@ -566,9 +581,9 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 	{
 		DirectX::XMFLOAT3 position = GetPosition();
 		float rotation = atan2(target.y - position.y, target.x - position.x) * 180.0f / 3.141f;
-		rotation += 180.0f;
-		rotation /= 22.5f;
-		rotation = 20 - rotation;
+		rotation += 90.0f;
+		rotation /= (360.f / m_rotations);
+		rotation = m_rotations - rotation;
 		SetRotation(rotation);
 		PlayAnimation(ModelStance::MODEL_STANCE_SPECIALCAST);
 		SetVelocity(0.0f, 0.0f, 0.0f);
@@ -730,6 +745,22 @@ void Unit::InitializeModel(
 		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 	}
 
+	m_modelVariant.m_maxFrames[0] = (float)paths->m_frames[0];
+	m_modelVariant.m_maxFrames[1] = (float)paths->m_frames[1];
+	m_modelVariant.m_maxFrames[2] = (float)paths->m_frames[2];
+	m_modelVariant.m_maxFrames[3] = (float)paths->m_frames[3];
+	m_modelVariant.m_maxFrames[4] = (float)paths->m_frames[4];
+	m_modelVariant.m_maxFrames[5] = (float)paths->m_frames[5];
+	m_modelVariant.m_maxFrames[6] = (float)paths->m_frames[6];
+	m_modelVariant.m_maxFrames[7] = (float)paths->m_frames[7];
+	m_modelVariant.m_maxFrames[8] = (float)paths->m_frames[8];
+	m_modelVariant.m_maxFrames[9] = (float)paths->m_frames[9];
+	m_modelVariant.m_maxFrames[10] = (float)paths->m_frames[10];
+	m_modelVariant.m_maxFrames[11] = (float)paths->m_frames[11];
+	m_modelVariant.m_maxFrames[12] = (float)paths->m_frames[12];
+	m_modelVariant.m_maxFrames[13] = (float)paths->m_frames[13];
+	m_modelVariant.m_maxFrames[14] = (float)paths->m_frames[14];
+
 	if (paths->TOWNWALK != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->TOWNWALK);
@@ -810,6 +841,18 @@ void Unit::InitializeModel(
 		std::wstring tmp0 = std::wstring(paths->SPECIAL_4);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[12] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->DEATH != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->DEATH);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[13] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->DEAD != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->DEAD);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[14] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 

@@ -76,6 +76,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -480,9 +483,6 @@
     <ClInclude Include="modern\modern_string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_weak.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_pair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -490,6 +490,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitDefaults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_unique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_weak.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -838,27 +844,39 @@
     <None Include="x64\Release\bin\x64\lua\core\Game.lua">
       <Filter>Lua</Filter>
     </None>
+    <None Include="x64\Release\bin\shaders\select.fx" />
+    <None Include="x64\Release\bin\shaders\shadow.fx" />
+    <None Include="x64\Release\bin\shaders\texture.fx" />
+    <None Include="x64\Release\bin\shaders\tile.fx" />
+    <None Include="x64\Release\bin\shaders\units.fx" />
+    <None Include="x64\Release\content\Textures\models\amazon.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\amazon_light.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\barbarian.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\diablo.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\enemy.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\Hero.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\paladin.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\reaper.mod">
+      <Filter>Models</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="x64\Release\bin\shaders\select.fx">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="x64\Release\bin\shaders\shadow.fx">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="x64\Release\bin\shaders\texture.fx">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="x64\Release\bin\shaders\tile.fx">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="x64\Release\bin\shaders\units.fx">
-      <Filter>Shaders</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

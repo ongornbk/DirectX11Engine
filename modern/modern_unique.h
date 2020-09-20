@@ -1,3 +1,6 @@
+#pragma once
+#include "modern_def.h"
+
 /*
 Copyright(C) < 02.06.2020 > ongornbk@gmail.com
 
@@ -12,49 +15,30 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
-#pragma once
-#include "modern_def.h"
-#include "modern_array.h"
-#include "modern_shared.h"
-#include "modern_pair.h"
-#include "modern_weak.h"
-
-class modern_exception;
-
-[[nodiscard]] bool modern_isdigit(wchar_t ch) noexcept;
-[[nodiscard]] int32_t modern_todigit(wchar_t ch) noexcept;
-
-class modern_string
+template <class T>
+class modern_unique
 {
-	modern_shared<modern_array<wchar_t>> m_string;
+	T* m_pointer;
+
 public:
-	modern_string();
-	modern_string(modern_string& string);
-	modern_string(const wchar_t* text);
-	modern_string(const wchar_t* text_begin, const wchar_t* text_end);
-	modern_string(const char* text);
-	modern_string(const size_t number);
-	modern_string(const int32_t number);
-	modern_string(const uint32_t number);
-	explicit modern_string(const char character);
-	modern_string(modern_exception& exception);
-	~modern_string();
+	modern_unique() 
+	{ 
+		m_pointer = nullptr;
+	}
+	modern_unique(T* const pointer) : m_pointer(pointer) {};
+	modern_unique(class modern_unique&) = delete;
+	~modern_unique()
+	{ 
+		if (m_pointer)
+			delete m_pointer; 
+	}
 
-	[[nodiscard]] const wchar_t* c_wstr() const noexcept;
-	[[nodiscard]] size_t size() const noexcept;
-	[[nodiscard]] int32_t to_int32() noexcept;
-	[[nodiscard]] static modern_pair<modern_string, modern_string>& SplitString(const wchar_t* string, wchar_t token);
+	void make_unique(T* const pointer)
+	{
+		m_pointer = pointer;
+	}
 
-	modern_string& operator= (modern_string& string);
-	modern_string& operator= (const wchar_t* string);
-
-	modern_string operator+ (modern_string& string);
-
-	void push_back(const wchar_t element);
-	void push_back(const char element);
-	wchar_t*& data();
-	void resize(size_t size);
-	void load(const char* text);
-
+	T& operator*() const noexcept { assert(m_pointer); return *m_pointer; }
+	T* operator->() const noexcept { assert(m_pointer); return m_pointer; }
 };
 

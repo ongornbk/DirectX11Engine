@@ -11,3 +11,5 @@ barbarian_townneutral
 barbarian_townneutral
 barbarian_townneutral
 barbarian_townwalk
+barbarian_townneutral
+barbarian_townneutral

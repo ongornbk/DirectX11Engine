@@ -11,3 +11,5 @@ paladin_townneutral
 paladin_townneutral
 paladin_townneutral
 paladin_townneutral
+paladin_townneutral
+paladin_townneutral
