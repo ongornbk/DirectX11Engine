@@ -2,6 +2,7 @@
 #include "Text.h"
 #include <list>
 #include <sal.h>
+#include <comdef.h>
 
 class GameChat
 {
@@ -19,9 +20,11 @@ public:
 
 	void PushText(std::string  text) noexcept;
 
+	void PushText(const _bstr_t text) noexcept;
+
 	void PushTextFront(std::string  text) noexcept;
 
-	void SetFont(class Font* font) noexcept;
+	void SetFont(class TextFont* font) noexcept;
 
 	void ClearQueue() noexcept;
 
@@ -44,13 +47,14 @@ protected:
 	int32                     m_size;
 	int32                     m_textsLimit;
 	DirectX::XMFLOAT3         m_pos;
-	Font*                     m_font;
+	TextFont*                     m_font;
 
 	PrintingStyle             m_printingStyle;
 
 private:
 
 	Text* CreateTextFromString(std::string  text) noexcept;
+	Text* CreateTextFromString(const _bstr_t text) noexcept;
 
 	void CheckSize() noexcept;
 };

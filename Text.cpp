@@ -6,7 +6,7 @@ namespace
 	static ID3D11Device * m_device = nullptr;
 	static ID3D11DeviceContext * m_deviceContext = nullptr;
 	static Shader * m_shader = nullptr;
-	static Font * m_font = nullptr;
+	static TextFont* m_font = nullptr;
 }
 
 
@@ -35,7 +35,7 @@ void Text::Update()
 	}
 }
 
-void Text::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, Font * font)
+void Text::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContext, Shader * shader, TextFont* font)
 {
 	m_device = device;
 	m_deviceContext = deviceContext;
@@ -96,6 +96,31 @@ void Text::SetText(std::string text)
 		}
 
 		this->Initialize();
+}
+
+void Text::SetText(const _bstr_t text)
+{
+	if (!m_letters.empty())
+	{
+		for (auto&& letter : m_letters)
+		{
+			if (letter)
+			{
+				delete letter;
+				letter = nullptr;
+			}
+		}
+	}
+	m_letters.clear();
+	m_text = text;
+	for (auto letter : m_text)
+	{
+		LetterSpriteStruct* m_spriteStruct = new LetterSpriteStruct();
+		m_spriteStruct->m_char = letter;
+		m_letters.push_back(m_spriteStruct);
+	}
+
+	this->Initialize();
 }
 
 string Text::GetText()

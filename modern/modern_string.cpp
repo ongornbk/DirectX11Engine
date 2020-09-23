@@ -2,6 +2,8 @@
 #include "modern_exception.h"
 #include "modern_math.h"
 
+
+
 constexpr wchar_t cs_number[10] = { L'0',L'1',L'2',L'3',L'4',L'5',L'6',L'7',L'8',L'9' };
 
 modern_string::modern_string()
@@ -137,6 +139,11 @@ const wchar_t* modern_string::c_wstr() const noexcept
 	return m_string->data();
 }
 
+const _bstr_t& modern_string::c_str() const noexcept
+{
+	return _bstr_t(m_string->data());
+}
+
 size_t modern_string::size() const noexcept
 {
 	return m_string->size();
@@ -194,15 +201,7 @@ modern_string& modern_string::operator=(modern_string& string)
 		return *this;
 }
 
-modern_string& modern_string::operator=(const wchar_t* string)
-{
-	m_string.make_shared(new modern_array<wchar_t>());
-	m_string->reserve(wcslen(string) + 1);
-	m_string->resize(wcslen(string) + 1);
-#pragma warning(disable : 4996)
-	wcscpy(m_string->data(), string);
-	return *this;
-}
+
 
 #include <string>
 

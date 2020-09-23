@@ -12,11 +12,11 @@
 
 namespace
 {
-	static Vector<Font*> m_fonts;
+	static Vector<TextFont*> m_fonts;
 }
 
 
-Font::Font(float width, float height, std::string filename,bool upper)
+TextFont::TextFont(float width, float height, std::string filename,bool upper)
 {
 	ZeroMemory(m_char, 255);
 	this->m_name = filename;
@@ -34,14 +34,14 @@ Font::Font(float width, float height, std::string filename,bool upper)
 }
 
 
-Font::~Font()
+TextFont::~TextFont()
 {
 
 }
 
-void Font::LoadFontFromFile(std::string filename,float width,float height)
+void TextFont::LoadFontFromFile(std::string filename,float width,float height)
 {
-	Font* font = new Font(width,height,filename);
+	TextFont* font = new TextFont(width,height,filename);
 
 
 #pragma warning(disable : 4996)
@@ -89,7 +89,7 @@ void Font::LoadFontFromFile(std::string filename,float width,float height)
 
 
 
-Font * Font::GetFontByName(std::string name)
+TextFont* TextFont::GetFontByName(std::string name)
 {
 	for ( int32 i = 0; i < ( int32)m_fonts.size(); ++i)
 	{
@@ -102,7 +102,7 @@ Font * Font::GetFontByName(std::string name)
 	return NULL;
 }
 
-void Font::ReleaseFonts()
+void TextFont::ReleaseFonts()
 {
 	for (auto && font : m_fonts)
 	{
@@ -111,12 +111,12 @@ void Font::ReleaseFonts()
 	}
 }
 
-std::string Font::GetName()
+std::string TextFont::GetName()
 {
 	return "ExocetLight";
 }
 
-FLOATX6 Font::GetCoordsOfLetter(char letter)
+FLOATX6 TextFont::GetCoordsOfLetter(char letter)
 {
 	FLOATX6 f;
 	f.__f32[0] = m_width;
@@ -128,17 +128,17 @@ FLOATX6 Font::GetCoordsOfLetter(char letter)
 	return f;
 }
 
-float Font::GetLeftOfLetter(char letter)
+float TextFont::GetLeftOfLetter(char letter)
 {
 	return m_char[letter].m_left;
 }
 
-float Font::GetWidthOfLetter(char letter)
+float TextFont::GetWidthOfLetter(char letter)
 {
 	return (m_char[letter].m_right) - (m_char[letter].m_left);
 }
 
-void Font::InitializeCoordinates(std::vector<float> coords)
+void TextFont::InitializeCoordinates(std::vector<float> coords)
 {
 	std::reverse(coords.begin(), coords.end());
 

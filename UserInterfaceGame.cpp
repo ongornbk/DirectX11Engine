@@ -26,16 +26,16 @@ namespace
 
 UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 {
-	ID3D11Device* device = engine->GetGraphics()->GetDevice();
-	ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
-	Font* font = Font::GetFontByName("ExocetLight");
+	struct ID3D11Device* device = engine->GetGraphics()->GetDevice();
+	struct ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
+	class TextFont* font = TextFont::GetFontByName("ExocetLight");
 
 	m_fpsText.Initialize(device, deviceContext, shader, font);
-	m_fpsText.SetText("FPS ");
+	m_fpsText.SetText(std::string("FPS "));
 	m_mainText.Initialize(device, deviceContext, shader, font);
 	m_mainText.SetText(string(GAME_NAME_VERSION));
 	m_cpuText.Initialize(device, deviceContext, shader, font);
-	m_cpuText.SetText("CPU ");
+	m_cpuText.SetText(std::string("CPU "));
 
 	m_gameChat = new GameChat();
 	m_gameChat->SetGlobals(device, deviceContext, shader);

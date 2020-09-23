@@ -110,6 +110,11 @@ void ipp::Console::Print(int number)
 	GetInstance()->__Print(number);
 }
 
+void ipp::Console::Print(char ch)
+{
+	GetInstance()->__Print(ch);
+}
+
 void ipp::Console::Print(void * address)
 {
 	GetInstance()->__Print(address);
@@ -208,6 +213,11 @@ void ipp::__Console::__Print(float number)
 void ipp::__Console::__Print(int32_t number)
 {
 	printf("%d", number);
+}
+
+void ipp::__Console::__Print(char ch)
+{
+	printf("%c", ch);
 }
 
 void ipp::__Console::__Println(uint64_t number)

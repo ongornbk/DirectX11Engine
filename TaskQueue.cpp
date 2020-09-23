@@ -2,7 +2,7 @@
 #include "GlobalUtilities.h"
 #include "Unit.h"
 #include "GarbageCollector.h"
-#include "../modern/modern/modern.h"
+#include "modern/modern.h"
 
 using::GlobalUtilities::random;
 

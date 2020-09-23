@@ -39,13 +39,14 @@ ModelPaths::ModelPaths(WCHAR * file)
 	}
 	std::string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 	istringstream ss(BUFFER);
-	std::vector<WCHAR*> animations;
+	modern_array<WCHAR*> animations;
 	std::string token;
+
 	while (getline(ss, token, '\n'))
 	{
-		wchar_t* wide_string = new wchar_t[token.length() + 1];
-		wstring ws = std::wstring(token.begin(), token.end()).c_str();
-		wcscpy(wide_string, ws.c_str());
+		wchar_t* wide_string = new wchar_t[token.length() + 1]; //do not delete
+		//wstring ws = std::wstring(token.begin(), token.end()).c_str();
+		wcscpy(wide_string, std::wstring(token.begin(), token.end()).c_str());
 		if (wcscmp(wide_string, L"NULL"))
 		{
 			animations.push_back(wide_string);

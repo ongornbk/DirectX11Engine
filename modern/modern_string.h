@@ -41,6 +41,7 @@ public:
 	~modern_string();
 
 	[[nodiscard]] const wchar_t* c_wstr() const noexcept;
+	[[nodiscard]] const _bstr_t& c_str() const noexcept;
 	[[nodiscard]] size_t size() const noexcept;
 	[[nodiscard]] int32_t to_int32() noexcept;
 	[[nodiscard]] static modern_pair<modern_string, modern_string>& SplitString(const wchar_t* string, wchar_t token);

@@ -2,7 +2,7 @@
 #include "LetterSprite.h"
 #include "Vector.h"
 #include "GarbageCollector.h"
-
+#include <comdef.h>
 
 
 using std::string;
@@ -36,11 +36,12 @@ public:
 	~Text();
 
 	void Update();
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, Font* font);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, TextFont* font);
 	void Render(struct ID3D11DeviceContext* const deviceContext, DirectX::XMFLOAT4X4& worldMatrix, DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix);
 
 	void SetPosition(XMFLOAT3 position);
 	void SetText(std::string text);
+	void SetText(const _bstr_t text);
 	string GetText();
 
 private:

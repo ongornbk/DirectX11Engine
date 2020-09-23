@@ -4,20 +4,32 @@
 #include "Unit.h"
 #include <cmath>
 
+#include "IPP.h"
+#include "UserInterfaceGame.h"
 
 #define CONTINUE_TASK return true
 #define CLOSE_TASK return false
 	 
 
-	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation) noexcept
+	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation,const float rotations) noexcept
 	{
-#define ANGLE (3.14f / 8.0f)
-		 DirectX::XMFLOAT3 f3;
-		f3.x = sin(3.14f + ANGLE * rotation)*Settings::GetAspectRatio()*speed;
-		f3.y = cos(ANGLE*rotation)*speed * -1.0f;
+		const float angle = (3.14f * 2.f) / rotations;
+		DirectX::XMFLOAT3 f3;
+		f3.x = sin(3.14f + angle * rotation)*Settings::GetAspectRatio()*speed;
+		f3.y = cos(angle*rotation)*speed * -1.0f;
 		f3.z = 0.0f;
 		return f3;
 	}
+
+	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed, const float rotation) noexcept
+	 {
+		 const float angle = 3.14f / 8.f;
+		 DirectX::XMFLOAT3 f3;
+		 f3.x = sin(3.14f + angle * rotation) * Settings::GetAspectRatio() * speed;
+		 f3.y = cos(angle * rotation) * speed * -1.0f;
+		 f3.z = 0.0f;
+		 return f3;
+	 }
 
 
 TaskGotoPoint::TaskGotoPoint()
@@ -51,13 +63,16 @@ bool TaskGotoPoint::Update()
 			}
 			}
 
-			float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / XM_PI;
-			rotation += 90.0f;
+			float rotation = modern_xangle2_between_points3(position,destination);
+		
+			rotation += 180.f;
 			rotation /= (360.f / object->GetNumberOfRotations());
-			rotation = object->GetNumberOfRotations() - rotation;
-			object->SetRotation(rotation);
-			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
+			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], fmod(rotation + (object->GetNumberOfRotations() / 2.f), object->GetNumberOfRotations()), object->GetNumberOfRotations());
+			object->SetRotation(rotation + (object->GetNumberOfRotations() / 2.f));
 			object->SetVelocity(f3.x, f3.y, f3.z);
+			
+			//UserInterfaceGame::GetGameChat()->PushText(modern_string((int32_t)rotation).c_str());
+
 			CONTINUE_TASK;
 		}
 		else

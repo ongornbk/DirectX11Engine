@@ -90,6 +90,7 @@ public:
 		assert(shared.m_pointer);
 		m_pointer = shared.m_pointer;
 		m_numOfCopies = shared.m_numOfCopies;
+		if(m_numOfCopies)
 		(*m_numOfCopies)++;
 	}
 
@@ -108,6 +109,7 @@ public:
 	{
 		if (this == &shared)
 			return *this;
+
 
 		m_pointer = shared.m_pointer;
 		m_numOfCopies = shared.m_numOfCopies;

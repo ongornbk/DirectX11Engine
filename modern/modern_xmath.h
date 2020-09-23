@@ -22,4 +22,9 @@ inline float XM_CALLCONV modern_xfloat3_distance2(
 	const struct XMFLOAT3& b
 );
 
+inline float XM_CALLCONV modern_xangle2_between_points3(
+	const struct XMFLOAT3& A,
+	const struct XMFLOAT3& B
+);
+
 #include "modern_xmath.inl"

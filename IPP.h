@@ -85,6 +85,7 @@ namespace ipp
 		void __Print(std::string text,const int32_t value);
 		void __Print(float number);
 		void __Print(int32_t number);
+		void __Print(char ch);
 		
 		void __Print(void* address);
 		void __Flush();
@@ -119,6 +120,7 @@ namespace ipp
 		static void Print(const wchar_t* text);
 		static void Print(float number);
 		static void Print(int number);
+		static void Print(char ch);
 		static void Print(void* address);
 		static void Flush();
 		static void SetCursorPosition(int16_t x, int16_t y);

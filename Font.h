@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 
+
+
 struct FLOATX6
 {
 	float __f32[6];
 };
 
-class Font
+class TextFont
 {
 public:
 	
@@ -22,10 +24,10 @@ public:
 		float m_bottom;
 	} m_char[256u];
 
-~Font();
+~TextFont();
 
 static void LoadFontFromFile(std::string name,float width,float height);
-static Font* GetFontByName(std::string name);
+static TextFont* GetFontByName(std::string name);
 static void ReleaseFonts();
 
 std::string GetName();
@@ -37,7 +39,7 @@ void InitializeCoordinates(std::vector<float> coords);
 
 private:
 
-	Font(float width,float height,std::string filename,bool upper = true);
+	TextFont(float width,float height,std::string filename,bool upper = true);
 
 	float m_width;
 	float m_height;

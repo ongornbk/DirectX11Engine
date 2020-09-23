@@ -28,7 +28,7 @@ Unit::Unit() :
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_stop = false;
-	m_rotations = 16.0f;
+	m_rotations = 1.0f;
 	m_attack.range = 80.f;
 	m_attack.active = false;
 	m_dead = false;
@@ -236,6 +236,11 @@ void Unit::Update(const float dt)
 					m_currentSpeed = 0.f;
 					if (m_currentFrame >= m_modelVariant.GetMaxFrames())
 					{
+						if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_DEATH)
+						{
+							m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
+						}
+						
 						if (m_isLooping)
 						{
 							m_currentFrame = 0.f;
@@ -420,7 +425,8 @@ void Unit::SetRotations(const int32 rotations)
 
 void Unit::SetRotation(float rotation)
 {
-	m_rotation = (float)(( int32)rotation % ( int32)m_rotations);
+	//m_rotation = rotation;
+	m_rotation = (float)((int32_t)rotation % (int32_t)m_rotations);
 }
 
 void Unit::SetVelocity(const float x,const float y,const float z)
@@ -472,11 +478,11 @@ void Unit::Die(Unit* const killer)
 	if (m_dead)
 		return;
 	m_attack.active = false;
-	SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
+	SetAnimation(ModelStance::MODEL_STANCE_DEATH);
 	SetVelocity(0.0f, 0.0f, 0.0f);
 	Unit::EndRunning();
 	m_flags.m_cast_shadow = false;
-	m_flags.m_pushable = false;
+	//m_flags.m_pushable = false;
 	m_flags.m_selectable = false;
 	m_dead = true;
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
@@ -559,7 +565,7 @@ bool Unit::Attack(class Unit* const target)
 bool Unit::GetAttacked(class Unit* const attacker)
 {
 	DoDamage(attacker);
-	if (m_stop)
+	if (m_stop || m_dead)
 	{
 		return false;
 	}

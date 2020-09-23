@@ -23,7 +23,7 @@ AnimatedDoodads::AnimatedDoodads()
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_stop = false;
-	m_rotations = 16.0f;
+	m_rotations = 1.0f;
 }
 
 

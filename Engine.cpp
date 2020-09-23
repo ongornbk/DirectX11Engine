@@ -78,7 +78,7 @@ Engine::~Engine(void)
 	//	delete m_gameComponent;
 		m_gameComponent = nullptr;
 	}
-	Font::ReleaseFonts();
+	TextFont::ReleaseFonts();
 	lua::Close();
 }
 
@@ -343,7 +343,7 @@ void Engine::AddModelPaths(string name)
 
 void Engine::AddFont(string filename, float width, float height)
 {
-	Font::LoadFontFromFile(filename, width, height);
+	TextFont::LoadFontFromFile(filename, width, height);
 }
 
 void Engine::PlayMusic(WCHAR * music)

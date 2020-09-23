@@ -8,11 +8,11 @@ class LetterSprite
 {
 public:
 
-	LetterSprite(Font* font, char letter, float size,Shader* shader);
+	LetterSprite(TextFont* font, char letter, float size,Shader* shader);
 
 	virtual ~LetterSprite(void);
 
-	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader,Font* font);
+	void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, TextFont* font);
 
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,

@@ -255,7 +255,6 @@
     <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
-    <ClInclude Include="modern_array.h" />
     <ClInclude Include="ObjectAnchorType.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
@@ -429,6 +428,7 @@
     <None Include="x64\Release\bin\settings\settings.file" />
     <None Include="x64\Release\bin\settings\tile.file" />
     <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Unit.lua" />
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua" />
@@ -438,7 +438,9 @@
     <None Include="x64\Release\content\Textures\models\barbarian.mod" />
     <None Include="x64\Release\content\Textures\models\diablo.mod" />
     <None Include="x64\Release\content\Textures\models\enemy.mod" />
+    <None Include="x64\Release\content\Textures\models\hell_bovine.mod" />
     <None Include="x64\Release\content\Textures\models\Hero.mod" />
+    <None Include="x64\Release\content\Textures\models\irrlicht.mod" />
     <None Include="x64\Release\content\Textures\models\paladin.mod" />
     <None Include="x64\Release\content\Textures\models\reaper.mod" />
   </ItemGroup>

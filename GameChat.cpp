@@ -42,6 +42,13 @@ void GameChat::PushText(std::string text) noexcept
 	CheckSize();
 }
 
+void GameChat::PushText(const _bstr_t text) noexcept
+{
+	m_texts.push_back(CreateTextFromString(text));
+	m_size++;
+	CheckSize();
+}
+
 void  GameChat::PushTextFront(std::string text) noexcept
 {
 	m_texts.push_front(CreateTextFromString(text));
@@ -49,7 +56,7 @@ void  GameChat::PushTextFront(std::string text) noexcept
 	CheckSize();
 }
 
-void  GameChat::SetFont(class Font* font) noexcept
+void  GameChat::SetFont(class TextFont* font) noexcept
 {
 	m_font = font;
 }
@@ -107,6 +114,14 @@ auto _cdecl GameChat::end() noexcept
 }
 
 Text* GameChat::CreateTextFromString(std::string text) noexcept
+{
+	Text* __text = new Text();
+	__text->Initialize(m_device, m_context, m_shader, m_font);
+	__text->SetText(text);
+	return __text;
+}
+
+Text* GameChat::CreateTextFromString(const _bstr_t text) noexcept
 {
 	Text* __text = new Text();
 	__text->Initialize(m_device, m_context, m_shader, m_font);

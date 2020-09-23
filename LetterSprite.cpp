@@ -4,7 +4,7 @@
 
 
 LetterSprite::LetterSprite(
-	class Font * const font,
+	class TextFont* const font,
 	const char letter,
 	const float size,
 	class Shader* const shader
@@ -40,7 +40,7 @@ void LetterSprite::Initialize(
 	struct ID3D11Device * const device,
 	struct ID3D11DeviceContext * const deviceContext,
 	class Shader * const shader,
-	class Font* const font
+	class TextFont* const font
 )
 {
 	m_vertexBuffer = new class VertexBuffer();
