@@ -44,6 +44,9 @@ public:
 	[[nodiscard]] const _bstr_t& c_str() const noexcept;
 	[[nodiscard]] size_t size() const noexcept;
 	[[nodiscard]] int32_t to_int32() noexcept;
+	[[nodiscard]] float to_float() noexcept;
+	[[nodiscard]] bool to_bool() noexcept;
+
 	[[nodiscard]] static modern_pair<modern_string, modern_string>& SplitString(const wchar_t* string, wchar_t token);
 
 	modern_string& operator= (modern_string& string);
@@ -53,6 +56,7 @@ public:
 
 	void push_back(const wchar_t element);
 	void push_back(const char element);
+	void pop_front();
 	wchar_t*& data();
 	void resize(size_t size);
 	void load(const char* text);

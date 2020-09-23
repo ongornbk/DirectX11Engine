@@ -79,7 +79,15 @@ void Unit::Initialize(
 	InitializeModel(device, deviceContext, shader, ptr);
 	m_wanderingFlag = wander;
 	m_type = EObject::EObjectType::UNIT;
-
+	switch (ptr->m_leaveCorpse)
+	{
+	case true:
+		m_decayType = UnitDecay::ENUM_LEAVE_CORPSE;
+		break;
+	case false:
+		m_decayType = UnitDecay::ENUM_DECAY;
+		break;
+	}
 }
 
 void Unit::Render(
@@ -219,7 +227,7 @@ void Unit::Update(const float dt)
 				&m_worldMatrix,
 				XMMatrixTranslation(
 					m_boundingSphere.Center.x,
-					m_boundingSphere.Center.y + (m_size / 1.5f),
+					m_boundingSphere.Center.y + ((m_size*m_modelVariant.GetSize()) / 1.5f),
 					m_boundingSphere.Center.z //- (m_size / 1.5f)
 				)
 			);
@@ -238,7 +246,18 @@ void Unit::Update(const float dt)
 					{
 						if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_DEATH)
 						{
-							m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
+							if (m_decayType == UnitDecay::ENUM_DECAY)
+							{
+								class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+								//action->push(new ActionMessageFront(this));
+								action->push(new ActionRemoveObject(this));
+								Timer::CreateInstantTimer(action);
+							}
+							else
+							{
+								m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
+								m_flags.m_cast_shadow = false;
+							}
 						}
 						
 						if (m_isLooping)
@@ -279,7 +298,7 @@ void Unit::Update(const float dt)
 			vertices[3].uv.y = (m_rotation + 1.f) / m_rotations;
 
 
-#pragma omp critical
+//#pragma omp critical
 			{
 				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 				if (FAILED(result))
@@ -481,14 +500,17 @@ void Unit::Die(Unit* const killer)
 	SetAnimation(ModelStance::MODEL_STANCE_DEATH);
 	SetVelocity(0.0f, 0.0f, 0.0f);
 	Unit::EndRunning();
-	m_flags.m_cast_shadow = false;
+	//m_flags.m_cast_shadow = false;
 	//m_flags.m_pushable = false;
 	m_flags.m_selectable = false;
 	m_dead = true;
-	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-	action->push(new ActionMessageFront(this));
-	action->push(new ActionRemoveObject(this));
-	Timer::CreateExpiringTimer(action, 3.f);
+	if (m_decayType == UnitDecay::ENUM_LEAVE_CORPSE)
+	{
+		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+		//action->push(new ActionMessageFront(this));
+		action->push(new ActionRemoveObject(this));
+		Timer::CreateExpiringTimer(action, 3.f);
+	}
 }
 
 const UnitStats& Unit::GetStats()
@@ -751,21 +773,14 @@ void Unit::InitializeModel(
 		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 	}
 
-	m_modelVariant.m_maxFrames[0] = (float)paths->m_frames[0];
-	m_modelVariant.m_maxFrames[1] = (float)paths->m_frames[1];
-	m_modelVariant.m_maxFrames[2] = (float)paths->m_frames[2];
-	m_modelVariant.m_maxFrames[3] = (float)paths->m_frames[3];
-	m_modelVariant.m_maxFrames[4] = (float)paths->m_frames[4];
-	m_modelVariant.m_maxFrames[5] = (float)paths->m_frames[5];
-	m_modelVariant.m_maxFrames[6] = (float)paths->m_frames[6];
-	m_modelVariant.m_maxFrames[7] = (float)paths->m_frames[7];
-	m_modelVariant.m_maxFrames[8] = (float)paths->m_frames[8];
-	m_modelVariant.m_maxFrames[9] = (float)paths->m_frames[9];
-	m_modelVariant.m_maxFrames[10] = (float)paths->m_frames[10];
-	m_modelVariant.m_maxFrames[11] = (float)paths->m_frames[11];
-	m_modelVariant.m_maxFrames[12] = (float)paths->m_frames[12];
-	m_modelVariant.m_maxFrames[13] = (float)paths->m_frames[13];
-	m_modelVariant.m_maxFrames[14] = (float)paths->m_frames[14];
+	for (int32_t i = 0; i < 15; i++)
+	{
+		m_modelVariant.m_maxFrames[i] = (float)paths->m_frames[i];
+		m_modelVariant.m_sizes[i] = (float)paths->m_sizes[i];
+	}
+
+	
+
 
 	if (paths->TOWNWALK != NULL)
 	{

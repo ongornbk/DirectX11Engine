@@ -43,3 +43,10 @@ void Timer::CreatePeriodicTimer(IAction* const action, const float time,const fl
 	timer->period = period;
 	m_timers.push_back(timer);
 }
+
+void Timer::CreateInstantTimer(IAction* const action)
+{
+	class InstantTimer* const timer = new InstantTimer();
+	timer->action = action;
+	m_timers.push_back(timer);
+}

@@ -79,6 +79,9 @@
     <Filter Include="Models">
       <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\modern">
+      <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -435,18 +438,6 @@
     <ClInclude Include="WidgetFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_def.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_xmath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -468,31 +459,49 @@
     <ClInclude Include="ActionExecuteActionArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UnitTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_shared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_string.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_pair.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitDefaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_unique.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="modern\modern_xmath.h">
+      <Filter>Header Files\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_weak.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_unique.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_string.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_pair.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_shared.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_memory.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_math.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_exception.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_def.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitDecay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InstantTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -800,22 +809,19 @@
     <ClCompile Include="UnitTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_string.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="modern\modern_exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_string.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="InstantTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="modern\modern_math.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="modern\modern_xmath.inl">
-      <Filter>Header Files</Filter>
     </None>
     <None Include="x64\Release\bin\settings\interface.ini">
       <Filter>Settings</Filter>
@@ -877,6 +883,15 @@
       <Filter>Lua</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\irrlicht.mod">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="modern\modern_xmath.inl">
+      <Filter>Header Files\modern</Filter>
+    </None>
+    <None Include="modern\modern_math.inl">
+      <Filter>Header Files\modern</Filter>
+    </None>
+    <None Include="x64\Release\content\Textures\models\griswold.mod">
       <Filter>Models</Filter>
     </None>
   </ItemGroup>

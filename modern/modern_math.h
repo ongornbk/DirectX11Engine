@@ -101,6 +101,7 @@ struct modern_point
 template <class T> inline T modern_min(T a, T b);
 template <class T> inline T modern_max(T a, T b);
 template <class T> inline T modern_abs(T a);
+template <class T> inline T modern_pow(T a,int32_t b);
 
 inline float modern_sign(float a);
 inline float modern_sin(float a);

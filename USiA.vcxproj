@@ -231,6 +231,7 @@
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InstantTimer.h" />
     <ClInclude Include="ITimer.h" />
     <ClInclude Include="ITrash.h" />
     <ClInclude Include="ITrigger.h" />
@@ -295,6 +296,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="UnitDecay.h" />
     <ClInclude Include="UnitDefaults.h" />
     <ClInclude Include="UnitFactory.h" />
     <ClInclude Include="UnitGroup.h" />
@@ -343,6 +345,7 @@
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleIntersetionInfo.cpp" />
     <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="InstantTimer.cpp" />
     <ClCompile Include="ITimer.cpp" />
     <ClCompile Include="ITrash.cpp" />
     <ClCompile Include="ITrigger.cpp" />
@@ -438,6 +441,7 @@
     <None Include="x64\Release\content\Textures\models\barbarian.mod" />
     <None Include="x64\Release\content\Textures\models\diablo.mod" />
     <None Include="x64\Release\content\Textures\models\enemy.mod" />
+    <None Include="x64\Release\content\Textures\models\griswold.mod" />
     <None Include="x64\Release\content\Textures\models\hell_bovine.mod" />
     <None Include="x64\Release\content\Textures\models\Hero.mod" />
     <None Include="x64\Release\content\Textures\models\irrlicht.mod" />

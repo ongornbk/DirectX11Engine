@@ -15,7 +15,7 @@ public:
 
 	
 
-	constexpr modern_pair(A a, B b) : first(a), second(b) {}
+	constexpr modern_pair(A& a, B& b) : first(a), second(b) {}
 
 	~modern_pair()
 	{

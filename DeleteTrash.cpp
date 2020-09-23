@@ -9,4 +9,5 @@ DeleteTrash::~DeleteTrash()
 {
 	if (m_data)
 		delete m_data;
+	m_data = nullptr;
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
 #include <string>
+#include <codecvt>
+#include <locale>
 
 struct ModelPaths
 {
@@ -32,8 +34,10 @@ struct ModelPaths
 		WCHAR* m_modelPath[15];
 	};
 
+	bool    m_leaveCorpse;
 	int32_t m_rotations;
 	int32_t m_frames[15];
+	float   m_sizes[15];
 
 };
 

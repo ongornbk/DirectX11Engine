@@ -105,15 +105,15 @@ public:
 
 	void push_back(T element)
 	{
+		m_data[m_size] = element;
 		m_size++;
 		if (m_size >= m_capacity)
 		{
 			m_capacity *= 2u;
 			m_data = mrealloc<T>(m_data, m_capacity);
-			assert(m_data);
+			assert(m_data);	
 		}
-		assert(m_data);
-		m_data[m_size - 1u] = element;
+		
 	}
 
 	void copy_back(T* collection,const size_t size)

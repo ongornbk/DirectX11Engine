@@ -923,7 +923,8 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 		{
 			if (obj->isReleased())
 			{
-				GarbageCollector::GetInstance()->AsyncDelete(obj);
+				//GarbageCollector::GetInstance()->AsyncDelete(obj);
+				delete obj;
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;

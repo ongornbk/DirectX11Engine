@@ -7,7 +7,7 @@
 AnimatedDoodads::AnimatedDoodads()
 {
 	m_maxFrames = STANDARD_FRAMES;
-
+	m_previousFrame = 0.f;
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
 	m_deviceContext = nullptr;
@@ -18,12 +18,15 @@ AnimatedDoodads::AnimatedDoodads()
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
 	m_currentFrame = 0.f;
+	m_stopped = false;
 	m_isLooping = true;
 	m_animationSpeed = 0.20f;
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
+	m_previousSpeed = 0.f;
 	m_stop = false;
 	m_rotations = 1.0f;
+	m_size = 0.f;
 }
 
 

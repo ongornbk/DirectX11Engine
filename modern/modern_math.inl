@@ -26,6 +26,18 @@ inline T modern_abs(T a)
 	return a*(-1);
 }
 
+template<class T>
+
+inline T modern_pow(T a,int32_t b)
+{
+		if (b == 0)
+			return 1;
+		else if ((b % 2) == 0)
+			return modern_pow(a, b / 2) * modern_pow(a, b / 2);
+		else
+			return a * modern_pow(a, b / 2) * modern_pow(a, b / 2);
+}
+
 inline int32_t modern_random(int32_t min, int32_t max)
 {
 	assert(max > min);

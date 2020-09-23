@@ -49,6 +49,7 @@ public:
 				delete m_numOfCopies;
 				m_numOfCopies = nullptr;
 			}
+
 	}
 
 	modern_shared(modern_shared&) = delete;
@@ -70,10 +71,15 @@ public:
 		m_pointer = pointer;
 		m_numOfCopies = new int32_t();
 		(*m_numOfCopies) = 1;
+
+
 	}
 
 	void make_shared(modern_shared<T>& shared)
 	{
+		if (!shared.m_numOfCopies)
+			return;
+
 		if(m_numOfCopies)
 		switch (*m_numOfCopies)
 		{
@@ -92,6 +98,8 @@ public:
 		m_numOfCopies = shared.m_numOfCopies;
 		if(m_numOfCopies)
 		(*m_numOfCopies)++;
+
+
 	}
 
 	[[nodiscard]] modern_shared<T>& return_shared(T* const pointer)

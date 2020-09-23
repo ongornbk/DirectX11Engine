@@ -9,6 +9,7 @@
 #include "WalkingStance.h"
 #include "ModelStance.h"
 #include "UnitDefaults.h"
+#include "UnitDecay.h"
 
 #define COLOR_FILTER_NOCHANGE -1.f
 
@@ -42,6 +43,11 @@ public:
 		{
 			return m_maxFrames[m_variant];
 		}
+		float GetSize() const noexcept
+		{
+			return m_sizes[m_variant];
+		}
+
 		void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const noexcept
 		{
 			this->m_variant = variant;
@@ -52,7 +58,8 @@ public:
 		}
 
 		Texture*             m_textures[15];
-		float                m_maxFrames[15] = { 8,16,15,5,0,0,8,16,8,0,8,0,0,0,0 };
+		float                m_maxFrames[15];
+		float                m_sizes[15];
 	private:
 		mutable int32                m_variant;
 
@@ -167,13 +174,14 @@ private:
 		struct ModelPaths* paths
 	);
 
-	float               m_speed[2];
-	enum  WalkingStance m_walkingStance;
-	class TaskQueue     m_tasks;
-	bool                m_wanderingFlag;
-	class Sound*        m_footstepsSound{};
-	class sf::Sound*    m_footstepsHandle{};
-	class UnitTemplate* m_template;
+	float                m_speed[2];
+	enum  WalkingStance  m_walkingStance;
+	enum class UnitDecay m_decayType;
+	class TaskQueue      m_tasks;
+	bool                 m_wanderingFlag;
+	class Sound*         m_footstepsSound{};
+	class sf::Sound*     m_footstepsHandle{};
+	class UnitTemplate*  m_template;
 
 	struct ID3D11DeviceContext * m_deviceContext;
 	struct DirectX::XMFLOAT4     m_colorFilter;;
@@ -187,19 +195,19 @@ private:
 	float        m_lastSize;
 
 
-	float         m_animationSpeed;
-	float         m_currentSpeed;
-	float         m_framesPerSecond;
-	bool          m_isLooping;
-	float         m_rotation;
+	float               m_animationSpeed;
+	float               m_currentSpeed;
+	float               m_framesPerSecond;
+	bool                m_isLooping;
+	float               m_rotation;
 	class VertexBuffer* m_vertexBuffer;
-	struct ModelVariant  m_modelVariant;
-	float         m_previousSpeed;
-	float         m_rotations;
-	int           m_stopped;
-	bool          m_stop;
-	bool          m_intersection;
-	bool          m_dead;
+	struct ModelVariant m_modelVariant;
+	float               m_previousSpeed;
+	float               m_rotations;
+	int                 m_stopped;
+	bool                m_stop;
+	bool                m_intersection;
+	bool                m_dead;
 
 	
 	struct UnitStats     m_stats;
