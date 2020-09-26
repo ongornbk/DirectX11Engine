@@ -53,9 +53,9 @@ public:
 
 	bool SetShaderParameters(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& worldMatrix,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix
+		const struct DirectX::XMFLOAT4X4& worldMatrix,
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	);
 
 	bool Shader::SetShaderColorParameters(

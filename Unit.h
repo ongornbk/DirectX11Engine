@@ -103,6 +103,7 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	void _cdecl Intersect(class EObject* const other) override;
+	const enum class RenderLayerType GetLayerType() const noexcept override;
 
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);

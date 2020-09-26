@@ -3,7 +3,7 @@
 #include "Vector.h"
 #include "GarbageCollector.h"
 #include <comdef.h>
-
+#include "modern/modern.h"
 
 using std::string;
 
@@ -46,7 +46,7 @@ public:
 
 private:
 
-	Vector<struct LetterSpriteStruct*> m_letters;
+	modern_array<struct LetterSpriteStruct*> m_letters;
 	string                      m_text;
 
 

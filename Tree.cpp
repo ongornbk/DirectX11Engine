@@ -153,6 +153,11 @@ void _cdecl Tree::Intersect(class EObject* const other)
 {
 }
 
+const RenderLayerType Tree::GetLayerType() const noexcept
+{
+	return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
 void Tree::SetGlobal(Global * global) noexcept
 {
 	m_global = global;

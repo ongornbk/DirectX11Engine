@@ -51,9 +51,9 @@ public:
 
 	const DirectX::XMVECTOR   GetPosition() const noexcept;
 	const DirectX::XMVECTOR   GetRotation() const noexcept;
-	const struct XMFLOAT4X4&  GetView() noexcept;
-	const struct XMFLOAT4X4&  GetProjection() noexcept;
-	const struct XMFLOAT4X4&  GetOrtho() noexcept;
+	const struct DirectX::XMFLOAT4X4& GetView() noexcept;
+	const struct DirectX::XMFLOAT4X4& GetProjection() noexcept;
+	const struct DirectX::XMFLOAT4X4&  GetOrtho() noexcept;
 
 	void Update();
 

@@ -12,7 +12,7 @@ class UserInterfaceGame
 {
 public:
 	UserInterfaceGame(class Engine* engine,class Shader* shader);
-	void Render(ID3D11DeviceContext* deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
+	void Render(ID3D11DeviceContext* deviceContext, DirectX::XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix);
 	void Update(XMVECTOR cameraPosition);
     void GetMousePosition(float&x, float&y);
 	static GameChat* GetGameChat();

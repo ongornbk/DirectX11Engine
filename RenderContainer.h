@@ -2,6 +2,7 @@
 #include "gdef.h"
 #include "TaskQueue.h"
 #include "ShaderPackage.h"
+#include "RenderLayerType.h"
 #include <DirectXCollision.h>
 
 
@@ -62,6 +63,7 @@ public:
 	virtual int32           isReleased() const noexcept = 0;
 
 	virtual void _cdecl Intersect(class EObject* const other) = 0;
+	virtual const enum class RenderLayerType GetLayerType() const noexcept = 0;
 
 public:
 	uint32           m_index;

@@ -6,6 +6,9 @@
 #include "Global.h"
 #include "ShaderPackage.h"
 #include "GarbageCollector.h"
+#include "RenderLayerCorpse.h"
+#include "RenderLayerObject.h"
+#include "RenderLayerShadow.h"
 
 #include <future>
 #include <mutex>
@@ -61,13 +64,17 @@ RendererManager::RendererManager(
 	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
 	m_rangeY = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
 
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_CORPSE_TYPE)] = new RenderLayerCorpse();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)] = new RenderLayerObject();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)] = new RenderLayerShadow();
+
 }
 
 
 RendererManager::~RendererManager()
 {
 	//g_units.Clear();
-	m_objects.Clear();
+	//m_objects.Clear();
 	if (m_ui)
 	{
 		delete m_ui;
@@ -78,6 +85,16 @@ RendererManager::~RendererManager()
 		delete m_map;
 		m_map = nullptr;
 	}
+
+	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+	{
+		if (m_layers[i])
+		{
+			m_layers[i]->Clear();
+			delete m_layers[i];
+			m_layers[i] = nullptr;
+		}
+	}
 }
 
 
@@ -86,35 +103,38 @@ void RendererManager::PushUnit(
 	class Unit * const unit
 )
 {
-	m_objects.Push(unit);
-
+	//m_objects.Push(unit);
+	m_layers[enum_cast<int32_t>(unit->GetLayerType())]->Push(unit);
 }
 
 void RendererManager::PushDoodads(class Doodads * doodads)
 {
-	m_objects.Push(doodads);
+	//m_objects.Push(doodads);
+	m_layers[enum_cast<int32_t>(doodads->GetLayerType())]->Push(doodads);
 }
 
 void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads)
 {
-	m_objects.Push(doodads);
+	//m_objects.Push(doodads);
+	m_layers[enum_cast<int32_t>(doodads->GetLayerType())]->Push(doodads);
 }
 
 void RendererManager::PushTree(class Tree * tree)
 {
-	m_objects.Push(tree);
+	//m_objects.Push(tree);
 	//EditFrame();
+	m_layers[enum_cast<int32_t>(tree->GetLayerType())]->Push(tree);
 }
 
 void RendererManager::PushRegionPointObject(RegionPointObject* object)
 {
-	m_objects.Push(object);
+	//m_objects.Push(object);
 }
 
 
 
 
-	const _Out_ int32 _stdcall validateRendering(const struct XMFLOAT3& _In_ object) noexcept
+	const _Out_ int32 _stdcall validateRendering(const struct DirectX::XMFLOAT3& _In_ object) noexcept
 	{
 		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
 		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
@@ -151,7 +171,12 @@ void RendererManager::PushRegionPointObject(RegionPointObject* object)
 
 			//m_unitsShader->Begin(deviceContext);
 			
-			m_objects.Render(deviceContext, viewMatrix, projectionMatrix, pck);
+			//m_objects.Render(deviceContext, viewMatrix, projectionMatrix, pck);
+
+			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+			{
+				m_layers[i]->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+			}
 
 			//m_unitsShader->End(deviceContext);
 
@@ -181,11 +206,23 @@ void RendererManager::Update()
 		{
 			if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
 			{
-				m_objects.CleanUp();
+				//m_objects.CleanUp();
+
+				for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+				{
+					m_layers[i]->CleanUp();
+				}
+
 				m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
 			}
 			//g_units.Update(dt);
-			m_objects.Update(dt);
+			//m_objects.Update(dt);
+
+			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+			{
+				m_layers[i]->Update(dt);
+			}
+
 		}
 
 		//g_units.Sort();
@@ -195,8 +232,14 @@ void RendererManager::Update()
 	//case 1:
 	//{
 	//	m_editMode.store(0, std::memory_order::memory_order_seq_cst);
-		m_objects.Sort();
-		m_objects.QSort();
+		//m_objects.Sort();
+		//m_objects.QSort();
+
+		for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+		{
+			m_layers[i]->Sort();
+			m_layers[i]->QSort();
+		}
 	//	break;
 	//}
 	//}
@@ -247,7 +290,7 @@ void RendererManager::SetFps(const int32 fps)
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
 {
-	return m_objects.GetUnitsInRange(object, range);
+	return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
 }
 
 RendererManager * RendererManager::GetInstance()

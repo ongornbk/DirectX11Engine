@@ -39,8 +39,11 @@ public:
 	void Release() override;
 	int32 isReleased() const noexcept override;
 	void _stdcall Intersect(class EObject* const other) override;
+	const enum class RenderLayerType GetLayerType() const noexcept override;
 
 private:
+
+	bool m_destroyed;
 
 	ID3D11DeviceContext* m_deviceContext;
 

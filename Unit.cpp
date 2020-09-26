@@ -366,6 +366,13 @@ void _cdecl Unit::Intersect(class EObject* const other)
 		m_boundingSphere.Center = m_floats[1];
 }
 
+const RenderLayerType Unit::GetLayerType() const noexcept
+{
+	if (m_dead)
+		return RenderLayerType::ENUM_OBJECT_TYPE;
+	return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
 float Unit::GetCollisionRadius() const noexcept
 {
 	return m_boundingSphere.Radius;

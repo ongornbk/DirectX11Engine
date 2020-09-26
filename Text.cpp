@@ -75,27 +75,40 @@ void Text::SetPosition(XMFLOAT3 position)
 void Text::SetText(std::string text)
 {
 	
-		if (!m_letters.empty())
-		{
-			for (auto && letter : m_letters)
-			{
-				if (letter)
-				{
-					delete letter;
-					letter = nullptr;
-				}
-			}
-		}
-		m_letters.clear();
+		//if (!m_letters.empty())
+		//{
+		//	for (auto && letter : m_letters)
+		//	{
+		//		if (letter)
+		//		{
+		//			delete letter;
+		//			letter = nullptr;
+		//		}
+		//	}
+		//}
+		//m_letters.clear();
 		m_text = text;
-		for (auto letter : text)
+
+		//if (m_letters.size() < text.size())
+		//	m_letters.expand_size(text.size());
+		//else if (m_letters.size() > text.size())
+		//	m_letters.shrink();
+
+		//for (auto letter : text)
+		//{
+		//	LetterSpriteStruct* m_spriteStruct = new LetterSpriteStruct();
+		//	m_spriteStruct->m_char = letter;
+		//	m_letters.push_back(m_spriteStruct);
+		//}
+		//
+		//this->Initialize();
+
+		for (int32_t i = 0; i < m_letters.size() &&i < m_text.size(); i++)
 		{
-			LetterSpriteStruct* m_spriteStruct = new LetterSpriteStruct();
-			m_spriteStruct->m_char = letter;
-			m_letters.push_back(m_spriteStruct);
+			m_letters.at(i)->m_char = text.at(i);
 		}
 
-		this->Initialize();
+		//this->Initialize();
 }
 
 void Text::SetText(const _bstr_t text)
@@ -115,12 +128,20 @@ void Text::SetText(const _bstr_t text)
 	m_text = text;
 	for (auto letter : m_text)
 	{
+
 		LetterSpriteStruct* m_spriteStruct = new LetterSpriteStruct();
 		m_spriteStruct->m_char = letter;
 		m_letters.push_back(m_spriteStruct);
 	}
 
-	this->Initialize();
+	//this->Initialize();
+
+	//for (auto&& letter : m_letters)
+	//{
+	//	XMStoreFloat4x4(&(letter->m_world), XMMatrixIdentity());
+	//	//letter->m_sprite = new LetterSprite(m_font, letter->m_char, 12.0f, m_shader);
+	//	//letter->m_sprite->Initialize(m_device, m_deviceContext, m_shader, m_font);
+	//}
 }
 
 string Text::GetText()

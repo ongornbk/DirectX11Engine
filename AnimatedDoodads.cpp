@@ -6,6 +6,7 @@
 
 AnimatedDoodads::AnimatedDoodads()
 {
+	m_destroyed = false;
 	m_maxFrames = STANDARD_FRAMES;
 	m_previousFrame = 0.f;
 	m_vertexBuffer = nullptr;
@@ -193,6 +194,13 @@ int32 AnimatedDoodads::isReleased() const noexcept
 void _stdcall AnimatedDoodads::Intersect(class EObject* const other)
 {
 
+}
+
+const RenderLayerType AnimatedDoodads::GetLayerType() const noexcept
+{
+	if (m_destroyed)
+		return RenderLayerType::ENUM_OBJECT_TYPE;
+	return RenderLayerType::ENUM_OBJECT_TYPE;
 }
 
 void AnimatedDoodads::SetNumberOfFrames(float frames)

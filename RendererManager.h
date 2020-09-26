@@ -9,6 +9,7 @@
 #include "RegionPointObject.h"
 #include "RenderContainerVector.h"
 #include "modern/modern_array.h"
+#include "RenderLayer.h"
 #include <stack>
 #include <map>
 
@@ -85,6 +86,8 @@ private:
 	TileMap* m_map;
 	UserInterface* m_ui;
 
-	EObjectVector m_objects;
+	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
+
+	//EObjectVector m_objects;
 };
 

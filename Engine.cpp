@@ -40,8 +40,8 @@ namespace
 Engine::~Engine(void)
 {
 
-	ThreadPoolHandle tph;
-	tph.wait();
+	//ThreadPoolHandle tph;
+	//tph.wait();
 
 	if (m_graphics)
 	{
@@ -231,6 +231,8 @@ void Engine::Run()
 		const  int32 fps = ( int32)(1000 / averageFrameTimeMilliseconds);
 
 		m_rendererManager->SetFps(fps);
+
+		std::cout << fps << std::endl;
 
 	}
 

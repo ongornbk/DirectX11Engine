@@ -40,6 +40,7 @@ public:
 	void Release() override;
 	int32 isReleased() const noexcept override;
 	void _cdecl Intersect(class EObject* const other) override;
+	const enum class RenderLayerType GetLayerType() const noexcept override;
 
 	static void SetGlobal(class Global* global) noexcept;
 

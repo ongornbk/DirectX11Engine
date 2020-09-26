@@ -267,6 +267,11 @@
     <ClInclude Include="RenderContainerVector.h" />
     <ClInclude Include="RendererManager.h" />
     <ClInclude Include="RenderHandle.h" />
+    <ClInclude Include="RenderLayer.h" />
+    <ClInclude Include="RenderLayerCorpse.h" />
+    <ClInclude Include="RenderLayerObject.h" />
+    <ClInclude Include="RenderLayerShadow.h" />
+    <ClInclude Include="RenderLayerType.h" />
     <ClInclude Include="RenderZMap.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -380,6 +385,10 @@
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />
     <ClCompile Include="RenderHandle.cpp" />
+    <ClCompile Include="RenderLayer.cpp" />
+    <ClCompile Include="RenderLayerCorpse.cpp" />
+    <ClCompile Include="RenderLayerObject.cpp" />
+    <ClCompile Include="RenderLayerShadow.cpp" />
     <ClCompile Include="RenderZMap.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceShader.cpp" />

@@ -22,6 +22,12 @@ inline ReturnType& memory_cast(const Type& obj)
 	return *(ReturnType*)(obj);
 }
 
+template <class _Out_ ReturnType,class _In_ Type>
+inline constexpr ReturnType enum_cast(const Type obj)
+{
+	return static_cast<ReturnType>(obj);
+}
+
 template <class _Out_ ReturnType, class _In_ Type>
 inline ReturnType* mmalloc(const Type nitems)
 {

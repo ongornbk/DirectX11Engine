@@ -1,131 +1,114 @@
-#include "RenderContainerVector.h"
-#include "Sorting.h"
-#include "Defines.h"
-#include "Vector.h"
-#include "ThreadPool.h"
-#include "Engine.h"
-#include <thread>
+#include "RenderLayerObject.h"
 
-typedef int32_t Boolean;
-
-EObjectVector::EObjectVector()
+RenderLayerObject::RenderLayerObject()
 {
 }
 
-
-
-void EObjectVector::Update(
-	const float dt
-)
+RenderLayerObject::~RenderLayerObject()
 {
-//#pragma omp for schedule(dynamic)//EASY CRASH
-	for (int32 i = 0; i < 32; ++i)
+}
+
+const RenderLayerType RenderLayerObject::GetType() const noexcept
+{
+	return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
+void RenderLayerObject::Update(const float dt)
+{
+	for (int32_t i = 0; i < 32; ++i)
 	{
-		if(!xta[i])
-		for (auto & obj : m_objectsXY[1][i])
-		{
-			if (obj)
-				obj->Update(dt);
-		}
+		if (!xta[i])
+			for (auto& obj : m_objects[1][i])
+			{
+				if (obj)
+					obj->Update(dt);
+			}
 	}
 }
 
-void EObjectVector::CleanUp()
+void RenderLayerObject::CleanUp()
 {
-	__CleanUp(m_objectsXY[1]);
+	__CleanUp(m_objects[1]);
 }
 
-void _stdcall EObjectVector::Sort()
+void _stdcall RenderLayerObject::Sort()
 {
-SortByXV(m_objectsXY);
-SortByYV(m_objectsXY);
-
+	SortByXV(m_objects);
+	SortByYV(m_objects);
 }
 
-void _stdcall EObjectVector::QSort()
+void _stdcall RenderLayerObject::QSort()
 {
-	QSortByXV(m_objectsXY);
-	QSortByYV(m_objectsXY);
-
+	QSortByXV(m_objects);
+	QSortByYV(m_objects);
 }
 
-void _stdcall EObjectVector::StaticSort()
+void _stdcall RenderLayerObject::StaticSort()
 {
-//	StaticSortByXV(m_objectsXY);
+	//	StaticSortByXV(m_objectsXY);
 //	StaticSortByYV(m_objectsXY);
 }
 
-void _stdcall EObjectVector::StaticQSort()
+void _stdcall RenderLayerObject::StaticQSort()
 {
-//	StaticQSortByXV(m_objectsXY);
+	//	StaticQSortByXV(m_objectsXY);
 //	StaticQSortByYV(m_objectsXY);
 }
 
-//static uint32_t sizeg = 0u;
-
-
-
-void _vectorcall EObjectVector::Render(
-	struct ID3D11DeviceContext * const deviceContext,
-	const struct XMFLOAT4X4 & viewMatrix,
-	const struct XMFLOAT4X4 & projectionMatrix,
-	const struct ShaderPackage &shader
-) noexcept
+void _vectorcall RenderLayerObject::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
 {
-class modern_array<class modern_array<class EObject*>*> mvpp;
+	class modern_array<class modern_array<class EObject*>*> mvpp;
 
 
-for (int32 i = 0; i < 32; i++)
+	for (int32 i = 0; i < 32; i++)
 	{
-	if(!yta[i])
-mvpp.push_back(&m_objectsXY[1][i]);
+		if (!yta[i])
+			mvpp.push_back(&m_objects[1][i]);
 	}
 
-std::reverse(mvpp.begin(), mvpp.end());
+	std::reverse(mvpp.begin(), mvpp.end());
 
-uint32 group = 31u;
-for (auto& vec : mvpp)
-{
-	GRAPHICS EnableAlphaBlending(true);
-
-	shader.BeginShadow();
-
-
-	for (auto& obj : *vec)
+	uint32 group = 31u;
+	for (auto& vec : mvpp)
 	{
-		obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+		GRAPHICS EnableAlphaBlending(true);
+
+		shader.BeginShadow();
+
+
+		for (auto& obj : *vec)
+		{
+			obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+		}
+
+		GRAPHICS EnableAlphaBlending(false);
+
+
+		//shader.End();
+		shader.BeginStandard();
+
+		uint32 index = 0u;
+		for (auto& obj : *vec)
+		{
+			obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+			obj->m_index = index;
+			obj->m_vector = group;
+			index++;
+		}
+		group--;
 	}
-
-	GRAPHICS EnableAlphaBlending(false);
-
-
-	//shader.End();
-	shader.BeginStandard();
-
-	uint32 index = 0u;
-	for (auto& obj : *vec)
-	{
-		obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-		obj->m_index = index;
-		obj->m_vector = group;
-		index++;
-	}
-	group--;
-
-	//shader.End();
 }
+
+void _vectorcall RenderLayerObject::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+{
 
 }
 
-void _vectorcall EObjectVector::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
-{
-}
-
-void EObjectVector::Clear()
+void RenderLayerObject::Clear()
 {
 	for (int32 cv = 0; cv < 32; cv++)
 	{
-		for (auto &&object : m_objectsXY[0][cv])
+		for (auto&& object : m_objects[0][cv])
 		{
 			if (object)
 			{
@@ -133,46 +116,37 @@ void EObjectVector::Clear()
 				object = nullptr;
 			}
 		}
-		m_objectsXY[0][cv].clear();
-		m_objectsXY[1][cv].clear();
+		m_objects[0][cv].clear();
+		m_objects[1][cv].clear();
 	}
-
 }
 
-void EObjectVector::Push(
-	class Unit * const unit
-)
+void RenderLayerObject::Push(Unit* const unit)
 {
-	m_objectsXY[1][0].push_back(unit);
+	m_objects[1][0].push_back(unit);
 }
 
-void EObjectVector::Push(
-	class Doodads * const doodads
-)
+void RenderLayerObject::Push(Doodads* const doodads)
 {
-	m_objectsXY[1][0].push_back(doodads);
+	m_objects[1][0].push_back(doodads);
 }
 
-void EObjectVector::Push(
-	class AnimatedDoodads* const animated
-)
+void RenderLayerObject::Push(AnimatedDoodads* const animated)
 {
-	m_objectsXY[1][0].push_back(animated);
+	m_objects[1][0].push_back(animated);
 }
 
-void EObjectVector::Push(
-	class Tree * const tree
-)
+void RenderLayerObject::Push(Tree* const tree)
 {
-	m_objectsXY[1][0].push_back(tree);
+	m_objects[1][0].push_back(tree);
 }
 
-void EObjectVector::Push(RegionPointObject* const tree)
+void RenderLayerObject::Push(RegionPointObject* const tree)
 {
-	m_objectsXY[1][0].push_back(tree);
+	m_objects[1][0].push_back(tree);
 }
 
-Boolean _fastcall CheckDistance(
+int64_t _fastcall CheckDistance(
 	class EObject* const A,
 	class EObject* const B,
 	const float range
@@ -181,7 +155,7 @@ Boolean _fastcall CheckDistance(
 
 	const float distanceX = A->m_boundingSphere.Center.x - B->m_boundingSphere.Center.x;
 	const float distanceY = A->m_boundingSphere.Center.y - B->m_boundingSphere.Center.y;
-	const float distance = XMVector2Length({ distanceX,distanceY }).m128_f32[0];
+	const float distance = DirectX::XMVector2Length({ distanceX,distanceY }).m128_f32[0];
 	if (distance < range)
 	{
 		return 2;
@@ -194,11 +168,12 @@ Boolean _fastcall CheckDistance(
 	}
 }
 
-void _stdcall pPushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object,const float range) noexcept
+void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object, const float range) noexcept
 {
+	
 	for (auto&& unit : vec)
 	{
-		if (unit&&unit != object && (unit->m_type == EObject::EObjectType::UNIT))
+		if (unit && unit != object && (unit->m_type == EObject::EObjectType::UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
@@ -213,12 +188,14 @@ void _stdcall pPushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EO
 		}
 	}
 ENDLOOP:
+
 	return;
 }
 
 
-std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, float range) noexcept
 {
+	
 	class std::stack<class Unit*> unitsLeft;
 	class std::stack<class Unit*> unitsCenter;
 	class std::stack<class Unit*> unitsRight;
@@ -239,7 +216,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 		{
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec])
+				for (auto& obj : m_objects[1][cVec])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -254,7 +231,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			}
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec + 1])
+				for (auto& obj : m_objects[1][cVec + 1])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -267,7 +244,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 					}
 				}
 			}
-	}
+		}
 		break;
 	}
 	case 31U:
@@ -276,7 +253,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 		{
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec - 1])
+				for (auto& obj : m_objects[1][cVec - 1])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -291,7 +268,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			}
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec])
+				for (auto& obj : m_objects[1][cVec])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -313,7 +290,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 		{
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec - 1])
+				for (auto& obj : m_objects[1][cVec - 1])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -328,7 +305,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			}
 #pragma omp single
 			{
-				for (auto& obj : m_objectsXY[1][cVec])
+				for (auto& obj : m_objects[1][cVec])
 				{
 					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 					{
@@ -344,7 +321,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 #pragma omp single
 			{
 				{
-					for (auto& obj : m_objectsXY[1][cVec + 1])
+					for (auto& obj : m_objects[1][cVec + 1])
 						if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
 						{
 							switch (CheckDistance(obj, object, range))
@@ -360,7 +337,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 		break;
 	}
 	}
-	
+
 	while (!unitsLeft.empty()) {
 		unitsCenter.push(unitsLeft.top());
 		unitsLeft.pop();

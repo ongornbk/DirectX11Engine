@@ -13,6 +13,8 @@ Doodads::Doodads()
 	m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_boundingSphere.Radius = 0.0f;
 
+	m_destroyed = false;
+
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 }
 
@@ -175,4 +177,11 @@ int32 Doodads::isReleased() const noexcept
 
 void _stdcall Doodads::Intersect(class EObject* const other)
 {
+}
+
+const RenderLayerType Doodads::GetLayerType() const noexcept
+{
+	if (m_destroyed)
+		return RenderLayerType::ENUM_OBJECT_TYPE;
+	return RenderLayerType::ENUM_OBJECT_TYPE;
 }

@@ -24,28 +24,31 @@ namespace
 
 
 
-UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
+UserInterfaceGame::UserInterfaceGame(
+	class Engine * const engine,
+	class Shader * const shader
+)
 {
 	struct ID3D11Device* device = engine->GetGraphics()->GetDevice();
 	struct ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
 	class TextFont* font = TextFont::GetFontByName("ExocetLight");
 
 	m_fpsText.Initialize(device, deviceContext, shader, font);
-	m_fpsText.SetText(std::string("FPS "));
+	//m_fpsText.SetText(std::string("FPS "));
 	m_mainText.Initialize(device, deviceContext, shader, font);
-	m_mainText.SetText(string(GAME_NAME_VERSION));
+	//m_mainText.SetText(string(GAME_NAME_VERSION));
 	m_cpuText.Initialize(device, deviceContext, shader, font);
-	m_cpuText.SetText(std::string("CPU "));
+	//m_cpuText.SetText(std::string("CPU "));
 
 	m_gameChat = new GameChat();
 	m_gameChat->SetGlobals(device, deviceContext, shader);
 	m_gameChat->SetFont(font);
 	m_gameChat->SetTextsLimit(5u);
 
-	for (uint32_t i = 0u; i < CPU_MED; i++)
-	{
-		cput.push_back(0.0);
-	}
+	//for (uint32_t i = 0u; i < CPU_MED; i++)
+	//{
+	//	cput.push_back(0.0);
+	//}
 	m_engine = engine;
 	m_cursor = new Sprite(UI_CURSOR_SIZE);
 
@@ -67,11 +70,11 @@ UserInterfaceGame::UserInterfaceGame(Engine* engine,Shader* shader)
 void UserInterfaceGame::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix)
 {
 	//m_ui->Render(deviceContext, m_uiMatrix, viewMatrix, projectionMatrix);
-	m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
-	m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
-	m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	//m_fpsText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	//m_mainText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	//m_cpuText.Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
-	m_gameChat->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
+	//m_gameChat->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
 	m_cursor->Render(deviceContext, m_cursorMatrix, viewMatrix, projectionMatrix);
 
@@ -90,31 +93,31 @@ void UserInterfaceGame::Update(DirectX::XMVECTOR cameraPosition)
 		(cameraPosition.m128_f32[1] - ym)
 	};
 	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition[0], m_mousePosition[1],cameraPosition.m128_f32[2]));
-	stringstream ssfps;
-	ssfps << m_fps;
-	string fps = "FPS " + string(ssfps.str());
-	m_fpsText.SetText(fps);
-
-	double cputime = Get_CPU();
-	double med = 0.0;
-
-	cput.pop_front();
-	cput.push_back(cputime);
-
-	for (auto time : cput)
-	{
-		med += time;
-	}
-
-	med /= double(CPU_MED);
-
-	std::stringstream ss;
-	float tempcpuA = ceilf((float)(100.0 * med));
-	if (isnan(tempcpuA))
-		tempcpuA = 100.f;
-	ss << tempcpuA;
-	std::string cpu = "CPU " + string(ss.str());
-	m_cpuText.SetText(cpu);
+	//stringstream ssfps;
+	//ssfps << m_fps;
+	//string fps = "FPS " + string(ssfps.str());
+	//m_fpsText.SetText(fps);
+	//
+	//double cputime = Get_CPU();
+	//double med = 0.0;
+	//
+	//cput.pop_front();
+	//cput.push_back(cputime);
+	//
+	//for (auto time : cput)
+	//{
+	//	med += time;
+	//}
+	//
+	//med /= double(CPU_MED);
+	//
+	//std::stringstream ss;
+	//float tempcpuA = ceilf((float)(100.0 * med));
+	//if (isnan(tempcpuA))
+	//	tempcpuA = 100.f;
+	//ss << tempcpuA;
+	//std::string cpu = "CPU " + string(ss.str());
+	//m_cpuText.SetText(cpu);
 
 
 
@@ -129,16 +132,16 @@ void UserInterfaceGame::Update(DirectX::XMVECTOR cameraPosition)
 	//	m_objectsText[i]->SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + (TEXT_FPS_MARGIN*(3.0f+float(i)))), cameraPosition.m128_f32[2]));
 	//}
 	
-	m_gameChat->SetTextPosition(XMFLOAT3( cameraPosition.m128_f32[0] - (float)xr + 30.0f,cameraPosition.m128_f32[1] + (float)yr - 700.0f ,cameraPosition.m128_f32[2]));
+	//m_gameChat->SetTextPosition(XMFLOAT3( cameraPosition.m128_f32[0] - (float)xr + 30.0f,cameraPosition.m128_f32[1] + (float)yr - 700.0f ,cameraPosition.m128_f32[2]));
 
-	m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
-	m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
-	m_cpuText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + TEXT_CPU_MARGIN), cameraPosition.m128_f32[2]));
+	//m_mainText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] +(float)yr - TEXT_MARGIN_TOP, cameraPosition.m128_f32[2]));
+	//m_fpsText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP+TEXT_FPS_MARGIN), cameraPosition.m128_f32[2]));
+	//m_cpuText.SetPosition(XMFLOAT3(cameraPosition.m128_f32[0] - (float)xr + TEXT_MARGIN_LEFT, cameraPosition.m128_f32[1] + (float)yr - (TEXT_MARGIN_TOP + TEXT_CPU_MARGIN), cameraPosition.m128_f32[2]));
 
-	m_gameChat->Update();
-	m_fpsText.Update();
-	m_mainText.Update();
-	m_cpuText.Update();
+	//m_gameChat->Update();
+	//m_fpsText.Update();
+	//m_mainText.Update();
+	//m_cpuText.Update();
 }
 
 

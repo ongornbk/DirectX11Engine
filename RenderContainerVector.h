@@ -15,7 +15,7 @@ struct EObjectVector
 
 	EObjectVector();
 
-	modern_array<class EObject*> m_objectsXY[2][32];
+	class modern_array<class EObject*> m_objectsXY[2][32];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);
