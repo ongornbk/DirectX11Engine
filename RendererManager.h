@@ -53,6 +53,7 @@ public:
 	void PushDoodads(class Doodads* doodads);
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
 	void PushTree(class Tree* doodads);
+	void Push(class EObject* const object, const enum class RenderLayerType layer);
 	void PushRegionPointObject(class RegionPointObject* object);
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,

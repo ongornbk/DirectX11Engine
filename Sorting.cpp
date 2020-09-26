@@ -9,7 +9,7 @@
 #include <sal.h>
 #include <omp.h>
 #include <DirectXMath.h>
-
+#include <iostream>
 
 
 namespace
@@ -921,14 +921,24 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 		class EObject* obj = vectemp[j];
 		if (obj)
 		{
-			if (obj->isReleased())
+			switch (obj->m_managementType)
 			{
+			case ObjectManagementType::OBJECT_MANAGEMENT_DISABLED:
+				break;
+			case ObjectManagementType::OBJECT_MANAGEMENT_REMOVE:
+				obj->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
+				vectemp.remove(j);
+				j--;
+				break;
+			case ObjectManagementType::OBJECT_MANAGEMENT_DELETE:
 				GarbageCollector::GetInstance()->AsyncDelete(obj);
-				//delete obj;
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;
-			}
+				break;
+				}
+				
+			
 		}
 		else
 		{

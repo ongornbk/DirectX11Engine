@@ -35,6 +35,7 @@ public:
 	void Push(class AnimatedDoodads* const animated) override;
 	void Push(class Tree* const tree) override;
 	void Push(class RegionPointObject* const tree) override;
+	void Push(class EObject* const object) override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept override;
 };
 

@@ -7,6 +7,7 @@
 #include "ActionRemoveObject.h"
 #include "ActionExecuteActionArray.h"
 #include "ActionMessageFront.h"
+#include "ActionChangeLayer.h"
 #include "modern/modern.h"
 #include "Timer.h"
 #include "UnitTemplate.h"
@@ -513,6 +514,7 @@ void Unit::Die(Unit* const killer)
 	m_dead = true;
 	if (m_decayType == UnitDecay::ENUM_LEAVE_CORPSE)
 	{
+		Timer::CreateInstantTimer(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
 		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 		//action->push(new ActionMessageFront(this));
 		action->push(new ActionRemoveObject(this));

@@ -1,12 +1,15 @@
 #include "Timer.h"
 #include "GarbageCollector.h"
 #include <list>
+#include <atomic>
+#include <iostream>
 
 namespace
 {
 
 	static std::list<class ITimer*> m_timers;
-
+	static std::list<class ITimer*> m_echoTimers;
+	static std::atomic<int64_t> m_stance = 0;
 }
 
 
@@ -15,6 +18,8 @@ void Timer::Update(const float dt)
 {
 
 	class GarbageCollector* gbc = GarbageCollector::GetInstance();
+
+	m_stance.store(1, std::memory_order::memory_order_seq_cst);
 
 		for (auto& element = m_timers.begin();element != m_timers.end();element++)
 		{
@@ -25,6 +30,9 @@ void Timer::Update(const float dt)
 				}
 		}
 
+		m_stance.store(0, std::memory_order::memory_order_seq_cst);
+
+		m_timers.merge(m_echoTimers);
 }
 
 void Timer::CreateExpiringTimer(IAction* const action, const float time)
@@ -32,7 +40,9 @@ void Timer::CreateExpiringTimer(IAction* const action, const float time)
 	class ExpiringTimer* const timer = new ExpiringTimer();
 	timer->action = action;
 	timer->time = time;
-	m_timers.push_back(timer);
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
 }
 
 void Timer::CreatePeriodicTimer(IAction* const action, const float time,const float period)
@@ -41,12 +51,16 @@ void Timer::CreatePeriodicTimer(IAction* const action, const float time,const fl
 	timer->action = action;
 	timer->time = time;
 	timer->period = period;
-	m_timers.push_back(timer);
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
 }
 
 void Timer::CreateInstantTimer(IAction* const action)
 {
 	class InstantTimer* const timer = new InstantTimer();
 	timer->action = action;
-	m_timers.push_back(timer);
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
 }

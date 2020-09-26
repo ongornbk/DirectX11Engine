@@ -3,6 +3,7 @@
 #include "TaskQueue.h"
 #include "ShaderPackage.h"
 #include "RenderLayerType.h"
+#include "ObjectManagementType.h"
 #include <DirectXCollision.h>
 
 
@@ -76,6 +77,8 @@ public:
 	DirectX::BoundingSphere m_boundingSphere;
 
 	struct EObjectFlags m_flags;
+
+	enum class ObjectManagementType m_managementType;
 
 	enum class EObjectType
 	{

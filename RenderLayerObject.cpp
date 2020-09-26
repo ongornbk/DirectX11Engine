@@ -146,6 +146,11 @@ void RenderLayerObject::Push(RegionPointObject* const tree)
 	m_objects[1][0].push_back(tree);
 }
 
+void RenderLayerObject::Push(EObject* const object)
+{
+	m_objects[1][0].push_back(object);
+}
+
 int64_t _fastcall CheckDistance(
 	class EObject* const A,
 	class EObject* const B,

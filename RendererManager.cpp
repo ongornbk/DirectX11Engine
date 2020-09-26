@@ -126,6 +126,11 @@ void RendererManager::PushTree(class Tree * tree)
 	m_layers[enum_cast<int32_t>(tree->GetLayerType())]->Push(tree);
 }
 
+void RendererManager::Push(class EObject* const object, const enum class RenderLayerType layer)
+{
+	m_layers[enum_cast<int32_t>(layer)]->Push(object);
+}
+
 void RendererManager::PushRegionPointObject(RegionPointObject* object)
 {
 	//m_objects.Push(object);

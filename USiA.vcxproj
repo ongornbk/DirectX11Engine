@@ -183,10 +183,12 @@
     <ClInclude Include="Ability.h" />
     <ClInclude Include="ActionApplyColorFilter.h" />
     <ClInclude Include="ActionAttack.h" />
+    <ClInclude Include="ActionChangeLayer.h" />
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionMessageFront.h" />
+    <ClInclude Include="ActionPushObject.h" />
     <ClInclude Include="ActionRemoveObject.h" />
     <ClInclude Include="ActionSetCellMultiplier.h" />
     <ClInclude Include="Allocator.h" />
@@ -257,6 +259,7 @@
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
     <ClInclude Include="ObjectAnchorType.h" />
+    <ClInclude Include="ObjectManagementType.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
@@ -325,10 +328,12 @@
   <ItemGroup>
     <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionAttack.cpp" />
+    <ClCompile Include="ActionChangeLayer.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionMessageFront.cpp" />
+    <ClCompile Include="ActionPushObject.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="Allocator.cpp" />
@@ -476,6 +481,9 @@
     <None Include="x64\Release\bin\shaders\units.fx">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="game_exe.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -69,6 +69,10 @@ void RenderLayerShadow::Push(RegionPointObject* const tree)
 {
 }
 
+void RenderLayerShadow::Push(EObject* const object)
+{
+}
+
 std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	return std::stack<class Unit*>();

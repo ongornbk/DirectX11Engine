@@ -1,0 +1,8 @@
+#pragma once
+
+enum class ObjectManagementType
+{
+	OBJECT_MANAGEMENT_DISABLED,
+	OBJECT_MANAGEMENT_REMOVE,
+	OBJECT_MANAGEMENT_DELETE
+};

@@ -9,6 +9,7 @@
 #include "LuaPointer.h"
 #include "Sorting.h"
 #include "UnitGroup.h"
+#include "ActionRemoveObject.h"
 #include "modern/modern.h"
 #include "Timer.h"
 
@@ -411,11 +412,17 @@ namespace lua_callback
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
-			object->Release();
-			CleanupFrame();
-			if (object == m_global->m_lastSelectedUnit)
-				m_global->m_lastSelectedUnit = nullptr;
+			//object->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+			//object->Release();
+			//CleanupFrame();
+			//if (object == m_global->m_lastSelectedUnit)
+				//m_global->m_lastSelectedUnit = nullptr;
+			//if(object->m_managementType != ObjectManagementType::OBJECT_MANAGEMENT_DELETE)
+			//Timer::CreateInstantTimer(new ActionRemoveObject(object));
+			//std::cout << "LUA DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
+			//return 0;
 		}
+		//std::cout << "LUA 0 DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
 		return 0;
 	}
 

@@ -36,6 +36,7 @@ public:
 	virtual void Push(class AnimatedDoodads* const animated) = 0;
 	virtual void Push(class Tree* const tree) = 0;
 	virtual void Push(class RegionPointObject* const tree) = 0;
+	virtual void Push(class EObject* const object) = 0;
 	virtual std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept = 0;
 };
 
