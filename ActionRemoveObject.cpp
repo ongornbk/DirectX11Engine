@@ -22,3 +22,9 @@ void ActionRemoveObject::execute()
 		m_object = nullptr;
 	}
 }
+
+const ActionBehavior ActionRemoveObject::execute_in_array()
+{
+	this->execute();
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

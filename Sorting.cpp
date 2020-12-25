@@ -5,23 +5,16 @@
 #include "ThreadPool.h"
 //#include "Math.h"
 #include "Tile.h"
+#include "game_math.h"
 #include <sstream>
 #include <sal.h>
 #include <omp.h>
 #include <DirectXMath.h>
 #include <iostream>
 
-
 namespace
 {
-#define MAP_DIVISION 32
-#define NUM_OF_DIVIDES_X MAP_DIVISION
-#define NUM_OF_DIVIDES_Y MAP_DIVISION
-#define HALF_NUM_OF_DIVIDES_X (NUM_OF_DIVIDES_X / 2)
-#define HALF_NUM_OF_DIVIDES_Y (NUM_OF_DIVIDES_Y / 2)
-#define HALF_MAP_SIZE (TILE_MAP_SIZE / 2.0f)
-#define MAP_Y_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_Y
-#define MAP_X_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_X
+
 
 //DEPRECATED 25.05.2020 ongornbk
 /*
@@ -459,37 +452,9 @@ __forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexce
 }
 */ 
 
-int32 GetXCell(const float x) noexcept
-{
-	 int32 i = (int32)x / MAP_X_CHUNK;
-	i += HALF_NUM_OF_DIVIDES_X;
-	if (i >= NUM_OF_DIVIDES_X)
-	{
-		return NUM_OF_DIVIDES_X - 1;
-	}
-	else
-		if (i < 0)
-		{
-			return 0;
-		}
-	return i;
-}
 
-int32 GetYCell(const float y) noexcept
-{
-	int32 i = (int32)y / MAP_Y_CHUNK;
-	i += HALF_NUM_OF_DIVIDES_Y;
-	if (i >= NUM_OF_DIVIDES_Y)
-	{
-		return NUM_OF_DIVIDES_Y - 1;
-	}
-	else
-		if (i < 0)
-		{
-			return 0;
-		}
-	return i;
-}
+
+
 
 _Use_decl_annotations_
 template <class T>

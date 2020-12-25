@@ -74,7 +74,6 @@ void Tree::Render(
 		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
-
 	}
 }
 

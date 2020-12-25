@@ -15,5 +15,6 @@ public:
 	void push(class IAction* const action);
 
 	void execute() override;
+	const enum class ActionBehavior execute_in_array() override;
 };
 

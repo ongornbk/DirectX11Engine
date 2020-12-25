@@ -15,3 +15,9 @@ void ActionPushObject::execute()
 		RendererManager::GetInstance()->Push(m_object, m_layer);
 	}
 }
+
+const ActionBehavior ActionPushObject::execute_in_array()
+{
+	this->execute();
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

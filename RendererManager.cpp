@@ -295,7 +295,8 @@ void RendererManager::SetFps(const int32 fps)
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
 {
-	return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
+	//return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
+	return m_layers[enum_cast<int32_t>(object->GetLayerType())]->GetUnitsInRange(object, range);
 }
 
 RendererManager * RendererManager::GetInstance()

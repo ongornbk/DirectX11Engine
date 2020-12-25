@@ -2,20 +2,18 @@
 #include "IAction.h"
 #include "Unit.h"
 
-class ActionAttack :
+class ActionKillUnit :
 	public IAction
 {
 	class Unit* m_object;
-	class Unit* m_target;
 
-		ActionAttack() = delete;
+	ActionKillUnit() = delete;
 
 public:
 
-	ActionAttack(class Unit* const object, class Unit* const target);
-	~ActionAttack();
+	ActionKillUnit(class Unit* const object);
+	~ActionKillUnit();
 
 	void execute() override;
 	const enum class ActionBehavior execute_in_array() override;
 };
-

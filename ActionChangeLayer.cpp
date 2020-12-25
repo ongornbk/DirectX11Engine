@@ -20,3 +20,10 @@ void ActionChangeLayer::execute()
 		Timer::CreateInstantTimer(new ActionPushObject(m_object, m_layer));
 	}
 }
+
+const ActionBehavior ActionChangeLayer::execute_in_array()
+{
+	this->execute();
+
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

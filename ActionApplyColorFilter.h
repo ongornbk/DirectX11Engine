@@ -16,5 +16,6 @@ public:
 	~ActionApplyColorFilter();
 
 	void execute() override;
+	const enum class ActionBehavior execute_in_array() override;
 };
 

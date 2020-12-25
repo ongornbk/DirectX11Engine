@@ -1,6 +1,7 @@
 #include "modern_string.h"
 #include "modern_exception.h"
 #include "modern_math.h"
+#include <iostream>
 
 
 
@@ -173,6 +174,7 @@ int32_t modern_string::to_int32() noexcept
 		}
 		value += val10;
 	}
+
 	return value;
 }
 
@@ -282,7 +284,7 @@ void modern_string::load(const char* text)
 
 bool modern_isdigit(wchar_t ch) noexcept
 {
-	return (ch > L'0' && ch < L'9');
+	return (ch >= L'0' && ch <= L'9');
 }
 
 int32_t modern_todigit(wchar_t ch) noexcept

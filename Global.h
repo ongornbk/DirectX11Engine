@@ -15,7 +15,7 @@ public:
 	MSVC_VOLATILE Unit*                m_lastSelectedUnit;
 	MSVC_VOLATILE EObject*             m_lastCreatedRenderContainer;
 	MSVC_VOLATILE class EObject*       m_pickedObject{};
-	MSVC_VOLATILE EObjectFlags         m_lastFlags{};
+	MSVC_VOLATILE ObjectFlags          m_lastFlags{};
 	MSVC_VOLATILE Task*                m_lastTask;
 	static Global*       GetInstance();
 	struct DirectX::XMFLOAT3             m_lastPoint;

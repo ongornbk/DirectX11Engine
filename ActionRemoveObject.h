@@ -16,7 +16,7 @@ public:
 	~ActionRemoveObject();
 	
 	void execute() override;
-
+	const enum class ActionBehavior execute_in_array() override;
 
 
 };

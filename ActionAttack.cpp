@@ -15,3 +15,9 @@ void ActionAttack::execute()
 		m_object->Attack(m_target);
 	}
 }
+
+const ActionBehavior ActionAttack::execute_in_array()
+{
+	this->execute();
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

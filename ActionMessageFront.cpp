@@ -17,3 +17,9 @@ void ActionMessageFront::execute()
 		game_chat->PushTextFront(std::to_string((unsigned long long) m_object));
 	}
 }
+
+const ActionBehavior ActionMessageFront::execute_in_array()
+{
+	this->execute();
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

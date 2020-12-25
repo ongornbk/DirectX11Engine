@@ -1,6 +1,6 @@
 #pragma once
 
-enum ObjectAnchorType
+enum class ObjectAnchorType
 {
 		OBJECT_ANCHOR_TYPE_TOP_LEFT,
 		OBJECT_ANCHOR_TYPE_TOP_CENTER,

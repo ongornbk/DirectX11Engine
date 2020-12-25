@@ -4,40 +4,10 @@
 #include "ShaderPackage.h"
 #include "RenderLayerType.h"
 #include "ObjectManagementType.h"
+#include "ObjectIntersectionInfo.h"
+#include "ObjectAnchorType.h"
+#include "ObjectFlags.h"
 #include <DirectXCollision.h>
-
-
-enum class EObjectIntersectionInfo
-{
-	NONE,
-	INTERSECT,
-	STOP
-};
-
-enum EObjectAnchor
-{
-	BOTTOM_CENTRE,
-	BOTTOM_LEFT,
-	BOTTOM_RIGHT,
-	TOP_LEFT,
-	TOP_CENTRE,
-	TOP_RIGHT,
-	RIGHT,
-	LEFT,
-	CENTRE
-};
-
-struct EObjectFlags
-{
-	bool m_rendering = false;
-	bool m_selected = false;
-	bool m_pushable = false;
-	bool m_blocked = false;
-	bool m_collided = false;
-	bool m_selectable = false;
-	bool m_cast_shadow = false;
-	bool m_hide = false;
-};
 
 class EObject
 {
@@ -76,7 +46,7 @@ public:
 
 	DirectX::BoundingSphere m_boundingSphere;
 
-	struct EObjectFlags m_flags;
+	struct ObjectFlags m_flags;
 
 	enum class ObjectManagementType m_managementType;
 
@@ -88,7 +58,8 @@ public:
 		TREE,
 		COLLISION_BOX,
 		SPECIAL_EFFECT,
-		REGION_POINT
+		REGION_POINT,
+		SHADOW
 	}m_type;
 };
 

@@ -15,3 +15,9 @@ void ActionExecuteAction::execute()
 	if (m_action)
 		m_action->execute();
 }
+
+const ActionBehavior ActionExecuteAction::execute_in_array()
+{
+	this->execute();
+	return ActionBehavior::ACTION_BEHAVIOR_FALLTHROUGH;
+}

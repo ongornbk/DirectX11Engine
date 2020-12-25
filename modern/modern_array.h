@@ -28,7 +28,7 @@ public:
 	explicit modern_array()
 		{
 		m_size = 0u;
-		m_capacity = 2u;
+		m_capacity = 4u;
 		m_data = mmalloc<T>(m_capacity);
 		assert(m_data);
 		}

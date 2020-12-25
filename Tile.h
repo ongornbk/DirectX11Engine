@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "gdef.h"
 #include "Sprite.h"
+#include "game_math.h"
 #include <array>
 
 

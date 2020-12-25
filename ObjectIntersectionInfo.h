@@ -1,0 +1,8 @@
+#pragma once
+
+enum class ObjectIntersectionInfo
+{
+	OBJECT_INTERSECTION_NONE,
+	OBJECT_INTERSECTION_INTERSECT,
+	OBJECT_INTERSECTION_STOP
+};

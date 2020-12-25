@@ -17,7 +17,7 @@ namespace
 void Timer::Update(const float dt)
 {
 
-	class GarbageCollector* gbc = GarbageCollector::GetInstance();
+	class GarbageCollector* const gbc = GarbageCollector::GetInstance();
 
 	m_stance.store(1, std::memory_order::memory_order_seq_cst);
 
@@ -35,7 +35,7 @@ void Timer::Update(const float dt)
 		m_timers.merge(m_echoTimers);
 }
 
-void Timer::CreateExpiringTimer(IAction* const action, const float time)
+void Timer::CreateExpiringTimer(class IAction* const action, const float time)
 {
 	class ExpiringTimer* const timer = new ExpiringTimer();
 	timer->action = action;
@@ -60,6 +60,16 @@ void Timer::CreateInstantTimer(IAction* const action)
 {
 	class InstantTimer* const timer = new InstantTimer();
 	timer->action = action;
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
+}
+
+void Timer::CreateFuzzyTimer(IAction* const action, const float time)
+{
+	class FuzzyTimer* const timer = new FuzzyTimer();
+	timer->action = action;
+	timer->time = time;
 	if (m_stance.load() == 0)
 		m_timers.push_back(timer);
 	else m_echoTimers.push_back(timer);
