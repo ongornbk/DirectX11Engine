@@ -9,6 +9,7 @@
 #include "RenderLayerCorpse.h"
 #include "RenderLayerObject.h"
 #include "RenderLayerShadow.h"
+#include "RenderLayerItem.h"
 
 #include <future>
 #include <mutex>
@@ -67,6 +68,7 @@ RendererManager::RendererManager(
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_CORPSE_TYPE)] = new RenderLayerCorpse();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)] = new RenderLayerObject();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)] = new RenderLayerShadow();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_ITEM_TYPE)]   = new RenderLayerItem();
 
 }
 

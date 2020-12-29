@@ -2,5 +2,6 @@
 
 enum class ActionType
 {
-	TIMER
+	ACTION_TYPE_TIMER,
+	ACTION_TYPE_CONDITION
 };

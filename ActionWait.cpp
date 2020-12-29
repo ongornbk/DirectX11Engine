@@ -21,7 +21,7 @@ const ActionBehavior ActionWait::execute_in_array()
 
 const ActionType ActionWait::GetType()
 {
-	return ActionType::TIMER;
+	return ActionType::ACTION_TYPE_TIMER;
 }
 
 const float ActionWait::GetDuration()

@@ -9,6 +9,8 @@
 #include "ActionMessageFront.h"
 #include "ActionChangeLayer.h"
 #include "ActionWait.h"
+#include "ActionWaitUntil.h"
+#include "ConditionFactory.h"
 #include "modern/modern.h"
 #include "Timer.h"
 #include "UnitTemplate.h"
@@ -525,7 +527,7 @@ void Unit::Die(Unit* const killer)
 		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 		//action->push(new ActionMessageFront(this));
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
-		action->push(new ActionWait(15.f));
+		action->push(new ActionWait(5.f));
 		action->push(new ActionRemoveObject(this));
 		Timer::CreateInstantTimer(action);
 		
@@ -562,6 +564,11 @@ bool Unit::IsAttacking() const noexcept
 bool Unit::IsDead() const noexcept
 {
 	return m_dead;
+}
+
+bool Unit::IsAlive() const noexcept
+{
+	return !m_dead;
 }
 
 bool Unit::BeginAttack(class Unit* const target)

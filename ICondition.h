@@ -2,6 +2,5 @@
 class ICondition
 {
 public:
-
+	virtual bool CheckCondition() = 0;
 };
-

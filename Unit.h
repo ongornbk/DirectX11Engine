@@ -137,6 +137,7 @@ public:
 
 	bool IsAttacking() const noexcept;
 	bool IsDead() const noexcept;
+	bool IsAlive() const noexcept;
 
 	bool BeginAttack(class Unit* const target);
 	bool Attack(class Unit* const target);

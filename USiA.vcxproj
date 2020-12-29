@@ -137,6 +137,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -169,6 +170,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -196,16 +198,28 @@
     <ClInclude Include="ActionStance.h" />
     <ClInclude Include="ActionType.h" />
     <ClInclude Include="ActionWait.h" />
+    <ClInclude Include="ActionWaitUntil.h" />
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="AnimatedDoodads.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="AttackTarget.h" />
     <ClInclude Include="BasicParameter.h" />
+    <ClInclude Include="BooleanConditionEquals.h" />
+    <ClInclude Include="BooleanConditionNotEquals.h" />
+    <ClInclude Include="BooleanOperatorType.h" />
+    <ClInclude Include="BooleanVariableUnitIsAlive.h" />
+    <ClInclude Include="BooleanVariableUnitIsAttacking.h" />
+    <ClInclude Include="BooleanVariableUnitIsDead.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="ConditionFactory.h" />
+    <ClInclude Include="ConditionTimer.h" />
+    <ClInclude Include="ConstBooleanVariable.h" />
+    <ClInclude Include="ConstBooleanVariableFalse.h" />
+    <ClInclude Include="ConstBooleanVariableTrue.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
@@ -218,6 +232,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Engine\Core\Containers\Pair.h" />
     <ClInclude Include="ExpiringTimer.h" />
+    <ClInclude Include="FloatOperatorType.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="FreeTrash.h" />
@@ -237,10 +252,15 @@
     <ClInclude Include="HandleIntersetionInfo.h" />
     <ClInclude Include="HandleType.h" />
     <ClInclude Include="IAction.h" />
+    <ClInclude Include="IActionCondition.h" />
     <ClInclude Include="IActionSplitArrayBehavior.h" />
     <ClInclude Include="IActionTimer.h" />
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
+    <ClInclude Include="IBooleanVariable.h" />
+    <ClInclude Include="ICondition.h" />
+    <ClInclude Include="IFloatVariable.h" />
+    <ClInclude Include="IIntegerVariable.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InstantTimer.h" />
     <ClInclude Include="ITimer.h" />
@@ -284,6 +304,7 @@
     <ClInclude Include="RenderHandle.h" />
     <ClInclude Include="RenderLayer.h" />
     <ClInclude Include="RenderLayerCorpse.h" />
+    <ClInclude Include="RenderLayerItem.h" />
     <ClInclude Include="RenderLayerObject.h" />
     <ClInclude Include="RenderLayerShadow.h" />
     <ClInclude Include="RenderLayerType.h" />
@@ -351,18 +372,30 @@
     <ClCompile Include="ActionRemoveObject.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="ActionWait.cpp" />
+    <ClCompile Include="ActionWaitUntil.cpp" />
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />
     <ClCompile Include="BasicParameter.cpp" />
+    <ClCompile Include="BooleanConditionEquals.cpp" />
+    <ClCompile Include="BooleanConditionNotEquals.cpp" />
+    <ClCompile Include="BooleanVariableUnitIsAlive.cpp" />
+    <ClCompile Include="BooleanVariableUnitIsAttacking.cpp" />
+    <ClCompile Include="BooleanVariableUnitIsDead.cpp" />
     <ClCompile Include="ColorFilter.cpp" />
+    <ClCompile Include="ConditionFactory.cpp" />
+    <ClCompile Include="ConditionTimer.cpp" />
+    <ClCompile Include="ConstBooleanVariable.cpp" />
+    <ClCompile Include="ConstBooleanVariableFalse.cpp" />
+    <ClCompile Include="ConstBooleanVariableTrue.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
     <ClCompile Include="ExpiringTimer.cpp" />
+    <ClCompile Include="FloatOperatorType.cpp" />
     <ClCompile Include="FreeTrash.cpp" />
     <ClCompile Include="FuzzyTimer.cpp" />
     <ClCompile Include="GameChat.cpp" />
@@ -372,8 +405,13 @@
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleIntersetionInfo.cpp" />
     <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="IActionCondition.cpp" />
     <ClCompile Include="IActionSplitArrayBehavior.cpp" />
     <ClCompile Include="IActionTimer.cpp" />
+    <ClCompile Include="IBooleanVariable.cpp" />
+    <ClCompile Include="ICondition.cpp" />
+    <ClCompile Include="IFloatVariable.cpp" />
+    <ClCompile Include="IIntegerVariable.cpp" />
     <ClCompile Include="InstantTimer.cpp" />
     <ClCompile Include="ITimer.cpp" />
     <ClCompile Include="ITrash.cpp" />
@@ -412,6 +450,7 @@
     <ClCompile Include="RenderHandle.cpp" />
     <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="RenderLayerCorpse.cpp" />
+    <ClCompile Include="RenderLayerItem.cpp" />
     <ClCompile Include="RenderLayerObject.cpp" />
     <ClCompile Include="RenderLayerShadow.cpp" />
     <ClCompile Include="RenderZMap.cpp" />
