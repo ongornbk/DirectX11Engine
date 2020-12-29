@@ -207,6 +207,7 @@
     <ClInclude Include="BooleanConditionEquals.h" />
     <ClInclude Include="BooleanConditionNotEquals.h" />
     <ClInclude Include="BooleanOperatorType.h" />
+    <ClInclude Include="BooleanVariableIsKeyDown.h" />
     <ClInclude Include="BooleanVariableUnitIsAlive.h" />
     <ClInclude Include="BooleanVariableUnitIsAttacking.h" />
     <ClInclude Include="BooleanVariableUnitIsDead.h" />
@@ -380,6 +381,7 @@
     <ClCompile Include="BasicParameter.cpp" />
     <ClCompile Include="BooleanConditionEquals.cpp" />
     <ClCompile Include="BooleanConditionNotEquals.cpp" />
+    <ClCompile Include="BooleanVariableIsKeyDown.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAlive.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAttacking.cpp" />
     <ClCompile Include="BooleanVariableUnitIsDead.cpp" />

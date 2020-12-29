@@ -8,6 +8,7 @@
 #include "BooleanVariableUnitIsDead.h"
 #include "BooleanVariableUnitIsAlive.h"
 #include "BooleanVariableUnitIsAttacking.h"
+#include "BooleanVariableIsKeyDown.h"
 #include "BooleanOperatorType.h"
 #pragma endregion
 #pragma region Float

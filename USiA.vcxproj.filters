@@ -624,6 +624,9 @@
     <ClInclude Include="FloatOperatorType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BooleanVariableIsKeyDown.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1032,6 +1035,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FloatOperatorType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanVariableIsKeyDown.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

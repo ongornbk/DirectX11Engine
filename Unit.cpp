@@ -527,6 +527,7 @@ void Unit::Die(Unit* const killer)
 		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 		//action->push(new ActionMessageFront(this));
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
+		action->push(new ActionWaitUntil(ConditionFactory::CreateBooleanCondition(new BooleanVariableIsKeyDown(0x15),new ConstBooleanVariableFalse(),BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)));
 		action->push(new ActionWait(5.f));
 		action->push(new ActionRemoveObject(this));
 		Timer::CreateInstantTimer(action);
