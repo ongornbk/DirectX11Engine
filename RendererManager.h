@@ -60,7 +60,7 @@ public:
 		const struct XMFLOAT4X4& viewMatrix,
 		const struct XMFLOAT4X4& projectionMatrix
 	);
-	void Update();
+	void Update(const float dt);
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
@@ -68,6 +68,7 @@ public:
 	void LoadInstanceToFile(std::string filename);
 	void SetTileMapRendering(const int64 rendering = 1);
 	void SetFps(const int32 fps);
+	void SetFocus(class Unit* const unit);
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
@@ -86,7 +87,7 @@ private:
 
 	TileMap* m_map;
 	UserInterface* m_ui;
-
+	Unit* m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 
 	//EObjectVector m_objects;

@@ -25,6 +25,19 @@ extern "C"
 			//m_iddl = LoadLibrary(LUA_LOCATION);
 		}
 
+		lua_State* const Load(const char* const filename) noexcept
+		{
+			int result;
+			struct lua_State* const state = luaL_newstate();
+			luaL_openlibs(state);
+			result = luaL_loadfile(state, filename);
+			if (result != LUA_OK) {
+				lua::PrintError();
+				return nullptr;
+			}
+			return state;
+		}
+
 
 
 		void Close() noexcept
@@ -44,11 +57,12 @@ extern "C"
 		void PrintError() noexcept
 		{
 			const char* message = lua_tostring(m_instance, -1);
+			if(message)
 			ipp::Console::Println(message);
 			lua_pop(m_instance,1);
 		}
 
-		lua_State* GetInstance() noexcept //UNSAFE
+		struct lua_State* const GetInstance() noexcept //UNSAFE
 		{
 			return m_instance;
 		}
@@ -71,7 +85,7 @@ extern "C"
 			}
 		}
 
-		void Execute(const char* filename)
+		void Execute(const char* const filename)
 		{
 			int result;
 			result = luaL_loadfile(m_instance, filename);
@@ -79,6 +93,12 @@ extern "C"
 				lua::PrintError();
 				return;
 			}
+			//result = luaL_loadbuffer(m_instance, filename,strlen(filename),"filename");
+			//if (result != LUA_OK) {
+			//	lua::PrintError();
+			//	return;
+			//}
+			//luaL_dostring(m_instance, "filename");
 			result = lua_pcall(m_instance, 0, LUA_MULTRET, 0);
 			if (result != LUA_OK) {
 				lua::PrintError();

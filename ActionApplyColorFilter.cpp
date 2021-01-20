@@ -1,8 +1,12 @@
 #include "ActionApplyColorFilter.h"
 
-ActionApplyColorFilter::ActionApplyColorFilter(Unit* const object, DirectX::XMFLOAT4& color) : m_object(object), m_color(color)
+//ActionApplyColorFilter::ActionApplyColorFilter(Unit* const object, DirectX::XMFLOAT4& color) : m_object(object), m_color(color)
+//{
+//	//m_stance = ActionStance::ACTION_STANCE_RUNNING;
+//}
+
+ActionApplyColorFilter::ActionApplyColorFilter(class ColorFilter* const object, DirectX::XMFLOAT4 color) : m_object(object), m_color(color)
 {
-	//m_stance = ActionStance::ACTION_STANCE_RUNNING;
 }
 
 ActionApplyColorFilter::~ActionApplyColorFilter()

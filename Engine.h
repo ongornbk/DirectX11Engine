@@ -13,6 +13,7 @@
 #include "Canals.h"
 #include "ThreadPool.h"
 #include "ActionMap.h"
+#include "FrameLocker.h"
 
 class RendererManager;
 class FrameWork;
@@ -21,6 +22,8 @@ struct lua_State;
 #undef PlaySound
 class Engine
 {
+	FrameLocker m_updateLock;
+	FrameLocker m_renderLock;
 public:
 	~Engine(void);
 

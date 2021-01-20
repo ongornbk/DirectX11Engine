@@ -6,6 +6,7 @@
 Graphics::Graphics(void)
 {
 	m_dxManager = nullptr;
+	m_fullscreen = true;
 }
 
 Graphics::~Graphics(void)
@@ -40,6 +41,12 @@ void Graphics::BeginScene(float* color)
 void Graphics::EndScene()
 {
 	m_dxManager->EndScene();
+}
+
+void Graphics::SetFullScreen(bool fullscreen)
+{
+	m_fullscreen = fullscreen;
+	m_dxManager->SetFullScreen(fullscreen);
 }
 
 void Graphics::EnableAlphaBlending(bool enable)

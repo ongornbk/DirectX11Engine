@@ -1,12 +1,13 @@
 #pragma once
 #include "GameComponent.h"
 #include "SettingsC.h"
+#include "LuaScript.h"
 
 
 
 class GameScene : public GameComponent
 {
-
+	class IScript* m_update;
 public:
 	GameScene(void);
     ~GameScene(void);

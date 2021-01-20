@@ -186,11 +186,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 		}
 		break;
 	case WM_CLOSE:
-	{
 		PostQuitMessage(WM_CLOSE);
 		break;
-	}break;
-	
+	case WM_ACTIVATEAPP:
+		class Graphics* const gfx = Engine::GetEngine()->GetGraphics();
+		if(gfx)
+		gfx->SetFullScreen((bool)wParam);
+		break;
 	}
 
 	return DefWindowProc(hwnd, message, wParam, lParam);

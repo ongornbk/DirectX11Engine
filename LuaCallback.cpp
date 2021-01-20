@@ -706,6 +706,17 @@ namespace lua_callback
 		
 	}
 
+	static int32 FocusOnUnit(
+		struct lua_State* const state
+	) noexcept
+	{
+		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+			m_renderer->SetFocus(unit);
+		return 0;
+
+	}
+
 	static int32 InitializeDoodads(
 		struct lua_State* const state
 	) noexcept
@@ -991,6 +1002,8 @@ namespace lua_callback
 		}
 		return 0;
 	}
+
+
 
 	static int32 PopGroup(
 		struct lua_State* const state
@@ -1278,7 +1291,7 @@ namespace lua_callback
 	)
 	{
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
-		if (unit0->m_type != EObject::EObjectType::UNIT)
+		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
 			return 0;
 
 		unit0->Die(nullptr);
@@ -1415,6 +1428,7 @@ namespace lua_callback
 		//Engine
 		lua_register(m_lua,"ResumeGame", lua_callback::_Game::ResumeGame);
 		lua_register(m_lua,"PauseGame", lua_callback::_Game::PauseGame);
+		lua_register(m_lua,"FocusOnUnit", lua_callback::FocusOnUnit);
 		//Fonts
 		lua_register(m_lua, "LoadFont", lua_callback::LoadFont);
 		//Tiles

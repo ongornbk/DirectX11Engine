@@ -198,7 +198,7 @@ void _stdcall pPushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EO
 {
 	for (auto&& unit : vec)
 	{
-		if (unit&&unit != object && (unit->m_type == EObject::EObjectType::UNIT))
+		if (unit&&unit != object && (unit->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
@@ -241,7 +241,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -256,7 +256,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec + 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -278,7 +278,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -293,7 +293,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -315,7 +315,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -330,7 +330,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -345,7 +345,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 			{
 				{
 					for (auto& obj : m_objectsXY[1][cVec + 1])
-						if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+						if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 						{
 							switch (CheckDistance(obj, object, range))
 							{

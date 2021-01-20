@@ -12,6 +12,7 @@ public:
 	~VertexBuffer(void);
 
 	bool Initialize(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
+	bool Initialize(class VertexBuffer* const other);
 	bool InitializeAnchorBottom(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializePart(ID3D11Device* device, Shader* shader, float size[2],float coords[6], bool writeable = false);
 	void _stdcall Render(struct ID3D11DeviceContext* const deviceContext) noexcept;

@@ -877,7 +877,7 @@ void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 
 void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexcept
 {
-
+	class GarbageCollector* const collector = GarbageCollector::GetInstance();
 	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
 	class modern_array<class EObject*>& vectemp = vec[i];
@@ -896,7 +896,7 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 				j--;
 				break;
 			case ObjectManagementType::OBJECT_MANAGEMENT_DELETE:
-				GarbageCollector::GetInstance()->AsyncDelete(obj);
+				collector->AsyncDelete(obj);
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;

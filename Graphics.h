@@ -16,6 +16,7 @@ public:
 	void BeginScene(const float r,const float g,const float b,const float a);
 	void BeginScene(float* color);
 	void EndScene();
+	void SetFullScreen(bool fullscreen);
 
 	void EnableAlphaBlending(bool enable);
 	void EnableZBuffer(bool enable);
@@ -33,6 +34,7 @@ public:
 
 private:
 
+	bool           m_fullscreen;
 	DXManager*     m_dxManager;
 
 	HWND m_hwnd;

@@ -3,8 +3,9 @@
 #include "RenderContainer.h"
 #include "Global.h"
 #include "RenderHandle.h"
+#include "ColorFilter.h"
 
-class Tree : public EObject
+class Tree : public EObject, public ColorFilter
 {
 public:
 	Tree();
@@ -41,6 +42,7 @@ public:
 	int32 isReleased() const noexcept override;
 	void _cdecl Intersect(class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
+	void Remove() override;
 
 	static void SetGlobal(class Global* global) noexcept;
 

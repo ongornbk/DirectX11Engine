@@ -10,12 +10,13 @@
 #include "ModelStance.h"
 #include "UnitDefaults.h"
 #include "UnitDecay.h"
+#include "ColorFilter.h"
 
 #define COLOR_FILTER_NOCHANGE -1.f
 
 class UnitTemplate;
 
-class Unit : public EObject
+class Unit : public EObject, public ColorFilter
 {
 public:
 
@@ -66,6 +67,7 @@ public:
 	};
 
 	Unit();
+	explicit Unit(class Unit* const other);
 	~Unit();
 
 	void Initialize(
@@ -78,6 +80,9 @@ public:
 		const struct DirectX::XMFLOAT3 &position,
 		const bool wander = true
 	);
+
+	void Initialize(class Unit* const other);
+
 	void Resize(struct ID3D11Device * const device,class Shader * const shader,const float resize);
 	void PlayAnimation(const enum ModelStance animation);
 	void SetAnimation(const enum ModelStance animation);
@@ -104,6 +109,7 @@ public:
 	void Release() override;
 	void _cdecl Intersect(class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
+	void Remove() override;
 
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);
@@ -122,8 +128,6 @@ public:
 	void SetRotations(const int32 rotations);
 	void SetRotation(const float rotation);
 	void SetVelocity(const float x,const float y,const float z);
-	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept;
-	void SetColorFilter(const struct DirectX::XMFLOAT4& color) noexcept;
 	void DiscardTasks(); 
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
@@ -176,23 +180,27 @@ private:
 		struct ModelPaths* paths
 	);
 
+	void InitializeModel(class Unit* const other);
+
 	float                m_speed[2];
 	enum  WalkingStance  m_walkingStance;
 	enum class UnitDecay m_decayType;
 	class TaskQueue      m_tasks;
-	bool                 m_wanderingFlag;
+	
 	class Sound*         m_footstepsSound{};
 	class sf::Sound*     m_footstepsHandle{};
 	class UnitTemplate*  m_template;
 
 	struct ID3D11DeviceContext * m_deviceContext;
-	struct DirectX::XMFLOAT4     m_colorFilter;;
+
 	float m_currentFrame;
 	float m_previousFrame;
 
 	struct DirectX::XMFLOAT4X4   m_worldMatrix;
 	struct DirectX::XMFLOAT3     m_floats[2];
 	struct DirectX::XMFLOAT4     m_scale;
+	class VertexBuffer* m_vertexBuffer;
+	struct ModelVariant m_modelVariant;
 	float        m_size;
 	float        m_lastSize;
 
@@ -200,16 +208,17 @@ private:
 	float               m_animationSpeed;
 	float               m_currentSpeed;
 	float               m_framesPerSecond;
-	bool                m_isLooping;
+
 	float               m_rotation;
-	class VertexBuffer* m_vertexBuffer;
-	struct ModelVariant m_modelVariant;
+
 	float               m_previousSpeed;
 	float               m_rotations;
 	int                 m_stopped;
 	bool                m_stop;
 	bool                m_intersection;
 	bool                m_dead;
+	bool                m_wanderingFlag;
+	bool                m_isLooping;
 
 	
 	struct UnitStats     m_stats;

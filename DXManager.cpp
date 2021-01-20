@@ -242,6 +242,12 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 	return true;
 }
 
+void DXManager::SetFullScreen(bool fullscreen)
+{
+	if (m_swapChain)
+		m_swapChain->SetFullscreenState(fullscreen, nullptr);
+}
+
 void DXManager::BeginScrene(float r, float g, float b, float a)
 {
 	float color[4];

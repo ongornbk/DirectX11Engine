@@ -10,37 +10,70 @@
 #include "ActionChangeLayer.h"
 #include "ActionWait.h"
 #include "ActionWaitUntil.h"
+#include "ActionSkipRemainingActions.h"
+#include "ActionIfThenElse.h"
+#include "ActionApplyColorFilter.h"
+#include "ActionPushObject.h"
 #include "ConditionFactory.h"
 #include "modern/modern.h"
 #include "Timer.h"
 #include "UnitTemplate.h"
 
-Unit::Unit() : 
-	m_colorFilter(1.f, 1.f, 1.f, 1.f),
-	m_scale(1.f,1.f,1.f,1.f)
+Unit::Unit() :
+	ColorFilter(1.f, 1.f, 1.f, 1.f),
+	m_scale(1.f, 1.f, 1.f, 1.f),
+	m_vertexBuffer(nullptr),
+	m_template(nullptr),
+	m_rotation(DEFAULT_ROTATION),
+	m_isLooping(true),
+	m_animationSpeed(30.f),
+	m_framesPerSecond(1.f),
+	m_currentSpeed(0.f),
+	m_stop(false),
+	m_rotations(1.f),
+	m_dead(false)
+
 {
 	m_floats[0] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
-	m_vertexBuffer = nullptr;
-	m_template = nullptr;
-	m_rotation = DEFAULT_ROTATION;
-	m_isLooping = true;
-	m_animationSpeed = 30.f;
-	m_framesPerSecond = 1.0f;
-	m_currentSpeed = 0.0f;
-	m_stop = false;
-	m_rotations = 1.0f;
+
 	m_attack.range = 80.f;
 	m_attack.active = false;
-	m_dead = false;
 
 	m_tasks.SetOwner(this);
 
 
 	
+}
+
+Unit::Unit(class Unit* const other) :
+	ColorFilter(other->m_colorFilter),
+	m_scale(other->m_scale),
+	m_vertexBuffer(nullptr),
+	m_template(nullptr),
+	m_rotation(DEFAULT_ROTATION),
+	m_isLooping(true),
+	m_animationSpeed(other->m_animationSpeed),
+	m_framesPerSecond(other->m_framesPerSecond),
+	m_currentSpeed(other->m_currentSpeed),
+	m_stop(other->m_stop),
+	m_rotations(other->m_rotations),
+	m_dead(other->m_dead)
+
+{
+	m_floats[0] = DirectX::XMFLOAT3(other->m_floats[0]);
+	m_floats[1] = DirectX::XMFLOAT3(other->m_floats[1]);
+
+	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+	m_modelVariant.SetVariant(other->m_modelVariant.GetVariant());
+
+	m_attack.range = other->GetAttack().range;
+	m_attack.active = other->GetAttack().active;
+
+	m_tasks.SetOwner(this);
 }
 
 
@@ -82,7 +115,7 @@ void Unit::Initialize(
 
 	InitializeModel(device, deviceContext, shader, ptr);
 	m_wanderingFlag = wander;
-	m_type = EObject::EObjectType::UNIT;
+	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
 	switch (ptr->m_leaveCorpse)
 	{
 	case true:
@@ -92,6 +125,27 @@ void Unit::Initialize(
 		m_decayType = UnitDecay::ENUM_DECAY;
 		break;
 	}
+}
+
+void Unit::Initialize(Unit* const other)
+{
+
+
+	m_rotations = other->m_rotations;
+	assert(m_rotations >= 1.f);
+	if (m_rotations < 1.f)
+		m_rotations = 1.f;
+
+	m_size = other->m_size;
+	m_lastSize = other->m_lastSize;
+	m_boundingSphere = other->m_boundingSphere;
+
+
+	InitializeModel(other);
+	m_wanderingFlag = other->m_wanderingFlag;
+	m_type = other->m_type;
+	m_decayType = other->m_decayType;
+
 }
 
 void Unit::Render(
@@ -106,9 +160,9 @@ void Unit::Render(
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
 
-			shader.BeginSelect();
+			
 
-			class Shader* const csh = shader.select;
+			class Shader* const csh = shader.BeginSelect();
 
 			csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 			csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -118,7 +172,7 @@ void Unit::Render(
 			shader.BeginStandard();
 		}
 
-		class Shader* const csh = shader.standard;
+		class Shader* const csh = shader.BeginStandard();
 		
 		csh->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -149,8 +203,8 @@ void Unit::PreRender(
 			const struct DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix);
 			struct DirectX::XMFLOAT4X4 shadowMatrix;
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
-			shader.shadow->SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
-			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+			shader.SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
+			shader.SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 			//shader.shadow->SetShaderScaleParameters(deviceContext,m_scale);
 			m_vertexBuffer->Render(deviceContext);
 
@@ -252,10 +306,7 @@ void Unit::Update(const float dt)
 						{
 							if (m_decayType == UnitDecay::ENUM_DECAY)
 							{
-								class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-								//action->push(new ActionMessageFront(this));
-								action->push(new ActionRemoveObject(this));
-								Timer::CreateInstantTimer(action);
+								this->Remove();
 							}
 							else
 							{
@@ -377,6 +428,13 @@ const RenderLayerType Unit::GetLayerType() const noexcept
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }
 
+void Unit::Remove()
+{
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	action->push(new ActionRemoveObject(this));
+	Timer::CreateInstantTimer(action);
+}
+
 float Unit::GetCollisionRadius() const noexcept
 {
 	return m_boundingSphere.Radius;
@@ -464,29 +522,7 @@ void Unit::SetVelocity(const float x,const float y,const float z)
 	m_floats[0] = { x,y,z };
 }
 
-void Unit::SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept
-{
-	if (redfilter >= 0.f)
-		m_colorFilter.x = redfilter;
-	if (greenfilter >= 0.f)
-		m_colorFilter.y = greenfilter;
-	if (bluefilter >= 0.f)
-		m_colorFilter.z = bluefilter;
-	if (alphafilter >= 0.f)
-		m_colorFilter.w = alphafilter;
-}
 
-void Unit::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
-{
-	if (color.x >= 0.f)
-		m_colorFilter.x = color.x;
-	if (color.y >= 0.f)
-		m_colorFilter.y = color.y;
-	if (color.z >= 0.f)
-		m_colorFilter.z = color.z;
-	if (color.w >= 0.f)
-		m_colorFilter.w = color.w;
-}
 
 void Unit::DiscardTasks()
 {
@@ -505,6 +541,7 @@ void Unit::GoBack()
 
 void Unit::Die(Unit* const killer)
 {
+	//killer == nullptr is correct
 	if (m_dead)
 		return;
 	m_attack.active = false;
@@ -515,24 +552,20 @@ void Unit::Die(Unit* const killer)
 	//m_flags.m_pushable = false;
 	m_flags.m_selectable = false;
 	m_dead = true;
-	if (m_decayType == UnitDecay::ENUM_LEAVE_CORPSE)
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	switch(m_decayType)
 	{
-		/*
-		Timer::CreateInstantTimer(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
-		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-		//action->push(new ActionMessageFront(this));
-		action->push(new ActionRemoveObject(this));
-		Timer::CreateExpiringTimer(action, 15.f);
-		*/
-		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-		//action->push(new ActionMessageFront(this));
+	case UnitDecay::ENUM_LEAVE_CORPSE:
+
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
-		action->push(new ActionWaitUntil(ConditionFactory::CreateBooleanCondition(new BooleanVariableIsKeyDown(0x15),new ConstBooleanVariableFalse(),BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)));
-		action->push(new ActionWait(5.f));
+		action->push(new ActionWait(20.f));
 		action->push(new ActionRemoveObject(this));
-		Timer::CreateInstantTimer(action);
-		
+		break;
+	case UnitDecay::ENUM_DECAY:
+		action->push(new ActionRemoveObject(this));
+		break;
 	}
+	Timer::CreateInstantTimer(action);
 }
 
 const UnitStats& Unit::GetStats()
@@ -613,13 +646,34 @@ bool Unit::Attack(class Unit* const target)
 
 bool Unit::GetAttacked(class Unit* const attacker)
 {
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	//action->push(new ActionMessageFront(this));
+	//for (float i = 0.f; i < 1.f; i+= 0.01f)
+	//{
+	//	action->push(new ActionApplyColorFilter(attacker, DirectX::XMFLOAT4(1.f, i , i, 1.f)));
+	//	action->push(new ActionWait(0.02f));
+	//}
+	Timer::CreateInstantTimer(action);
 	DoDamage(attacker);
+	const int32_t ran = modern_random(0, 2);
+	Engine* const engine = Engine::GetEngine();
+	switch (ran)
+	{
+	case 0:
+		engine->PlaySound(L"attack1");
+		break;
+	case 1:
+		engine->PlaySound(L"attack2");
+		break;
+	case 2:
+		engine->PlaySound(L"attack3");
+		break;
+	}
 	if (m_stop || m_dead)
 	{
 		return false;
 	}
 	{
-		
 		PlayAnimation(ModelStance::MODEL_STANCE_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;
@@ -782,7 +836,7 @@ int32 Unit::isReleased() const noexcept
 bool Unit::CheckIfValid(Unit* const pointer)
 {
 	if (pointer)
-		if (pointer->m_type == EObject::EObjectType::UNIT)
+		if (pointer->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT)
 			return true;
 	return false;
 }
@@ -910,6 +964,45 @@ void Unit::InitializeModel(
 		m_previousFrame = -1.0f;
 	}
 
+}
+
+void Unit::InitializeModel(Unit* const other)
+{
+	{
+		m_vertexBuffer = new class VertexBuffer();
+		float sizexy[2] = { m_size,m_size };
+		(void)m_vertexBuffer->Initialize(m_vertexBuffer);
+	}
+
+	for (int32_t i = 0; i < 15; i++)
+	{
+		m_modelVariant.m_maxFrames[i] = other->m_modelVariant.m_maxFrames[i];
+		m_modelVariant.m_sizes[i] = other->m_modelVariant.m_sizes[i];
+	}
+
+	m_modelVariant.m_textures[0] = other->m_modelVariant.m_textures[0];
+	m_modelVariant.m_textures[1] = other->m_modelVariant.m_textures[1];
+	m_modelVariant.m_textures[2] = other->m_modelVariant.m_textures[2];
+	m_modelVariant.m_textures[3] = other->m_modelVariant.m_textures[3];
+	m_modelVariant.m_textures[4] = other->m_modelVariant.m_textures[4];
+	m_modelVariant.m_textures[5] = other->m_modelVariant.m_textures[5];
+	m_modelVariant.m_textures[6] = other->m_modelVariant.m_textures[6];
+	m_modelVariant.m_textures[7] = other->m_modelVariant.m_textures[7];
+	m_modelVariant.m_textures[8] = other->m_modelVariant.m_textures[8];
+	m_modelVariant.m_textures[9] = other->m_modelVariant.m_textures[9];
+	m_modelVariant.m_textures[10] = other->m_modelVariant.m_textures[10];
+	m_modelVariant.m_textures[11] = other->m_modelVariant.m_textures[11];
+	m_modelVariant.m_textures[12] = other->m_modelVariant.m_textures[12];
+	m_modelVariant.m_textures[13] = other->m_modelVariant.m_textures[13];
+	m_modelVariant.m_textures[14] = other->m_modelVariant.m_textures[14];
+
+
+
+	{
+		m_deviceContext = other->m_deviceContext;
+		m_currentFrame = other->m_currentFrame;
+		m_previousFrame = other->m_previousFrame;
+	}
 }
 
 

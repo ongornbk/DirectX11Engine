@@ -1,6 +1,9 @@
 #include "Tree.h"
 #include "ResourceManager.h"
 #include "RendererManager.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionRemoveObject.h"
+#include "Timer.h"
 #include "IPP.h"
 
 namespace
@@ -8,7 +11,8 @@ namespace
 	static Global* m_global = nullptr;
 }
 
-Tree::Tree()
+Tree::Tree() :
+	ColorFilter(1.f,1.f,1.f,1.f)
 {
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
@@ -60,7 +64,7 @@ void Tree::Initialize(
 	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
-	m_type = EObject::EObjectType::TREE;
+	m_type = EObject::EObjectType::OBJECT_TYPE_TREE;
 }
 
 void Tree::Render(
@@ -71,8 +75,9 @@ void Tree::Render(
 {
 	if (m_flags.m_rendering)
 	{
-		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
@@ -104,8 +109,9 @@ void Tree::PreRender(
 		rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
 		XMFLOAT4X4 shadowMatrix;
 		XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
-		shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
 
 		//shader.shadow->End(deviceContext);
@@ -157,7 +163,14 @@ const RenderLayerType Tree::GetLayerType() const noexcept
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }
 
-void Tree::SetGlobal(Global * global) noexcept
+void Tree::Remove()
+{
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	action->push(new ActionRemoveObject(this));
+	Timer::CreateInstantTimer(action);
+}
+
+void Tree::SetGlobal(class Global * const global) noexcept
 {
 	m_global = global;
 }

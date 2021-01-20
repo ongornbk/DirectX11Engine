@@ -17,11 +17,12 @@ extern "C"
 		static constexpr char* LUA_LOCATION_GRAPHICS_INITIALIZATION  = "x64/Release/bin/x64/lua/Graphics_Initialization.lua";
 		static constexpr char* LUA_LOCATION_SETTINGS                 = "x64/Release/bin/x64/lua/settings/settings.lua";
 
-		void       Execute(const char* filename);
-		void       Close()                          noexcept;
-		void       Open()                           noexcept;
-		void       PrintError()                     noexcept;
-		void       LoadLuaLibrary()                 noexcept;
-		lua_State* GetInstance()                    noexcept;
+		 void       Execute(const char* filename);
+		 void       Close()                          noexcept;
+		 void       Open()                           noexcept;
+		 void       PrintError()                     noexcept;
+		 void       LoadLuaLibrary()                 noexcept;
+		 struct lua_State* const Load(const char* const filename) noexcept;
+		 struct lua_State* const GetInstance()                    noexcept;
 	}
 }

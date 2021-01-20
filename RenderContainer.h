@@ -28,6 +28,9 @@ public:
 		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
 		const struct _In_ ShaderPackage &shader
 	) = 0;
+
+	virtual void Remove() = 0;
+
 	virtual void            SetZ(const float z = 0.f) = 0;
 	virtual void            Update(const float dt = 0.f) = 0;
 	virtual void            Release() = 0;
@@ -52,14 +55,15 @@ public:
 
 	enum class EObjectType
 	{
-		UNIT,
-		DOODADS,
-		ANIMATED_DOODADS,
-		TREE,
-		COLLISION_BOX,
-		SPECIAL_EFFECT,
-		REGION_POINT,
-		SHADOW
+		OBJECT_TYPE_UNIT,
+		OBJECT_TYPE_DOODADS,
+		OBJECT_TYPE_ANIMATED_DOODADS,
+		OBJECT_TYPE_TREE,
+		OBJECT_TYPE_COLLISION_BOX,
+		OBJECT_TYPE_SPECIAL_EFFECT,
+		OBJECT_TYPE_REGION_POINT,
+		OBJECT_TYPE_SHADOW,
+		OBJECT_TYPE_AGENT
 	}m_type;
 };
 

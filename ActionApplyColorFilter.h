@@ -1,18 +1,19 @@
 #pragma once
 #include "IAction.h"
-#include "Unit.h"
+#include "ColorFilter.h"
 
 class ActionApplyColorFilter :
 	public IAction
 {
-	class Unit* m_object;
+	class ColorFilter* m_object;
 	struct DirectX::XMFLOAT4 m_color;
 
 	ActionApplyColorFilter() = delete;
 
 public:
 
-	ActionApplyColorFilter(class Unit* const object,struct DirectX::XMFLOAT4& color);
+	//ActionApplyColorFilter(class Unit* const object,struct DirectX::XMFLOAT4& color);
+	ActionApplyColorFilter(class ColorFilter* const object, struct DirectX::XMFLOAT4 color);
 	~ActionApplyColorFilter();
 
 	void execute() override;

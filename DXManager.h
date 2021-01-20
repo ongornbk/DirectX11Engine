@@ -12,6 +12,7 @@ public:
 	DXManager(void);
 	~DXManager(void);
 	bool Initialize(int screenWidth, int screenHeight,bool fullscreen,HWND hwnd,bool vsync);
+	void SetFullScreen(bool fullscreen);
 	void BeginScrene(float r, float g, float b, float a);
 	void BeginScrene(float* color);
 	void EndScene();

@@ -86,5 +86,7 @@ void main(const int argc,char** const argv)
 		delete frameWork;
 	}
 
+	//ipp::Console::GetInstance()->GetInput();
+
 	return;
 }

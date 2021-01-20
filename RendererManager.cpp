@@ -10,6 +10,12 @@
 #include "RenderLayerObject.h"
 #include "RenderLayerShadow.h"
 #include "RenderLayerItem.h"
+#include "Timer.h"
+#include "ActionApplyColorFilter.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionSetShadowCast.h"
+#include "ActionWaitUntil.h"
+#include "ConditionFactory.h"
 
 #include <future>
 #include <mutex>
@@ -51,7 +57,8 @@ RendererManager::RendererManager(
 	m_unitsShader(units),
 	m_shader(ui),
 	m_shadowShader(shadow),
-	m_selectShader(select)
+	m_selectShader(select),
+	m_focus(nullptr)
 {
 
 	m_instance = this;
@@ -160,11 +167,11 @@ void RendererManager::PushRegionPointObject(RegionPointObject* object)
 	)
 	{
 
-		struct ShaderPackage pck;
-		pck.m_context = deviceContext;
-		pck.select = m_selectShader;
-		pck.shadow = m_shadowShader;
-		pck.standard = m_unitsShader;
+		struct ShaderPackage pck(deviceContext,m_unitsShader,m_shadowShader,m_selectShader);
+		//pck.m_context = deviceContext;
+		//pck.select = m_selectShader;
+		//pck.shadow = m_shadowShader;
+		//pck.standard = m_unitsShader;
 
 
 		GRAPHICS EnableAlphaBlending(true);
@@ -198,17 +205,24 @@ void RendererManager::PushRegionPointObject(RegionPointObject* object)
 	
 }
 
-void RendererManager::Update()
+	//static float updatetime = 0.f;
+
+void RendererManager::Update(const float dt)
 {
 	m_cameraPosition = CAMERA GetPosition();
 	m_ui->Update(m_cameraPosition);
-	const float dt = ipp::Timer::GetDeltaTime();
-	m_map->Update(dt);
+	//const float dt = ipp::Timer::GetDeltaTime();
+	//updatetime += dt;
 
-	//switch (m_editMode.load())
-	//{
-	//case 0:
-	//{
+	//if (updatetime > (1.f / 120.f))
+	{
+		//updatetime = 0.f;
+		m_map->Update(dt);
+
+		//switch (m_editMode.load())
+		//{
+		//case 0:
+		//{
 		if (m_engine->GetGameStance() == false)
 		{
 			if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
@@ -232,6 +246,35 @@ void RendererManager::Update()
 
 		}
 
+	}
+
+	if (m_focus)
+	{
+		constexpr float fadedistance = 250.f;
+		std::stack<Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(m_focus, fadedistance);
+		while (stack.size())
+		{
+			Tree* tree = stack.top();
+			stack.pop();
+			if (tree->m_boundingSphere.Center.y > m_focus->m_boundingSphere.Center.y)
+			{
+				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+				tree->m_flags.m_cast_shadow = true;
+				continue;
+			}
+			else
+			{
+				tree->SetColorFilter(1.f, 1.f, 1.f, 0.25f);
+				tree->m_flags.m_cast_shadow = false;
+			}
+			class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(m_focus,tree),new ConstFloatVariable(fadedistance),FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
+				action->push(new ActionSetShadowCast(tree, true));
+				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+			Timer::CreateInstantTimer(action);
+			
+		}
+	}
 		//g_units.Sort();
 		//g_units.StaticSort();
 		//break;
@@ -293,6 +336,11 @@ void RendererManager::SetFps(const int32 fps)
 {
 //	m_objects.UpdateFps(fps);
 	UserInterfaceGame::SetFPS(fps);
+}
+
+void RendererManager::SetFocus(Unit* const unit)
+{
+	m_focus = unit;
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept

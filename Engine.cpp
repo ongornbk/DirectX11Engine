@@ -82,7 +82,9 @@ Engine::~Engine(void)
 	lua::Close();
 }
 
-Engine::Engine(void)
+Engine::Engine(void) : 
+	m_updateLock(FrameLocker(640.f)),
+	m_renderLock(FrameLocker(120.f))
 {
 #pragma region
 	m_gamePaused      = FALSE;
@@ -352,7 +354,8 @@ void Engine::PlayMusic(WCHAR * music)
 {
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	Sound* __music = m_canals.__GetSound(tmp1);
+	Sound* const __music = m_canals.__GetSound(tmp1);
+	assert(__music);
 	if (m_playingMusic)
 	{
 		m_playingMusic->Stop();
@@ -365,7 +368,8 @@ void Engine::PlaySound(WCHAR * music)
 {
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	class Sound* sound = m_canals.__GetSound(tmp1);
+	class Sound* const sound = m_canals.__GetSound(tmp1);
+	assert(sound);
 	sound->Play();
 }
 
@@ -421,10 +425,20 @@ void Engine::Update()
 			m_gameComponent->Update();
 		}
 	float dt = ipp::Timer::GetDeltaTime();
-	m_cameraControl.Update(dt);
-	Timer::Update(dt);
-	m_rendererManager->Update();
-	(void)m_input->Update();
+	m_updateLock.Update(dt);
+	m_renderLock.Update(dt);
+	if (m_updateLock.Run())
+	{
+		dt = m_updateLock.GetDeltaTime();
+		m_cameraControl.Update(dt);
+		Timer::Update(dt);
+		m_rendererManager->Update(dt);
+		(void)m_input->Update();
+	}
+	else
+	{
+		std::this_thread::yield();
+	}
 
 
 	
@@ -438,14 +452,14 @@ void Engine::Render()
 			class GarbageCollector* gbc = GarbageCollector::GetInstance();
 			gbc->Update();
 		}
-		
+		if(m_renderLock.Run())
 		{
-
 			m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
 			m_camera->Update();
 
 			XMFLOAT4X4 viewMatrix = m_camera->GetView();
 			XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
+
 
 			m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
 

@@ -169,7 +169,7 @@ static void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& 
 
 	for (auto&& unit : vec)
 	{
-		if (unit && unit != object && (unit->m_type == EObject::EObjectType::UNIT))
+		if (unit && unit != object && (unit->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
@@ -214,7 +214,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -229,7 +229,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec + 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -251,7 +251,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -266,7 +266,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -288,7 +288,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -303,7 +303,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -318,7 +318,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				{
 					for (auto& obj : m_objects[1][cVec + 1])
-						if (obj && obj != object && (obj->m_type == EObject::EObjectType::UNIT))
+						if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 						{
 							switch (CheckDistance(obj, object, range))
 							{
@@ -345,4 +345,9 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 	}
 
 	return unitsCenter;
+}
+
+std::stack<class Tree*> _vectorcall RenderLayerItem::GetTreesBelow(Unit* object, float range) noexcept
+{
+	return std::stack<class Tree*>();
 }

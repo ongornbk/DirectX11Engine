@@ -1,5 +1,8 @@
 #include "Doodads.h"
 #include "RendererManager.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionRemoveObject.h"
+#include "Timer.h"
 #include "IPP.h"
 
 using ipp::memory_cast;
@@ -59,7 +62,7 @@ void Doodads::Initialize(
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 
-	m_type = EObject::EObjectType::DOODADS;
+	m_type = EObject::EObjectType::OBJECT_TYPE_DOODADS;
 
 	
 
@@ -90,7 +93,7 @@ void Doodads::Render(
 		//	shader.BeginStandard();
 		//}
 
-		class Shader* const csh = shader.standard;
+		class Shader* const csh = shader.BeginStandard();
 
 		csh->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
@@ -128,8 +131,8 @@ void Doodads::PreRender(
 			rotationMatrix = rotationMatrix * XMLoadFloat4x4(&m_worldMatrix);
 			XMFLOAT4X4 shadowMatrix;
 			XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
-			shader.shadow->SetShaderParameters(deviceContext, m_texture->GetTexture());
-			shader.shadow->SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
+			shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+			shader.SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 			m_vertexBuffer->Render(deviceContext);
 			//shader.shadow->End(deviceContext);
 
@@ -184,4 +187,11 @@ const RenderLayerType Doodads::GetLayerType() const noexcept
 	if (m_destroyed)
 		return RenderLayerType::ENUM_OBJECT_TYPE;
 	return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
+void Doodads::Remove()
+{
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	action->push(new ActionRemoveObject(this));
+	Timer::CreateInstantTimer(action);
 }

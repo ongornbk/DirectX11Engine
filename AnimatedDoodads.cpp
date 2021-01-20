@@ -1,5 +1,8 @@
 #include "AnimatedDoodads.h"
 #include "RendererManager.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionRemoveObject.h"
+#include "Timer.h"
 #include "IPP.h"
 
 #define STANDARD_FRAMES 1.0f
@@ -69,7 +72,7 @@ void AnimatedDoodads::Initialize(
 	m_boundingSphere.Radius = collision;
 	m_boundingSphere.Center = position;
 
-	m_type = EObject::EObjectType::ANIMATED_DOODADS;
+	m_type = EObject::EObjectType::OBJECT_TYPE_ANIMATED_DOODADS;
 }
 
 void AnimatedDoodads::Render(
@@ -81,8 +84,8 @@ void AnimatedDoodads::Render(
 {
 	if (m_flags.m_rendering)
 	{
-		shader.standard->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		shader.standard->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
@@ -201,6 +204,13 @@ const RenderLayerType AnimatedDoodads::GetLayerType() const noexcept
 	if (m_destroyed)
 		return RenderLayerType::ENUM_OBJECT_TYPE;
 	return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
+void AnimatedDoodads::Remove()
+{
+	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	action->push(new ActionRemoveObject(this));
+	Timer::CreateInstantTimer(action);
 }
 
 void AnimatedDoodads::SetNumberOfFrames(float frames)

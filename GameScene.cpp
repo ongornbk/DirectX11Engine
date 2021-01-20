@@ -8,7 +8,7 @@
 
 
 
-GameScene::GameScene()
+GameScene::GameScene() : m_update(nullptr)
 {
 
 }
@@ -16,7 +16,11 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-
+	if (m_update)
+	{
+		delete m_update;
+		m_update = nullptr;
+	}
 }
 
 bool GameScene::Initialize()
@@ -32,6 +36,10 @@ bool GameScene::Initialize()
 
 		lua::Execute(lua::LUA_LOCATION_GAMESCENE_INITIALIZATION);
 
+	//m_update = new LuaScript();
+
+	//m_update->Load(lua::LUA_LOCATION_GAMESCENE_UPDATE);
+
 
 	if (shader == NULL)
 	{
@@ -46,28 +54,28 @@ bool GameScene::Initialize()
 extern "C"
 {
 
-	double prd_vect(float x1, float x2, float y1, float y2) noexcept
-	{
-		return x1 * y2 - y1 * x2;
-	}
-
-	double angle_rad(float x1, float x2, float y1, float y2) noexcept
-	{
-		return (prd_vect(x1, x2, y1, y2) < 0 ? -1 : 1) * acos((x1*x2 + y1 * y2) / (sqrt(x1*x1 + y1 * y1)*sqrt(x2*x2 + y2 * y2)));
-	}
-
-	double angle_deg(float x1, float x2, float y1, float y2) noexcept
-	{
-		return angle_rad(x1, x2, y1, y2) / 3.14f * 180;
-	}
-
-	inline  float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) noexcept
-	{
-		float xd = abs(a.x - b.x);
-		float yd = abs(a.y - b.y);
-		float d = sqrt((xd*xd) + (yd*yd));
-		return d;
-	}
+//	double prd_vect(float x1, float x2, float y1, float y2) noexcept
+//	{
+//		return x1 * y2 - y1 * x2;
+//	}
+//
+//	double angle_rad(float x1, float x2, float y1, float y2) noexcept
+//	{
+//		return (prd_vect(x1, x2, y1, y2) < 0 ? -1 : 1) * acos((x1*x2 + y1 * y2) / (sqrt(x1*x1 + y1 * y1)*sqrt(x2*x2 + y2 * y2)));
+//	}
+//
+//	double angle_deg(float x1, float x2, float y1, float y2) noexcept
+//	{
+//		return angle_rad(x1, x2, y1, y2) / 3.14f * 180;
+//	}
+//
+//	inline  float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) noexcept
+//	{
+//		float xd = abs(a.x - b.x);
+//		float yd = abs(a.y - b.y);
+//		float d = sqrt((xd*xd) + (yd*yd));
+//		return d;
+//	}
 
 }
 
@@ -76,13 +84,13 @@ void GameScene::Update()
 
 	
 
-	Input* input = ENGINE GetInput();
+	class Input* const input = ENGINE GetInput();
 
 	if (input == NULL) return;
 
 	lua::Execute(lua::LUA_LOCATION_GAMESCENE_UPDATE);
 
-
+	//m_update->Execute();
 
 	//Unit* selectedunit = Global::GetInstance()->m_lastSelectedUnit;
 
