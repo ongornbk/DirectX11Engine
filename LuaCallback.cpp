@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Global.h"
 #include "GameScene.h"
+#include "MainMenu.h"
 #include "IPP.h"
 #include "LuaPointer.h"
 #include "Sorting.h"
@@ -123,7 +124,21 @@ namespace lua_callback
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
 			wcscpy(wide_string, ws.c_str());
-			m_resources->LoadSoundResource(wide_string);
+			m_resources->LoadSoundResource(wide_string,SoundType::SOUND_TYPE_MULTI);
+			delete[] wide_string;
+			return 0;
+		}
+
+		static  int32 LoadMusic(
+			struct lua_State* const state
+		)
+		{
+#pragma warning(disable : 4996)
+			std::string str = LUA_STRING(state, 1);
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+			m_resources->LoadSoundResource(wide_string, SoundType::SOUND_TYPE_SINGLE);
 			delete[] wide_string;
 			return 0;
 		}
@@ -270,6 +285,12 @@ namespace lua_callback
 			wcscpy(wide_string, ws.c_str());
 			m_engine->PlayMusic(wide_string);
 			delete[] wide_string;
+			return 0;
+		}
+
+		static  int32 StopMusic(lua_State* state) noexcept
+		{
+			m_engine->StopMusic();
 			return 0;
 		}
 
@@ -631,7 +652,7 @@ namespace lua_callback
 		if (Unit::CheckIfValid((Unit*)unit))
 		{
 			std::string  str = lua_tostring(state, 1);
-			class Sound* const sound = Canals::GetInstance()->__GetSound(str);
+			class ISound* const sound = Canals::GetInstance()->__GetSound(str);
 			((Unit*)unit)->SetFootstepsSound(sound);
 		}
 		return 0;
@@ -1341,6 +1362,27 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 SetComponent(
+		struct lua_State* const state
+	)
+	{
+		std::string path = lua_tostring(state, 1);
+		
+		if (!strcmp(path.c_str(), "mainmenu"))
+		{
+			Engine::GetEngine()->SetGameComponent(new class MainMenu());
+		}
+
+		else
+
+		if (!strcmp(path.c_str(), "loc1"))
+		{
+			Engine::GetEngine()->SetGameComponent(new class GameScene());
+		}
+
+		return 0;
+	}
+
 	static void RegisterFunctions()
 	{
 		struct lua_State* const m_lua = lua::GetInstance();
@@ -1348,6 +1390,7 @@ namespace lua_callback
 		//Resources
 		lua_register(m_lua, "LoadTexture", lua_callback::Resources::LoadTexture);
 		lua_register(m_lua, "LoadSound", lua_callback::Resources::LoadSound);
+		lua_register(m_lua, "LoadMusic", lua_callback::Resources::LoadMusic);
 		lua_register(m_lua, "AddModelPaths", lua_callback::Resources::AddModelPaths);
 		//Cameras
 		lua_register(m_lua, "InitializeProjectionMatrix", lua_callback::Cameras::InitializeProjectionMatrix);
@@ -1361,12 +1404,14 @@ namespace lua_callback
 		//Music
 		lua_register(m_lua, "AddMusic", lua_callback::Music::AddMusic);
 		lua_register(m_lua, "PlayMusic", lua_callback::Music::PlayMusic);
+		lua_register(m_lua, "StopMusic", lua_callback::Music::StopMusic);
 		lua_register(m_lua, "AddInterfaceSound", lua_callback::Music::AddInterfaceSound);
 		lua_register(m_lua, "PlaySound", lua_callback::Music::PlaySound);
 		//System
 		lua_register(m_lua, "PostQuitMessage", lua_callback::_Game::__PostQuitMessage);
 		lua_register(m_lua, "SaveInstance", lua_callback::SaveInstance);
 		lua_register(m_lua, "LoadInstance", lua_callback::LoadInstance);
+		lua_register(m_lua, "SetComponent", lua_callback::SetComponent);
 		//Input
 		lua_register(m_lua, "IsKeyHit", lua_callback::__IsKeyHit);
 		lua_register(m_lua, "IsKeyPressed", lua_callback::__IsKeyPressed);

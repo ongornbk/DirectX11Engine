@@ -1,5 +1,6 @@
 #include "FrameWork.h"
 #include "GameScene.h"
+#include "MainMenu.h"
 #include "SettingsC.h"
 #include "IPP.h"
 #include "LUAManager.h"
@@ -78,7 +79,7 @@ void main(const int argc,char** const argv)
 
 		class FrameWork* const frameWork = new class FrameWork();
 
-		if (frameWork->Initialize(new class GameScene))
+		if (frameWork->Initialize(new class MainMenu))
 		{
 			frameWork->Run();
 		}

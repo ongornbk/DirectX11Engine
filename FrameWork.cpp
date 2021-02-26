@@ -79,6 +79,11 @@ void FrameWork::Run()
 	}
 }
 
+void FrameWork::SetComponent(GameComponent* gameComponent)
+{
+	Engine::GetEngine()->SetGameComponent(gameComponent);
+}
+
 bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int height)
 {
 	ShowCursor(false);

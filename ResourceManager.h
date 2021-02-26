@@ -26,18 +26,18 @@ public:
 	void LoadShaderResource(HWND hwnd, WCHAR* shaderFileName);
 	void LoadShaderResource(Shader* shader);
 	void LoadTextureResource( WCHAR* textureFileName);
-	void LoadSoundResource(WCHAR* soundFileName);
+	void LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type);
 	void LoadUnitTemplateResource(modern_string& filename);
 	void PrintOutTextures();
 	void Release();
 
 	class Shader* GetShaderByName(const char* shaderName);
 	class Texture* GetTextureByName(const char* textureName);
-	class Sound* GetSoundByName(const char* soundName);
+	class ISound* GetSoundByName(const char* soundName);
 
 	class Shader* GetShaderByName(WCHAR* shaderName);
 	class Texture* GetTextureByName(WCHAR* textureName);
-	class Sound* GetSoundByName(WCHAR* soundName);
+	class ISound* GetSoundByName(WCHAR* soundName);
 
 
 	static class ResourceManager* GetInstance();

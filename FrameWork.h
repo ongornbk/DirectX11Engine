@@ -18,6 +18,7 @@ public:
 
 	bool Initialize(GameComponent* gameComponent);
 	void Run();
+	void SetComponent(GameComponent* component);
 
 protected:
 private:

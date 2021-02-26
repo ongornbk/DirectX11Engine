@@ -37,6 +37,6 @@ public:
 	void Push(class RegionPointObject* const tree) override;
 	void Push(class EObject* const object) override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept override;
-	std::stack<class Tree*> _vectorcall GetTreesBelow(Unit* object, float range)noexcept override;
+	std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range)noexcept override;
 };
 

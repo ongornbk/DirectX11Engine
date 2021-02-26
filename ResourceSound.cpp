@@ -17,9 +17,20 @@ ResourceSound::~ResourceSound()
 	}
 }
 
-bool ResourceSound::Load(WCHAR* soundFileName)
+bool ResourceSound::Load(WCHAR* soundFileName, const enum class SoundType type)
 {
-	m_sound = new Sound(soundFileName);
+	switch (type)
+	{
+	case SoundType::SOUND_TYPE_SINGLE:
+		m_sound = new SingleSound(soundFileName);
+		break;
+	case SoundType::SOUND_TYPE_MULTI:
+		m_sound = new MultiSound(soundFileName);
+		break;
+	default:
+		return false;
+	}
+	
 	if (!m_sound->IsInitialized())
 	{
 		delete m_sound;
@@ -29,12 +40,12 @@ bool ResourceSound::Load(WCHAR* soundFileName)
 	return true;
 }
 
-Sound * ResourceSound::GetSound()
+ISound * ResourceSound::GetSound()
 {
 	return m_sound;
 }
 
-string ResourceSound::GetName()
+std::string ResourceSound::GetName()
 {
 	if (m_sound)return m_sound->GetName();
 	return "Uninitialized Sound";

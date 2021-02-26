@@ -357,16 +357,10 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 	return unitsCenter;
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(Unit* object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(class EObject* const object, float range) noexcept
 {
-	//class std::stack<class Unit*> TreesLeft;
-	//class std::stack<class Unit*> TreesRight;
 
 	class std::stack<class Tree*> m_trees;
-
-	//std::stack<Unit*> unitsA[3];
-
-	//ThreadPoolHandle pool; TO DO
 
 	uint32 cVec = object->m_vector;
 	uint32 cIndex = object->m_index;

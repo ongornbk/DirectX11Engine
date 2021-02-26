@@ -37,11 +37,11 @@ public:
 	void PauseGame();
 	void ResumeGame();
 
-	Sound* CreateSound(WCHAR* name);
-	Sound* CreateSound(WCHAR* name,bool looping);
-	Sound* CreateSound(WCHAR* name,float volume);
-	Sound* CreateSound(WCHAR* name,float volume,bool looping);
-	Sound* CreateSound(string name, float volume, bool looping);
+	ISound* CreateSound(WCHAR* name);
+	ISound* CreateSound(WCHAR* name,bool looping);
+	ISound* CreateSound(WCHAR* name,float volume);
+	ISound* CreateSound(WCHAR* name,float volume,bool looping);
+	ISound* CreateSound(string name, float volume, bool looping);
 
 	void AddMusicSound(string name, float volume, bool looping = false);
 	void AddInterfaceSound(string name,const float volume);
@@ -49,6 +49,7 @@ public:
 	void AddFont(string filename, float width, float height);
 
 	void PlayMusic(WCHAR* music);
+	void StopMusic();
 	void PlaySound(WCHAR* music);
 
 	CameraControl* GetCameraControl();

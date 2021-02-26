@@ -1,6 +1,6 @@
 #pragma once
 #include "gdef.h"
-#include "Sound.h"
+#include "ISound.h"
 #include <map>
 #include <string>
 #include <queue>
@@ -35,11 +35,12 @@ public:
 	void Update(void);
 
 
-	map<string,Sound*> m_sounds;
+	map<string,ISound*> m_sounds;
 	CanalType m_type;
 
-	void AddSound(Sound* sound, string name);
+	void AddSound(class ISound* const sound, string name);
     void GetSound(string name);
+	void Stop();
 
 };
 
@@ -51,10 +52,11 @@ public:
 
 	static Canals* GetInstance();
 
-	Sound* __GetSound(string sound);
-	void __AddSound(CanalType type, string name, Sound* sound);
+	ISound* __GetSound(string sound);
+	void __AddSound(CanalType type, string name, ISound* sound);
 
 	void Play(WCHAR * sound);
+	void Stop();
 
 	void Update();
 

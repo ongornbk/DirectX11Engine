@@ -10,6 +10,7 @@
 #include "RenderContainerVector.h"
 #include "modern/modern_array.h"
 #include "RenderLayer.h"
+#include "ObjectFocusType.h"
 #include <stack>
 #include <map>
 
@@ -61,6 +62,7 @@ public:
 		const struct XMFLOAT4X4& projectionMatrix
 	);
 	void Update(const float dt);
+	void Focus(class EObject* const object,const enum class ObjectFocusType type);
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
@@ -69,6 +71,7 @@ public:
 	void SetTileMapRendering(const int64 rendering = 1);
 	void SetFps(const int32 fps);
 	void SetFocus(class Unit* const unit);
+	void EnableCollision(const bool collision = true);
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
@@ -79,6 +82,8 @@ public:
 
 private:
 
+	bool m_collision;
+
 	Engine* m_engine;
 	Shader* m_shader;
 	Shader* m_unitsShader;
@@ -87,7 +92,7 @@ private:
 
 	TileMap* m_map;
 	UserInterface* m_ui;
-	Unit* m_focus;
+	EObject* m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 
 	//EObjectVector m_objects;

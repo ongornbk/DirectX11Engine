@@ -160,7 +160,7 @@ void Unit::Render(
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
 
-			
+			RendererManager::GetInstance()->Focus(this,ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
 
 			class Shader* const csh = shader.BeginSelect();
 
@@ -714,7 +714,7 @@ void Unit::DoDamage(class Unit* const attacker)
 	}
 }
 
-void Unit::SetFootstepsSound(class Sound * const sound)
+void Unit::SetFootstepsSound(class ISound * const sound)
 {
 	m_footstepsSound = sound;
 }
@@ -753,7 +753,7 @@ void Unit::LoadSounds(std::string* path)
 {
 }
 
-class Sound * Unit::GetFootstepsSound() const noexcept
+class ISound * Unit::GetFootstepsSound() const noexcept
 {
 	return m_footstepsSound;
 }

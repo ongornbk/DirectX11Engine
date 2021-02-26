@@ -31,6 +31,7 @@ bool GameScene::Initialize()
 	ID3D11Device*        _device   = GRAPHICS GetDevice();
 	ID3D11DeviceContext* _context  = GRAPHICS GetDeviceContext();
 	RendererManager*     _renderer = RendererManager::GetInstance();
+	_renderer->EnableCollision(true);
 	if ((!shader) || (!_device) || (!_context) || (!_renderer)) INITIALIZATION_FAILED
 #pragma endregion
 

@@ -149,7 +149,7 @@ public:
 	bool StartCasting(const DirectX::XMFLOAT2 target);
 	void DoDamage(class Unit* const attacker);
 
-	void SetFootstepsSound(class Sound* sound);
+	void SetFootstepsSound(class ISound* sound);
 
 	void BeginRunning();
 	void EndRunning();
@@ -157,7 +157,7 @@ public:
 	void LoadSounds(WCHAR* path);
 	void LoadSounds(std::string* path);
 
-	class Sound* GetFootstepsSound() const noexcept;
+	class ISound* GetFootstepsSound() const noexcept;
 
 	friend class Task;
 	friend class TaskGotoPoint;
@@ -187,7 +187,7 @@ private:
 	enum class UnitDecay m_decayType;
 	class TaskQueue      m_tasks;
 	
-	class Sound*         m_footstepsSound{};
+	class ISound*         m_footstepsSound{};
 	class sf::Sound*     m_footstepsHandle{};
 	class UnitTemplate*  m_template;
 

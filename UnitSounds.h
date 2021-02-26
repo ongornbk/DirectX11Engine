@@ -1,10 +1,10 @@
 #pragma once
-#include "Sound.h"
+#include "ISound.h"
 #include <string>
 
 class UnitSounds
 {
-	Sound* m_sounds[13];
+	ISound* m_sounds[13];
 
 public:
 

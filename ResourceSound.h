@@ -1,5 +1,7 @@
 #pragma once
-#include "Sound.h"
+#include "MultiSound.h"
+#include "SingleSound.h"
+#include "SoundType.h"
 
 class ResourceSound
 {
@@ -7,10 +9,10 @@ public:
 	ResourceSound();
 	~ResourceSound();
 
-	bool Load(WCHAR* soundFileName);
-	Sound* GetSound();
-	string GetName();
+	bool Load(WCHAR* soundFileName,const enum class SoundType type);
+	ISound* GetSound();
+	std::string GetName();
 private:
-	Sound* m_sound;
+	ISound* m_sound;
 };
 

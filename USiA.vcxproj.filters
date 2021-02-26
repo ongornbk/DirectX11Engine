@@ -85,6 +85,18 @@
     <Filter Include="Core\Engine\Action">
       <UniqueIdentifier>{174a8554-550a-4165-9010-880351442030}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project">
+      <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\Locations">
+      <UniqueIdentifier>{b9a7356f-1231-4d9e-8384-5a289124e713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\interface">
+      <UniqueIdentifier>{06ba8441-ba14-4b58-bbac-fc208e805989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\core">
+      <UniqueIdentifier>{35dda138-057e-4427-8f85-55184c046dfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -350,9 +362,6 @@
     </ClInclude>
     <ClInclude Include="Allocator.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorFilter.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IAction.h">
       <Filter>Header Files</Filter>
@@ -730,6 +739,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ActionSetShadowCast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectFocusType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableUnitIsSelected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableObjectIsSelected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuRendererManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRendererManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiSound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleSound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1223,13 +1262,37 @@
     <ClCompile Include="FrameLocker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FloatVariableDistanceBetweenObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionSetShadowCast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanVariableUnitIsSelected.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanVariableObjectIsSelected.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRendererManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IRendererManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ISound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleSound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1316,6 +1379,18 @@
     </None>
     <None Include="x64\Release\content\Textures\models\fallen_shaman.mod">
       <Filter>Models</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua">
+      <Filter>Lua\Locations</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Initialization.lua">
+      <Filter>Lua\interface</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Update.lua">
+      <Filter>Lua\interface</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Music.lua">
+      <Filter>Lua\core</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

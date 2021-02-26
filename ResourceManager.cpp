@@ -217,17 +217,17 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 	m_textures.push_back(resourceTexture);
 }
 
-void ResourceManager::LoadSoundResource(WCHAR* soundFileName)
+void ResourceManager::LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type)
 {
 	ResourceSound* resourceSound = new ResourceSound();
-	if (!resourceSound->Load(soundFileName))
+	if (!resourceSound->Load(soundFileName,type))
 	{
 		wstring ws(soundFileName);
 		string str(ws.begin(), ws.end());
 		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str], str)))
 		{
 
-			if (!resourceSound->Load(soundFileName))
+			if (!resourceSound->Load(soundFileName,type))
 			{
 				delete resourceSound;
 				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
@@ -313,7 +313,7 @@ class Texture * ResourceManager::GetTextureByName(const char* textureName)
 	}
 	return NULL;
 }
-class Sound  * ResourceManager::GetSoundByName(const char* soundName)
+class ISound  * ResourceManager::GetSoundByName(const char* soundName)
 {
 	for (int i = 0; i < (int)m_sounds.size(); ++i)
 	{
@@ -344,7 +344,7 @@ class Texture* ResourceManager::GetTextureByName(WCHAR* textureName)
 	return GetTextureByName(tmp1.c_str());
 }
 
-class Sound* ResourceManager::GetSoundByName(WCHAR* soundName)
+class ISound* ResourceManager::GetSoundByName(WCHAR* soundName)
 {
 	std::wstring tmp0 = std::wstring(soundName);
 	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());

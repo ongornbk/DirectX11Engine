@@ -28,7 +28,7 @@ Engine* Engine::m_instance = nullptr;
 namespace
 {
 
-	static Sound*                  m_playingMusic = nullptr;
+	static ISound*                  m_playingMusic = nullptr;
 
 }
 
@@ -252,7 +252,16 @@ void Engine::Release()
 
 void Engine::SetGameComponent(GameComponent * gameComponent)
 {
+	if (m_gameComponent == gameComponent)
+		return;
+	if (m_gameComponent)
+	{
+		delete m_gameComponent;
+		m_gameComponent = nullptr;
+	}
+
 	m_gameComponent = gameComponent;
+	m_gameComponent->Initialize();
 }
 
 void Engine::PauseGame()
@@ -265,45 +274,45 @@ void Engine::ResumeGame()
 	m_gamePaused = false;
 }
 
-Sound * Engine::CreateSound(WCHAR* name)
+ISound * Engine::CreateSound(WCHAR* name)
 {
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 	return m_resourceManager->GetSoundByName((char*)tmp1.c_str());
 }
 
-Sound * Engine::CreateSound(WCHAR* name, bool looping)
+ISound * Engine::CreateSound(WCHAR* name, bool looping)
 {
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	Sound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
+	ISound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
 	sound->SetLooping(looping);
 	return sound;
 }
 
-Sound * Engine::CreateSound(WCHAR* name, float volume)
+ISound * Engine::CreateSound(WCHAR* name, float volume)
 {
-	Sound* sound = new Sound(name);
+	//ISound* sound = new Sound(name);
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
+	ISound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
 	sound->SetVolume(volume);
 	return sound;
 }
 
-Sound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
+ISound * Engine::CreateSound(WCHAR* name, float volume, bool looping)
 {
 	wstring tmp0 = wstring(name);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	Sound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
+	ISound* sound = m_resourceManager->GetSoundByName((char*)tmp1.c_str());
 	sound->SetVolume(volume);
 	sound->SetLooping(looping);
 	return sound;
 }
 
-Sound * Engine::CreateSound(string name, float volume, bool looping)
+ISound * Engine::CreateSound(string name, float volume, bool looping)
 {
-	class Sound* const sound = m_resourceManager->GetSoundByName((char*)name.c_str());
+	class ISound* const sound = m_resourceManager->GetSoundByName((char*)name.c_str());
 	if (sound)
 	{
 		sound->SetVolume(volume);
@@ -354,7 +363,7 @@ void Engine::PlayMusic(WCHAR * music)
 {
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	Sound* const __music = m_canals.__GetSound(tmp1);
+	class ISound* const __music = m_canals.__GetSound(tmp1);
 	assert(__music);
 	if (m_playingMusic)
 	{
@@ -364,11 +373,16 @@ void Engine::PlayMusic(WCHAR * music)
 	__music->Play();
 }
 
+void Engine::StopMusic()
+{
+	m_canals.Stop();
+}
+
 void Engine::PlaySound(WCHAR * music)
 {
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
-	class Sound* const sound = m_canals.__GetSound(tmp1);
+	class ISound* const sound = m_canals.__GetSound(tmp1);
 	assert(sound);
 	sound->Play();
 }
@@ -424,6 +438,7 @@ void Engine::Update()
 		{
 			m_gameComponent->Update();
 		}
+		(void)m_input->Update();
 	float dt = ipp::Timer::GetDeltaTime();
 	m_updateLock.Update(dt);
 	m_renderLock.Update(dt);
@@ -433,7 +448,6 @@ void Engine::Update()
 		m_cameraControl.Update(dt);
 		Timer::Update(dt);
 		m_rendererManager->Update(dt);
-		(void)m_input->Update();
 	}
 	else
 	{

@@ -78,7 +78,7 @@ std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Unit* obj
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(Unit* object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(class EObject* const object, float range) noexcept
 {
 	return std::stack<class Tree*>();
 }

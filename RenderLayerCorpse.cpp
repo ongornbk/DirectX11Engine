@@ -347,7 +347,7 @@ std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, f
 	return unitsCenter;
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerCorpse::GetTreesBelow(Unit* object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerCorpse::GetTreesBelow(class EObject* const object, float range) noexcept
 {
 	return std::stack<class Tree*>();
 }

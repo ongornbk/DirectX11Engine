@@ -58,7 +58,8 @@ RendererManager::RendererManager(
 	m_shader(ui),
 	m_shadowShader(shadow),
 	m_selectShader(select),
-	m_focus(nullptr)
+	m_focus(nullptr),
+	m_collision(false)
 {
 
 	m_instance = this;
@@ -247,34 +248,7 @@ void RendererManager::Update(const float dt)
 		}
 
 	}
-
-	if (m_focus)
-	{
-		constexpr float fadedistance = 250.f;
-		std::stack<Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(m_focus, fadedistance);
-		while (stack.size())
-		{
-			Tree* tree = stack.top();
-			stack.pop();
-			if (tree->m_boundingSphere.Center.y > m_focus->m_boundingSphere.Center.y)
-			{
-				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
-				tree->m_flags.m_cast_shadow = true;
-				continue;
-			}
-			else
-			{
-				tree->SetColorFilter(1.f, 1.f, 1.f, 0.25f);
-				tree->m_flags.m_cast_shadow = false;
-			}
-			class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(m_focus,tree),new ConstFloatVariable(fadedistance),FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
-				action->push(new ActionSetShadowCast(tree, true));
-				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
-			Timer::CreateInstantTimer(action);
-			
-		}
-	}
+	
 		//g_units.Sort();
 		//g_units.StaticSort();
 		//break;
@@ -285,16 +259,74 @@ void RendererManager::Update(const float dt)
 		//m_objects.Sort();
 		//m_objects.QSort();
 
+	if (m_collision)
+	{
 		for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 		{
 			m_layers[i]->Sort();
 			m_layers[i]->QSort();
 		}
+
+	}
+
+		Focus(m_focus,ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 	//	break;
 	//}
 	//}
 	
 
+}
+
+void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
+{
+	if (object)
+	{
+		constexpr float fadedistance = 250.f;
+		std::stack<Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
+		while (stack.size())
+		{
+			Tree* tree = stack.top();
+			stack.pop();
+			if (tree->m_boundingSphere.Center.y > object->m_boundingSphere.Center.y)
+			{
+				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+				tree->m_flags.m_cast_shadow = true;
+				continue;
+			}
+			else
+			{
+				tree->SetColorFilter(1.f, 1.f, 1.f, 0.25f);
+				tree->m_flags.m_cast_shadow = false;
+			}
+			switch (type)
+			{
+			case ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL:
+			{
+				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
+				action->push(new ActionSetShadowCast(tree, true));
+				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+				Timer::CreateInstantTimer(action);
+			}
+				break;
+			case ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT:
+			{
+				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+				action->push(new ActionWaitUntil(ConditionFactory::CreateOrCondition(
+					ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER),
+					ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(object), new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
+				)));
+				action->push(new ActionSetShadowCast(tree, true));
+				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+				Timer::CreateInstantTimer(action);
+			}
+				break;
+			}
+		}
+		
+
+
+	}
 }
 
 
@@ -341,6 +373,13 @@ void RendererManager::SetFps(const int32 fps)
 void RendererManager::SetFocus(Unit* const unit)
 {
 	m_focus = unit;
+}
+
+
+
+void RendererManager::EnableCollision(const bool collision)
+{
+	m_collision = collision;
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept

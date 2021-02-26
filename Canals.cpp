@@ -4,7 +4,7 @@
 namespace
 {
 	static Canals* m_instance = NULL;
-	static Sound* a_sound = NULL;
+	static ISound* a_sound = NULL;
 
 }
 
@@ -39,7 +39,7 @@ Canals * Canals::GetInstance()
 	}
 }
 
-Sound* Canals::__GetSound(string sound)
+ISound* Canals::__GetSound(string sound)
 {	
 
 	for ( int32 i = 0; i < NUMBER_OF_CANALS; i++)
@@ -50,7 +50,7 @@ Sound* Canals::__GetSound(string sound)
 	return a_sound;
 }
 
-void Canals::__AddSound(CanalType type, string name, Sound * sound)
+void Canals::__AddSound(CanalType type, string name, ISound * sound)
 {
 
 	m_canals[type]->AddSound(sound, name);
@@ -66,6 +66,14 @@ void Canals::Play(WCHAR * sound)
 	
 	
 	
+}
+
+void Canals::Stop()
+{
+	for (int32 i = 0; i < NUMBER_OF_CANALS; ++i)
+	{
+		m_canals[i]->Stop();
+	}
 }
 
 void Canals::Update()
@@ -96,16 +104,32 @@ void Sound_Canal::Update(void)
 	}
 }
 
-void Sound_Canal::AddSound(Sound * sound, string name)
+void Sound_Canal::AddSound(class ISound * const sound, string name)
 {
 	m_sounds[name] = sound;
 }
 
 void Sound_Canal::GetSound(string name)
 {
-	Sound* tmp = m_sounds[name];
+	ISound* tmp = m_sounds[name];
 	if (tmp)
 	{
 		a_sound = tmp;
 	}
+}
+
+void Sound_Canal::Stop()
+{
+	for (auto&& sound : m_sounds)
+	{
+		if (sound.second)
+		{
+			sound.second->Stop();
+		//	delete sound.second;
+		}
+	}
+//	m_sounds.clear();
+
+	//delete m_instance;
+	//m_instance = new class Canals();
 }
