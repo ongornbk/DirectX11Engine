@@ -42,16 +42,17 @@ namespace lua_callback
 	namespace
 	{
 
-		static class ResourceManager*     m_resources;
-		static class Camera*              m_camera;
-		static class Engine*              m_engine;
-		static class Input*               m_input;
-		static class Global*              m_global;
+		static class ResourceManager*      m_resources;
+		static class Camera*               m_camera;
+		static class Engine*               m_engine;
+		static class Input*                m_input;
+		static class Global*               m_global;
 		static struct ID3D11Device*        m_device;
 		static struct ID3D11DeviceContext* m_deviceContext;
-		static class TextureShader*       m_unitsShader;
-		static class RendererManager*     m_renderer;
-		static class ActionMap*           m_actionMap;
+		static class TextureShader*        m_unitsShader;
+		static class TextureShader*        m_interfaceShader;
+		static class RendererManager*      m_renderer;
+		static class ActionMap*            m_actionMap;
 
 	}
 
@@ -81,6 +82,7 @@ namespace lua_callback
 		m_device = m_engine->GetGraphics()->GetDevice();
 		m_deviceContext = m_engine->GetGraphics()->GetDeviceContext();
 		m_unitsShader = (class TextureShader*)m_resources->GetShaderByName("units.fx");
+		m_interfaceShader = (class TextureShader*)m_resources->GetShaderByName("interface.fx");
 	}
 
 	static void Initialize(
@@ -512,6 +514,19 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int32 CreateInterface(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = new class Interface();
+		m_global->m_lastCreatedRenderContainer = inter;
+		lua_pushinteger(state, (lua_Integer)(inter));
+		//const union LuaPointer lptr(tree);
+		//lua_pushinteger(state, lptr.lua.first);
+		//lua_pushinteger(state, lptr.lua.second);
+		return 1;
+	}
+
 	//static int32_t SetZ(lua_State* state) noexcept
 	//{
 	//	
@@ -838,6 +853,39 @@ namespace lua_callback
 
 			delete[] wide_string;
 				
+		}
+		return 0;
+
+	}
+
+	static int32 InitializeInterface(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if (inter)
+		{
+			string str = lua_tostring(state, 2);
+			const float p_x = (const float)lua_tointeger(state, 3);
+			const float p_y = (const float)lua_tointeger(state, 4);
+			const float p_z = (const float)lua_tointeger(state, 5);
+
+
+			wchar_t* wide_string = new wchar_t[str.length() + 1];
+			wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			wcscpy(wide_string, ws.c_str());
+
+			inter->Initialize(
+				m_device,
+				m_deviceContext,
+				m_interfaceShader,
+				wide_string,
+				struct DirectX::XMFLOAT3(p_x, p_y, 0.f)
+			);
+			m_renderer->PushInterface(inter);
+
+			delete[] wide_string;
+
 		}
 		return 0;
 
@@ -1501,6 +1549,9 @@ namespace lua_callback
 		lua_register(m_lua, "PushBasicParameter", lua_callback::PushBasicParameter);
 		lua_register(m_lua, "CreateExpiringTimer", lua_callback::CreateExpiringTimer);
 		lua_register(m_lua, "CreatePeriodicTimer", lua_callback::CreatePeriodicTimer);
+		//Interface
+		lua_register(m_lua, "CreateInterface", lua_callback::CreateInterface);
+		lua_register(m_lua, "InitializeInterface", lua_callback::InitializeInterface);
 	}
 
 }

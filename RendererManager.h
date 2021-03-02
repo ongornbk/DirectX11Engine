@@ -6,6 +6,7 @@
 #include "UserInterface.h"
 #include "Doodads.h"
 #include "Tree.h"
+#include "Interface.h"
 #include "RegionPointObject.h"
 #include "RenderContainerVector.h"
 #include "modern/modern_array.h"
@@ -56,6 +57,7 @@ public:
 	void PushTree(class Tree* doodads);
 	void Push(class EObject* const object, const enum class RenderLayerType layer);
 	void PushRegionPointObject(class RegionPointObject* object);
+	void PushInterface(class Interface * const object);
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct XMFLOAT4X4& viewMatrix,

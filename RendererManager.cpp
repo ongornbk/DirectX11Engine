@@ -10,6 +10,7 @@
 #include "RenderLayerObject.h"
 #include "RenderLayerShadow.h"
 #include "RenderLayerItem.h"
+#include "RenderLayerInterface.h"
 #include "Timer.h"
 #include "ActionApplyColorFilter.h"
 #include "ActionExecuteActionArray.h"
@@ -77,7 +78,7 @@ RendererManager::RendererManager(
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)] = new RenderLayerObject();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)] = new RenderLayerShadow();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_ITEM_TYPE)]   = new RenderLayerItem();
-
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)] = new RenderLayerInterface();
 }
 
 
@@ -146,6 +147,11 @@ void RendererManager::PushRegionPointObject(RegionPointObject* object)
 	//m_objects.Push(object);
 }
 
+void RendererManager::PushInterface(Interface* const object)
+{
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)]->Push(object);
+}
+
 
 
 
@@ -208,74 +214,73 @@ void RendererManager::PushRegionPointObject(RegionPointObject* object)
 
 	//static float updatetime = 0.f;
 
-void RendererManager::Update(const float dt)
-{
-	m_cameraPosition = CAMERA GetPosition();
-	m_ui->Update(m_cameraPosition);
-	//const float dt = ipp::Timer::GetDeltaTime();
-	//updatetime += dt;
-
-	//if (updatetime > (1.f / 120.f))
+	void RendererManager::Update(const float dt)
 	{
-		//updatetime = 0.f;
-		m_map->Update(dt);
+		m_cameraPosition = CAMERA GetPosition();
+		m_ui->Update(m_cameraPosition);
+		//const float dt = ipp::Timer::GetDeltaTime();
+		//updatetime += dt;
 
-		//switch (m_editMode.load())
-		//{
-		//case 0:
-		//{
-		if (m_engine->GetGameStance() == false)
+		//if (updatetime > (1.f / 120.f))
 		{
-			if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+			//updatetime = 0.f;
+			m_map->Update(dt);
+
+			//switch (m_editMode.load())
+			//{
+			//case 0:
+			//{
+			if (m_engine->GetGameStance() == false)
 			{
-				//m_objects.CleanUp();
+				if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+				{
+					//m_objects.CleanUp();
+
+					for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+					{
+						m_layers[i]->CleanUp();
+					}
+
+					m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
+				}
+				//g_units.Update(dt);
+				//m_objects.Update(dt);
 
 				for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 				{
-					m_layers[i]->CleanUp();
+					m_layers[i]->Update(dt);
 				}
 
-				m_cleanupMode.store(0, std::memory_order::memory_order_seq_cst);
 			}
-			//g_units.Update(dt);
-			//m_objects.Update(dt);
 
-			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+			//g_units.Sort();
+			//g_units.StaticSort();
+			//break;
+		//}
+		//case 1:
+		//{
+		//	m_editMode.store(0, std::memory_order::memory_order_seq_cst);
+			//m_objects.Sort();
+			//m_objects.QSort();
+
+			if (m_collision)
 			{
-				m_layers[i]->Update(dt);
+				for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+				{
+					m_layers[i]->Sort();
+					m_layers[i]->QSort();
+				}
+
 			}
 
+			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
+			//	break;
+			//}
+			//}
+
+
 		}
-
 	}
-	
-		//g_units.Sort();
-		//g_units.StaticSort();
-		//break;
-	//}
-	//case 1:
-	//{
-	//	m_editMode.store(0, std::memory_order::memory_order_seq_cst);
-		//m_objects.Sort();
-		//m_objects.QSort();
-
-	if (m_collision)
-	{
-		for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
-		{
-			m_layers[i]->Sort();
-			m_layers[i]->QSort();
-		}
-
-	}
-
-		Focus(m_focus,ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
-	//	break;
-	//}
-	//}
-	
-
-}
 
 void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
 {

@@ -24,9 +24,9 @@ class modern_array_iterator
 public:
 	modern_array_iterator(T* const begin, T* const end) : m_begin(begin), m_end(end)
 	{
-		assert(begin <= end);
-		assert(m_begin);
-		assert(m_end);
+			assert(begin <= end);
+			assert(m_begin);
+			assert(m_end);
 	}
 
 	modern_array_iterator(const modern_array<T>& array)

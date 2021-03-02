@@ -97,6 +97,9 @@
     <Filter Include="Lua\core">
       <UniqueIdentifier>{35dda138-057e-4427-8f85-55184c046dfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{4a971c0d-be8c-4924-b8c7-0fc4b2fb6026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -771,6 +774,12 @@
     <ClInclude Include="SingleSound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderLayerInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1295,6 +1304,12 @@
     <ClCompile Include="SingleSound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderLayerInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1321,14 +1336,6 @@
     <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
       <Filter>Lua</Filter>
     </None>
-    <None Include="x64\Release\bin\x64\lua\core\Game.lua">
-      <Filter>Lua</Filter>
-    </None>
-    <None Include="x64\Release\bin\shaders\select.fx" />
-    <None Include="x64\Release\bin\shaders\shadow.fx" />
-    <None Include="x64\Release\bin\shaders\texture.fx" />
-    <None Include="x64\Release\bin\shaders\tile.fx" />
-    <None Include="x64\Release\bin\shaders\units.fx" />
     <None Include="x64\Release\content\Textures\models\amazon.mod">
       <Filter>Models</Filter>
     </None>
@@ -1355,9 +1362,6 @@
     </None>
     <None Include="x64\Release\content\Textures\models\hell_bovine.mod">
       <Filter>Models</Filter>
-    </None>
-    <None Include="x64\Release\bin\x64\lua\core\Unit.lua">
-      <Filter>Lua</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\irrlicht.mod">
       <Filter>Models</Filter>
@@ -1391,6 +1395,33 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Music.lua">
       <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Unit.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Game.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Interface.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\select.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\shadow.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\texture.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\tile.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\units.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\interface.fx">
+      <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

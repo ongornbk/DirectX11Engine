@@ -290,6 +290,7 @@
     <ClInclude Include="IntegerConditionLessOrEquals.h" />
     <ClInclude Include="IntegerConditionNotEquals.h" />
     <ClInclude Include="IntegerOperatorType.h" />
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="IObjectVariable.h" />
     <ClInclude Include="IRendererManager.h" />
     <ClInclude Include="IScript.h" />
@@ -346,6 +347,7 @@
     <ClInclude Include="RenderHandle.h" />
     <ClInclude Include="RenderLayer.h" />
     <ClInclude Include="RenderLayerCorpse.h" />
+    <ClInclude Include="RenderLayerInterface.h" />
     <ClInclude Include="RenderLayerItem.h" />
     <ClInclude Include="RenderLayerObject.h" />
     <ClInclude Include="RenderLayerShadow.h" />
@@ -483,6 +485,7 @@
     <ClCompile Include="IntegerConditionLess.cpp" />
     <ClCompile Include="IntegerConditionLessOrEquals.cpp" />
     <ClCompile Include="IntegerConditionNotEquals.cpp" />
+    <ClCompile Include="Interface.cpp" />
     <ClCompile Include="IObjectVariable.cpp" />
     <ClCompile Include="IRendererManager.cpp" />
     <ClCompile Include="IScript.cpp" />
@@ -530,6 +533,7 @@
     <ClCompile Include="RenderHandle.cpp" />
     <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="RenderLayerCorpse.cpp" />
+    <ClCompile Include="RenderLayerInterface.cpp" />
     <ClCompile Include="RenderLayerItem.cpp" />
     <ClCompile Include="RenderLayerObject.cpp" />
     <ClCompile Include="RenderLayerShadow.cpp" />
@@ -587,6 +591,7 @@
     <None Include="x64\Release\bin\settings\settings.file" />
     <None Include="x64\Release\bin\settings\tile.file" />
     <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Interface.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Music.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Unit.lua" />
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua" />
@@ -632,6 +637,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="game_exe.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Release\bin\shaders\interface.fx">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
