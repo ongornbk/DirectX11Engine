@@ -3,12 +3,16 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Font.h"
+#include "GarbageCollector.h"
 
 class LetterSprite
 {
 public:
 
-	LetterSprite(TextFont* font, char letter, float size,Shader* shader);
+	LetterSprite(
+		class TextFont* const font,
+		char letter,
+		float size);
 
 	virtual ~LetterSprite(void);
 
@@ -16,20 +20,23 @@ public:
 
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
-		DirectX::XMFLOAT4X4& worldMatrix,
-		DirectX::XMFLOAT4X4& viewMatrix,
-		DirectX::XMFLOAT4X4& projectionMatrix
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix,
+		class Shader* const shader
 	);
 
 	void Update();
+
+	void _vectorcall SetPosition(const float x, const float y, const float z = 0.f) noexcept;
+
+	const char GetLetter() const noexcept;
 
 private:
 	ID3D11DeviceContext * m_deviceContext;
 
 	class VertexBuffer* m_vertexBuffer;
 	class Texture*      m_texture;
-	class Shader*       m_shader;
+	XMFLOAT4X4          m_world;
 	float         m_size;
 	char          m_char;
 };
-

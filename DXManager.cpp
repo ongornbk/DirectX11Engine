@@ -355,7 +355,7 @@ bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen,  int32 screenWid
 
 	swapChainDesc.Flags = 0;
 
-	featureLevel = D3D_FEATURE_LEVEL_11_0;
+	featureLevel = D3D_FEATURE_LEVEL_11_1;
 
 	result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, &featureLevel, 1,
 		D3D11_SDK_VERSION,&swapChainDesc,&m_swapChain,&m_device,NULL,&m_deviceContext);

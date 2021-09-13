@@ -120,7 +120,7 @@ namespace
 {
 	static struct ID3D11Device*        m_device;
 	static class Shader*               m_tileShader;
-	static class Vector<VertexBuffer*> m_vertexBuffer[32];
+	static class modern_array<VertexBuffer*> m_vertexBuffer[32];
 	static class VertexBuffer*         m_animatedVertexBuffer;
 	static class Texture*              m_texture[32];
 	static float                       m_size[2];
@@ -202,7 +202,7 @@ void Tile::SetGlobals(
 	}
 	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 	istringstream ss(BUFFER);
-	vector<int> sizes;
+	modern_array<int32> sizes;
 	string token;
 	while (getline(ss, token, '\n'))
 	{

@@ -53,7 +53,7 @@ bool TaskQueue::Update()
 		else
 		{
 			{
-				Task* task = m_tasks.front();
+				//class Task* const task = m_tasks.front();
 				//if (task->m_stance == Task::Stance::TSRUNNING)
 				//{
 					//if (m_owner)
@@ -76,7 +76,9 @@ bool TaskQueue::Update()
 		return false;
 
 }
-void TaskQueue::SetTask(Task* task)
+void TaskQueue::SetTask(
+	class Task* const task
+)
 {
 	Discard();
 	m_tasks.push(task);

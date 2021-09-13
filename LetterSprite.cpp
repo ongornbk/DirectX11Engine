@@ -6,14 +6,10 @@
 LetterSprite::LetterSprite(
 	class TextFont* const font,
 	const char letter,
-	const float size,
-	class Shader* const shader
-)
+	const float size)
 {
-
 #pragma warning(disable : 4996)
 
-	this->m_shader = shader;
 	this->m_vertexBuffer = nullptr;
 	this->m_size = size;
 	this->m_char = letter;
@@ -25,6 +21,7 @@ LetterSprite::LetterSprite(
 	this->m_texture = ResourceManager::GetInstance()->GetTextureByName(buffer);
 	delete[] buffer;
 
+	XMStoreFloat4x4(&m_world, XMMatrixIdentity());
 }
 
 LetterSprite::~LetterSprite(void)
@@ -51,18 +48,28 @@ void LetterSprite::Initialize(
 
 void LetterSprite::Render(
 	struct ID3D11DeviceContext * const deviceContext,
-	DirectX::XMFLOAT4X4& worldMatrix,
-	DirectX::XMFLOAT4X4& viewMatrix,
-	DirectX::XMFLOAT4X4& projectionMatrix
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
+	class Shader* const shader 
 )
 {
-	m_shader->SetShaderParameters(deviceContext,m_texture->GetTexture());
-	m_shader->SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+	shader->SetShaderParameters(deviceContext,m_texture->GetTexture());
+	shader->SetShaderParameters(deviceContext, m_world, viewMatrix, projectionMatrix);
 	m_vertexBuffer->Render(deviceContext);
 }
 
 void LetterSprite::Update()
 {
 
+	
+}
 
+void _vectorcall LetterSprite::SetPosition(const float x, const float y, const float z) noexcept
+{
+	DirectX::XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y,z));
+}
+
+const char LetterSprite::GetLetter() const noexcept
+{
+	return m_char;
 }

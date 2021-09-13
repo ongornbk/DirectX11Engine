@@ -22,6 +22,9 @@
 #include <mutex>
 #include <stack>
 
+//TEMP
+//#include <d2d1.h>
+//#include <dwrite.h>
 
 class Unit;
 
@@ -52,13 +55,15 @@ RendererManager::RendererManager(
 	class Shader* const units,
 	class Shader* const ui,
 	class Shader* const shadow,
-	class Shader* const select
+	class Shader* const select,
+	class Shader* const inter
 ) :
 	m_engine(engine),
 	m_unitsShader(units),
 	m_shader(ui),
 	m_shadowShader(shadow),
 	m_selectShader(select),
+	m_interfaceShader(inter),
 	m_focus(nullptr),
 	m_collision(false)
 {
@@ -173,8 +178,8 @@ void RendererManager::PushInterface(Interface* const object)
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
-
-		struct ShaderPackage pck(deviceContext,m_unitsShader,m_shadowShader,m_selectShader);
+		auto const device = Engine::GetEngine()->GetGraphics()->GetDevice();
+		struct ShaderPackage pck(deviceContext,m_unitsShader,m_shadowShader,m_selectShader,m_interfaceShader);
 		//pck.m_context = deviceContext;
 		//pck.select = m_selectShader;
 		//pck.shadow = m_shadowShader;
@@ -199,15 +204,51 @@ void RendererManager::PushInterface(Interface* const object)
 				m_layers[i]->Render(deviceContext, viewMatrix, projectionMatrix, pck);
 			}
 
-			//m_unitsShader->End(deviceContext);
-
-
-			m_shader->Begin(deviceContext);
+			pck.BeginStandard();
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
+			//m_unitsShader->End(deviceContext);
+			TextFont* font = TextFont::GetFontByName("ExocetLight");
+			font->Initialize(device, deviceContext, pck.GetShader());
+			//font.
+			//LetterSprite* sp = font->GetSprite(nullptr, 'a');
+			//sp->Update();
+			//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 
-			m_shader->End(deviceContext);
+			Text* text = new Text;
+			text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
+			text->SetText("faced");
+			text->SetPosition({ 0.f,0.f,0.f });
+			text->Update();
+			text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+
+			//m_shader->End(deviceContext);
+
+			//m_shader->Begin(deviceContext);
+
+			
+
+			
+
+			//GetDC()
+
+			
+
+			//Text t;
+			////m_shader->Begin(deviceContext);
+			//
+			//t.Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), deviceContext, m_shader, font, 20.f);
+			//t.SetText("baba");
+			//t.SetPosition({ 0.f,0.f,0.f });
+			//t.Update();
+			//t.Render(deviceContext, viewMatrix, projectionMatrix,m_shader);
+
+			
+
+			pck.End();
+
+			//pck.End();
 		
 	
 }
@@ -385,6 +426,17 @@ void RendererManager::SetFocus(Unit* const unit)
 void RendererManager::EnableCollision(const bool collision)
 {
 	m_collision = collision;
+}
+
+void RendererManager::Clear()
+{
+	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+	{
+		if (m_layers[i])
+		{
+			m_layers[i]->Clear();
+		}
+	}
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept

@@ -100,6 +100,12 @@
     <Filter Include="HLSL">
       <UniqueIdentifier>{4a971c0d-be8c-4924-b8c7-0fc4b2fb6026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files">
+      <UniqueIdentifier>{31c2df90-7377-4e08-b31e-af93dd8eb03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\gfx">
+      <UniqueIdentifier>{f500fffa-7ad5-400d-b4a0-40ab61aa6da3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -280,9 +286,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameChat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextArea.h">
@@ -778,6 +781,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IInterfaceBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceBehaviorType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceButtonBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1310,6 +1322,12 @@
     <ClCompile Include="Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IInterfaceBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceButtonBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1325,15 +1343,6 @@
       <Filter>Settings</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua">
-      <Filter>Lua</Filter>
-    </None>
-    <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua">
-      <Filter>Lua</Filter>
-    </None>
-    <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua">
-      <Filter>Lua</Filter>
-    </None>
-    <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
       <Filter>Lua</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\amazon.mod">
@@ -1384,9 +1393,6 @@
     <None Include="x64\Release\content\Textures\models\fallen_shaman.mod">
       <Filter>Models</Filter>
     </None>
-    <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua">
-      <Filter>Lua\Locations</Filter>
-    </None>
     <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Initialization.lua">
       <Filter>Lua\interface</Filter>
     </None>
@@ -1423,10 +1429,39 @@
     <None Include="x64\Release\bin\shaders\interface.fx">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
+      <Filter>Lua\Locations</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua">
+      <Filter>Lua\Locations</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua">
+      <Filter>Lua\Locations</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Camera.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Behavior.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Object.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\ButtonBehavior.lua">
+      <Filter>Lua\core</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="x64\Release\content\Textures\gui\button.png">
+      <Filter>Files\gfx</Filter>
+    </Image>
   </ItemGroup>
 </Project>

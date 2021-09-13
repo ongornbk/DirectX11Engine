@@ -73,6 +73,10 @@ void RenderLayerShadow::Push(EObject* const object)
 {
 }
 
+void RenderLayerShadow::Push(Interface* const inter)
+{
+}
+
 std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Unit* object, float range) noexcept
 {
 	return std::stack<class Unit*>();

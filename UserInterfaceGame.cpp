@@ -33,11 +33,13 @@ UserInterfaceGame::UserInterfaceGame(
 	struct ID3D11DeviceContext* deviceContext = engine->GetGraphics()->GetDeviceContext();
 	class TextFont* font = TextFont::GetFontByName("ExocetLight");
 
-	m_fpsText.Initialize(device, deviceContext, shader, font);
+	assert(font);
+
+	//m_fpsText.Initialize(device, deviceContext, shader, font,12.f);
 	//m_fpsText.SetText(std::string("FPS "));
-	m_mainText.Initialize(device, deviceContext, shader, font);
+	//m_mainText.Initialize(device, deviceContext, shader, font,12.f);
 	//m_mainText.SetText(string(GAME_NAME_VERSION));
-	m_cpuText.Initialize(device, deviceContext, shader, font);
+	//m_cpuText.Initialize(device, deviceContext, shader, font,12.f);
 	//m_cpuText.SetText(std::string("CPU "));
 
 	m_gameChat = new GameChat();
@@ -62,8 +64,8 @@ UserInterfaceGame::UserInterfaceGame(
 	xm = 0;
 	ym = 0;
 
-	m_mousePosition[0] = 0;
-	m_mousePosition[1] = 1;
+	m_mousePosition.x = 0.f;
+	m_mousePosition.y = 0.f;
 
 }
 
@@ -89,10 +91,10 @@ void UserInterfaceGame::Update(DirectX::XMVECTOR cameraPosition)
 	xm -= xr;
 	ym -= yr;
 	m_mousePosition = {
-		(cameraPosition.m128_f32[0] + xm),
-		(cameraPosition.m128_f32[1] - ym)
+		(cameraPosition.m128_f32[0] + xm ),
+		(cameraPosition.m128_f32[1] - ym )
 	};
-	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition[0], m_mousePosition[1],cameraPosition.m128_f32[2]));
+	XMStoreFloat4x4(&m_cursorMatrix, XMMatrixTranslation(m_mousePosition.x, m_mousePosition.y,cameraPosition.m128_f32[2]));
 	//stringstream ssfps;
 	//ssfps << m_fps;
 	//string fps = "FPS " + string(ssfps.str());
@@ -172,8 +174,8 @@ void UserInterfaceGame::SetFPS(const int32 fps) noexcept
 
 void UserInterfaceGame::GetMousePosition(float & x, float& y)
 {
-	x = m_mousePosition[0];
-	y = m_mousePosition[1];
+	x = m_mousePosition.x;
+	y = m_mousePosition.y;
 }
 
 GameChat * UserInterfaceGame::GetGameChat()

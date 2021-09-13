@@ -25,6 +25,6 @@ extern "C"
 		 void       PrintError()                     noexcept;
 		 void       LoadLuaLibrary()                 noexcept;
 		 struct lua_State* const Load(const char* const filename) noexcept;
-		 struct lua_State* const GetInstance()                    noexcept;
+		extern struct lua_State* const GetInstance()                    noexcept;
 	}
 }

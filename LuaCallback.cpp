@@ -11,6 +11,7 @@
 #include "Sorting.h"
 #include "UnitGroup.h"
 #include "ActionRemoveObject.h"
+#include "InterfaceButtonBehavior.h"
 #include "modern/modern.h"
 #include "Timer.h"
 
@@ -237,6 +238,7 @@ namespace lua_callback
 			lua_pushnumber(state, position.m128_f32[0]);
 			lua_pushnumber(state, position.m128_f32[1]);
 			lua_pushnumber(state, position.m128_f32[2]);
+
 			return 3;
 		}
 
@@ -518,9 +520,15 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
+		class Interface* const parent = (class Interface* const)lua_tointeger(state, 1);
 		class Interface* const inter = new class Interface();
 		m_global->m_lastCreatedRenderContainer = inter;
 		lua_pushinteger(state, (lua_Integer)(inter));
+		if (parent)
+		{
+			inter->SetParent(parent);
+			parent->PushChild(inter);
+		}
 		//const union LuaPointer lptr(tree);
 		//lua_pushinteger(state, lptr.lua.first);
 		//lua_pushinteger(state, lptr.lua.second);
@@ -866,9 +874,11 @@ namespace lua_callback
 		if (inter)
 		{
 			string str = lua_tostring(state, 2);
-			const float p_x = (const float)lua_tointeger(state, 3);
-			const float p_y = (const float)lua_tointeger(state, 4);
-			const float p_z = (const float)lua_tointeger(state, 5);
+			const float x_size = (const float)lua_tointeger(state, 3);
+			const float y_size = (const float)lua_tointeger(state, 4);
+			const float p_x = (const float)lua_tointeger(state, 5);
+			const float p_y = (const float)lua_tointeger(state, 6);
+			const float p_z = (const float)lua_tointeger(state, 7);
 
 
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -880,18 +890,57 @@ namespace lua_callback
 				m_deviceContext,
 				m_interfaceShader,
 				wide_string,
-				struct DirectX::XMFLOAT3(p_x, p_y, 0.f)
+				struct DirectX::XMFLOAT3(p_x, p_y, p_z),
+				x_size,
+				y_size
 			);
 			m_renderer->PushInterface(inter);
 
 			delete[] wide_string;
 
 		}
+		else
+		{
+			ipp::Console::SetTextColor(ipp::TextColors::RED);
+			ipp::Console::Print("Interface initialization failed : ");
+			ipp::Console::Println(lua_tostring(state, 2));
+		}
 		return 0;
 
 	}
 
+	static int32 SetInterfaceButtonBehavior(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if(inter)
+		{
+			class IInterfaceBehavior* const behavior = new class InterfaceButtonBehavior(inter);
+			inter->SetBehavior(behavior);
+			lua_pushinteger(state, (lua_Integer)behavior);
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+
+	}
 	
+	static int32 SetButtonOnClick(
+		struct lua_State* const state
+	) noexcept
+	{
+		class InterfaceButtonBehavior* const behavior = (class InterfaceButtonBehavior* const)lua_tointeger(state, 1);
+		if (behavior)
+		{
+			behavior->SetOnClick(lua_tostring(state,2));
+		}
+		return 0;
+
+	}
+
 
 	static int32 SetRenderingFlag(
 		struct lua_State* const state
@@ -1552,6 +1601,8 @@ namespace lua_callback
 		//Interface
 		lua_register(m_lua, "CreateInterface", lua_callback::CreateInterface);
 		lua_register(m_lua, "InitializeInterface", lua_callback::InitializeInterface);
+		lua_register(m_lua, "SetInterfaceButtonBehavior", lua_callback::SetInterfaceButtonBehavior);
+		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
 	}
 
 }

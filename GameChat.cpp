@@ -37,23 +37,23 @@ void GameChat::SetTextsLimit(const int32 limit) noexcept
 
 void GameChat::PushText(std::string text) noexcept
 {
-	m_texts.push_back(CreateTextFromString(text));
-	m_size++;
-	CheckSize();
+//	m_texts.push_back(CreateTextFromString(text));
+	//m_size++;
+	//CheckSize();
 }
 
 void GameChat::PushText(const _bstr_t text) noexcept
 {
-	m_texts.push_back(CreateTextFromString(text));
-	m_size++;
-	CheckSize();
+	//m_texts.push_back(CreateTextFromString(text));
+	//m_size++;
+	//CheckSize();
 }
 
 void  GameChat::PushTextFront(std::string text) noexcept
 {
-	m_texts.push_front(CreateTextFromString(text));
-	m_size++;
-	CheckSize();
+	//m_texts.push_front(CreateTextFromString(text));
+	//m_size++;
+	//CheckSize();
 }
 
 void  GameChat::SetFont(class TextFont* font) noexcept
@@ -83,7 +83,7 @@ void GameChat::Render(struct ID3D11DeviceContext * const deviceContext, DirectX:
 {
 	for (auto&& text : m_texts)
 	{
-		text->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+		//text->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 	}
 }
 
@@ -116,7 +116,7 @@ auto _cdecl GameChat::end() noexcept
 Text* GameChat::CreateTextFromString(std::string text) noexcept
 {
 	Text* __text = new Text();
-	__text->Initialize(m_device, m_context, m_shader, m_font);
+	__text->Initialize(m_device, m_context, m_shader, m_font,12.f);
 	__text->SetText(text);
 	return __text;
 }
@@ -124,8 +124,8 @@ Text* GameChat::CreateTextFromString(std::string text) noexcept
 Text* GameChat::CreateTextFromString(const _bstr_t text) noexcept
 {
 	Text* __text = new Text();
-	__text->Initialize(m_device, m_context, m_shader, m_font);
-	__text->SetText(text);
+	__text->Initialize(m_device, m_context, m_shader, m_font,12.f);
+	//__text->SetText(text);
 	return __text;
 }
 

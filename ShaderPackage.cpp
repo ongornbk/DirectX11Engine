@@ -2,10 +2,20 @@
 
 
 
-ShaderPackage::ShaderPackage(ID3D11DeviceContext* const __context, Shader* const __standard, Shader* const __shadow, Shader* const __select) :
-	m_context(__context), standard(__standard), shadow(__shadow), select(__select)
+ShaderPackage::ShaderPackage(
+	ID3D11DeviceContext* const __context,
+	Shader* const __standard,
+	Shader* const __shadow,
+	Shader* const __select,
+	Shader* const __inter
+) :
+	m_context(__context),
+	standard(__standard),
+	shadow(__shadow),
+	select(__select),
+	inter(__inter)
 {
-
+	//assert(__context && __standard && __shadow && __select && __inter);
 }
 
 class Shader* const ShaderPackage::BeginShadow() const
@@ -43,6 +53,18 @@ select->Begin(m_context);
 current = select;
 return current;
 
+}
+
+Shader* const ShaderPackage::BeginInterface() const
+{
+	if (current)
+		if (current != inter)
+			current->End(m_context);
+		else
+			return current;
+	inter->Begin(m_context);
+	current = inter;
+	return current;
 }
 
 bool ShaderPackage::SetShaderParameters(ID3D11DeviceContext* const deviceContext, ID3D11ShaderResourceView* const texture, const uint32 index) const
@@ -85,4 +107,9 @@ void ShaderPackage::End() const
 if(current)
 	current->End(m_context);
 current = nullptr;
+}
+
+Shader* const ShaderPackage::GetShader() const noexcept
+{
+	return current;
 }

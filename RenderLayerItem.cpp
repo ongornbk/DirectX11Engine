@@ -142,6 +142,10 @@ void RenderLayerItem::Push(EObject* const object)
 	m_objects[1][0].push_back(object);
 }
 
+void RenderLayerItem::Push(Interface* const inter)
+{
+}
+
 static int64_t _fastcall CheckDistance(
 	class EObject* const A,
 	class EObject* const B,

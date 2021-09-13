@@ -526,6 +526,10 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 
 	if (Sdistance < Sradius)
 	{
+
+		A->Intersect(B);
+		B->Intersect(A);
+
 		float Scollision = Sdistance - Sradius;
 		if (Apushable == Bpushable)
 		{

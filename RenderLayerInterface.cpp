@@ -42,24 +42,34 @@ void _stdcall RenderLayerInterface::StaticQSort()
 {
 }
 
-void _vectorcall RenderLayerInterface::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerInterface::Render(
+	ID3D11DeviceContext* const deviceContext,
+	const XMFLOAT4X4& viewMatrix,
+	const XMFLOAT4X4& projectionMatrix,
+	const ShaderPackage& shader)
+	noexcept
 {
 	if (!m_root)
 		return;
 
-	GRAPHICS EnableAlphaBlending(true);
+	
 
-	shader.BeginShadow();
+	//shader.BeginShadow();
 
-	m_root->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+	//m_root->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
 
-	GRAPHICS EnableAlphaBlending(false);
+	
 
 
 	//shader.End();
-	shader.BeginStandard();
+
+	GRAPHICS EnableAlphaBlending(true);
+
+	shader.BeginInterface();
 
 	m_root->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+
+	GRAPHICS EnableAlphaBlending(false);
 
 }
 
@@ -98,7 +108,13 @@ void RenderLayerInterface::Push(RegionPointObject* const tree)
 
 void RenderLayerInterface::Push(EObject* const object)
 {
-	m_root = object;
+
+}
+
+void RenderLayerInterface::Push(Interface* const inter)
+{
+	if (inter->GetParent() == nullptr)
+		m_root = inter;
 }
 
 std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Unit* object, float range) noexcept

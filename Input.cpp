@@ -223,10 +223,10 @@ void Input::ProcessInput()
 	{
 		m_mouseX += m_mouseState.lX*2;
 		m_mouseY += m_mouseState.lY*2;
-		if (m_mouseX < 24)m_mouseX = 24;
-		if (m_mouseY < 48)m_mouseY = 48;
-		if (m_mouseX > m_screenWidth-24)m_mouseX = m_screenWidth-24;
-		if (m_mouseY > m_screenHeight+24)m_mouseY = m_screenHeight+24;
+		if (m_mouseX < 0)m_mouseX = 0;
+		if (m_mouseY < 0)m_mouseY = 0;
+		if (m_mouseX > m_screenWidth)m_mouseX = m_screenWidth;
+		if (m_mouseY > m_screenHeight)m_mouseY = m_screenHeight;
 	}break;
 	case READ_KEYBOARD:
 	{
@@ -234,12 +234,12 @@ void Input::ProcessInput()
 	}break;
 	case READ_MOUSE:
 	{
-		m_mouseX += m_mouseState.lX*2;
-		m_mouseY += m_mouseState.lY*2;
-		if (m_mouseX < 24)m_mouseX = 24;
-		if (m_mouseY < 24)m_mouseY = 24;
-		if (m_mouseX > m_screenWidth-24)m_mouseX = m_screenWidth-24;
-		if (m_mouseY > m_screenHeight-24)m_mouseY = m_screenHeight-24;
+		m_mouseX += m_mouseState.lX * 2;
+		m_mouseY += m_mouseState.lY * 2;
+		if (m_mouseX < 0)m_mouseX = 0;
+		if (m_mouseY < 0)m_mouseY = 0;
+		if (m_mouseX > m_screenWidth)m_mouseX = m_screenWidth;
+		if (m_mouseY > m_screenHeight)m_mouseY = m_screenHeight;
 	}break;
 	case READ_NOTHING: break;
 	default: break;

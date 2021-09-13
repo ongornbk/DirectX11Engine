@@ -2,6 +2,7 @@
 #include "Font.h"
 #include "IPP.h"
 #include "Vector.h"
+#include "Text.h"
 #include <fstream>
 #include <sstream>
 #include <streambuf>
@@ -12,12 +13,13 @@
 
 namespace
 {
-	static Vector<TextFont*> m_fonts;
+	static modern_array<TextFont*> m_fonts;
 }
 
 
-TextFont::TextFont(float width, float height, std::string filename,bool upper)
+TextFont::TextFont(float width, float height, std::string filename, bool upper) : m_initialized(false)
 {
+	//m_letters.resize(255);
 	ZeroMemory(m_char, 255);
 	this->m_name = filename;
 	this->m_width = width;
@@ -25,12 +27,39 @@ TextFont::TextFont(float width, float height, std::string filename,bool upper)
 	this->m_flag = upper;
 	this->m_name = filename;
 
+	m_letters.reserve(255);
+	m_letters.resize(255);
+
 	int pos = (int)m_name.find_last_of("/");
 	if (pos >= 0)
 	{
 		m_name = m_name.substr(pos + 1, m_name.length());
 	}
 	m_name = m_name.substr(0, m_name.find("."));
+
+
+}
+
+void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Shader* shader)
+{
+
+	if (m_initialized) return;
+
+	m_letters['a'] = new LetterSprite(this, 'a', 20.f);
+	m_letters['b'] = new LetterSprite(this, 'b', 20.f);
+	m_letters['c'] = new LetterSprite(this, 'c', 20.f);
+	m_letters['d'] = new LetterSprite(this, 'd', 20.f);
+	m_letters['e'] = new LetterSprite(this, 'e', 20.f);
+	m_letters['f'] = new LetterSprite(this, 'f', 20.f);
+
+	m_letters['a']->Initialize(device,context,shader,this);
+	m_letters['b']->Initialize(device,context,shader,this);
+	m_letters['c']->Initialize(device,context,shader,this);
+	m_letters['d']->Initialize(device, context, shader, this);
+	m_letters['e']->Initialize(device, context, shader, this);
+	m_letters['f']->Initialize(device, context, shader, this);
+
+	m_initialized = true;
 }
 
 
@@ -138,6 +167,17 @@ float TextFont::GetWidthOfLetter(char letter)
 	return (m_char[letter].m_right) - (m_char[letter].m_left);
 }
 
+LetterSprite* const TextFont::GetSprite(class Text* const text,const char ch)
+{
+	//assert(text);
+	assert(&m_letters);
+
+	if (ch > 255 || ch < 0)
+		return nullptr;
+
+	return m_letters[ch];
+}
+
 void TextFont::InitializeCoordinates(std::vector<float> coords)
 {
 	std::reverse(coords.begin(), coords.end());
@@ -149,6 +189,7 @@ void TextFont::InitializeCoordinates(std::vector<float> coords)
 		ipp::Console::Println(coords.size());
 		return;
 	}
+
 
 
 	m_char['a'].m_left = coords.at(0);

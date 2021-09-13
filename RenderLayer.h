@@ -37,6 +37,7 @@ public:
 	virtual void Push(class Tree* const tree) = 0;
 	virtual void Push(class RegionPointObject* const tree) = 0;
 	virtual void Push(class EObject* const object) = 0;
+	virtual void Push(class Interface* const inter) = 0;
 	virtual std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept = 0;
 	virtual std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range) = 0;
 };

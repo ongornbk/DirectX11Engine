@@ -75,7 +75,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\LIBRARY\LIB;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,6 +165,7 @@
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <IntelJCCErratum>true</IntelJCCErratum>
       <CallingConvention>FastCall</CallingConvention>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -265,7 +266,6 @@
     <ClInclude Include="gdef.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GlobalUtilities.h" />
-    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsManager.h" />
     <ClInclude Include="Handle.h" />
@@ -281,6 +281,7 @@
     <ClInclude Include="ICondition.h" />
     <ClInclude Include="IFloatVariable.h" />
     <ClInclude Include="IIntegerVariable.h" />
+    <ClInclude Include="IInterfaceBehavior.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InstantTimer.h" />
     <ClInclude Include="IntegerConditionEquals.h" />
@@ -291,6 +292,8 @@
     <ClInclude Include="IntegerConditionNotEquals.h" />
     <ClInclude Include="IntegerOperatorType.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="InterfaceBehaviorType.h" />
+    <ClInclude Include="InterfaceButtonBehavior.h" />
     <ClInclude Include="IObjectVariable.h" />
     <ClInclude Include="IRendererManager.h" />
     <ClInclude Include="IScript.h" />
@@ -478,6 +481,7 @@
     <ClCompile Include="ICondition.cpp" />
     <ClCompile Include="IFloatVariable.cpp" />
     <ClCompile Include="IIntegerVariable.cpp" />
+    <ClCompile Include="IInterfaceBehavior.cpp" />
     <ClCompile Include="InstantTimer.cpp" />
     <ClCompile Include="IntegerConditionEquals.cpp" />
     <ClCompile Include="IntegerConditionGreater.cpp" />
@@ -486,6 +490,7 @@
     <ClCompile Include="IntegerConditionLessOrEquals.cpp" />
     <ClCompile Include="IntegerConditionNotEquals.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="InterfaceButtonBehavior.cpp" />
     <ClCompile Include="IObjectVariable.cpp" />
     <ClCompile Include="IRendererManager.cpp" />
     <ClCompile Include="IScript.cpp" />
@@ -590,9 +595,13 @@
     <None Include="x64\Release\bin\settings\interface.ini" />
     <None Include="x64\Release\bin\settings\settings.file" />
     <None Include="x64\Release\bin\settings\tile.file" />
+    <None Include="x64\Release\bin\x64\lua\core\Behavior.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\ButtonBehavior.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Camera.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Interface.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Music.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Object.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Unit.lua" />
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua" />
@@ -642,6 +651,9 @@
     <None Include="x64\Release\bin\shaders\interface.fx">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="x64\Release\content\Textures\gui\button.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

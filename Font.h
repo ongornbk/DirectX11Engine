@@ -1,5 +1,7 @@
 #pragma once
 #include "Texture.h"
+#include "LetterSprite.h"
+#include "modern/modern_array.h"
 #include <string>
 #include <vector>
 
@@ -26,6 +28,8 @@ public:
 
 ~TextFont();
 
+void Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Shader* shader);
+
 static void LoadFontFromFile(std::string name,float width,float height);
 static TextFont* GetFontByName(std::string name);
 static void ReleaseFonts();
@@ -35,11 +39,16 @@ FLOATX6 GetCoordsOfLetter(char letter);
 float GetLeftOfLetter(char letter);
 float GetWidthOfLetter(char letter);
 
+class LetterSprite* const GetSprite(class Text* const text,const char ch);
+
 void InitializeCoordinates(std::vector<float> coords);
 
 private:
 
+	bool m_initialized;
+
 	TextFont(float width,float height,std::string filename,bool upper = true);
+	
 
 	float m_width;
 	float m_height;
@@ -47,6 +56,8 @@ private:
 	bool m_flag;
 
 	std::string m_name;
+
+	modern_array<class LetterSprite*> m_letters;
 
 	friend class LetterSprite;
 };

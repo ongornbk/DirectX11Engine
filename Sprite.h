@@ -2,8 +2,9 @@
 #include "VertexBuffer.h"
 #include "Texture.h"
 #include "TextureShader.h"
+#include "ColorFilter.h"
 
-class Sprite
+class Sprite : public ColorFilter
 {
 public:
 	Sprite(float size);
@@ -17,10 +18,11 @@ public:
 	virtual void Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader);
 	virtual bool ResizeTexture(ID3D11Device * device, float size, bool writeable = false);
 	virtual void SetAnimationSpeed(float speed = 1.0f);
+	virtual const struct DirectX::XMFLOAT2 GetSize() const noexcept;
 protected:
 	VertexBuffer* m_vertexBuffer;
 	Texture* m_texture;
 	Shader* m_shader;
-	float m_size[2];
+	DirectX::XMFLOAT2 m_size;
 
 };

@@ -47,7 +47,7 @@ public:
 
 
 
-	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select);
+	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select,Shader* inter);
 	~RendererManager();
 
 
@@ -74,6 +74,7 @@ public:
 	void SetFps(const int32 fps);
 	void SetFocus(class Unit* const unit);
 	void EnableCollision(const bool collision = true);
+	void Clear();
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
@@ -91,6 +92,7 @@ private:
 	Shader* m_unitsShader;
 	Shader* m_shadowShader;
 	Shader* m_selectShader;
+	Shader* m_interfaceShader;
 
 	TileMap* m_map;
 	UserInterface* m_ui;

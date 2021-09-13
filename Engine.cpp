@@ -152,17 +152,21 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADSHADER  L"x64/Release/bin/Shaders/units.fx"                                END
 	LOADSHADER  L"x64/Release/bin/Shaders/shadow.fx"                               END
 	LOADSHADER  L"x64/Release/bin/Shaders/select.fx"                               END
-	TextureShader* uiShader  = GETSHADER "texture.fx"                END
-	TextureShader* unitsShader = GETSHADER "units.fx"                END
-	TextureShader* shadowsShader = GETSHADER "shadow.fx" END
-	TextureShader* selectShader = GETSHADER "select.fx" END
+	//LOADSHADER  L"x64/Release/bin/Shaders/interface.fx"                            END
+	TextureShader* uiShader         = GETSHADER "texture.fx"                END
+	TextureShader* unitsShader      = GETSHADER "units.fx"                  END
+	TextureShader* shadowsShader    = GETSHADER "shadow.fx"                 END
+	TextureShader* selectShader     = GETSHADER "select.fx"                 END
+	TextureShader* interfaceShader  = GETSHADER "texture.fx"              END
 #pragma endregion
+
+
 	
 	m_input = new Input();
 	m_input->Initialize(hInstance, hwnd,Settings::GetResolutionX(), Settings::GetResolutionY());
 	lua_callback::SetInput(m_input);
 
-	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader);
+	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader,interfaceShader);
 	lua_callback::SetRendererManager(m_rendererManager);
 	
 	m_cameraControl.SetCurrentCamera(m_camera);
@@ -259,6 +263,9 @@ void Engine::SetGameComponent(GameComponent * gameComponent)
 		delete m_gameComponent;
 		m_gameComponent = nullptr;
 	}
+
+	if(m_rendererManager)
+	m_rendererManager->Clear();
 
 	m_gameComponent = gameComponent;
 	m_gameComponent->Initialize();

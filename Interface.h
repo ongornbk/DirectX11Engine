@@ -4,6 +4,8 @@
 #include "RenderLayerType.h"
 #include "Texture.h"
 #include "VertexBuffer.h"
+#include "IInterfaceBehavior.h"
+#include "modern/modern_array.h"
 
 class Interface : public EObject, public ColorFilter
 {
@@ -16,7 +18,9 @@ public:
 		ID3D11DeviceContext* deviceContext,
 		class Shader* shader,
 		WCHAR* paths,
-		const XMFLOAT3 position
+		const XMFLOAT3 position,
+		const float xsize,
+		const float ysize
 	);
 
 	_Use_decl_annotations_
@@ -42,9 +46,19 @@ public:
 	int32 isReleased() const noexcept override;
 	void _cdecl Intersect(class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
+	void SetParent(class Interface* const parent);
+	void SetBehavior(class IInterfaceBehavior* const behavior);
+	void PushChild(class EObject* const child);
+	class Interface* const GetParent() const noexcept;
+
+	friend class InterfaceButtonBehavior;
 
 private:
 	class Interface* m_parent;
+	class IInterfaceBehavior* m_behavior;
+	modern_array<class EObject*> m_children;
+
+	DirectX::BoundingBox m_box;
 
 	ID3D11DeviceContext* m_deviceContext;
 

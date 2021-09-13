@@ -169,7 +169,7 @@ void Unit::Render(
 			m_vertexBuffer->Render(deviceContext);
 
 			//shader.End();
-			shader.BeginStandard();
+			//shader.BeginStandard();
 		}
 
 		class Shader* const csh = shader.BeginStandard();
@@ -312,6 +312,7 @@ void Unit::Update(const float dt)
 							{
 								m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
 								m_flags.m_cast_shadow = false;
+								//m_isLooping = false;
 							}
 						}
 						
@@ -424,7 +425,7 @@ void _cdecl Unit::Intersect(class EObject* const other)
 const RenderLayerType Unit::GetLayerType() const noexcept
 {
 	if (m_dead)
-		return RenderLayerType::ENUM_OBJECT_TYPE;
+		return RenderLayerType::ENUM_CORPSE_TYPE;
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }
 
@@ -544,14 +545,17 @@ void Unit::Die(Unit* const killer)
 	//killer == nullptr is correct
 	if (m_dead)
 		return;
+	m_flags.m_selectable = false;
+	m_dead = true;
 	m_attack.active = false;
-	SetAnimation(ModelStance::MODEL_STANCE_DEATH);
+	//m_isLooping = false;
+
+	ForceAnimation(ModelStance::MODEL_STANCE_DEATH);
 	SetVelocity(0.0f, 0.0f, 0.0f);
 	Unit::EndRunning();
 	//m_flags.m_cast_shadow = false;
 	//m_flags.m_pushable = false;
-	m_flags.m_selectable = false;
-	m_dead = true;
+
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	switch(m_decayType)
 	{
@@ -811,6 +815,13 @@ void Unit::SetAnimation(
 		m_previousFrame = -1.0f;
 		m_modelVariant.SetVariant(animation);
 	}
+}
+
+void Unit::ForceAnimation(const ModelStance animation)
+{
+	m_currentFrame = 0.0f;
+	m_previousFrame = -1.0f;
+	m_modelVariant.SetVariant(animation);
 }
 
 void Unit::SetAnimationSpeed(

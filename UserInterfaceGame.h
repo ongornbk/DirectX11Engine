@@ -28,7 +28,7 @@ private:
 	XMFLOAT4X4 m_cursorMatrix;
 	XMFLOAT4X4 m_uiMatrix;
 
-	array< float, 2> m_mousePosition;
+	DirectX::XMFLOAT2 m_mousePosition;
 	Text          m_fpsText;
 	//std::vector<Text*> m_objectsText;
 

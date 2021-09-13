@@ -2,20 +2,20 @@
 #include "ResourceManager.h"
 #include "GlobalUtilities.h"
 
-Sprite::Sprite(float size)
+Sprite::Sprite(float size) : ColorFilter(1.f,1.f,1.f,1.f)
 {
 	m_vertexBuffer = NULL;
 	m_texture = NULL;
-	m_size[0] = size;
-	m_size[1] = size;
+	m_size.x = size;
+	m_size.y = size;
 }
 
-Sprite::Sprite(float sizex, float sizey)
+Sprite::Sprite(float sizex, float sizey) : ColorFilter(1.f, 1.f, 1.f, 1.f)
 {
 	m_vertexBuffer = NULL;
 	m_texture = NULL;
-	m_size[0] = sizex;
-	m_size[1] = sizey;
+	m_size.x = sizex;
+	m_size.y = sizey;
 }
 
 
@@ -33,7 +33,7 @@ void Sprite::Initialize(ID3D11Device * device, Shader * shader, WCHAR* textureFi
 {
 	m_shader = shader;
 	m_vertexBuffer = new VertexBuffer();
-	(void)m_vertexBuffer->Initialize(device,shader,m_size,isWriteable);
+	(void)m_vertexBuffer->InitializeAnchorTopLeft(device,shader,m_size,isWriteable);
 
 	if (textureFileName != NULL)
 	{
@@ -60,6 +60,7 @@ void Sprite::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix,
 	{
 		m_shader->SetShaderParameters(deviceContext, m_texture->GetTexture());
 		m_shader->SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+		m_shader->SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
@@ -77,9 +78,9 @@ void Sprite::Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix,
 
 bool Sprite::ResizeTexture(ID3D11Device * device, float size, bool writeable)
 {
-	if (m_size[0] != size)
+	if (m_size.x != size)
 	{
-		m_size[0] = size;
+		m_size.x = size;
 		return m_vertexBuffer->ResizeTexture(device, size, writeable);
 	}
 	return true;
@@ -87,4 +88,9 @@ bool Sprite::ResizeTexture(ID3D11Device * device, float size, bool writeable)
 
 void Sprite::SetAnimationSpeed(float speed)
 {
+}
+
+const DirectX::XMFLOAT2 Sprite::GetSize() const noexcept
+{
+	return m_size;
 }
