@@ -16,6 +16,7 @@ modern is a trademark of ongornbk@gmail.com.
 */
 
 constexpr float modern_pi = 3.14159f;
+constexpr float modern_phi = 1.61803f;
 constexpr float modern_e = 2.71828f;
 constexpr float modern_ragtodeg = 180.f / modern_pi;
 constexpr float modern_degtorad = modern_pi / 180.f;

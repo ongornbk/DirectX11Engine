@@ -792,6 +792,12 @@
     <ClInclude Include="InterfaceButtonBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PositionC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteArrayTrash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1328,6 +1334,12 @@
     <ClCompile Include="InterfaceButtonBehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PositionC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteArrayTrash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1452,6 +1464,12 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\core\ButtonBehavior.lua">
       <Filter>Lua\core</Filter>
+    </None>
+    <None Include="GarbageCollector.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="DeleteArrayTrash.inl">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

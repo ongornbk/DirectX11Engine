@@ -79,11 +79,13 @@ RendererManager::RendererManager(
 	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
 	m_rangeY = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
 
-	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_CORPSE_TYPE)] = new RenderLayerCorpse();
-	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)] = new RenderLayerObject();
-	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)] = new RenderLayerShadow();
-	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_ITEM_TYPE)]   = new RenderLayerItem();
-	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)] = new RenderLayerInterface();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_CORPSE_TYPE)]    = new class RenderLayerCorpse();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]    = new class RenderLayerObject();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)]    = new class RenderLayerShadow();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_ITEM_TYPE)]      = new class RenderLayerItem();
+	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)] = new class RenderLayerInterface();
+
+	LetterSprite::SetMatrixIdentity(DirectX::XMMatrixIdentity());
 }
 
 
@@ -218,7 +220,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 			Text* text = new Text;
 			text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
-			text->SetText("faced");
+			text->SetText("l l");
 			text->SetPosition({ 0.f,0.f,0.f });
 			text->Update();
 			text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());

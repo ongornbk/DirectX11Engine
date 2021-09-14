@@ -2,6 +2,10 @@
 #include "ResourceManager.h"
 #include "IPP.h"
 
+namespace
+{
+	static struct DirectX::XMFLOAT4X4 s_world;
+}
 
 LetterSprite::LetterSprite(
 	class TextFont* const font,
@@ -21,7 +25,7 @@ LetterSprite::LetterSprite(
 	this->m_texture = ResourceManager::GetInstance()->GetTextureByName(buffer);
 	delete[] buffer;
 
-	XMStoreFloat4x4(&m_world, XMMatrixIdentity());
+	
 }
 
 LetterSprite::~LetterSprite(void)
@@ -48,28 +52,60 @@ void LetterSprite::Initialize(
 
 void LetterSprite::Render(
 	struct ID3D11DeviceContext * const deviceContext,
+	const struct DirectX::XMFLOAT4X4& world,
 	const struct DirectX::XMFLOAT4X4& viewMatrix,
 	const struct DirectX::XMFLOAT4X4& projectionMatrix,
 	class Shader* const shader 
 )
 {
 	shader->SetShaderParameters(deviceContext,m_texture->GetTexture());
-	shader->SetShaderParameters(deviceContext, m_world, viewMatrix, projectionMatrix);
+	shader->SetShaderParameters(deviceContext, world, viewMatrix, projectionMatrix);
 	m_vertexBuffer->Render(deviceContext);
 }
 
-void LetterSprite::Update()
+void LetterSpriteStruct::Update()
 {
 
 	
 }
 
-void _vectorcall LetterSprite::SetPosition(const float x, const float y, const float z) noexcept
+void _vectorcall LetterSpriteStruct::SetPosition(const DirectX::XMFLOAT3& position)
 {
-	DirectX::XMStoreFloat4x4(&m_world, XMMatrixTranslation(x,y,z));
+	m_position = position;
+}
+
+const char LetterSpriteStruct::GetLetter() const noexcept
+{
+	if(m_letter)
+	return m_letter->GetLetter();
+	return ' ';
 }
 
 const char LetterSprite::GetLetter() const noexcept
 {
 	return m_char;
+}
+
+void _vectorcall LetterSprite::SetMatrixIdentity(const DirectX::XMMATRIX identity) noexcept
+{
+	XMStoreFloat4x4(&s_world, identity);
+}
+
+LetterSpriteStruct::LetterSpriteStruct(class LetterSprite* const letter)
+{
+	if (letter == nullptr)
+	{
+		m_letter = nullptr;
+		return;
+	}
+		m_letter = letter;
+}
+
+void LetterSpriteStruct::Render(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, Shader* const shader)
+{
+	if (m_letter)
+	{
+		DirectX::XMStoreFloat4x4(&s_world, XMMatrixTranslation(m_position.x, m_position.y, m_position.z));
+		m_letter->Render(deviceContext, s_world,viewMatrix,projectionMatrix,shader);
+	}
 }

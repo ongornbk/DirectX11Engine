@@ -51,13 +51,53 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 	m_letters['d'] = new LetterSprite(this, 'd', 20.f);
 	m_letters['e'] = new LetterSprite(this, 'e', 20.f);
 	m_letters['f'] = new LetterSprite(this, 'f', 20.f);
+	m_letters['g'] = new LetterSprite(this, 'g', 20.f);
+	m_letters['h'] = new LetterSprite(this, 'h', 20.f);
+	m_letters['i'] = new LetterSprite(this, 'i', 20.f);
+	m_letters['j'] = new LetterSprite(this, 'j', 20.f);
+	m_letters['k'] = new LetterSprite(this, 'k', 20.f);
+	m_letters['l'] = new LetterSprite(this, 'l', 20.f);
+	m_letters['m'] = new LetterSprite(this, 'm', 20.f);
+	m_letters['n'] = new LetterSprite(this, 'n', 20.f);
+	m_letters['o'] = new LetterSprite(this, 'o', 20.f);
+	m_letters['p'] = new LetterSprite(this, 'p', 20.f);
+	m_letters['q'] = new LetterSprite(this, 'q', 20.f);
+	m_letters['r'] = new LetterSprite(this, 'r', 20.f);
+	m_letters['s'] = new LetterSprite(this, 's', 20.f);
+	m_letters['t'] = new LetterSprite(this, 't', 20.f);
+	m_letters['u'] = new LetterSprite(this, 'u', 20.f);
+	m_letters['v'] = new LetterSprite(this, 'v', 20.f);
+	m_letters['w'] = new LetterSprite(this, 'w', 20.f);
+	m_letters['x'] = new LetterSprite(this, 'x', 20.f);
+	m_letters['y'] = new LetterSprite(this, 'y', 20.f);
+	m_letters['z'] = new LetterSprite(this, 'z', 20.f);
 
-	m_letters['a']->Initialize(device,context,shader,this);
-	m_letters['b']->Initialize(device,context,shader,this);
-	m_letters['c']->Initialize(device,context,shader,this);
+	m_letters['a']->Initialize(device, context, shader, this);
+	m_letters['b']->Initialize(device, context, shader, this);
+	m_letters['c']->Initialize(device, context, shader, this);
 	m_letters['d']->Initialize(device, context, shader, this);
 	m_letters['e']->Initialize(device, context, shader, this);
 	m_letters['f']->Initialize(device, context, shader, this);
+	m_letters['g']->Initialize(device, context, shader, this);
+	m_letters['h']->Initialize(device, context, shader, this);
+	m_letters['i']->Initialize(device, context, shader, this);
+	m_letters['j']->Initialize(device, context, shader, this);
+	m_letters['k']->Initialize(device, context, shader, this);
+	m_letters['l']->Initialize(device, context, shader, this);
+	m_letters['m']->Initialize(device, context, shader, this);
+	m_letters['n']->Initialize(device, context, shader, this);
+	m_letters['o']->Initialize(device, context, shader, this);
+	m_letters['p']->Initialize(device, context, shader, this);
+	m_letters['q']->Initialize(device, context, shader, this);
+	m_letters['r']->Initialize(device, context, shader, this);
+	m_letters['s']->Initialize(device, context, shader, this);
+	m_letters['t']->Initialize(device, context, shader, this);
+	m_letters['u']->Initialize(device, context, shader, this);
+	m_letters['v']->Initialize(device, context, shader, this);
+	m_letters['w']->Initialize(device, context, shader, this);
+	m_letters['x']->Initialize(device, context, shader, this);
+	m_letters['y']->Initialize(device, context, shader, this);
+	m_letters['z']->Initialize(device, context, shader, this);
 
 	m_initialized = true;
 }
@@ -164,6 +204,8 @@ float TextFont::GetLeftOfLetter(char letter)
 
 float TextFont::GetWidthOfLetter(char letter)
 {
+	if (letter == ' ')
+		return 0.f;
 	return (m_char[letter].m_right) - (m_char[letter].m_left);
 }
 
@@ -172,8 +214,11 @@ LetterSprite* const TextFont::GetSprite(class Text* const text,const char ch)
 	//assert(text);
 	assert(&m_letters);
 
-	if (ch > 255 || ch < 0)
+	if (ch == ' ')
 		return nullptr;
+
+	//if (ch > 255 || ch < 0)
+		//return nullptr;
 
 	return m_letters[ch];
 }

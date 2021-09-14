@@ -234,6 +234,7 @@
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
+    <ClInclude Include="DeleteArrayTrash.h" />
     <ClInclude Include="DeleteTrash.h" />
     <ClInclude Include="Destructible.h" />
     <ClInclude Include="DirectXHelpers.h" />
@@ -342,6 +343,7 @@
     <ClInclude Include="PeriodicTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="PointerParameter.h" />
+    <ClInclude Include="PositionC.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RegionPointObject.h" />
     <ClInclude Include="RenderContainer.h" />
@@ -449,6 +451,7 @@
     <ClCompile Include="ConstObjectVariable.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
+    <ClCompile Include="DeleteArrayTrash.cpp" />
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
@@ -530,6 +533,7 @@
     <ClCompile Include="OrCondition.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
+    <ClCompile Include="PositionC.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
@@ -589,6 +593,8 @@
     <ClCompile Include="WindowHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DeleteArrayTrash.inl" />
+    <None Include="GarbageCollector.inl" />
     <None Include="modern\modern_math.inl" />
     <None Include="modern\modern_xmath.inl" />
     <None Include="resource.rc" />

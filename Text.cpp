@@ -10,21 +10,26 @@ namespace
 }
 
 
-Text::Text()
+Text::Text() : m_letters(* new modern_array<struct LetterSpriteStruct*>()), m_spaceWidth(32.f)
 {
 }
 
 
 Text::~Text()
 {
-	for (auto && letter : m_letters)
-	{
-		if (letter)
-		{
-			//delete letter;
-			//letter = nullptr;
-		}
-}
+	//for (auto && letter : m_letters)
+	//{
+	//	if (letter)
+	//	{
+	//		delete letter;
+	//		letter = nullptr;
+	//	}
+//}
+
+	//DeleteAsyn
+
+	class GarbageCollector* const collector = GarbageCollector::GetInstance();
+	collector->AsyncDeleteArray(&m_letters);
 }
 
 void Text::Update()
@@ -68,15 +73,18 @@ void Text::Render(
 
 void Text::SetPosition(XMFLOAT3 position)
 {
-	float sumup = 0.0f;
+	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
 	for (auto&& letter : m_letters)
 	{
 		//XMStoreFloat4x4(nullptr , XMMatrixTranslation(position.x + sumup, position.y, 0.0f));
-		letter->SetPosition(position.x + sumup,position.y,0.f);
+		letter->SetPosition(modern_xfloat3_sum(position,sumup));
 		//if(m_text[letter->GetIndex()] == ' ')
 		//sumup += ((m_font->GetWidthOfLetter('o'))*0.4f);
 		//else
-		sumup += ((m_font->GetWidthOfLetter(letter->GetLetter()))*0.4f);
+		if(letter->GetLetter() == ' ')
+			sumup.x += m_spaceWidth * 0.48f;
+		else
+		sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter()))*0.48f);
 	}
 }
 
@@ -108,8 +116,8 @@ void Text::SetText(std::string text)
 		{
 
 			auto t = m_font->GetSprite(this, m_text[i]);
-			if(t)
-			m_letters.push_back(t);
+			//if(t)
+			m_letters.push_back(new LetterSpriteStruct(t));
 			//m_letters[i]->m_sprite = m_font->GetSprite(this, text[i]);
 		//	m_letters.push_back(m_spriteStruct);
 		}

@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Font.h"
 #include "GarbageCollector.h"
+#include "PositionC.h"
 
 class LetterSprite
 {
@@ -20,6 +21,34 @@ public:
 
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
+		const struct DirectX::XMFLOAT4X4& world,
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix,
+		class Shader* const shader
+	);
+
+	
+
+	const char GetLetter() const noexcept;
+
+	static  void _vectorcall SetMatrixIdentity(const struct DirectX::XMMATRIX identity) noexcept;
+
+private:
+	ID3D11DeviceContext * m_deviceContext;
+
+	class VertexBuffer* m_vertexBuffer;
+	class Texture*      m_texture;
+	float         m_size;
+	char          m_char;
+};
+
+struct LetterSpriteStruct : public PositionC
+{
+public:
+	LetterSpriteStruct(class LetterSprite* const letter);
+
+	void Render(
+		struct ID3D11DeviceContext* const deviceContext,
 		const struct DirectX::XMFLOAT4X4& viewMatrix,
 		const struct DirectX::XMFLOAT4X4& projectionMatrix,
 		class Shader* const shader
@@ -27,16 +56,10 @@ public:
 
 	void Update();
 
-	void _vectorcall SetPosition(const float x, const float y, const float z = 0.f) noexcept;
+	void _vectorcall SetPosition(const struct DirectX::XMFLOAT3& position);
 
 	const char GetLetter() const noexcept;
-
 private:
-	ID3D11DeviceContext * m_deviceContext;
-
-	class VertexBuffer* m_vertexBuffer;
-	class Texture*      m_texture;
-	XMFLOAT4X4          m_world;
-	float         m_size;
-	char          m_char;
+	LetterSpriteStruct();
+	class LetterSprite* m_letter;
 };

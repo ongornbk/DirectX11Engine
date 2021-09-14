@@ -35,11 +35,12 @@ public:
 
 private:
 
-	modern_array<class LetterSprite*> m_letters;
+	modern_array<struct LetterSpriteStruct*>& m_letters;
 	string                      m_text;
 	class Shader* m_shader;
 	class TextFont* m_font;
 	float m_size;
+	float m_spaceWidth;
 
 
 	void Initialize();
