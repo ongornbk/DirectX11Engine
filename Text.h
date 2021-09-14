@@ -2,6 +2,7 @@
 #include "LetterSprite.h"
 #include "Vector.h"
 #include "GarbageCollector.h"
+#include "TextAlignment.h"
 #include <comdef.h>
 #include "modern/modern.h"
 
@@ -41,6 +42,8 @@ private:
 	class TextFont* m_font;
 	float m_size;
 	float m_spaceWidth;
+	float m_width;
+	enum class TextAlignment m_alignment;
 
 
 	void Initialize();

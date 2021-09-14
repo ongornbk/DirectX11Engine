@@ -220,7 +220,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 			Text* text = new Text;
 			text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
-			text->SetText("l l");
+			text->SetText("qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq");
 			text->SetPosition({ 0.f,0.f,0.f });
 			text->Update();
 			text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());

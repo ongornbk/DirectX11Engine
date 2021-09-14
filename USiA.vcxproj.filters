@@ -798,6 +798,9 @@
     <ClInclude Include="DeleteArrayTrash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextAlignment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">

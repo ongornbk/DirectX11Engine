@@ -10,7 +10,10 @@ namespace
 }
 
 
-Text::Text() : m_letters(* new modern_array<struct LetterSpriteStruct*>()), m_spaceWidth(32.f)
+Text::Text() : 
+	m_letters(* new modern_array<struct LetterSpriteStruct*>()),
+	m_spaceWidth(32.f),
+	m_alignment(TextAlignment::TEXT_ALIGN_CENTER)
 {
 }
 
@@ -74,18 +77,59 @@ void Text::Render(
 void Text::SetPosition(XMFLOAT3 position)
 {
 	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
-	for (auto&& letter : m_letters)
+	switch (m_alignment)
 	{
-		//XMStoreFloat4x4(nullptr , XMMatrixTranslation(position.x + sumup, position.y, 0.0f));
-		letter->SetPosition(modern_xfloat3_sum(position,sumup));
-		//if(m_text[letter->GetIndex()] == ' ')
-		//sumup += ((m_font->GetWidthOfLetter('o'))*0.4f);
-		//else
-		if(letter->GetLetter() == ' ')
-			sumup.x += m_spaceWidth * 0.48f;
-		else
-		sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter()))*0.48f);
+	case TextAlignment::TEXT_ALIGN_LEFT:
+	{
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(position, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		break;
 	}
+	case TextAlignment::TEXT_ALIGN_CENTER:
+	{
+		for (auto&& letter : m_letters)
+		{
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		sumup.x = (m_width / -2.f);
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(position, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		break;
+	}
+	case TextAlignment::TEXT_ALIGN_RIGHT:
+	{
+		for (auto&& letter : m_letters)
+		{
+			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		sumup.x = (m_width * -1.f);
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(position, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		break;
+	}
+	}
+
 }
 
 void Text::SetText(std::string text)
