@@ -13,7 +13,8 @@ namespace
 Text::Text() : 
 	m_letters(* new modern_array<struct LetterSpriteStruct*>()),
 	m_spaceWidth(32.f),
-	m_alignment(TextAlignment::TEXT_ALIGN_CENTER)
+	m_alignment(TextAlignment::TEXT_ALIGN_CENTER),
+	m_position({0.f,0.f,0.f})
 {
 }
 
@@ -76,6 +77,7 @@ void Text::Render(
 
 void Text::SetPosition(XMFLOAT3 position)
 {
+	m_position = position;
 	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
 	switch (m_alignment)
 	{
@@ -147,9 +149,30 @@ void Text::SetText(std::string text)
 	//}
 //}
 
+	m_text = text;
+
+	bool updatePosition = false;
+
+	if (m_letters.empty() == false)
+	{
+		// THIS IS SO FUCKING STUPID I CANT BELIEVE ITS MINE
+		//class GarbageCollector* const collector = GarbageCollector::GetInstance();
+		//collector->AsyncDeleteArray(&m_letters);
+		//m_letters = (*new modern_array<struct LetterSpriteStruct*>());
+
+		for (auto&& ele : m_letters)
+		{
+			delete ele;
+			ele = nullptr;
+		}
+		m_letters.clear();
+		m_letters.shrink();
+		updatePosition = true;
+	}
+
 	//m_letters.clear();
 		//m_letters.clear();
-		m_text = text;
+		
 
 		//if (m_letters.size() < text.size())
 		//	m_letters.expand_size(text.size());
@@ -168,13 +191,15 @@ void Text::SetText(std::string text)
 		//
 		//this->Initialize();
 
+		if (updatePosition)
+			UpdatePosition();
 		
 
-		for (int32_t i = 0; i < m_letters.size() &&i < m_text.size(); i++)
-		{
+		//for (int32_t i = 0; i < m_letters.size() &&i < m_text.size(); i++)
+		//{
 			//m_letters.at(i)->m_char = text.at(i);
 			//m_letters[i] = m_font.G
-		}
+		//}
 
 		//this->Initialize();
 }
@@ -236,4 +261,9 @@ void Text::Initialize()
 		//letter->m_sprite->Initialize(m_device, m_deviceContext, m_shader, m_font);
 		///letter->m_sprite = m_font->GetSprite(letter->m_char);
 	}
+}
+
+void Text::UpdatePosition()
+{
+	Text::SetPosition(m_position);
 }

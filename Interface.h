@@ -6,6 +6,7 @@
 #include "VertexBuffer.h"
 #include "IInterfaceBehavior.h"
 #include "modern/modern_array.h"
+#include "Text.h"
 
 class Interface : public EObject, public ColorFilter
 {
@@ -49,6 +50,7 @@ public:
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
 	void PushChild(class EObject* const child);
+	void SetText(std::string text);
 	class Interface* const GetParent() const noexcept;
 
 	friend class InterfaceButtonBehavior;
@@ -66,6 +68,7 @@ private:
 	float         m_size;
 
 	Texture* m_texture;
+	Text* m_text;
 	VertexBuffer* m_vertexBuffer;
 };
 

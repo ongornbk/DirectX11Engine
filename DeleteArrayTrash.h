@@ -7,7 +7,7 @@ class DeleteArrayTrash : public ITrash
 {
 public:
 	DeleteArrayTrash() = delete;
-	DeleteArrayTrash(modern_array<T>* data);
+	DeleteArrayTrash(modern_array<T>*& data);
 
 	~DeleteArrayTrash();
 };

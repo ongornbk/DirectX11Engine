@@ -12,6 +12,7 @@ Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f)
 	m_deviceContext = nullptr;
 	m_parent = nullptr;
 	m_behavior = nullptr;
+	m_text = nullptr;
 
 	m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_boundingSphere.Radius = 0.0f;
@@ -32,6 +33,12 @@ Interface::~Interface()
 	{
 		delete m_behavior;
 		m_behavior = nullptr;
+	}
+
+	if (m_text)
+	{
+		delete m_text;
+		m_text = nullptr;
 	}
 }
 
@@ -81,6 +88,10 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
+		if (m_text)
+		{
+			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginInterface());
+		}
 	}
 	for (auto obj : m_children)
 	{
@@ -117,6 +128,11 @@ void Interface::Update(float dt)
 	if (m_behavior)
 	{
 		m_behavior->OnHover();
+	}
+
+	if (m_text)
+	{
+		m_text->Update();
 	}
 
 	for (auto obj : m_children)
@@ -184,6 +200,26 @@ void Interface::SetBehavior(IInterfaceBehavior* const behavior)
 void Interface::PushChild(EObject* const child)
 {
 	m_children.push_back(child);
+}
+
+void Interface::SetText(std::string text)
+{
+	//TextFont* font = TextFont::GetFontByName("ExocetLight");
+			//font->Initialize(device, deviceContext,);
+			//font.
+	class TextFont* const font = RendererManager::GetInstance()->GetFont();
+	if (font == nullptr)
+		return;
+			//LetterSprite* sp = font->GetSprite(nullptr, 'a');
+			//sp->Update();
+			//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+
+			m_text = new Text;
+			m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(),font->GetShader(), font, 20.f);
+			m_text->SetText(text);
+			m_text->SetPosition(m_boundingSphere.Center);
+			//text->Update();
+			//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 }
 
 Interface* const Interface::GetParent() const noexcept

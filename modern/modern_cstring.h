@@ -21,46 +21,44 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_exception;
 
-[[nodiscard]] bool modern_isdigit(wchar_t ch) noexcept;
-[[nodiscard]] int32_t modern_todigit(wchar_t ch) noexcept;
+[[nodiscard]] bool modern_isdigit(char ch) noexcept;
+[[nodiscard]] int32_t modern_todigit(char ch) noexcept;
 
-class modern_string
+class modern_cstring
 {
-	modern_shared<modern_array<wchar_t>> m_string;
+	modern_shared<modern_array<char>> m_string;
 public:
-	modern_string();
-	modern_string(modern_string& string);
-	modern_string(const wchar_t* text);
-	modern_string(const wchar_t* text_begin, const wchar_t* text_end);
-	modern_string(const char* text);
-	modern_string(const size_t number);
-	modern_string(const int32_t number);
-	modern_string(const uint32_t number);
-	explicit modern_string(const char character);
-	modern_string(modern_exception& exception);
-	~modern_string();
+	modern_cstring();
+	modern_cstring(modern_cstring& string);
+	modern_cstring(const char* text_begin,const char* text_end);
+	modern_cstring(const char* text);
+	modern_cstring(const size_t number);
+	modern_cstring(const int32_t number);
+	modern_cstring(const uint32_t number);
+	explicit modern_cstring(const char character);
+	modern_cstring(modern_exception& exception);
+	~modern_cstring();
 
 	[[nodiscard]] const wchar_t* c_wstr() const noexcept;
-	[[nodiscard]] const _bstr_t& c_str() const noexcept;
-	[[nodiscard]] 
+	[[nodiscard]] const char* c_str() const noexcept;
+	[[nodiscard]]
 	[[nodiscard]] size_t size() const noexcept;
 	[[nodiscard]] int32_t to_int32() noexcept;
 	[[nodiscard]] float to_float() noexcept;
 	[[nodiscard]] bool to_bool() noexcept;
 
-	[[nodiscard]] static modern_pair<modern_string, modern_string>& SplitString(const wchar_t* string, wchar_t token);
+	[[nodiscard]] static modern_pair<modern_cstring, modern_cstring>& SplitString(const char* string, char token);
 
-	modern_string& operator= (modern_string& string);
-	modern_string& operator= (const wchar_t* string);
+	modern_cstring& operator= (modern_cstring& string);
+	modern_cstring& operator= (const char* string);
 
-	modern_string operator+ (modern_string& string);
+	modern_cstring operator+ (modern_cstring& string);
 
 	void push_back(const wchar_t element);
 	void push_back(const char element);
 	void pop_front();
-	wchar_t*& data();
+	char*& data();
 	void resize(size_t size);
 	void load(const char* text);
 
 };
-

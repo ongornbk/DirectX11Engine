@@ -45,8 +45,9 @@ private:
 	float m_width;
 	enum class TextAlignment m_alignment;
 
+	DirectX::XMFLOAT3 m_position;
 
 	void Initialize();
-
+	void UpdatePosition();
 };
 

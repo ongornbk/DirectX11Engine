@@ -75,6 +75,7 @@ public:
 	void SetFocus(class Unit* const unit);
 	void EnableCollision(const bool collision = true);
 	void Clear();
+	class TextFont* const GetFont();
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
@@ -98,7 +99,10 @@ private:
 	UserInterface* m_ui;
 	EObject* m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
+	class TextFont* m_font;
+	class Text* m_fpsText;
 
+	int32 m_fps;
 	//EObjectVector m_objects;
 };
 

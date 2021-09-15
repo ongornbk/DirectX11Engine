@@ -40,6 +40,7 @@ float GetLeftOfLetter(char letter);
 float GetWidthOfLetter(char letter);
 
 class LetterSprite* const GetSprite(class Text* const text,const char ch);
+class Shader* const GetShader() noexcept;
 
 void InitializeCoordinates(std::vector<float> coords);
 
@@ -58,6 +59,8 @@ private:
 	std::string m_name;
 
 	modern_array<class LetterSprite*> m_letters;
+
+	class Shader* m_shader;
 
 	friend class LetterSprite;
 };

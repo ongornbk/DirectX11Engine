@@ -2,24 +2,25 @@
 #include "DeleteArrayTrash.h"
 
 template<class T>
-inline DeleteArrayTrash<T>::DeleteArrayTrash(modern_array<T>* data) : ITrash((void*)data)
+inline DeleteArrayTrash<T>::DeleteArrayTrash(modern_array<T>*& data) : ITrash((void*)data)
 {
 }
 
 template<class T>
 inline DeleteArrayTrash<T>::~DeleteArrayTrash()
 {
-	if (ITrash::m_data)
+	class modern_array<T>* arr = (class modern_array<T>*)m_data;
+	if (arr)
 	{
-		for (T& ele : (*(class modern_array<T>*)ITrash::m_data))
+		for (int32_t i = 0;i < arr->size();i++)
 		{
-			if (ele)
+			if ((*arr)[i])
 			{
-				delete ele;
-				ele = nullptr;
+				delete (*arr)[i];
+				(*arr)[i] = nullptr;
 			}
 		}
-		delete ITrash::m_data;
+		delete arr;
 		ITrash::m_data = nullptr;
 	}
 }

@@ -801,6 +801,15 @@
     <ClInclude Include="TextAlignment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ActionSetInterfaceText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_cstring.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1103,9 +1112,6 @@
     <ClCompile Include="UnitTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_exception.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="modern\modern_string.cpp">
       <Filter>Header Files\modern</Filter>
     </ClCompile>
@@ -1341,6 +1347,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteArrayTrash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionSetInterfaceText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_cstring.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInitializeText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

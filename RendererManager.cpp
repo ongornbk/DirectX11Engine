@@ -16,7 +16,9 @@
 #include "ActionExecuteActionArray.h"
 #include "ActionSetShadowCast.h"
 #include "ActionWaitUntil.h"
+#include "ActionInitializeText.h"
 #include "ConditionFactory.h"
+#include "modern/modern_cstring.h"
 
 #include <future>
 #include <mutex>
@@ -65,10 +67,14 @@ RendererManager::RendererManager(
 	m_selectShader(select),
 	m_interfaceShader(inter),
 	m_focus(nullptr),
-	m_collision(false)
+	m_collision(false),
+	m_fpsText(nullptr),
+	m_fps(0)
 {
 
 	m_instance = this;
+
+
 	
 	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
@@ -86,6 +92,20 @@ RendererManager::RendererManager(
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)] = new class RenderLayerInterface();
 
 	LetterSprite::SetMatrixIdentity(DirectX::XMMatrixIdentity());
+
+	m_font = TextFont::GetFontByName("ExocetLight");
+	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
+
+	//m_fpsText = new Text();
+	//m_fpsText->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(), m_interfaceShader, m_font, 20.f);
+
+	Timer::CreateInstantTimer(new ActionInitializeText(
+		&m_fpsText,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		m_font, 20.f
+	));
 }
 
 
@@ -112,6 +132,12 @@ RendererManager::~RendererManager()
 			delete m_layers[i];
 			m_layers[i] = nullptr;
 		}
+	}
+
+	if (m_fpsText)
+	{
+		delete m_fpsText;
+		m_fpsText = nullptr;
 	}
 }
 
@@ -206,24 +232,31 @@ void RendererManager::PushInterface(Interface* const object)
 				m_layers[i]->Render(deviceContext, viewMatrix, projectionMatrix, pck);
 			}
 
+
+
 			pck.BeginStandard();
+
+			
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
+			if (m_fpsText)
+				m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+
 			//m_unitsShader->End(deviceContext);
-			TextFont* font = TextFont::GetFontByName("ExocetLight");
-			font->Initialize(device, deviceContext, pck.GetShader());
+			//TextFont* font = TextFont::GetFontByName("ExocetLight");
+			//font->Initialize(device, deviceContext, pck.GetShader());
 			//font.
 			//LetterSprite* sp = font->GetSprite(nullptr, 'a');
 			//sp->Update();
 			//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 
-			Text* text = new Text;
-			text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
-			text->SetText("qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq");
-			text->SetPosition({ 0.f,0.f,0.f });
-			text->Update();
-			text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+			//Text* text = new Text;
+			//text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
+			//text->SetText("qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq");
+			//text->SetPosition({ 0.f,0.f,0.f });
+			//text->Update();
+			//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 
 			//m_shader->End(deviceContext);
 
@@ -261,6 +294,8 @@ void RendererManager::PushInterface(Interface* const object)
 	{
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
+		if(m_fpsText)
+		m_fpsText->Update();
 		//const float dt = ipp::Timer::GetDeltaTime();
 		//updatetime += dt;
 
@@ -416,6 +451,9 @@ void RendererManager::SetFps(const int32 fps)
 {
 //	m_objects.UpdateFps(fps);
 	UserInterfaceGame::SetFPS(fps);
+
+	if(m_fpsText)
+	m_fpsText->SetText(modern_cstring(fps).c_str());
 }
 
 void RendererManager::SetFocus(Unit* const unit)
@@ -439,6 +477,11 @@ void RendererManager::Clear()
 			m_layers[i]->Clear();
 		}
 	}
+}
+
+TextFont* const RendererManager::GetFont()
+{
+	return m_font;
 }
 
 std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept

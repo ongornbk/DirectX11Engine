@@ -11,6 +11,7 @@
 #include "Sorting.h"
 #include "UnitGroup.h"
 #include "ActionRemoveObject.h"
+#include "ActionSetInterfaceText.h"
 #include "InterfaceButtonBehavior.h"
 #include "modern/modern.h"
 #include "Timer.h"
@@ -927,6 +928,19 @@ namespace lua_callback
 		return 1;
 
 	}
+
+	static int32 SetInterfaceText(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if (inter)
+		{
+			Timer::CreateInstantTimer(new ActionSetInterfaceText(inter, lua_tostring(state, 2)));
+		}
+		return 0;
+
+	}
 	
 	static int32 SetButtonOnClick(
 		struct lua_State* const state
@@ -1603,6 +1617,7 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeInterface", lua_callback::InitializeInterface);
 		lua_register(m_lua, "SetInterfaceButtonBehavior", lua_callback::SetInterfaceButtonBehavior);
 		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
+		lua_register(m_lua, "SetInterfaceText", lua_callback::SetInterfaceText);
 	}
 
 }

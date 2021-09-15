@@ -228,17 +228,17 @@ void Engine::Run()
 	deltaTime += endFrame - beginFrame;
 	frames++;
 
-	if (clockToMilliseconds(deltaTime)>1000.0) {
+	if (clockToMilliseconds(deltaTime)>100.0) {
 		frameRate = (double)frames*0.5 + frameRate * 0.5;
 		frames = 0;
-		deltaTime -= CLOCKS_PER_SEC;
-		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
+		deltaTime -= (clock_t)100;
+		averageFrameTimeMilliseconds = 100.0 / (frameRate == 0 ? 0.01 : frameRate);
 
 		const  int32 fps = ( int32)(1000 / averageFrameTimeMilliseconds);
 
 		m_rendererManager->SetFps(fps);
 
-		std::cout << fps << std::endl;
+		//std::cout << fps << std::endl;
 
 	}
 
@@ -469,10 +469,12 @@ void Engine::Render()
 {
 
 	{
+//#pragma omp task
 		{
 			class GarbageCollector* gbc = GarbageCollector::GetInstance();
 			gbc->Update();
 		}
+//#pragma omp task
 		if(m_renderLock.Run())
 		{
 			m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
@@ -497,6 +499,7 @@ void Engine::Render()
 			m_graphics->EndScene();
 
 		}
+//#pragma omp barrier
 	}
 
 }
