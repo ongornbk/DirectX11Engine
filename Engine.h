@@ -14,6 +14,8 @@
 #include "ThreadPool.h"
 #include "ActionMap.h"
 #include "FrameLocker.h"
+#include "PTaskGCClear.h"
+#include "PTaskRender.h"
 
 class RendererManager;
 class FrameWork;
@@ -63,9 +65,11 @@ protected:
 private:
 	Engine(void);
 
+	friend class PTaskRender;
 
 	void Update();
 	void Render();
+	void PRender();
 
 	void InitializeActionMap();
 
@@ -86,6 +90,8 @@ private:
 	ThreadPool       m_threadPool;
 
 	lua_State*       m_lua;
+
+	modern_array<IPTask*> m_renderingTasks;
 
 
 };

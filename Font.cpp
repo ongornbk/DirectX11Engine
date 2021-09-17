@@ -27,8 +27,7 @@ TextFont::TextFont(float width, float height, std::string filename, bool upper) 
 	this->m_flag = upper;
 	this->m_name = filename;
 
-	m_letters.reserve(255);
-	m_letters.resize(255);
+	m_letters.initialize(255, nullptr);
 
 	int pos = (int)m_name.find_last_of("/");
 	if (pos >= 0)
@@ -159,7 +158,6 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 
 TextFont::~TextFont()
 {
-
 }
 
 void TextFont::LoadFontFromFile(std::string filename,float width,float height)

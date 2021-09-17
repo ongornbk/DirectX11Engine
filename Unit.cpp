@@ -418,8 +418,10 @@ void Unit::Release()
 
 void _cdecl Unit::Intersect(class EObject* const other)
 {
+	if(m_intersection == false)
+	m_boundingSphere.Center = m_floats[1];
 		m_intersection = true;
-		m_boundingSphere.Center = m_floats[1];
+		
 }
 
 const RenderLayerType Unit::GetLayerType() const noexcept
@@ -612,6 +614,10 @@ bool Unit::IsAlive() const noexcept
 bool Unit::BeginAttack(class Unit* const target)
 {
 	if (m_stop)
+	{
+		return false;
+	}
+	if (this->GetLayerType() != target->GetLayerType())
 	{
 		return false;
 	}

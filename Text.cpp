@@ -18,6 +18,14 @@ Text::Text() :
 {
 }
 
+Text::Text(const TextAlignment align) :
+	m_letters(*new modern_array<struct LetterSpriteStruct*>()),
+	m_spaceWidth(32.f),
+	m_alignment(align),
+	m_position({ 0.f,0.f,0.f })
+{
+}
+
 
 Text::~Text()
 {
@@ -181,9 +189,9 @@ void Text::SetText(std::string text)
 
 		for (int32_t i = 0;i < m_text.length();i++)
 		{
-
+			
 			auto t = m_font->GetSprite(this, m_text[i]);
-			//if(t)
+			if(t)
 			m_letters.push_back(new LetterSpriteStruct(t));
 			//m_letters[i]->m_sprite = m_font->GetSprite(this, text[i]);
 		//	m_letters.push_back(m_spriteStruct);

@@ -298,6 +298,7 @@
     <ClInclude Include="InterfaceBehaviorType.h" />
     <ClInclude Include="InterfaceButtonBehavior.h" />
     <ClInclude Include="IObjectVariable.h" />
+    <ClInclude Include="IPTask.h" />
     <ClInclude Include="IRendererManager.h" />
     <ClInclude Include="IScript.h" />
     <ClInclude Include="ISound.h" />
@@ -318,13 +319,17 @@
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_array.h" />
     <ClInclude Include="modern\modern_array_iterator.h" />
+    <ClInclude Include="modern\modern_class.h" />
     <ClInclude Include="modern\modern_cstring.h" />
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_exception.h" />
+    <ClInclude Include="modern\modern_guard.h" />
+    <ClInclude Include="modern\modern_guard_status.h" />
     <ClInclude Include="modern\modern_math.h" />
     <ClInclude Include="modern\modern_memory.h" />
     <ClInclude Include="modern\modern_pair.h" />
     <ClInclude Include="modern\modern_shared.h" />
+    <ClInclude Include="modern\modern_shared_guard.h" />
     <ClInclude Include="modern\modern_string.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_weak.h" />
@@ -347,6 +352,8 @@
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="PointerParameter.h" />
     <ClInclude Include="PositionC.h" />
+    <ClInclude Include="PTaskGCClear.h" />
+    <ClInclude Include="PTaskRender.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RegionPointObject.h" />
     <ClInclude Include="RenderContainer.h" />
@@ -530,7 +537,10 @@
     <ClCompile Include="IPP.cpp" />
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="MenuRendererManager.cpp" />
+    <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />
+    <ClCompile Include="modern\modern_guard.cpp" />
+    <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="MultiSound.cpp" />
     <ClCompile Include="npc.cpp" />
@@ -540,6 +550,8 @@
     <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
     <ClCompile Include="PositionC.cpp" />
+    <ClCompile Include="PTaskGCClear.cpp" />
+    <ClCompile Include="PTaskRender.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderContainer.cpp" />

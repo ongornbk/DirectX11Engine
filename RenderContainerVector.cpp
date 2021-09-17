@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "Vector.h"
 #include "ThreadPool.h"
+#include "modern/modern_guard.h"
 #include "Engine.h"
 #include <thread>
 
@@ -18,14 +19,17 @@ void EObjectVector::Update(
 	const float dt
 )
 {
-//#pragma omp for schedule(dynamic)//EASY CRASH
+#pragma omp for schedule(dynamic)//EASY CRASH
 	for (int32 i = 0; i < 32; ++i)
 	{
 		if(!xta[i])
 		for (auto & obj : m_objectsXY[1][i])
 		{
 			if (obj)
+			{
+				modern_guard objG(obj);
 				obj->Update(dt);
+			}
 		}
 	}
 }

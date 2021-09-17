@@ -7,9 +7,10 @@
 #include "ObjectIntersectionInfo.h"
 #include "ObjectAnchorType.h"
 #include "ObjectFlags.h"
+#include "modern/modern_class.h"
 #include <DirectXCollision.h>
 
-class EObject
+class EObject : public modern_class
 {
 public:
 

@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Vector.h"
 #include "ThreadPool.h"
+#include "modern/modern_guard.h"
+#include "modern/modern_shared_guard.h"
 //#include "Math.h"
 #include "Tile.h"
 #include "game_math.h"
@@ -503,7 +505,9 @@ for ( int32 i = 0u; i < 32; i++)
 
 bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
-
+	//IT FIXED SOME GLITCHES LIKE A MAGIC WAND 
+	const class modern_guard AG(A);
+	const class modern_guard BG(B);
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
 	const float Aradius = A->m_boundingSphere.Radius;
@@ -579,7 +583,8 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
 
-
+	const class modern_shared_guard AG(A);
+	const class modern_shared_guard BG(B);
 
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -668,6 +673,7 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 	else return false;
 }
 
+
 void _cdecl sortPxVTP(class modern_array<class EObject*>& vector) noexcept
 {
 	_Sort_unchecked(vector.begin(), vector.end(),vector.size(), __sort__SortByX());
@@ -741,7 +747,7 @@ void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexce
 {
 
 //#pragma omp parallel
-#pragma omp for schedule(dynamic)
+#pragma omp for schedule(static,3)
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
 			if (yta[i])

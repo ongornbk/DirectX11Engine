@@ -810,6 +810,27 @@
     <ClInclude Include="ActionInitializeText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IPTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskGCClear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_class.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_guard.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_guard_status.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_shared_guard.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1357,6 +1378,21 @@
     </ClCompile>
     <ClCompile Include="ActionInitializeText.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PTaskGCClear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PTaskRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_class.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_guard.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_shared_guard.cpp">
+      <Filter>Header Files\modern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,7 @@ public:
 	
 
 	Text();
+	Text(const enum class TextAlignment align);
 	~Text();
 
 	void Update();

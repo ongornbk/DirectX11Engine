@@ -42,6 +42,11 @@ public:
 		assert(m_data);
 	}
 
+	modern_array(const size_t size,void* const)
+	{
+		this->initialize(size, nullptr);
+	}
+
 	~modern_array()
 	{
 		mfree(m_data);
@@ -179,4 +184,12 @@ public:
 		m_size--;
 	}
 
+	void initialize(const size_t size,void* const)
+	{
+		assert(size);
+		m_size = size;
+		m_capacity = size;
+		m_data = mcalloc<T>(size);
+		assert(m_data);
+	}
 };

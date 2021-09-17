@@ -20,8 +20,6 @@ public:
 
 	void PushText(std::string  text) noexcept;
 
-	void PushText(const _bstr_t text) noexcept;
-
 	void PushTextFront(std::string  text) noexcept;
 
 	void SetFont(class TextFont* font) noexcept;
@@ -30,7 +28,7 @@ public:
 
 	void Update() noexcept;
 
-	void  Render(struct ID3D11DeviceContext* const deviceContext, DirectX::XMFLOAT4X4& worldMatrix, DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix) noexcept;
+	void  Render(struct ID3D11DeviceContext* const deviceContext,DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix,class Shader* const shader) noexcept;
 
 	void  SetTextPosition(DirectX::XMFLOAT3 pos) noexcept;
 
@@ -54,7 +52,7 @@ protected:
 private:
 
 	Text* CreateTextFromString(std::string  text) noexcept;
-	Text* CreateTextFromString(const _bstr_t text) noexcept;
+	//Text* CreateTextFromString(const _bstr_t text) noexcept;
 
 	void CheckSize() noexcept;
 };

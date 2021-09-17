@@ -78,6 +78,13 @@ Engine::~Engine(void)
 	//	delete m_gameComponent;
 		m_gameComponent = nullptr;
 	}
+
+	for (auto&& ele : m_renderingTasks)
+	{
+		delete ele;
+		ele = nullptr;
+	}
+
 	TextFont::ReleaseFonts();
 	lua::Close();
 }
@@ -190,8 +197,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 		ipp::Console::Println("No game component!", ipp::TextColors::RED);
 	}
 	
-	
-
+	m_renderingTasks.push_back(new PTaskGCClear(GarbageCollector::GetInstance()));
+	m_renderingTasks.push_back(new PTaskRender(this));
 
 	return true;
 }
@@ -468,40 +475,50 @@ void Engine::Update()
 void Engine::Render()
 {
 
-	{
-//#pragma omp task
+	//{
+//#pragma omp parallel for schedule(dynamic)
+		for (int32_t i = 0; i < m_renderingTasks.size(); i++)
 		{
-			class GarbageCollector* gbc = GarbageCollector::GetInstance();
-			gbc->Update();
-		}
-//#pragma omp task
-		if(m_renderLock.Run())
-		{
-			m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
-			m_camera->Update();
-
-			XMFLOAT4X4 viewMatrix = m_camera->GetView();
-			XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
-
-
-			m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
-
-			if (m_gameComponent != NULL)
-			{
-				m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
-			}
-
-
-
-
-
-
-			m_graphics->EndScene();
-
+			m_renderingTasks[i]->execute();
 		}
 //#pragma omp barrier
-	}
+		//{
+		//	class GarbageCollector* gbc = GarbageCollector::GetInstance();
+		//	gbc->Update();
+		//}
+//#pragma omp task
+		
+//#pragma omp barrier
+	//}
 
+}
+
+void Engine::PRender()
+{
+	if (m_renderLock.Run())
+	{
+		m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
+		m_camera->Update();
+
+		XMFLOAT4X4 viewMatrix = m_camera->GetView();
+		XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
+
+
+		m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+
+		if (m_gameComponent != NULL)
+		{
+			m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+		}
+
+
+
+
+
+
+		m_graphics->EndScene();
+
+	}
 }
 
 extern "C"
