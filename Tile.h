@@ -53,6 +53,7 @@ struct TileMap
 	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const char tile);
 	void _vectorcall SetTile(const struct DirectX::XMFLOAT2 &position,const char tile,const int32 brush);
 	void _vectorcall SetTile(const struct DirectX::XMINT2& position,char tile);
+	void _vectorcall ESetTile(const struct DirectX::XMINT2& position, char tile);
 	void SaveToFile(std::string filename);
 	void LoadFromFile(std::string filename);
 

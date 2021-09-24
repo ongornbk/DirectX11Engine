@@ -831,6 +831,12 @@
     <ClInclude Include="modern\modern_shared_guard.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_handle.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1393,6 +1399,12 @@
     </ClCompile>
     <ClCompile Include="modern\modern_shared_guard.cpp">
       <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_handle.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -178,7 +178,7 @@ int32 Doodads::isReleased() const noexcept
 	}
 }
 
-void _stdcall Doodads::Intersect(class EObject* const other)
+void Doodads::Intersect( class EObject* const other) 
 {
 }
 
@@ -194,4 +194,13 @@ void Doodads::Remove()
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	action->push(new ActionRemoveObject(this));
 	Timer::CreateInstantTimer(action);
+}
+
+void Doodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+}
+
+DirectX::XMFLOAT3 Doodads::GetVector() noexcept
+{
+	return { 0.f,0.f,0.f };
 }

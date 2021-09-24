@@ -161,7 +161,7 @@ public:
 
 	void shrink()
 	{
-		if (m_capacity > (m_size * 2) + 1)
+		if (m_capacity > m_size + 1)
 		{
 			m_capacity = m_size + 1;
 			m_data = mrealloc<T>(m_data,m_capacity);

@@ -154,8 +154,9 @@ int32 Tree::isReleased() const noexcept
 	}
 }
 
-void _cdecl Tree::Intersect(class EObject* const other)
+void Tree::Intersect( class EObject* const other)
 {
+
 }
 
 const RenderLayerType Tree::GetLayerType() const noexcept
@@ -168,6 +169,16 @@ void Tree::Remove()
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	action->push(new ActionRemoveObject(this));
 	Timer::CreateInstantTimer(action);
+}
+
+void Tree::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+
+}
+
+DirectX::XMFLOAT3 Tree::GetVector() noexcept
+{
+	return { 0.f,0.f,0.f };
 }
 
 void Tree::SetGlobal(class Global * const global) noexcept

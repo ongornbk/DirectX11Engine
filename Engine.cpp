@@ -90,8 +90,8 @@ Engine::~Engine(void)
 }
 
 Engine::Engine(void) : 
-	m_updateLock(FrameLocker(640.f)),
-	m_renderLock(FrameLocker(120.f))
+	m_updateLock(FrameLocker(320.f)),
+	m_renderLock(FrameLocker(60.000f))
 {
 #pragma region
 	m_gamePaused      = FALSE;

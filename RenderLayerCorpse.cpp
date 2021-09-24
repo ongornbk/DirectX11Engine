@@ -15,8 +15,10 @@ const RenderLayerType RenderLayerCorpse::GetType() const noexcept
 
 void RenderLayerCorpse::Update(const float dt)
 {
-	for (int32_t i = 0; i < 32; ++i)
+	m_size = 0u;
+	for (int32_t i = 0; i < MAP_DIVISION; ++i)
 	{
+		m_size += m_objects[1][i].size();
 		if (!xta[i])
 			for (auto& obj : m_objects[1][i])
 			{
@@ -24,6 +26,7 @@ void RenderLayerCorpse::Update(const float dt)
 					obj->Update(dt);
 			}
 	}
+//#pragma omp barrier
 }
 
 void RenderLayerCorpse::CleanUp()
@@ -52,7 +55,7 @@ void _vectorcall RenderLayerCorpse::Render(ID3D11DeviceContext* const deviceCont
 	class modern_array<class modern_array<class EObject*>*> mvpp;
 
 
-	for (int32 i = 0; i < 32; i++)
+	for (int32 i = 0; i < MAP_DIVISION; i++)
 	{
 		if (!yta[i])
 			mvpp.push_back(&m_objects[1][i]);
@@ -60,7 +63,7 @@ void _vectorcall RenderLayerCorpse::Render(ID3D11DeviceContext* const deviceCont
 
 	std::reverse(mvpp.begin(), mvpp.end());
 
-	uint32 group = 31u;
+	uint32 group = MAP_DIVISION - 1u;
 	for (auto& vec : mvpp)
 	{
 		GRAPHICS EnableAlphaBlending(true);
@@ -97,7 +100,7 @@ void _vectorcall RenderLayerCorpse::PreRender(ID3D11DeviceContext* const deviceC
 
 void RenderLayerCorpse::Clear()
 {
-	for (int32 cv = 0; cv < 32; cv++)
+	for (int32 cv = 0; cv < MAP_DIVISION; cv++)
 	{
 		for (auto&& object : m_objects[0][cv])
 		{
@@ -212,7 +215,7 @@ std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, f
 	case 0U:
 	{
 
-#pragma omp parallel
+#pragma omp parallel num_threads(2)
 		{
 #pragma omp single
 			{
@@ -249,7 +252,7 @@ std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, f
 	}
 	case 31U:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(2)
 		{
 #pragma omp single
 			{
@@ -286,7 +289,7 @@ std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, f
 	}
 	default:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(3)
 		{
 #pragma omp single
 			{

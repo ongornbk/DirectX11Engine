@@ -37,9 +37,12 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const noexcept override;
-	void _stdcall Intersect(class EObject* const other) override;
+	void  Intersect( class EObject* const other)  override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 	void Remove() override;
+
+	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
+	DirectX::XMFLOAT3 GetVector() noexcept override;
 
 	void SetNumberOfFrames(const float frames);
 

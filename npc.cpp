@@ -32,7 +32,7 @@ void npc::Release()
 
 }
 
-void _cdecl npc::Intersect(EObject* const other)
+void npc::Intersect( EObject* const other) 
 {
 
 }

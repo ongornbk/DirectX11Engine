@@ -5,7 +5,7 @@
 class RenderLayerObject :
 	public RenderLayer
 {
-	class modern_array<class EObject*> m_objects[2][32];
+	class modern_array<class EObject*> m_objects[2][MAP_DIVISION];
 public:
 	RenderLayerObject();
 	~RenderLayerObject();
@@ -39,5 +39,6 @@ public:
 	void Push(class Interface* const inter) override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept override;
 	std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range)noexcept override;
+
 };
 

@@ -25,7 +25,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
-	void _cdecl Intersect(class EObject* const other) override;
+	void Intersect( class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 
 private:

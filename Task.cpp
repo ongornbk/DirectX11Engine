@@ -217,13 +217,12 @@ void TaskAttack::Initialize()
 bool TaskAttack::Update()
 {
 	DirectX::XMFLOAT3 position = object->GetPosition();
-	DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
+	DirectX::XMFLOAT3 destination = target->GetPosition();
 	
 	const Attack atk = object->GetAttack();
 
-	if (modern_xfloat3_distance2(position, destination) > atk.range)
-		inrange = true;
-	else inrange = false;
+	inrange = (modern_xfloat3_distance2(position, destination) > atk.range);
+
 	
 	if (inrange)
 	{

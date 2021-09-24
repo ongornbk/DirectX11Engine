@@ -13,6 +13,7 @@
 #include <omp.h>
 #include <DirectXMath.h>
 #include <iostream>
+#include <vector>
 
 namespace
 {
@@ -496,7 +497,7 @@ __forceinline void _stdcall __intersect_test__(int32& xp,int32& yp) noexcept
 	yp = GetYCell(cameraPosition[1]);
 
 
-for ( int32 i = 0u; i < 32; i++)
+for ( int32 i = 0u; i < MAP_DIVISION; i++)
 {
 	xta[i] = __validate_Xrendering__(i,xp);
 	yta[i] = __validate_Yrendering__(i,yp);
@@ -506,8 +507,16 @@ for ( int32 i = 0u; i < 32; i++)
 bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
 	//IT FIXED SOME GLITCHES LIKE A MAGIC WAND 
-	const class modern_guard AG(A);
-	const class modern_guard BG(B);
+	//try
+	//{
+		const volatile class modern_guard AG(A);
+		const volatile class modern_guard BG(B);
+	//}
+	//catch (...)
+	//{
+	//	return true;
+	//}
+
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
 	const float Aradius = A->m_boundingSphere.Radius;
@@ -531,8 +540,8 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 	if (Sdistance < Sradius)
 	{
 
-		A->Intersect(B);
-		B->Intersect(A);
+		//A->Intersect(B);
+		//B->Intersect(A);
 
 		float Scollision = Sdistance - Sradius;
 		if (Apushable == Bpushable)
@@ -583,8 +592,8 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
 
-	const class modern_shared_guard AG(A);
-	const class modern_shared_guard BG(B);
+	const class modern_guard AG(A);
+	const class modern_guard BG(B);
 
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -607,6 +616,7 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 
 	if (Sdistance < Sradius)
 	{
+
 		float Scollision = Sdistance - Sradius;
 		if (Apushable == Bpushable)
 		{
@@ -648,7 +658,12 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 				else         B->m_boundingSphere.Center.y += Scollision;
 			}
 		}
+		A->Intersect(B);
+		B->Intersect(A);
+			//CRITICAL
+		return 	A->m_boundingSphere.Center.x > B->m_boundingSphere.Center.x;
 	}
+
 	return Ax > Bx;
 }
 
@@ -674,15 +689,17 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 }
 
 
-void _cdecl sortPxVTP(class modern_array<class EObject*>& vector) noexcept
+void sortPxVTP(class modern_array<class EObject*>& vector) noexcept
 {
 	_Sort_unchecked(vector.begin(), vector.end(),vector.size(), __sort__SortByX());
+	//std::sort(vector.begin(), vector.end(), __sort__SortByX());
 }
 
 
-void _cdecl sortPyVTP(class modern_array<class EObject*>& vector) noexcept
+void sortPyVTP(class modern_array<class EObject*>& vector) noexcept
 {
 	_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByY());
+	//std::sort(vector.begin(), vector.end(), __sort__SortByY());
 }
 
 void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
@@ -695,7 +712,7 @@ void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject*
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByY());
 }
 
-void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcept
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
 {
 	//for (int32 i = 0; i < 32; ++i)
 	//	vec[1][i].clear();
@@ -707,7 +724,8 @@ void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcep
 	//		vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
 	//	}
 	//}
-
+//#pragma omp single
+	{
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 			vec[1][i].clear();
 
@@ -715,14 +733,14 @@ void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcep
 
 
 	//	{
-			for (int32 i = 0; i < MAP_DIVISION; ++i)
+		for (int32 i = 0; i < MAP_DIVISION; ++i)
+		{
+			for (auto object : vec[0][i])
 			{
-				for (auto object : vec[0][i])
-				{
-					vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
-				}
+				vec[1][GetYCell(object->m_boundingSphere.Center.y)].push_back(object);
 			}
-		
+		}
+	}
 		//struct ThreadPoolHandle pool;
 
 		//for (int32 i = 0; i < 32; ++i)
@@ -743,11 +761,11 @@ void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcep
 //	}
 }
 
-void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
 {
 
 //#pragma omp parallel
-#pragma omp for schedule(static,3)
+//#pragma omp for schedule(dynamic)
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
 			if (yta[i])
@@ -756,30 +774,31 @@ void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexce
 			}
 
 		}
-#pragma omp barrier
+//#pragma omp barrier
 }
 
-void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][32]) noexcept
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
 {
+//#pragma omp single
+	{
+		int32 xp, yp;
 
-	int32 xp, yp;
-
-	__intersect_test__(xp,yp);
+		__intersect_test__(xp, yp);
 
 
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
 			vec[0][i].clear();
-			vec[1][i].shrink();
+			//vec[1][i].shrink();
 		}
 
 
-	{
-		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
-			for (auto RC : vec[1][i])
-			{
-				vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
+			for (int32 i = 0; i < MAP_DIVISION; ++i)
+			{				for (auto RC : vec[1][i])
+				{
+					vec[0][GetXCell(RC->m_boundingSphere.Center.x)].push_back(RC);
+				}
 			}
 		}
 	}
@@ -805,10 +824,10 @@ void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][32]) noexcep
 
 }
 
-void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][32]) noexcept
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
 {
 //#pragma omp parallel
-#pragma omp for schedule(dynamic)
+//#pragma omp for schedule(dynamic)
 	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
 		if (xta[i])
@@ -816,7 +835,7 @@ void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][32]) noexce
 			sortPxVTP(vec[0][i]);
 		}
 	}
-#pragma omp barrier
+//#pragma omp barrier
 }
 
 //BUGGED
@@ -896,6 +915,7 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 		class EObject* obj = vectemp[j];
 		if (obj)
 		{
+			modern_guard guard(obj);
 			switch (obj->m_managementType)
 			{
 			case ObjectManagementType::OBJECT_MANAGEMENT_DISABLED:
@@ -907,6 +927,7 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 				break;
 			case ObjectManagementType::OBJECT_MANAGEMENT_DELETE:
 				collector->AsyncDelete(obj);
+				//delete obj;
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;

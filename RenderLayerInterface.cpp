@@ -15,9 +15,10 @@ const RenderLayerType RenderLayerInterface::GetType() const noexcept
 
 void RenderLayerInterface::Update(const float dt)
 {
-
+	m_size = 0u;
 				if (m_root)
 					m_root->Update(dt);
+//#pragma omp barrier
 
 }
 

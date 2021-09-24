@@ -27,10 +27,10 @@ struct TileType
 	{
 	struct
 	{
-	int32 tile_type;
+		int32 tile_type;
 	int32 tile_sub;
 	};
-	int64 tile_val;
+	int64 tile_val{};
 	};
 
 	bool operator !=(const struct TileType type)
@@ -59,7 +59,10 @@ static int   CAMERA_TILE_DEEP_CUT = CAMERA_TILE_CUT + 2;
 static int32_t tilesub[32] ={
 	3,//GRASS
 	3,//DIRT
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	3,//ROCK
+	3,//LEAVES
+	3,//PAVING
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
 	}
@@ -248,6 +251,8 @@ void Tile::SetGlobals(
 
 	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");
 	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("dirt");
+	m_texture[2] = ResourceManager::GetInstance()->GetTextureByName("rock");
+	m_texture[3] = ResourceManager::GetInstance()->GetTextureByName("leaves");
 
 	//m_texture[0][0] = ResourceManager::GetInstance()->GetTextureByName("grass0");
 	//m_texture[0][1] = ResourceManager::GetInstance()->GetTextureByName("grass1");
@@ -256,10 +261,10 @@ void Tile::SetGlobals(
 	//m_texture[1][0] = ResourceManager::GetInstance()->GetTextureByName("dirt0");
 	//m_texture[1][1] = ResourceManager::GetInstance()->GetTextureByName("dirt1");
 	//m_texture[1][2] = ResourceManager::GetInstance()->GetTextureByName("dirt2");
-	//m_texture[2][0] = ResourceManager::GetInstance()->GetTextureByName("rock");
-	//m_texture[3][0] = ResourceManager::GetInstance()->GetTextureByName("leaves");
-	//m_texture[4][0] = ResourceManager::GetInstance()->GetTextureByName("paving");
-	//m_texture[5][0] = ResourceManager::GetInstance()->GetTextureByName("paving2");
+
+	
+	m_texture[4] = ResourceManager::GetInstance()->GetTextureByName("paving");
+	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("paving2");
 	//m_texture[6][0] = ResourceManager::GetInstance()->GetTextureByName("dust");
 	//m_texture[7][0] = ResourceManager::GetInstance()->GetTextureByName("water");
 	//m_texture[8][0] = ResourceManager::GetInstance()->GetTextureByName("sand0");
@@ -438,7 +443,7 @@ void _vectorcall TileMap::SetTile(
 
 	if (brush == 1)
 	{
-		SetTile(pos, tile);
+		ESetTile(pos, tile);
 		return;
 	}
 
@@ -450,19 +455,29 @@ void _vectorcall TileMap::SetTile(
 			{
 				pos.x += x;
 				pos.y += y;
-				SetTile(pos, tile);
+				ESetTile(pos, tile);
 			}
 
 		}
 	}
 }
 
-void TileMap::SetTile(																																
+void TileMap::SetTile(
+const struct DirectX::XMINT2& position,
+char tile)
+{
+	ipp::math::clamp(tile, 0, 8);
+	m_tile[position.x][position.y].tile_type = (int32)tile;
+	m_tile[position.x][position.y].tile_sub = modern_random(0, tile::tilesub[tile]);
+}
+
+void TileMap::ESetTile(																																
 	const struct DirectX::XMINT2& position,																															
 	char tile)
 {
 	ipp::math::clamp(tile, 0, 8);		
-
+	if (m_tile[position.x][position.y].tile_type == tile)
+		return;
 	m_tile[position.x][position.y].tile_type = (int32)tile;
 	m_tile[position.x][position.y].tile_sub = modern_random(0, tile::tilesub[tile]);
 

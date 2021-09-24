@@ -194,7 +194,7 @@ int32 AnimatedDoodads::isReleased() const noexcept
 	}
 }
 
-void _stdcall AnimatedDoodads::Intersect(class EObject* const other)
+void AnimatedDoodads::Intersect( class EObject* const other)  
 {
 
 }
@@ -211,6 +211,16 @@ void AnimatedDoodads::Remove()
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	action->push(new ActionRemoveObject(this));
 	Timer::CreateInstantTimer(action);
+}
+
+void AnimatedDoodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+
+}
+
+DirectX::XMFLOAT3 AnimatedDoodads::GetVector() noexcept
+{
+	return { 0.f,0.f,0.f };
 }
 
 void AnimatedDoodads::SetNumberOfFrames(float frames)

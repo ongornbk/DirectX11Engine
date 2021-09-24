@@ -174,7 +174,7 @@ int32 Interface::isReleased() const noexcept
 	}
 }
 
-void _cdecl Interface::Intersect(EObject* const other)
+void Interface::Intersect( EObject* const other) 
 {
 }
 
@@ -225,4 +225,13 @@ void Interface::SetText(std::string text)
 Interface* const Interface::GetParent() const noexcept
 {
 	return m_parent;
+}
+
+void Interface::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+}
+
+DirectX::XMFLOAT3 Interface::GetVector() noexcept
+{
+	return { 0.f,0.f,0.f };
 }

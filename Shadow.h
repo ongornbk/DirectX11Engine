@@ -37,7 +37,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const noexcept override;
-	void _cdecl Intersect(class EObject* const other) override;
+	void Intersect( class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 
 };

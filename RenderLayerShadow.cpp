@@ -15,6 +15,8 @@ const RenderLayerType RenderLayerShadow::GetType() const noexcept
 
 void RenderLayerShadow::Update(const float dt)
 {
+	m_size = 0u;
+//#pragma omp barrier
 }
 
 void RenderLayerShadow::CleanUp()

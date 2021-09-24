@@ -32,19 +32,21 @@ public:
 
 	virtual void Remove() = 0;
 
-	virtual void            SetZ(const float z = 0.f) = 0;
-	virtual void            Update(const float dt = 0.f) = 0;
-	virtual void            Release() = 0;
-	virtual int32           isReleased() const noexcept = 0;
+	virtual void               SetZ(const float z = 0.f)                              = 0;
+	virtual void               Update(const float dt = 0.f)                           = 0;
+	virtual void               Release()                                              = 0;
+	virtual int32              isReleased()                            const noexcept = 0;
+	virtual DirectX::XMFLOAT3  GetVector()                             noexcept       = 0;
+	virtual void               SetVector(const DirectX::XMFLOAT3& vec) noexcept       = 0;
 
-	virtual void _cdecl Intersect(class EObject* const other) = 0;
+	virtual void Intersect(class EObject* const other) = 0;
 	virtual const enum class RenderLayerType GetLayerType() const noexcept = 0;
 
 public:
 	uint32           m_index;
 	uint32           m_vector;
 
-
+	virtual ~EObject();
 
 	int32 collisionPriority = 0;
 
@@ -52,7 +54,7 @@ public:
 
 	struct ObjectFlags m_flags;
 
-	enum class ObjectManagementType m_managementType;
+	volatile enum class ObjectManagementType m_managementType;
 
 	enum class EObjectType
 	{
@@ -67,5 +69,7 @@ public:
 		OBJECT_TYPE_AGENT,
 		OBJECT_TYPE_INTERFACE
 	}m_type;
+
+	const modern_handle& GetHandle();
 };
 

@@ -4,6 +4,7 @@
 #include <queue>
 #include <deque>
 #include "modern/modern_array.h"
+#include "RenderContainer.h"
 
 class GarbageCollector
 {
@@ -12,6 +13,7 @@ class GarbageCollector
 public:
 
 	void AsyncDelete(void* ptr);
+	void AsyncDelete(class EObject* const obj);
 
 	template <class T>
 	void AsyncDeleteArray(modern_array<T>* __array);

@@ -69,6 +69,7 @@ RendererManager::RendererManager(
 	m_focus(nullptr),
 	m_collision(false),
 	m_fpsText(nullptr),
+	m_objectsText(nullptr),
 	m_fps(0)
 {
 
@@ -106,6 +107,14 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		m_font, 20.f
 	));
+
+	Timer::CreateInstantTimer(new ActionInitializeText(
+		&m_objectsText,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		m_font, 20.f
+	));
 }
 
 
@@ -138,6 +147,12 @@ RendererManager::~RendererManager()
 	{
 		delete m_fpsText;
 		m_fpsText = nullptr;
+	}
+
+	if (m_objectsText)
+	{
+		delete m_objectsText;
+		m_objectsText = nullptr;
 	}
 }
 
@@ -240,8 +255,10 @@ void RendererManager::PushInterface(Interface* const object)
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
-			if (m_fpsText)
-				m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			//if (m_fpsText)
+			//	m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			if (m_objectsText)
+				m_objectsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 
 			//m_unitsShader->End(deviceContext);
 			//TextFont* font = TextFont::GetFontByName("ExocetLight");
@@ -296,12 +313,16 @@ void RendererManager::PushInterface(Interface* const object)
 		m_ui->Update(m_cameraPosition);
 		if(m_fpsText)
 		m_fpsText->Update();
+		if (m_objectsText)
+			m_objectsText->Update();
 		//const float dt = ipp::Timer::GetDeltaTime();
 		//updatetime += dt;
 
 		//if (updatetime > (1.f / 120.f))
+
 		{
 			//updatetime = 0.f;
+//#pragma omp single
 			m_map->Update(dt);
 
 			//switch (m_editMode.load())
@@ -351,6 +372,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 			}
 
+//#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 			//	break;
 			//}
@@ -358,6 +380,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 
 		}
+//#pragma omp barrier
 	}
 
 void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
@@ -378,7 +401,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 			}
 			else
 			{
-				tree->SetColorFilter(1.f, 1.f, 1.f, 0.25f);
+				tree->SetColorFilter(1.f, 1.f, 1.f, 0.4f);
 				tree->m_flags.m_cast_shadow = false;
 			}
 			switch (type)
@@ -454,6 +477,8 @@ void RendererManager::SetFps(const int32 fps)
 
 	if(m_fpsText)
 	m_fpsText->SetText(modern_cstring(fps).c_str());
+	if (m_objectsText)
+		m_objectsText->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
 }
 
 void RendererManager::SetFocus(Unit* const unit)
@@ -497,7 +522,15 @@ RendererManager * RendererManager::GetInstance()
 
 size_t RendererManager::GetNumberOfObjects()
 {
-	//return m_objects.GetSize();
+	size_t size = 0u;
+	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+	{
+		if (m_layers[i])
+		{
+			size += m_layers[i]->GetNumberOfObjects();
+		}
+	}
+	return size;
 }
 
 __m128 RendererManager::GetNumberOfObjectsX4()

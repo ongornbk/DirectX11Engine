@@ -80,7 +80,7 @@ public:
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 
 	static class RendererManager* GetInstance();
-	static size_t GetNumberOfObjects();
+	size_t GetNumberOfObjects();
 	static __m128 GetNumberOfObjectsX4();
 	static std::vector<int64> GetNumberOfObjectsVector();
 
@@ -101,6 +101,7 @@ private:
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 	class TextFont* m_font;
 	class Text* m_fpsText;
+	class Text* m_objectsText;
 
 	int32 m_fps;
 	//EObjectVector m_objects;

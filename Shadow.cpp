@@ -36,9 +36,9 @@ int32 Shadow::isReleased() const noexcept
 	return false;
 }
 
-void _cdecl Shadow::Intersect(
-	class EObject* const other
-)
+void  Shadow::Intersect(
+	 class EObject* const other
+) 
 {
 
 }

@@ -26,6 +26,6 @@ void RegionPointObject::Release()
 {
 }
 
-void _cdecl RegionPointObject::Intersect(EObject* const other)
+void RegionPointObject::Intersect( EObject* const other)
 {
 }

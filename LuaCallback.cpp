@@ -223,10 +223,7 @@ namespace lua_callback
 			struct lua_State* const state
 		)
 		{
-			DirectX::XMVECTOR position;
-			position.m128_f32[0] = LUA_FLOAT(state, 1);
-			position.m128_f32[1] = LUA_FLOAT(state, 2);
-			position.m128_f32[2] = LUA_FLOAT(state, 3);
+			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };
 			m_camera->SetPosition(position);
 			return 0;
 		}
@@ -247,10 +244,7 @@ namespace lua_callback
 			struct lua_State* const state
 		)
 		{
-			DirectX::XMVECTOR position;
-			position.m128_f32[0] = LUA_FLOAT(state, 1);
-			position.m128_f32[1] = LUA_FLOAT(state, 2);
-			position.m128_f32[2] = LUA_FLOAT(state, 3);
+			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };
 			m_camera->Translate(position);
 			return 0;
 		}
@@ -444,9 +438,19 @@ namespace lua_callback
 			//if (object == m_global->m_lastSelectedUnit)
 				//m_global->m_lastSelectedUnit = nullptr;
 			//if(object->m_managementType != ObjectManagementType::OBJECT_MANAGEMENT_DELETE)
-			Timer::CreateInstantTimer(new ActionRemoveObject(object));
+		//	Timer::CreateInstantTimer(new ActionRemoveObject(object));
 			//std::cout << "LUA DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
 			//return 0;
+
+			object->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+			//m_object->Release();
+			CleanupFrame();
+
+
+			class Global* const global = Global::GetInstance();
+			if (object == global->m_lastSelectedUnit)
+				global->m_lastSelectedUnit = nullptr;
+			//object = nullptr;
 		}
 		//std::cout << "LUA 0 DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
 		return 0;

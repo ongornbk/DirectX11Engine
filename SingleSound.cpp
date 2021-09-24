@@ -23,7 +23,7 @@ bool SingleSound::Initialize(WCHAR* soundFileName)
 {
 	std::wstring tmp0 = std::wstring(soundFileName);
 	std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-	int32_t pos = (int32_t)tmp1.find_last_of("/");
+	int64_t pos = (int64_t)tmp1.find_last_of("/");
 	if (pos >= 0)
 	{
 		m_name = tmp1.substr(pos + 1, tmp1.length());

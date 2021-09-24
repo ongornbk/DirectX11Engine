@@ -20,14 +20,15 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_guard
 {
-	std::atomic<int32_t>* m_lock;
+	volatile std::atomic<int64_t>* m_lock;
 
 public:
 
 	modern_guard() = delete;
 	modern_guard(class modern_guard& guard) = delete;
 	_stdcall modern_guard(struct modern_class* const object) noexcept;
+	_stdcall modern_guard(volatile struct modern_class* const object) noexcept;
 	_stdcall modern_guard(const struct modern_class* const object) noexcept;
-	_stdcall modern_guard(std::atomic<int32_t>& lock) noexcept;
+	_stdcall modern_guard(std::atomic<int64_t>& lock) noexcept;
 	_stdcall ~modern_guard() noexcept;
 };

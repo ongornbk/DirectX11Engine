@@ -225,7 +225,7 @@ void Unit::Update(const float dt)
 
 	if (!m_flags.m_blocked)
 	{
-		
+
 		if (m_tasks.Update())
 		{
 
@@ -244,16 +244,18 @@ void Unit::Update(const float dt)
 				}
 				else
 				{
-					m_attack.active = false;
-					SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
-					SetVelocity(0.0f, 0.0f, 0.0f);
-					Unit::EndRunning();
+					if (m_attack.active == false)
+					{
+						SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
+						SetVelocity(0.0f, 0.0f, 0.0f);
+						Unit::EndRunning();
+					}
 				}
-				
+
 			}
 		}
-		
-			
+
+
 
 		if (!m_stop)
 		{
@@ -266,17 +268,17 @@ void Unit::Update(const float dt)
 			{
 				m_floats[1] = m_boundingSphere.Center;
 			}
-				struct DirectX::XMFLOAT3 niuPos = modern_xfloat3_sum(m_boundingSphere.Center, modern_xfloat3_multiply(m_floats[0], dt));
+			struct DirectX::XMFLOAT3 niuPos = modern_xfloat3_sum(m_boundingSphere.Center, modern_xfloat3_multiply(m_floats[0], dt));
 
-				m_flags.m_collided = TileMap::CollisionAt(niuPos);
+			m_flags.m_collided = TileMap::CollisionAt(niuPos);
 
-				if (!m_flags.m_collided)
-				{
-					m_boundingSphere.Center = niuPos;
-				}
+			if (!m_flags.m_collided)
+			{
+				m_boundingSphere.Center = niuPos;
+			}
 		}
 
-		SKIP_BEGIN:
+	SKIP_BEGIN:
 
 		if (m_flags.m_rendering)
 		{
@@ -285,7 +287,7 @@ void Unit::Update(const float dt)
 				&m_worldMatrix,
 				XMMatrixTranslation(
 					m_boundingSphere.Center.x,
-					m_boundingSphere.Center.y + ((m_size*m_modelVariant.GetSize()) / 1.5f),
+					m_boundingSphere.Center.y + ((m_size * m_modelVariant.GetSize()) / 1.5f),
 					m_boundingSphere.Center.z //- (m_size / 1.5f)
 				)
 			);
@@ -315,7 +317,7 @@ void Unit::Update(const float dt)
 								//m_isLooping = false;
 							}
 						}
-						
+
 						if (m_isLooping)
 						{
 							m_currentFrame = 0.f;
@@ -354,21 +356,25 @@ void Unit::Update(const float dt)
 			vertices[3].uv.y = (m_rotation + 1.f) / m_rotations;
 
 
-//#pragma omp critical
+#pragma omp critical
 			{
 				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 				if (FAILED(result))
 				{
-					return;
+					//return;
+					//goto EXIT_CRT_0;
 				}
-
-				struct SpriteVertexType* const verticesPtr = (struct SpriteVertexType* const)mappedResource.pData;
-				memcpy(verticesPtr, (void*)vertices, sizeof(struct SpriteVertexType) * m_vertexBuffer->GetVertexCount());
-				m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
+				else
+				{
+					struct SpriteVertexType* const verticesPtr = (struct SpriteVertexType* const)mappedResource.pData;
+					memcpy(verticesPtr, (void*)vertices, sizeof(struct SpriteVertexType) * m_vertexBuffer->GetVertexCount());
+					m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
+				}
+			//EXIT_CRT_0:
 			}
 			m_previousFrame = m_currentFrame;
-
 		}
+		
 
 
 
@@ -416,10 +422,52 @@ void Unit::Release()
 	}
 }
 
-void _cdecl Unit::Intersect(class EObject* const other)
+void Unit::Intersect(class EObject* const other)
 {
-	if(m_intersection == false)
-	m_boundingSphere.Center = m_floats[1];
+	if (m_intersection == false)
+	{
+		m_boundingSphere.Center.x = m_floats[1].x;
+		m_boundingSphere.Center.y = m_floats[1].y;
+		{
+			if (other->m_flags.m_pushable == false)
+				m_stop = false;
+		}
+		//m_boundingSphere.Center.z = m_floats[1].z;
+		if (m_wanderingFlag)
+		{
+			switch (GetTaskType())
+			{
+				case Task::Type::TASKGOTOPOINT:
+				{
+					
+					//if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
+					//{
+					//	if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop)
+					//	{
+					//
+					//	}
+					//	else
+					//	{
+					//		//TaskAttack* task = new TaskAttack();
+					//		//task->object = this;
+					//		//task->target = (class Unit*)other;
+					//		//task->Initialize();
+					//		//m_tasks.SetTask(task);
+					//	}
+					//}
+					//else
+					//{
+						m_tasks.Discard();
+					//}
+					break;
+				}
+			default:
+			{
+				break;
+			}
+			}
+		}
+	}
 		m_intersection = true;
 		
 }
@@ -436,6 +484,16 @@ void Unit::Remove()
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	action->push(new ActionRemoveObject(this));
 	Timer::CreateInstantTimer(action);
+}
+
+void Unit::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+	m_floats[0] = vec;
+}
+
+DirectX::XMFLOAT3 Unit::GetVector() noexcept
+{
+	return m_floats[0];
 }
 
 float Unit::GetCollisionRadius() const noexcept
@@ -623,6 +681,8 @@ bool Unit::BeginAttack(class Unit* const target)
 	}
 	else
 	{
+		if (target)
+		{
 		DirectX::XMFLOAT3 position = GetPosition();
 		DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
 		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
@@ -636,13 +696,11 @@ bool Unit::BeginAttack(class Unit* const target)
 		//else
 		//PlayAnimation(Unit::ModelStance::MS_ATTACK_2);
 		SetVelocity(0.0f, 0.0f, 0.0f);
-		if (target)
-		{
+		m_attack.active = true;
+		
 			class IAction* const action = new ActionAttack(this, target);
-			if (action)
-			{
 				Timer::CreateExpiringTimer(action, m_attack.m_attackDelay);
-			}
+
 		}
 		return true;
 	}
@@ -651,6 +709,7 @@ bool Unit::BeginAttack(class Unit* const target)
 
 bool Unit::Attack(class Unit* const target)
 {
+	m_attack.active = false;
 	return ((class Unit* const)target)->GetAttacked(this);
 }
 
@@ -792,20 +851,20 @@ void Unit::PlayAnimation(
 		m_isLooping = false;
 		m_stop = true;
 
-		switch (animation)
-		{
-		case	ModelStance::MODEL_STANCE_ATTACK_1:
-			m_attack.active = true;
-			break;
-		case	ModelStance::MODEL_STANCE_ATTACK_2:
-			m_attack.active = true;
-			break;
-
-
-		default:
-			m_attack.active = false;
-			break;
-		}
+		//switch (animation)
+		//{
+		//case	ModelStance::MODEL_STANCE_ATTACK_1:
+		//	m_attack.active = true;
+		//	break;
+		//case	ModelStance::MODEL_STANCE_ATTACK_2:
+		//	m_attack.active = true;
+		//	break;
+		//
+		//
+		//default:
+		//	m_attack.active = false;
+		//	break;
+		//}
 	}
 
 	

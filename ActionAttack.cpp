@@ -1,5 +1,5 @@
 #include "ActionAttack.h"
-
+#include "modern/modern_guard.h"
 ActionAttack::ActionAttack(class Unit* const object,class Unit* const target) : m_object(object), m_target(target)
 {
 }
@@ -10,9 +10,13 @@ ActionAttack::~ActionAttack()
 
 void ActionAttack::execute()
 {
-	if (m_object&&m_target)
+	class Unit* const A = (Unit*)m_object.get();
+	class Unit* const B = (Unit*)m_target.get();
+	if (A&&B)
 	{
-		m_object->Attack(m_target);
+		modern_guard gA(A);
+		modern_guard gB(B);
+		A->Attack(B);
 	}
 }
 

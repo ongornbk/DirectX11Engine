@@ -40,7 +40,7 @@ inline T modern_pow(T a,int32_t b)
 
 inline int32_t modern_random(int32_t min, int32_t max)
 {
-	assert(max > min);
+	assert(max >= min);
 	return min + (rand() % int32_t(max - min + 1));
 }
 

@@ -1,6 +1,7 @@
 #include "GarbageCollector.h"
 #include "FreeTrash.h"
 #include "DeleteTrash.h"
+#include "DeleteObject.h"
 #include <mutex>
 
 namespace
@@ -11,6 +12,11 @@ namespace
 void GarbageCollector::AsyncDelete(void* ptr)
 {
 	m_garbage.push_back(DeleteTrash(ptr));
+}
+
+void GarbageCollector::AsyncDelete(EObject* const obj)
+{
+	m_garbage.push_back(DeleteObjectTrash(obj));
 }
 
 void GarbageCollector::AsyncFree(void* ptr)

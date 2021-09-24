@@ -1,46 +1,47 @@
 #pragma once
 #include "RenderContainer.h"
 #include "modern/modern.h"
+#include "game_math.h"
 #include <forward_list>
 
 namespace
 {
-	static int32 xta[32]{};
-	static int32 yta[32]{};
+	static int32 xta[MAP_DIVISION]{};
+	static int32 yta[MAP_DIVISION]{};
 }
 
 
 
 
 struct __sort__SortByY {
-	bool operator()(class EObject* a,class EObject* b) const noexcept;
+	bool _cdecl operator()( class EObject* const a,  class EObject* const b) const noexcept;
 };
 
 struct  __sort__SortByX
 {
-	bool operator()(class EObject *a,class EObject *b) const noexcept;
+	bool _cdecl operator()( class EObject *const a, class EObject * const b) const noexcept;
 };
 
 struct __sort__StaticSortByY {
-	bool operator()(class EObject* a, class EObject* b) const noexcept;
+	bool _cdecl operator()(class EObject* a, class EObject* b) const noexcept;
 };
 
 struct  __sort__StaticSortByX
 {
-	bool operator()(class EObject* a, class EObject* b) const noexcept;
+	bool _cdecl operator()(class EObject* a, class EObject* b) const noexcept;
 };
 
 _Use_decl_annotations_
-void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][32]) noexcept;
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][32]) noexcept;
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
 
 _Use_decl_annotations_
-void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][32]) noexcept;
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
 
 //_Use_decl_annotations_
 //void _vectorcall StaticSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;

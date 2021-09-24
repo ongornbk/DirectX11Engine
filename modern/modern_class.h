@@ -2,6 +2,7 @@
 #include "modern_def.h"
 #include "modern_array.h"
 #include "modern_string.h"
+#include "modern_handle.h"
 
 /*
 Copyright(C) < 02.06.2020 > ongornbk@gmail.com
@@ -19,13 +20,15 @@ modern is a trademark of ongornbk@gmail.com.
 
 struct modern_class
 {
-	mutable std::atomic<int32_t> m_lock;
+	mutable std::atomic<int64_t> m_lock;
 
 	virtual ~modern_class();
 
 protected:
+	modern_handle m_object;
+
 	modern_class();
-	modern_class(modern_class& modern) = delete;
+	modern_class(struct modern_class& modern) = delete;
 
 };
 

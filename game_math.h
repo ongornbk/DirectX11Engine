@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdint>
 
-#define TILE_MAP_SIZE 512
+#define TILE_MAP_SIZE 256
 #define RENDER_CELLS_RANGE 1
-#define MAP_DIVISION 32
+#define MAP_DIVISION 64
 #define NUM_OF_DIVIDES_X MAP_DIVISION
 #define NUM_OF_DIVIDES_Y MAP_DIVISION
 #define HALF_NUM_OF_DIVIDES_X (NUM_OF_DIVIDES_X / 2)

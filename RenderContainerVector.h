@@ -5,6 +5,7 @@
 #include "Tree.h"
 #include "Unit.h"
 #include "modern/modern.h"
+#include "game_math.h"
 #include <stack>
 //#include <forward_list>
 
@@ -15,7 +16,7 @@ struct EObjectVector
 
 	EObjectVector();
 
-	class modern_array<class EObject*> m_objectsXY[2][32];
+	class modern_array<class EObject*> m_objectsXY[2][MAP_DIVISION];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);

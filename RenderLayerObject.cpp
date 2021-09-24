@@ -1,4 +1,5 @@
 #include "RenderLayerObject.h"
+#include "modern/modern_guard.h"
 
 RenderLayerObject::RenderLayerObject()
 {
@@ -15,15 +16,29 @@ const RenderLayerType RenderLayerObject::GetType() const noexcept
 
 void RenderLayerObject::Update(const float dt)
 {
-	for (int32_t i = 0; i < 32; ++i)
+//#pragma omp parallel
+	{
+		m_size = 0u;
+		for (int32_t i = 0; i < MAP_DIVISION; ++i)
+		{
+			m_size += m_objects[1][i].size();
+		}
+	}
+
+//#pragma omp for schedule(dynamic)
+	for (int32_t i = 0; i < MAP_DIVISION; ++i)
 	{
 		if (!xta[i])
 			for (auto& obj : m_objects[1][i])
 			{
 				if (obj)
+				{
+					modern_guard objG(obj);
 					obj->Update(dt);
+				}
 			}
 	}
+//#pragma omp barrier
 }
 
 void RenderLayerObject::CleanUp()
@@ -33,14 +48,16 @@ void RenderLayerObject::CleanUp()
 
 void _stdcall RenderLayerObject::Sort()
 {
-	SortByXV(m_objects);
-	SortByYV(m_objects);
+		SortByXV(m_objects);
+		SortByYV(m_objects);
 }
 
 void _stdcall RenderLayerObject::QSort()
 {
+//#pragma omp parallel
 	QSortByXV(m_objects);
 	QSortByYV(m_objects);
+//#pragma omp barrier
 }
 
 void _stdcall RenderLayerObject::StaticSort()
@@ -60,7 +77,7 @@ void _vectorcall RenderLayerObject::Render(ID3D11DeviceContext* const deviceCont
 	class modern_array<class modern_array<class EObject*>*> mvpp;
 
 
-	for (int32 i = 0; i < 32; i++)
+	for (int32 i = 0; i < MAP_DIVISION; i++)
 	{
 		if (!yta[i])
 			mvpp.push_back(&m_objects[1][i]);
@@ -68,7 +85,7 @@ void _vectorcall RenderLayerObject::Render(ID3D11DeviceContext* const deviceCont
 
 	std::reverse(mvpp.begin(), mvpp.end());
 
-	uint32 group = 31u;
+	uint32 group = MAP_DIVISION -1;
 	for (auto& vec : mvpp)
 	{
 		GRAPHICS EnableAlphaBlending(true);
@@ -107,7 +124,7 @@ void _vectorcall RenderLayerObject::PreRender(ID3D11DeviceContext* const deviceC
 
 void RenderLayerObject::Clear()
 {
-	for (int32 cv = 0; cv < 32; cv++)
+	for (int32 cv = 0; cv < MAP_DIVISION; cv++)
 	{
 		for (auto&& object : m_objects[0][cv])
 		{
@@ -222,7 +239,7 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 	case 0U:
 	{
 
-#pragma omp parallel
+#pragma omp parallel num_threads(2)
 		{
 #pragma omp single
 			{
@@ -259,7 +276,7 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 	}
 	case 31U:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(2)
 		{
 #pragma omp single
 			{
@@ -296,7 +313,7 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 	}
 	default:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(3)
 		{
 #pragma omp single
 			{

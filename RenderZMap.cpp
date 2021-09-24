@@ -39,7 +39,7 @@ void RenderZMap::Update(const float dt)
 
 void RenderZMap::CleanUp()
 {
-#pragma omp parallel
+//#pragma omp parallel
 	for (auto vector : m_zVectors)
 	{
 		vector.second->CleanUp();

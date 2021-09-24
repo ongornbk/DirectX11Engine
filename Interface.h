@@ -45,13 +45,16 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const noexcept override;
-	void _cdecl Intersect(class EObject* const other) override;
+	void  Intersect( class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
 	void PushChild(class EObject* const child);
 	void SetText(std::string text);
 	class Interface* const GetParent() const noexcept;
+
+	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
+	DirectX::XMFLOAT3 GetVector() noexcept override;
 
 	friend class InterfaceButtonBehavior;
 

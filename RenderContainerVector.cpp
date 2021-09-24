@@ -19,8 +19,9 @@ void EObjectVector::Update(
 	const float dt
 )
 {
-#pragma omp for schedule(dynamic)//EASY CRASH
-	for (int32 i = 0; i < 32; ++i)
+//#pragma omp parallel
+//#pragma omp for schedule(dynamic)//EASY CRASH
+	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
 		if(!xta[i])
 		for (auto & obj : m_objectsXY[1][i])
@@ -32,6 +33,7 @@ void EObjectVector::Update(
 			}
 		}
 	}
+//#pragma omp barrier
 }
 
 void EObjectVector::CleanUp()
@@ -79,7 +81,7 @@ void _vectorcall EObjectVector::Render(
 class modern_array<class modern_array<class EObject*>*> mvpp;
 
 
-for (int32 i = 0; i < 32; i++)
+for (int32 i = 0; i < MAP_DIVISION; i++)
 	{
 	if(!yta[i])
 mvpp.push_back(&m_objectsXY[1][i]);
@@ -87,7 +89,7 @@ mvpp.push_back(&m_objectsXY[1][i]);
 
 std::reverse(mvpp.begin(), mvpp.end());
 
-uint32 group = 31u;
+uint32 group = MAP_DIVISION -1u;
 for (auto& vec : mvpp)
 {
 	GRAPHICS EnableAlphaBlending(true);
@@ -127,7 +129,7 @@ void _vectorcall EObjectVector::PreRender(ID3D11DeviceContext* const deviceConte
 
 void EObjectVector::Clear()
 {
-	for (int32 cv = 0; cv < 32; cv++)
+	for (int32 cv = 0; cv < MAP_DIVISION; cv++)
 	{
 		for (auto &&object : m_objectsXY[0][cv])
 		{
@@ -239,7 +241,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	case 0U:
 	{
 
-#pragma omp parallel
+#pragma omp parallel  num_threads(2)
 		{
 #pragma omp single
 			{
@@ -276,7 +278,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	case 31U:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(2)
 		{
 #pragma omp single
 			{
@@ -313,7 +315,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	default:
 	{
-#pragma omp parallel
+#pragma omp parallel num_threads(3)
 		{
 #pragma omp single
 			{

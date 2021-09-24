@@ -237,6 +237,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
     <ClInclude Include="DeleteArrayTrash.h" />
+    <ClInclude Include="DeleteObject.h" />
     <ClInclude Include="DeleteTrash.h" />
     <ClInclude Include="Destructible.h" />
     <ClInclude Include="DirectXHelpers.h" />
@@ -325,6 +326,7 @@
     <ClInclude Include="modern\modern_exception.h" />
     <ClInclude Include="modern\modern_guard.h" />
     <ClInclude Include="modern\modern_guard_status.h" />
+    <ClInclude Include="modern\modern_handle.h" />
     <ClInclude Include="modern\modern_math.h" />
     <ClInclude Include="modern\modern_memory.h" />
     <ClInclude Include="modern\modern_pair.h" />
@@ -465,6 +467,7 @@
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
     <ClCompile Include="DeleteArrayTrash.cpp" />
+    <ClCompile Include="DeleteObject.cpp" />
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
@@ -540,6 +543,7 @@
     <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />
     <ClCompile Include="modern\modern_guard.cpp" />
+    <ClCompile Include="modern\modern_handle.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="MultiSound.cpp" />

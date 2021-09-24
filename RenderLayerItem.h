@@ -5,7 +5,7 @@
 class RenderLayerItem :
 	public RenderLayer
 {
-	class modern_array<class EObject*> m_objects[2][32];
+	class modern_array<class EObject*> m_objects[2][MAP_DIVISION];
 public:
 	RenderLayerItem();
 	~RenderLayerItem();
