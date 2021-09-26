@@ -9,6 +9,7 @@
 class GarbageCollector
 {
 	std::deque<class ITrash> m_garbage;
+	//std::deque<class modern_handle> m_handles;
 
 public:
 

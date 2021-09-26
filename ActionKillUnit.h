@@ -5,7 +5,7 @@
 class ActionKillUnit :
 	public IAction
 {
-	class Unit* m_object;
+	class modern_handle m_object;
 
 	ActionKillUnit() = delete;
 

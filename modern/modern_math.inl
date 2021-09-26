@@ -92,13 +92,6 @@ inline void modern_seed_malloc(uint32_t& seed)
 	modern_seed(seed);
 }
 
-inline float modern_sign(float a)
-{
-	if (a >= 0.f)
-		return 1.f;
-		return -1.f;
-}
-
 inline float modern_sin(float a)
 {
 	return sinf(a * modern_degtorad);

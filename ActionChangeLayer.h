@@ -7,7 +7,7 @@
 class ActionChangeLayer :
 	public IAction
 {
-	class EObject* m_object;
+	class modern_handle m_object;
 	enum class RenderLayerType m_layer;
 
 	ActionChangeLayer() = delete;

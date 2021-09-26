@@ -212,7 +212,7 @@ private:
 	float               m_currentSpeed;
 	float               m_framesPerSecond;
 
-	float               m_rotation;
+	float               m_rotation[2];
 
 	float               m_previousSpeed;
 	float               m_rotations;

@@ -461,7 +461,7 @@ void Engine::Update()
 		dt = m_updateLock.GetDeltaTime();
 		m_cameraControl.Update(dt);
 		Timer::Update(dt);
-		m_rendererManager->Update(dt);
+		m_rendererManager->Update(dt,m_renderLock.State());
 	}
 	else
 	{

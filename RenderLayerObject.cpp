@@ -33,7 +33,7 @@ void RenderLayerObject::Update(const float dt)
 			{
 				if (obj)
 				{
-					modern_guard objG(obj);
+					//modern_guard objG(obj);
 					obj->Update(dt);
 				}
 			}

@@ -1,7 +1,9 @@
 #include "ActionPushObject.h"
 
-ActionPushObject::ActionPushObject(class EObject* const object, const enum class RenderLayerType layer) : m_object(object), m_layer(layer)
+ActionPushObject::ActionPushObject(class EObject* const object, const enum class RenderLayerType layer)
 {
+	m_object.make_handle(object->GetHandle());
+	m_layer = layer;
 }
 
 ActionPushObject::~ActionPushObject()
@@ -10,9 +12,10 @@ ActionPushObject::~ActionPushObject()
 
 void ActionPushObject::execute()
 {
-	if (m_object)
+	class EObject* const A = (class EObject*)m_object.get();
+	if (A)
 	{
-		RendererManager::GetInstance()->Push(m_object, m_layer);
+		RendererManager::GetInstance()->Push(A, m_layer);
 	}
 }
 

@@ -25,7 +25,10 @@ void Timer::Update(const float dt)
 		{
 				if ((*element)->update(dt))
 				{
-					gbc->AsyncDelete(*element);
+					//gbc->AsyncDelete(*element);
+					//std::cout << "fddff" << std::endl;
+					//delete(ITimer*)(* element);
+					delete *element;
 					m_timers.erase(element);
 				}
 		}

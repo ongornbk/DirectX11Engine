@@ -1,9 +1,11 @@
 #include "ActionSetShadowCast.h"
+#include "modern/modern_guard.h"
 
 
-
-ActionSetShadowCast::ActionSetShadowCast(class EObject* const object, bool shadow) : m_object(object), m_shadowCast(shadow)
+ActionSetShadowCast::ActionSetShadowCast(class EObject* const object, bool shadow)
 {
+	m_object.make_handle(object->GetHandle());
+	m_shadowCast = shadow;
 }
 
 ActionSetShadowCast::~ActionSetShadowCast()
@@ -12,9 +14,11 @@ ActionSetShadowCast::~ActionSetShadowCast()
 
 void ActionSetShadowCast::execute()
 {
-	if (m_object)
+	class EObject* const A = (class EObject*)m_object.get();
+	if (A)
 	{
-		m_object->m_flags.m_cast_shadow = m_shadowCast;
+		modern_guard guard(A);
+		A->m_flags.m_cast_shadow = m_shadowCast;
 	}
 }
 

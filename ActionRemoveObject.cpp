@@ -1,6 +1,9 @@
 #include "ActionRemoveObject.h"
-ActionRemoveObject::ActionRemoveObject(class EObject* const object) : m_object(object)
+#include "modern/modern_guard.h"
+
+ActionRemoveObject::ActionRemoveObject(class EObject* const object)
 {
+	m_object.make_handle(object->GetHandle());
 }
 
 ActionRemoveObject::~ActionRemoveObject()
@@ -9,17 +12,19 @@ ActionRemoveObject::~ActionRemoveObject()
 
 void ActionRemoveObject::execute()
 {
-	if (m_object)
+	class EObject* const A = (class EObject*)m_object.get();
+	if (A)
 	{
-		m_object->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+		modern_guard guard(A);
+		A->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
 		//m_object->Release();
 		CleanupFrame();
 
 
 		class Global* const global = Global::GetInstance();
-		if (m_object == global->m_lastSelectedUnit)
+		if (A == global->m_lastSelectedUnit)
 			global->m_lastSelectedUnit = nullptr;
-		m_object = nullptr;
+		//m_object = nullptr;
 	}
 }
 

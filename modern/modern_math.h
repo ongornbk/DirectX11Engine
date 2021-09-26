@@ -104,7 +104,6 @@ template <class T> inline T modern_max(T a, T b);
 template <class T> inline T modern_abs(T a);
 template <class T> inline T modern_pow(T a,int32_t b);
 
-inline float modern_sign(float a);
 inline float modern_sin(float a);
 inline float modern_cos(float a);
 inline float modern_tan(float a);
@@ -124,5 +123,11 @@ inline float modern_random_percentage();
 inline void  modern_seed(uint32_t seed);
 inline uint32_t  modern_seed_malloc();
 inline void modern_seed_malloc(uint32_t& seed);
+
+template <class T>
+T modern_sign(const T val)
+{
+	return (T(0) < val) - (val < T(0));
+}
 
 #include "modern_math.inl"

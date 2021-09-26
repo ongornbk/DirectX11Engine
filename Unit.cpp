@@ -24,7 +24,6 @@ Unit::Unit() :
 	m_scale(1.f, 1.f, 1.f, 1.f),
 	m_vertexBuffer(nullptr),
 	m_template(nullptr),
-	m_rotation(DEFAULT_ROTATION),
 	m_isLooping(true),
 	m_animationSpeed(30.f),
 	m_framesPerSecond(1.f),
@@ -36,6 +35,8 @@ Unit::Unit() :
 {
 	m_floats[0] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 	m_floats[1] = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+	m_rotation[0] = DEFAULT_ROTATION;
+	m_rotation[1] = DEFAULT_ROTATION;
 
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
@@ -44,9 +45,6 @@ Unit::Unit() :
 	m_attack.active = false;
 
 	m_tasks.SetOwner(this);
-
-
-	
 }
 
 Unit::Unit(class Unit* const other) :
@@ -54,7 +52,6 @@ Unit::Unit(class Unit* const other) :
 	m_scale(other->m_scale),
 	m_vertexBuffer(nullptr),
 	m_template(nullptr),
-	m_rotation(DEFAULT_ROTATION),
 	m_isLooping(true),
 	m_animationSpeed(other->m_animationSpeed),
 	m_framesPerSecond(other->m_framesPerSecond),
@@ -66,6 +63,9 @@ Unit::Unit(class Unit* const other) :
 {
 	m_floats[0] = DirectX::XMFLOAT3(other->m_floats[0]);
 	m_floats[1] = DirectX::XMFLOAT3(other->m_floats[1]);
+
+	m_rotation[0] = DEFAULT_ROTATION;
+	m_rotation[1] = DEFAULT_ROTATION;
 
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 	m_modelVariant.SetVariant(other->m_modelVariant.GetVariant());
@@ -259,6 +259,9 @@ void Unit::Update(const float dt)
 
 		if (!m_stop)
 		{
+			m_rotation[0] += modern_sign(m_rotation[1]-m_rotation[0]);
+
+
 			m_flags.m_collided = TileMap::CollisionAt(m_boundingSphere.Center);
 			if (m_flags.m_collided)
 			{
@@ -344,16 +347,16 @@ void Unit::Update(const float dt)
 			struct SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
 			vertices[0].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
-			vertices[0].uv.y = (m_rotation + 1.f) / m_rotations;
+			vertices[0].uv.y = (m_rotation[0] + 1.f) / m_rotations;
 
 			vertices[1].uv.x = m_currentFrame / m_modelVariant.GetMaxFrames();
-			vertices[1].uv.y = m_rotation / m_rotations;
+			vertices[1].uv.y = m_rotation[0] / m_rotations;
 
 			vertices[2].uv.x = (m_currentFrame + 1.f) / m_modelVariant.GetMaxFrames();
-			vertices[2].uv.y = m_rotation / m_rotations;
+			vertices[2].uv.y = m_rotation[0] / m_rotations;
 
 			vertices[3].uv.x = (m_currentFrame + 1.f) / m_modelVariant.GetMaxFrames();
-			vertices[3].uv.y = (m_rotation + 1.f) / m_rotations;
+			vertices[3].uv.y = (m_rotation[0] + 1.f) / m_rotations;
 
 
 #pragma omp critical
@@ -426,8 +429,8 @@ void Unit::Intersect(class EObject* const other)
 {
 	if (m_intersection == false)
 	{
-		m_boundingSphere.Center.x = m_floats[1].x;
-		m_boundingSphere.Center.y = m_floats[1].y;
+		//m_boundingSphere.Center.x = m_floats[1].x;
+		//m_boundingSphere.Center.y = m_floats[1].y;
 		{
 			if (other->m_flags.m_pushable == false)
 				m_stop = false;
@@ -524,7 +527,7 @@ float Unit::GetNumberOfRotations() const noexcept
 
 float Unit::GetRotation() const noexcept
 {
-	return m_rotation;
+	return m_rotation[0];
 }
 
 void Unit::SetSpeed(const float speed)
@@ -569,13 +572,13 @@ void Unit::ChangeWalkingStance()
 
 void Unit::SetRotations(const int32 rotations)
 {
-	(this->m_rotation) = (float)(rotations % (int32_t)m_rotations);
+	(this->m_rotations) = (float)(rotations % (int32_t)m_rotations);
 }
 
 void Unit::SetRotation(float rotation)
 {
 	//m_rotation = rotation;
-	m_rotation = (float)((int32_t)rotation % (int32_t)m_rotations);
+	m_rotation[1] = (float)((int32_t)rotation % (int32_t)m_rotations);
 }
 
 void Unit::SetVelocity(const float x,const float y,const float z)

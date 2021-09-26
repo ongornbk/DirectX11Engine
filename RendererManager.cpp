@@ -307,7 +307,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 	//static float updatetime = 0.f;
 
-	void RendererManager::Update(const float dt)
+	void RendererManager::Update(const float dt,const bool renderframe)
 	{
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
@@ -344,10 +344,20 @@ void RendererManager::PushInterface(Interface* const object)
 				}
 				//g_units.Update(dt);
 				//m_objects.Update(dt);
-
-				for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+				if (renderframe)
 				{
-					m_layers[i]->Update(dt);
+					for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+					{
+						
+						m_layers[i]->Update(dt);
+					}
+				}
+				else
+				{
+						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+						{
+							m_layers[i]->Update(dt);
+						}
 				}
 
 			}
@@ -401,7 +411,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 			}
 			else
 			{
-				tree->SetColorFilter(1.f, 1.f, 1.f, 0.4f);
+				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
 				tree->m_flags.m_cast_shadow = false;
 			}
 			switch (type)

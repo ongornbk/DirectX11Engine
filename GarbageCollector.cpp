@@ -16,18 +16,20 @@ void GarbageCollector::AsyncDelete(void* ptr)
 
 void GarbageCollector::AsyncDelete(EObject* const obj)
 {
-	m_garbage.push_back(DeleteObjectTrash(obj));
+	//m_garbage.push_back(DeleteObjectTrash(obj));
+	//m_handles.emplace_back(obj->GetHandle());
+	delete obj;
 }
 
 void GarbageCollector::AsyncFree(void* ptr)
 {
-
 	m_garbage.push_back(FreeTrash(ptr));
 }
 
 void GarbageCollector::Update()
 {
 	m_garbage.clear();
+	//m_handles.clear();
 }
 
 GarbageCollector* GarbageCollector::GetInstance() noexcept

@@ -5,7 +5,7 @@
 class ActionSetShadowCast :
 	public IAction
 {
-	class EObject* m_object;
+	class modern_handle m_object;
 	bool           m_shadowCast;
 
 	ActionSetShadowCast() = delete;

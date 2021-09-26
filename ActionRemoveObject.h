@@ -6,7 +6,7 @@
 class ActionRemoveObject :
 	public IAction
 {
-	class EObject* m_object;
+	class modern_handle m_object;
 
 	ActionRemoveObject() = delete;
 

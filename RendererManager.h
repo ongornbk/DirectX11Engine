@@ -63,7 +63,7 @@ public:
 		const struct XMFLOAT4X4& viewMatrix,
 		const struct XMFLOAT4X4& projectionMatrix
 	);
-	void Update(const float dt);
+	void Update(const float dt,const bool renderframe = false);
 	void Focus(class EObject* const object,const enum class ObjectFocusType type);
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);

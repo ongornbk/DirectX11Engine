@@ -1,7 +1,11 @@
 #include "FrameLocker.h"
 
 
-FrameLocker::FrameLocker(const float lock) : m_lock(1 / lock), m_time(0.f), m_deltaTime(0.f)
+FrameLocker::FrameLocker(const float lock) : 
+	m_lock(1 / lock),
+	m_time(0.f),
+	m_deltaTime(0.f),
+	m_state(false)
 {
 
 }
@@ -16,10 +20,17 @@ bool FrameLocker::Run() noexcept
 	{
 		m_deltaTime = m_time;
 		m_time = 0.f;
+		m_state = true;
 		return true;
 	}
 	m_deltaTime = 0.f;
+	m_state = false;
 	return false;
+}
+
+bool FrameLocker::State() const noexcept
+{
+	return m_state;
 }
 
 void FrameLocker::Update(const float dt) noexcept

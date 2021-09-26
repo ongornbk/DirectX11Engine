@@ -594,7 +594,7 @@ namespace lua_callback
 			class TaskGotoPoint* const task = new TaskGotoPoint();
 			task->destination.x = LUA_FLOAT(state, 2);
 			task->destination.y = LUA_FLOAT(state, 3);
-			task->object = unit;
+			task->object.make_handle(unit->GetHandle());
 			unit->GiveTask(task);
 		}
 			return 0;
@@ -610,7 +610,7 @@ namespace lua_callback
 			class TaskGotoPoint* const task = new TaskGotoPoint();
 			task->destination.x = LUA_FLOAT(state, 2);
 			task->destination.y = LUA_FLOAT(state, 3);
-			task->object = unit;
+			task->object.make_handle(unit->GetHandle());
 			unit->SetTask(task);
 		}
 		return 0;
@@ -650,8 +650,8 @@ namespace lua_callback
 				else
 				{
 					class TaskAttack* const task = new TaskAttack();
-					task->object = object;
-					task->target = target;
+					task->object.make_handle(object->GetHandle());
+					task->target.make_handle(target->GetHandle());
 					task->Initialize();
 					object->SetTask(task);
 					if (task->inrange)

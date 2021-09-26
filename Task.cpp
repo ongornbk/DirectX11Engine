@@ -7,8 +7,11 @@
 #include "IPP.h"
 #include "UserInterfaceGame.h"
 
+
 #define CONTINUE_TASK return true
 #define CLOSE_TASK return false
+
+//Do not lock owner of task
 	 
 
 	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation,const float rotations) noexcept
@@ -40,37 +43,40 @@ TaskGotoPoint::TaskGotoPoint()
 
 bool TaskGotoPoint::Update()
 {
-
+	class Unit* const A = (class Unit*)object.get();
 	
-	XMFLOAT3 position = object->GetPosition();
+	if (A)
+	{
+		//modern_guard guard(A);
+		XMFLOAT3 position = A->GetPosition();
 
 
-		
-		if (modern_xfloat3_distance2(position, destination) > object->GetCollisionRadius())
+
+		if (modern_xfloat3_distance2(position, destination) > A->GetCollisionRadius())
 		{
 
-			switch (object->GetWalkingStance())
+			switch (A->GetWalkingStance())
 			{
 			case WalkingStance::WALKING_STANCE_RUN:
 			{
-				object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
+				A->SetAnimation(ModelStance::MODEL_STANCE_RUN);
 				break;
 			}
 			case WalkingStance::WALKING_STANCE_WALK:
 			{
-				object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
+				A->SetAnimation(ModelStance::MODEL_STANCE_WALK);
 				break;
 			}
 			}
 
-			float rotation = modern_xangle2_between_points3(position,destination);
-		
+			float rotation = modern_xangle2_between_points3(position, destination);
+
 			rotation += 180.f;
-			rotation /= (360.f / object->GetNumberOfRotations());
-			XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], fmod(rotation + (object->GetNumberOfRotations() / 2.f), object->GetNumberOfRotations()), object->GetNumberOfRotations());
-			object->SetRotation(rotation + (object->GetNumberOfRotations() / 2.f));
-			object->SetVelocity(f3.x, f3.y, f3.z);
-			
+			rotation /= (360.f / A->GetNumberOfRotations());
+			XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], fmod(rotation + (A->GetNumberOfRotations() / 2.f), A->GetNumberOfRotations()), A->GetNumberOfRotations());
+			A->SetRotation(rotation + (A->GetNumberOfRotations() / 2.f));
+			A->SetVelocity(f3.x, f3.y, f3.z);
+
 			//UserInterfaceGame::GetGameChat()->PushText(modern_string((int32_t)rotation).c_str());
 
 			CONTINUE_TASK;
@@ -79,6 +85,11 @@ bool TaskGotoPoint::Update()
 		{
 			CLOSE_TASK;
 		}
+	}
+	else
+	{
+		CLOSE_TASK;
+	}
 }
 
 void TaskGotoPoint::Release()
@@ -97,45 +108,56 @@ TaskPatrol::TaskPatrol()
 
 bool TaskPatrol::Update()
 {
+	class Unit* const A = (class Unit*)object.get();
+
+
 #define angle 3.14f / 8
-	XMFLOAT3 position = object->GetPosition();
-	XMFLOAT3 destination;
-	switch (m_target)
+	if (A)
 	{
-	case true:
-		destination = pointB;
-		break;
-	case false:
-		destination = pointA;
-		break;
-	}
-	if (modern_xfloat3_distance2(position, destination) > object->GetCollisionRadius())
-	{
-		switch (object->GetWalkingStance())
+		//modern_guard guard(A);
+		DirectX::XMFLOAT3 position = A->GetPosition();
+		DirectX::XMFLOAT3 destination;
+		switch (m_target)
 		{
-		case WalkingStance::WALKING_STANCE_RUN:
-		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
+		case true:
+			destination = pointB;
+			break;
+		case false:
+			destination = pointA;
 			break;
 		}
-		case WalkingStance::WALKING_STANCE_WALK:
+		if (modern_xfloat3_distance2(position, destination) > A->GetCollisionRadius())
 		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
-			break;
+			switch (A->GetWalkingStance())
+			{
+			case WalkingStance::WALKING_STANCE_RUN:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_RUN);
+				break;
+			}
+			case WalkingStance::WALKING_STANCE_WALK:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_WALK);
+				break;
+			}
+			}
+			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
+			rotation += 90.0f;
+			rotation /= (360.f / A->GetNumberOfRotations());
+			rotation = A->GetNumberOfRotations() - rotation;
+			A->SetRotation(rotation);
+			XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], A->GetRotation());
+			A->SetVelocity(f3.x, f3.y, f3.z);
+			CONTINUE_TASK;
 		}
+		else
+		{
+			m_target = false;
 		}
-		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
-		rotation += 90.0f;
-		rotation /= (360.f / object->GetNumberOfRotations());
-		rotation = object->GetNumberOfRotations() - rotation;
-		object->SetRotation(rotation);
-		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
-		object->SetVelocity(f3.x, f3.y, f3.z);
-		CONTINUE_TASK;
 	}
 	else
 	{
-		m_target = false;
+		CLOSE_TASK;
 	}
 	CLOSE_TASK;
 }
@@ -153,38 +175,50 @@ TaskFollow::TaskFollow()
 
 bool TaskFollow::Update()
 {
+	class Unit* const A = (class Unit*)object.get();
+	class Unit* const B = (class Unit*)target.get();
 #define angle 3.14f / 8
-	XMFLOAT3 position = object->GetPosition();
-	XMFLOAT3 destination = target->GetPosition();
-	if (modern_xfloat3_distance2(position, destination) > 200.0f)
+	if (A&&B)
 	{
-		switch (object->GetWalkingStance())
+		//modern_guard guardA(A);
+		modern_shared_guard guardB(B);
+
+		DirectX::XMFLOAT3 position = A->GetPosition();
+		DirectX::XMFLOAT3 destination = B->GetPosition();
+		if (modern_xfloat3_distance2(position, destination) > 200.0f)
 		{
-		case WalkingStance::WALKING_STANCE_RUN:
+			switch (A->GetWalkingStance())
+			{
+			case WalkingStance::WALKING_STANCE_RUN:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_RUN);
+					break;
+			}
+			case WalkingStance::WALKING_STANCE_WALK:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_WALK);
+				break;
+			}
+			}
+			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
+			rotation += 90.f;
+			rotation /= (360.f / A->GetNumberOfRotations());
+			rotation = A->GetNumberOfRotations() - rotation;
+			A->SetRotation(rotation);
+			XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], A->GetRotation());
+			A->SetVelocity(f3.x, f3.y, f3.z);
+			CONTINUE_TASK;
+		}
+		else
 		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
-			break;
+			A->SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
+			A->SetVelocity(0.0f, 0.0f, 0.0f);
 		}
-		case WalkingStance::WALKING_STANCE_WALK:
-		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
-			break;
-		}
-		}
-		float rotation = atan2(destination.y - position.y, destination.x - position.x)*180.0f / 3.141f;
-		rotation += 90.f;
-		rotation /= (360.f / object->GetNumberOfRotations());
-		rotation = object->GetNumberOfRotations() - rotation;
-		object->SetRotation(rotation);
-		XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
-		object->SetVelocity(f3.x, f3.y, f3.z);
-		CONTINUE_TASK;
-	}
-	else
-	{
-		object->SetAnimation(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
-		object->SetVelocity(0.0f,0.0f,0.0f);
-	}
+}
+else
+{
+CLOSE_TASK;
+}
 	CLOSE_TASK;
 }
 
@@ -203,12 +237,16 @@ TaskAttack::TaskAttack()
 
 void TaskAttack::Initialize()
 {
-	if(object&&target)
+	class Unit* const A = (class Unit*)object.get();
+	class Unit* const B = (class Unit*)target.get();
+	if(A&&B)
 	{
-		const DirectX::XMFLOAT3 position = object->GetPosition();
-		const DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
+		//modern_shared_guard guardA(A);
+		modern_shared_guard guardB(B);
+		const DirectX::XMFLOAT3 position = A->GetPosition();
+		const DirectX::XMFLOAT3 destination = B->m_boundingSphere.Center;
 
-		const Attack atk = object->GetAttack();
+		const Attack atk = A->GetAttack();
 
 		inrange = (modern_xfloat3_distance2(position, destination) > atk.range);
 	}
@@ -216,50 +254,68 @@ void TaskAttack::Initialize()
 
 bool TaskAttack::Update()
 {
-	DirectX::XMFLOAT3 position = object->GetPosition();
-	DirectX::XMFLOAT3 destination = target->GetPosition();
-	
-	const Attack atk = object->GetAttack();
+	class Unit* const A = (class Unit*)object.get();
+	class Unit* const B = (class Unit*)target.get();
 
-	inrange = (modern_xfloat3_distance2(position, destination) > atk.range);
 
-	
-	if (inrange)
+	if (A && B)
 	{
-		atk.active = false;
-		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
-		rotation += 90.0f;
-		rotation /= (360.f / object->GetNumberOfRotations());
-		rotation = object->GetNumberOfRotations() - rotation;
-		object->SetRotation(rotation);
-		switch (object->GetWalkingStance())
+		//modern_guard guardA(A);
+		modern_shared_guard guardB(B);
+
+		DirectX::XMFLOAT3 position = A->GetPosition();
+		DirectX::XMFLOAT3 destination = B->GetPosition();
+
+		const Attack atk = A->GetAttack();
+
+		inrange = (modern_xfloat3_distance2(position, destination) > atk.range);
+
+
+		if (inrange)
 		{
-		case WalkingStance::WALKING_STANCE_RUN:
+			atk.active = false;
+			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
+			rotation += 90.0f;
+			rotation /= (360.f / A->GetNumberOfRotations());
+			rotation = A->GetNumberOfRotations() - rotation;
+			A->SetRotation(rotation);
+			switch (A->GetWalkingStance())
+			{
+			case WalkingStance::WALKING_STANCE_RUN:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_RUN);
+				break;
+			}
+			case WalkingStance::WALKING_STANCE_WALK:
+			{
+				A->SetAnimation(ModelStance::MODEL_STANCE_WALK);
+				break;
+			}
+			}
+
+			DirectX::XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], A->GetRotation());
+			A->SetVelocity(f3.x, f3.y, f3.z);
+			CONTINUE_TASK;
+		}
+		else
 		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_RUN);
-			break;
+			return A->BeginAttack(B);
 		}
-		case WalkingStance::WALKING_STANCE_WALK:
-		{
-			object->SetAnimation(ModelStance::MODEL_STANCE_WALK);
-			break;
-		}
-		}
-		
-		DirectX::XMFLOAT3 f3 = calculateVelocity(object->m_speed[0], object->GetRotation());
-		object->SetVelocity(f3.x, f3.y, f3.z);
-		CONTINUE_TASK;
 	}
-	else
 	{
-		return object->BeginAttack(target);
+		CLOSE_TASK;
 	}
 	CLOSE_TASK;
 }
 
 void TaskAttack::Release()
 {
-	const Attack atk = object->GetAttack();
-	atk.active = false;
+	class Unit* const A = (class Unit*)object.get();
+	if (A)
+	{
+		//modern_guard guardA(A);
+		const Attack atk = A->GetAttack();
+		atk.active = false;
+	}
 	delete this;
 }

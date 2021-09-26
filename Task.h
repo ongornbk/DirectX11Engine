@@ -1,4 +1,8 @@
 #pragma once
+#include "modern/modern_guard.h"
+#include "modern/modern_shared_guard.h"
+#include "modern/modern_handle.h"
+
 #include <d3d11_1.h>
 #include <directxmath.h>
 #include <atomic>
@@ -45,7 +49,7 @@ public:
 
 	bool     Update() override;
 	void     Release() override;
-	class Unit*    object;
+	class modern_handle    object;
 	DirectX::XMFLOAT3 destination;
 };
 
@@ -57,7 +61,7 @@ public:
 
 	bool     Update() override;
 	void     Release() override;
-	class Unit*    object;
+	class modern_handle    object;
 	DirectX::XMFLOAT3 pointA;
 	DirectX::XMFLOAT3 pointB;
 private:
@@ -74,8 +78,8 @@ public:
 
 	bool          Update() override;
 	void          Release() override;
-	class Unit*         object;
-	class Unit*         target;
+	class modern_handle         object;
+	class modern_handle         target;
 };
 
 class TaskAttack : public Task
@@ -89,8 +93,8 @@ public:
 
 	bool          Update() override;
 	void          Release() override;
-	class  Unit*         object{};
-	class  Unit*      target{};
+	class  modern_handle        object{};
+	class  modern_handle      target{};
 
 	bool inrange;
 };

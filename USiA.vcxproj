@@ -237,6 +237,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
     <ClInclude Include="DeleteArrayTrash.h" />
+    <ClInclude Include="DeleteHandleTrash.h" />
     <ClInclude Include="DeleteObject.h" />
     <ClInclude Include="DeleteTrash.h" />
     <ClInclude Include="Destructible.h" />
@@ -467,6 +468,7 @@
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
     <ClCompile Include="DeleteArrayTrash.cpp" />
+    <ClCompile Include="DeleteHandleTrash.cpp" />
     <ClCompile Include="DeleteObject.cpp" />
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />

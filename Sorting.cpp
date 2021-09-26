@@ -585,6 +585,10 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 			else         B->m_boundingSphere.Center.x += Scollision;
 			}
 		}
+		//A->Intersect(B);
+		//B->Intersect(A);
+		//CRITICAL
+		//return 	A->m_boundingSphere.Center.y > B->m_boundingSphere.Center.y;
 	}
 	return Ay > By;
 }
@@ -661,7 +665,7 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 		A->Intersect(B);
 		B->Intersect(A);
 			//CRITICAL
-		return 	A->m_boundingSphere.Center.x > B->m_boundingSphere.Center.x;
+		//return 	A->m_boundingSphere.Center.x > B->m_boundingSphere.Center.x;
 	}
 
 	return Ax > Bx;
@@ -915,23 +919,28 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 		class EObject* obj = vectemp[j];
 		if (obj)
 		{
-			modern_guard guard(obj);
+			
 			switch (obj->m_managementType)
 			{
 			case ObjectManagementType::OBJECT_MANAGEMENT_DISABLED:
 				break;
 			case ObjectManagementType::OBJECT_MANAGEMENT_REMOVE:
+			{
+				modern_guard guard(obj);
 				obj->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
 				vectemp.remove(j);
 				j--;
 				break;
+			}
 			case ObjectManagementType::OBJECT_MANAGEMENT_DELETE:
+			{
 				collector->AsyncDelete(obj);
 				//delete obj;
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;
 				break;
+			}
 				}
 				
 			

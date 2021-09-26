@@ -34,7 +34,8 @@ void TaskQueue::Discard()
 {
 	while (!m_tasks.empty())
 	{
-		GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
+		//GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
+		m_tasks.front()->Release();
 		m_tasks.pop();
 	}
 	//if (m_owner)
@@ -93,7 +94,7 @@ void TaskQueue::Wander(Unit * unit)
 {
 	class TaskGotoPoint* task = new TaskGotoPoint();
 	task->destination = RandomizeXMFLOAT3(unit->GetPosition(), 600.0f, 600.0f);
-	task->object = unit;
+	task->object.make_handle(unit->GetHandle());
 	QueueTask(task);
 }
 

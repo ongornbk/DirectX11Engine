@@ -1,7 +1,9 @@
 #include "ActionKillUnit.h"
+#include "modern/modern_guard.h"
 
-ActionKillUnit::ActionKillUnit(Unit* const object) : m_object(object)
+ActionKillUnit::ActionKillUnit(Unit* const object)
 {
+	m_object.make_handle(object->GetHandle());
 }
 
 ActionKillUnit::~ActionKillUnit()
@@ -10,9 +12,11 @@ ActionKillUnit::~ActionKillUnit()
 
 void ActionKillUnit::execute()
 {
-	if (m_object)
+	class Unit* const A = (class Unit*)m_object.get();
+	if (A)
 	{
-		m_object->Die(nullptr);
+		modern_guard guard(A);
+		A->Die(nullptr);
 	}
 }
 

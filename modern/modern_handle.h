@@ -11,12 +11,13 @@ class modern_handle
 	friend struct modern_class;
 protected:
 
-
+	//explicit modern_handle(struct modern_class* const obj);
 	void Release() const;
 public:
 
-	modern_handle(struct modern_class* const obj);
-	modern_handle(class modern_handle& diff);
+	modern_handle();
+	void make_handle(struct modern_class* const obj);
+	void make_handle(const class modern_handle& diff);
 	~modern_handle();
 	volatile modern_class* operator->();
 	volatile modern_class* get();

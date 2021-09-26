@@ -62,7 +62,7 @@ void MultiSound::Play()
 class sf::Sound* MultiSound::StartPlaying()
 {
 	MultiSound::SetLooping(true);
-	sf::Sound sound(m_soundBuffer);
+	sf::Sound& sound = *new sf::Sound(m_soundBuffer);
 	m_instances.push_back(sound);
 	m_instances.back().play();
 	return &sound;

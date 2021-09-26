@@ -7,5 +7,6 @@ class ITimer
 
 protected:
 	virtual bool update(const float dt) = 0;
+	virtual ~ITimer();
 };
 
