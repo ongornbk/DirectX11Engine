@@ -38,7 +38,7 @@ Unit::Unit() :
 	m_rotation[0] = DEFAULT_ROTATION;
 	m_rotation[1] = DEFAULT_ROTATION;
 
-	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&m_worldMatrix, DirectX::XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 
 	m_attack.range = 80.f;
@@ -67,7 +67,7 @@ Unit::Unit(class Unit* const other) :
 	m_rotation[0] = DEFAULT_ROTATION;
 	m_rotation[1] = DEFAULT_ROTATION;
 
-	DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&m_worldMatrix, DirectX::XMMatrixIdentity());
 	m_modelVariant.SetVariant(other->m_modelVariant.GetVariant());
 
 	m_attack.range = other->GetAttack().range;
@@ -157,6 +157,8 @@ void Unit::Render(
 	if (m_flags.m_rendering)
 	{
 
+
+
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
 
@@ -200,7 +202,7 @@ void Unit::PreRender(
 
 			//const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
-			const struct DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix);
+			const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix);
 			struct DirectX::XMFLOAT4X4 shadowMatrix;
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
 			shader.SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
@@ -259,6 +261,16 @@ void Unit::Update(const float dt)
 
 		if (!m_stop)
 		{
+			//if (m_modelVariant.Check())
+			//{
+				//delete m_vertexBuffer;
+				//{
+				//	m_vertexBuffer = new class VertexBuffer();
+				//	float sizexy[2] = { m_size,m_size };
+				//	(void)m_vertexBuffer->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(),, sizexy, true);
+				//}
+				//DirectX::XMMATRIX
+			//}
 			m_rotation[0] += modern_sign(m_rotation[1]-m_rotation[0]);
 
 
@@ -288,10 +300,14 @@ void Unit::Update(const float dt)
 
 			DirectX::XMStoreFloat4x4(
 				&m_worldMatrix,
-				XMMatrixTranslation(
+				DirectX::XMMatrixMultiply(
+				DirectX::XMMatrixScaling(m_modelVariant.GetSize(), m_modelVariant.GetSize(), m_modelVariant.GetSize()),
+				DirectX::XMMatrixTranslation(
 					m_boundingSphere.Center.x,
-					m_boundingSphere.Center.y + ((m_size * m_modelVariant.GetSize()) / 1.5f),
+					m_boundingSphere.Center.y,
 					m_boundingSphere.Center.z //- (m_size / 1.5f)
+				)
+					
 				)
 			);
 
@@ -359,7 +375,7 @@ void Unit::Update(const float dt)
 			vertices[3].uv.y = (m_rotation[0] + 1.f) / m_rotations;
 
 
-#pragma omp critical
+//#pragma omp critical
 			{
 				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 				if (FAILED(result))
@@ -385,14 +401,22 @@ void Unit::Update(const float dt)
 		float mousePosition[2];
 		UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
 		DirectX::FXMVECTOR point = XMVectorSet(mousePosition[0],mousePosition[1], 0.0f, 0.0f);
-		if (m_boundingSphere.Contains(point))
+		DirectX::BoundingBox select;
+		select.Center = m_boundingSphere.Center;
+		select.Center.y += m_size / 4.f;
+		select.Extents.x = m_size / 2.f;
+		select.Extents.y = m_size / 2.f;
+		select.Extents.z = m_size / 2.f;
 		{
-			m_flags.m_selected = true;
-			GLOBAL m_lastSelectedUnit = this;//atomic?
-		}
-		else
-		{
-			m_flags.m_selected = false;
+			if (select.Contains(point))
+			{
+				m_flags.m_selected = true;
+				GLOBAL m_lastSelectedUnit = this;//atomic?
+			}
+			else
+			{
+				m_flags.m_selected = false;
+			}
 		}
 	}
 
@@ -937,89 +961,90 @@ void Unit::InitializeModel(
 	{
 		m_modelVariant.m_maxFrames[i] = (float)paths->m_frames[i];
 		m_modelVariant.m_sizes[i] = (float)paths->m_sizes[i];
+		std::cout << modern_cstring((int)m_modelVariant.m_sizes[i]).c_str() << std::endl;
 	}
 
 	
 
 
-	if (paths->TOWNWALK != NULL)
+	if (paths->ATTACK_1 != NULL)
 	{
-		std::wstring tmp0 = std::wstring(paths->TOWNWALK);
+		std::wstring tmp0 = std::wstring(paths->ATTACK_1);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[0] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
-	if (paths->TOWNNEUTRAL != NULL)
+	if (paths->ATTACK_2 != NULL)
 	{
-		std::wstring tmp0 = std::wstring(paths->TOWNNEUTRAL);
+		std::wstring tmp0 = std::wstring(paths->ATTACK_2);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[1] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
-	}
-
-	if (paths->SPECIALCAST != NULL)
-	{
-		std::wstring tmp0 = std::wstring(paths->SPECIALCAST);
-		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[2] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 
 	if (paths->GETHIT != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->GETHIT);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[3] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[2] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
+
 	if (paths->KICK != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->KICK);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[4] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
-	}
-	if (paths->SPECIAL_1 != NULL)
-	{
-		std::wstring tmp0 = std::wstring(paths->SPECIAL_1);
-		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[5] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
-	}
-	if (paths->WALK != NULL)
-	{
-		std::wstring tmp0 = std::wstring(paths->WALK);
-		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[6] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
-	}
-	if (paths->ATTACK_1 != NULL)
-	{
-		std::wstring tmp0 = std::wstring(paths->ATTACK_1);
-		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[7] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[3] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->NEUTRAL != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->NEUTRAL);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[8] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
-	}
-	if (paths->ATTACK_2 != NULL)
-	{
-		std::wstring tmp0 = std::wstring(paths->ATTACK_2);
-		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[9] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[4] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->RUN != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->RUN);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[10] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[5] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->SPECIALCAST != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->SPECIALCAST);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[6] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->SPECIAL_1 != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->SPECIAL_1);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[7] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->SPECIAL_2 != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->SPECIAL_2);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[8] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
 	if (paths->SPECIAL_3 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->SPECIAL_3);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[9] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->TOWNNEUTRAL != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->TOWNNEUTRAL);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
+		m_modelVariant.m_textures[10] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+	}
+	if (paths->TOWNWALK != NULL)
+	{
+		std::wstring tmp0 = std::wstring(paths->TOWNWALK);
+		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[11] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}
-	if (paths->SPECIAL_4 != NULL)
+	if (paths->WALK != NULL)
 	{
-		std::wstring tmp0 = std::wstring(paths->SPECIAL_4);
+		std::wstring tmp0 = std::wstring(paths->WALK);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
 		m_modelVariant.m_textures[12] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
 	}

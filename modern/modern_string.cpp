@@ -2,7 +2,7 @@
 #include "modern_exception.h"
 #include "modern_math.h"
 #include <iostream>
-
+#include <string>
 
 
 constexpr wchar_t cs_number[10] = { L'0',L'1',L'2',L'3',L'4',L'5',L'6',L'7',L'8',L'9' };
@@ -180,24 +180,26 @@ int32_t modern_string::to_int32() noexcept
 
 float modern_string::to_float() noexcept
 {
-	float result = 0.f;
-	float negative = 1.f;
-	if (m_string->at(0) == L'-')
-	{
-		negative = -1.f;
-		pop_front();
-	}
+	//float result = 0.f;
+	//float negative = 1.f;
+	//if (m_string->at(0) == L'-')
+	//{
+	//	negative = -1.f;
+	//	pop_front();
+	//}
+	//
+	////modern_pair<modern_string, modern_string> split = SplitString(m_string->data(), L'.');
+	////
+	////result += (float)split.first.to_int32();
+	////
+	////float fres = (float)split.second.to_int32();
+	////fres /= modern_pow(10.f, (int32_t)split.second.size());
+	////
+	////return (result + fres) * negative;
+	//
+	//return 1.0f;
 
-	//modern_pair<modern_string, modern_string> split = SplitString(m_string->data(), L'.');
-
-	//result += (float)split.first.to_int32();
-
-	//float fres = (float)split.second.to_int32();
-	//fres /= modern_pow(10.f, (int32_t)split.second.size());
-
-	//return (result + fres) * negative;
-
-	return 1.0f;
+	return std::stof(m_string->data());
 }
 
 bool modern_string::to_bool() noexcept

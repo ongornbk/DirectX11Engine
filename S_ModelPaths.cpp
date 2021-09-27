@@ -110,8 +110,8 @@ ModelPaths::ModelPaths(WCHAR * file)
 	RUN         = animations.at(37);
 	SPECIALCAST = animations.at(38);
 	SPECIAL_1   = animations.at(39);
-	SPECIAL_3   = animations.at(40);
-	SPECIAL_4   = animations.at(41);
+	SPECIAL_2   = animations.at(40);
+	SPECIAL_3   = animations.at(41);
 	TOWNNEUTRAL = animations.at(42);
 	TOWNWALK    = animations.at(43);
 	WALK        = animations.at(44);

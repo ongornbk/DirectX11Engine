@@ -30,6 +30,7 @@ public:
 		{
 			ZeroMemory(m_textures, sizeof(Texture*) * 15);
 			m_variant = 0;
+			m_prevVariant = 0;
 		}
 
 		ID3D11ShaderResourceView* GetTexture() const
@@ -51,11 +52,18 @@ public:
 
 		void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const noexcept
 		{
+			this->m_prevVariant = this->m_variant;
 			this->m_variant = variant;
 		}
 		void SetVariant(const int32 variant) const
 		{
+			this->m_prevVariant = this->m_variant;
 			this->m_variant = variant;
+		}
+		
+		bool Check() const noexcept
+		{
+			return (this->m_variant != this->m_prevVariant);
 		}
 
 		Texture*             m_textures[15];
@@ -63,6 +71,7 @@ public:
 		float                m_sizes[15];
 	private:
 		mutable int32                m_variant;
+		mutable int32                m_prevVariant;
 
 	};
 
