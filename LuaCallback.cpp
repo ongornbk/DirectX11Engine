@@ -253,10 +253,11 @@ namespace lua_callback
 			struct lua_State* const state
 		) noexcept
 		{
-			MSVC_VOLATILE class Unit* unit = m_global->m_lastPickedUnit;
-			if (Unit::CheckIfValid((Unit*)(unit)))
+			//MSVC_VOLATILE class Unit* unit = m_global->m_lastPickedUnit;
+			class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
+			if (Unit::CheckIfValid(A))
 			{
-				m_engine->GetCameraControl()->LockCameraPositionOnUnit((Unit*)unit);
+				m_engine->GetCameraControl()->LockCameraPositionOnUnit(A);
 			}
 			return 0;
 		}
@@ -408,7 +409,7 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const unit = new class Unit();
-		m_global->m_pickedObject = unit;
+		m_global->m_pickedObject.make_handle(unit->GetHandle());
 		lua_pushinteger(state,(lua_Integer)unit);
 		return 1;
 	}
@@ -441,15 +442,15 @@ namespace lua_callback
 		//	Timer::CreateInstantTimer(new ActionRemoveObject(object));
 			//std::cout << "LUA DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
 			//return 0;
-
+			modern_guard guard(object);
 			object->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
 			//m_object->Release();
 			CleanupFrame();
 
 
-			class Global* const global = Global::GetInstance();
-			if (object == global->m_lastSelectedUnit)
-				global->m_lastSelectedUnit = nullptr;
+			//class Global* const global = Global::GetInstance();
+			//if (object == global->m_lastSelectedUnit)
+				//global->m_lastSelectedUnit = nullptr;
 			//object = nullptr;
 		}
 		//std::cout << "LUA 0 DELETE : " << enum_cast<int64_t>(object->m_type) << std::endl;
@@ -460,8 +461,15 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		m_global->m_pickedObject = m_global->m_lastPickedUnit = (class Unit* const)(lua_tointeger(state, 1));//dynamic cast?
+		//m_global->m_pickedObject = m_global->m_lastPickedUnit = (class Unit* const)(lua_tointeger(state, 1));//dynamic cast?
 			//(class Unit* const )LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
+		//m_global->m_pickedObject.make_handle(m_global->m_lastPickedUnit().make)
+		class Unit* const A = (class Unit* const)(lua_tointeger(state, 1));
+		if (Unit::CheckIfValid(A))
+		{
+			m_global->m_pickedObject.make_handle(A->GetHandle());
+			m_global->m_lastPickedUnit.make_handle(A->GetHandle());
+		}
 		return 0;
 	}
 
@@ -567,7 +575,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		MSVC_VOLATILE class Unit* const unit = m_global->m_lastSelectedUnit;
+		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_lastSelectedUnit.get();
 		lua_pushinteger(state, (lua_Integer)unit);
 		return 1;
 	}
@@ -579,7 +587,7 @@ namespace lua_callback
 		class Unit* const unit = (class Unit*)m_global->m_lastCreatedRenderContainer;
 		if (unit)
 		{
-			m_global->m_lastPickedUnit = unit;
+			m_global->m_lastPickedUnit.make_handle(unit->GetHandle());
 		}
 		return 0;
 	}
@@ -676,12 +684,14 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		if (Unit::CheckIfValid((Unit*)unit))
+		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
+		if (Unit::CheckIfValid(A))
 		{
+			modern_guard guard(A);
 			std::string  str = lua_tostring(state, 1);
 			class ISound* const sound = Canals::GetInstance()->__GetSound(str);
-			((Unit*)unit)->SetFootstepsSound(sound);
+			(A)->SetFootstepsSound(sound);
 		}
 		return 0;
 	}
@@ -690,10 +700,12 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		if (Unit::CheckIfValid((Unit*)unit))
+		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
+		if (Unit::CheckIfValid(A))
 		{
-			((Unit*)unit)->BeginRunning();
+			modern_guard guard(A);
+			A->BeginRunning();
 		}
 		return 0;
 	}
@@ -702,7 +714,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
+		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_lastPickedUnit.get();
 		if (Unit::CheckIfValid((Unit*)unit))
 		{
 			((Unit*)unit)->EndRunning();
@@ -1249,7 +1261,11 @@ namespace lua_callback
 		struct lua_State* const state
 	)
 	{
-		m_global->m_lastSelectedUnit = (class Unit* const)lua_tointeger(state, 1);
+		class Unit* const A = (class Unit* const)lua_tointeger(state, 1);
+		if (A)
+		{
+			m_global->m_lastSelectedUnit.make_handle(A->GetHandle());
+		}
 		return 0;
 	}
 
@@ -1414,12 +1430,14 @@ namespace lua_callback
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		const DirectX::XMFLOAT2 point = DirectX::XMFLOAT2((float)lua_tonumber(state, 2), (float)lua_tonumber(state, 3));
 
+		bool result = false;
+
 		if (unit0)
 		{
-			unit0->StartCasting(point);
+			result = unit0->StartCasting(point);
 		}
-
-		return 0;
+		lua_pushboolean(state, result);
+		return 1;
 	}
 
 	static int32 KillUnit(

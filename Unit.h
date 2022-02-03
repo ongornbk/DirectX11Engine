@@ -139,6 +139,7 @@ public:
 	void ChangeWalkingStance();
 	void SetRotations(const int32 rotations);
 	void SetRotation(const float rotation);
+	void ForceRotation(const float rotation);
 	void SetVelocity(const float x,const float y,const float z);
 	void DiscardTasks(); 
 	void SetPosition(const XMFLOAT3 position);

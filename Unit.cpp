@@ -411,7 +411,7 @@ void Unit::Update(const float dt)
 			if (select.Contains(point))
 			{
 				m_flags.m_selected = true;
-				GLOBAL m_lastSelectedUnit = this;//atomic?
+				GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
 			}
 			else
 			{
@@ -605,6 +605,12 @@ void Unit::SetRotation(float rotation)
 	m_rotation[1] = (float)((int32_t)rotation % (int32_t)m_rotations);
 }
 
+void Unit::ForceRotation(const float rotation)
+{
+	m_rotation[0] = (float)((int32_t)rotation % (int32_t)m_rotations);
+	m_rotation[1] = (float)((int32_t)rotation % (int32_t)m_rotations);
+}
+
 void Unit::SetVelocity(const float x,const float y,const float z)
 {
 	m_floats[0] = { x,y,z };
@@ -789,7 +795,8 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 		rotation += 90.0f;
 		rotation /= (360.f / m_rotations);
 		rotation = m_rotations - rotation;
-		SetRotation(rotation);
+		//SetRotation(rotation);
+		ForceRotation(rotation);
 		PlayAnimation(ModelStance::MODEL_STANCE_SPECIALCAST);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;

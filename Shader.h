@@ -58,22 +58,22 @@ public:
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	);
 
-	bool Shader::SetShaderColorParameters(
+	bool SetShaderColorParameters(
 		struct ID3D11DeviceContext* const deviceContext,
 		float * const colors
 	);
 
-	bool Shader::SetShaderColorParameters(
+	bool SetShaderColorParameters(
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct DirectX::XMFLOAT4& colors
 	);
 
-	bool Shader::SetShaderScaleParameters(
+	bool SetShaderScaleParameters(
 		struct ID3D11DeviceContext* const deviceContext,
 		float* const scale
 	);
 
-	bool Shader::SetShaderScaleParameters(
+	bool SetShaderScaleParameters(
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct DirectX::XMFLOAT4 &scale
 	);

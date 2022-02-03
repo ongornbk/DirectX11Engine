@@ -64,9 +64,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Engine">
-      <UniqueIdentifier>{c8da5a35-4815-4118-a39a-8aa0a32a9569}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Settings">
       <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
     </Filter>
@@ -81,9 +78,6 @@
     </Filter>
     <Filter Include="Header Files\modern">
       <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Engine\Action">
-      <UniqueIdentifier>{174a8554-550a-4165-9010-880351442030}</UniqueIdentifier>
     </Filter>
     <Filter Include="Project">
       <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
@@ -329,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="String.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\Containers\Pair.h">
-      <Filter>Core\Engine</Filter>
     </ClInclude>
     <ClInclude Include="List.h">
       <Filter>Core</Filter>

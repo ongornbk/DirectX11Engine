@@ -171,6 +171,11 @@ void Tree::Remove()
 	Timer::CreateInstantTimer(action);
 }
 
+void Tree::CastShadow(const bool shadow)
+{
+	m_flags.m_cast_shadow = shadow;
+}
+
 void Tree::SetVector(const DirectX::XMFLOAT3& vec) noexcept
 {
 

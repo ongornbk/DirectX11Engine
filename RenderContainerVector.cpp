@@ -241,9 +241,9 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	case 0U:
 	{
 
-#pragma omp parallel  num_threads(2)
+//#pragma omp parallel  num_threads(2)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
@@ -258,7 +258,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec + 1])
 				{
@@ -278,9 +278,9 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	case 31U:
 	{
-#pragma omp parallel num_threads(2)
+//#pragma omp parallel num_threads(2)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
@@ -295,7 +295,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
@@ -315,9 +315,9 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 	}
 	default:
 	{
-#pragma omp parallel num_threads(3)
+//#pragma omp parallel num_threads(3)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec - 1])
 				{
@@ -332,7 +332,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objectsXY[1][cVec])
 				{
@@ -347,7 +347,7 @@ std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				{
 					for (auto& obj : m_objectsXY[1][cVec + 1])

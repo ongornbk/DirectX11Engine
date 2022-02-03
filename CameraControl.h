@@ -1,6 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "Unit.h"
+#include "modern/modern_handle.h"
 
 class CameraControl
 {
@@ -14,6 +15,6 @@ public:
 private:
 	class Camera * m_camera;
 	bool     m_flags[1];
-	class Unit*    m_target;
+	class modern_handle   m_target;
 };
 

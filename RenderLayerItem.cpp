@@ -214,9 +214,9 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 	case 0U:
 	{
 
-#pragma omp parallel num_threads(2)
+//#pragma omp parallel num_threads(2)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
@@ -231,7 +231,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec + 1])
 				{
@@ -251,9 +251,9 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 	}
 	case 31U:
 	{
-#pragma omp parallel num_threads(2)
+//#pragma omp parallel num_threads(2)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
@@ -268,7 +268,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
@@ -288,9 +288,9 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 	}
 	default:
 	{
-#pragma omp parallel num_threads(3)
+//#pragma omp parallel num_threads(3)
 		{
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
@@ -305,7 +305,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
@@ -320,7 +320,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 					}
 				}
 			}
-#pragma omp single
+//#pragma omp single
 			{
 				{
 					for (auto& obj : m_objects[1][cVec + 1])

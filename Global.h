@@ -3,6 +3,7 @@
 #include "VariablesManager.h"
 #include "Doodads.h"
 #include "gdef.h"
+#include "modern/modern_handle.h"
 #include <stack>
 
 class Global
@@ -11,10 +12,10 @@ class Global
 public:
 	Global(void);
 	~Global(void);
-	MSVC_VOLATILE Unit*                m_lastPickedUnit;
-	MSVC_VOLATILE Unit*                m_lastSelectedUnit;
+	modern_handle                      m_lastPickedUnit;
+	modern_handle                      m_lastSelectedUnit;
 	MSVC_VOLATILE EObject*             m_lastCreatedRenderContainer;
-	MSVC_VOLATILE class EObject*       m_pickedObject{};
+	modern_handle                      m_pickedObject;
 	MSVC_VOLATILE ObjectFlags          m_lastFlags{};
 	MSVC_VOLATILE Task*                m_lastTask;
 	static Global*       GetInstance();

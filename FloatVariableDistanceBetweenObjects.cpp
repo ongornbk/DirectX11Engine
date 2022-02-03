@@ -5,8 +5,8 @@
 
 FloatVariableDistanceBetweenObjects::FloatVariableDistanceBetweenObjects(EObject* const A, EObject* const B)
 {
-	object_A.make_handle(A);
-	object_B.make_handle(B);
+	object_A.make_handle(A->GetHandle());
+	object_B.make_handle(B->GetHandle());
 }
 
 const float FloatVariableDistanceBetweenObjects::get()

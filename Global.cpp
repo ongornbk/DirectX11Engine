@@ -9,8 +9,8 @@ namespace
 
 Global::Global()
 {
-	m_lastPickedUnit = nullptr;
-	m_lastSelectedUnit = nullptr;
+	//m_lastPickedUnit = nullptr;
+	//m_lastSelectedUnit = nullptr;
 	m_lastTask = nullptr;
 	m_instance = this;
 	m_lastCreatedRenderContainer = nullptr;
@@ -18,7 +18,7 @@ Global::Global()
 	camera_up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	camera_lookat = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
-	m_gmap["pickedObject"] = (void*)m_pickedObject;
+	m_gmap["pickedObject"] = (void*)m_pickedObject.get();
 }
 
 

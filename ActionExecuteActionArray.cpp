@@ -14,7 +14,9 @@ ActionExecuteActionArray::~ActionExecuteActionArray()
 {
 	for (auto&& ele : m_actions)
 	{
-		GarbageCollector::GetInstance()->AsyncDelete(ele);
+		//GarbageCollector::GetInstance()->AsyncDelete(ele);
+		delete ele;
+		ele = nullptr;
 	}
 }
 

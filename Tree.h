@@ -43,6 +43,7 @@ public:
 	void Intersect(class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 	void Remove() override;
+	void CastShadow(const bool shadow = true);
 
 	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
 	DirectX::XMFLOAT3 GetVector() noexcept override;

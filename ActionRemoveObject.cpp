@@ -21,9 +21,9 @@ void ActionRemoveObject::execute()
 		CleanupFrame();
 
 
-		class Global* const global = Global::GetInstance();
-		if (A == global->m_lastSelectedUnit)
-			global->m_lastSelectedUnit = nullptr;
+		//class Global* const global = Global::GetInstance();
+		//if (A == global->m_lastSelectedUnit.get())
+			//global->m_lastSelectedUnit = nullptr;
 		//m_object = nullptr;
 	}
 }

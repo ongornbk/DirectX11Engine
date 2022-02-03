@@ -162,26 +162,21 @@ void RendererManager::PushUnit(
 	class Unit * const unit
 )
 {
-	//m_objects.Push(unit);
 	m_layers[enum_cast<int32_t>(unit->GetLayerType())]->Push(unit);
 }
 
 void RendererManager::PushDoodads(class Doodads * doodads)
 {
-	//m_objects.Push(doodads);
 	m_layers[enum_cast<int32_t>(doodads->GetLayerType())]->Push(doodads);
 }
 
 void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads)
 {
-	//m_objects.Push(doodads);
 	m_layers[enum_cast<int32_t>(doodads->GetLayerType())]->Push(doodads);
 }
 
 void RendererManager::PushTree(class Tree * tree)
 {
-	//m_objects.Push(tree);
-	//EditFrame();
 	m_layers[enum_cast<int32_t>(tree->GetLayerType())]->Push(tree);
 }
 
@@ -192,7 +187,7 @@ void RendererManager::Push(class EObject* const object, const enum class RenderL
 
 void RendererManager::PushRegionPointObject(RegionPointObject* object)
 {
-	//m_objects.Push(object);
+	m_layers[enum_cast<int32_t>(object->GetLayerType())]->Push(object);
 }
 
 void RendererManager::PushInterface(Interface* const object)
@@ -398,21 +393,23 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 	if (object)
 	{
 		constexpr float fadedistance = 250.f;
-		std::stack<Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
+		std::stack<class Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
 		while (stack.size())
 		{
 			Tree* tree = stack.top();
 			stack.pop();
 			if (tree->m_boundingSphere.Center.y > object->m_boundingSphere.Center.y)
 			{
+				//NON-TRANSPARENT
 				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
-				tree->m_flags.m_cast_shadow = true;
+				tree->CastShadow();
 				continue;
 			}
 			else
 			{
+				//TRANSPARENT
 				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
-				tree->m_flags.m_cast_shadow = false;
+				tree->CastShadow(false);
 			}
 			switch (type)
 			{
