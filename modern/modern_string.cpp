@@ -24,7 +24,7 @@ modern_string::modern_string(modern_string& string)
 
 modern_string::modern_string(const wchar_t* text)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 	m_string->reserve(wcslen(text)+1);
 	m_string->resize(wcslen(text)+1);
 #pragma warning(disable : 4996)
@@ -34,7 +34,7 @@ modern_string::modern_string(const wchar_t* text)
 modern_string::modern_string(const wchar_t* text_begin, const wchar_t* text_end)
 {
 
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 	m_string->reserve(text_end - text_begin + 1);
 	m_string->resize(text_end - text_begin + 1);
 	auto i = text_begin;
@@ -48,7 +48,7 @@ modern_string::modern_string(const wchar_t* text_begin, const wchar_t* text_end)
 
 modern_string::modern_string(const char* text)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 	m_string->reserve(strlen(text) + 1);
 	m_string->resize(strlen(text) + 1);
 #pragma warning(disable : 4996)
@@ -57,7 +57,7 @@ modern_string::modern_string(const char* text)
 
 modern_string::modern_string(const size_t number)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 	
 	size_t temp = number;
 
@@ -75,7 +75,7 @@ modern_string::modern_string(const size_t number)
 
 modern_string::modern_string(const int32_t number)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 
 	bool flag = false;
 
@@ -101,7 +101,7 @@ modern_string::modern_string(const int32_t number)
 
 modern_string::modern_string(const uint32_t number)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 
 	if (number == 0u)
 		m_string->push_back('0');
@@ -127,7 +127,7 @@ modern_string::modern_string(const char character)
 	m_string->push_back(t);
 }
 
-modern_string::modern_string(modern_exception& exception)
+modern_string::modern_string(class modern_exception& exception)
 {
 	*this = exception.what();
 }

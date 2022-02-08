@@ -6,7 +6,7 @@
 
 namespace
 {
-
+	static std::list<class ITimer*> m_stoppedTimers;
 	static std::list<class ITimer*> m_timers;
 	static std::list<class ITimer*> m_echoTimers;
 	static std::atomic<int64_t> m_stance = 0;

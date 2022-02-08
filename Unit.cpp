@@ -968,7 +968,7 @@ void Unit::InitializeModel(
 	{
 		m_modelVariant.m_maxFrames[i] = (float)paths->m_frames[i];
 		m_modelVariant.m_sizes[i] = (float)paths->m_sizes[i];
-		std::cout << modern_cstring((int)m_modelVariant.m_sizes[i]).c_str() << std::endl;
+		//std::cout << modern_cstring((int)m_modelVariant.m_sizes[i]).c_str() << std::endl;
 	}
 
 	

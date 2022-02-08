@@ -104,6 +104,8 @@ template <class T> inline T modern_max(T a, T b);
 template <class T> inline T modern_abs(T a);
 template <class T> inline T modern_pow(T a,int32_t b);
 
+inline const modern_Boolean modern_checkFloat32(const float f32) noexcept;
+
 inline float modern_sin(float a);
 inline float modern_cos(float a);
 inline float modern_tan(float a);

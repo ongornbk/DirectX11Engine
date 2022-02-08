@@ -83,7 +83,7 @@ void Text::Render(
 	}
 }
 
-void Text::SetPosition(XMFLOAT3 position)
+void Text::SetPosition(const struct XMFLOAT3& position)
 {
 	m_position = position;
 	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
@@ -140,6 +140,11 @@ void Text::SetPosition(XMFLOAT3 position)
 	}
 	}
 
+}
+
+void Text::Translate(const struct DirectX::XMFLOAT3& vec)
+{
+	this->SetPosition(modern_xfloat3_sum(m_position, vec));
 }
 
 void Text::SetText(std::string text)
@@ -274,4 +279,9 @@ void Text::Initialize()
 void Text::UpdatePosition()
 {
 	Text::SetPosition(m_position);
+}
+
+const modern_handle& Text::GetHandle()
+{
+	return m_object;
 }

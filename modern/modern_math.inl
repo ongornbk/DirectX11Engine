@@ -92,6 +92,11 @@ inline void modern_seed_malloc(uint32_t& seed)
 	modern_seed(seed);
 }
 
+inline const modern_Boolean modern_checkFloat32(const float f32) noexcept
+{
+	return  !(isnormal(f32) || isnan(f32));
+}
+
 inline float modern_sin(float a)
 {
 	return sinf(a * modern_degtorad);

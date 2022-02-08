@@ -110,6 +110,8 @@ namespace lua_callback
 		)
 		{
 #pragma warning(disable : 4996)
+			//modern_string textureName(LUA_STRING(state, 1));
+			//m_resources->LoadTextureResource(textureName.data()); BUGGED IN A FUNNY WAY BUT DOESNT CRASH SOMEHOW
 			std::string str = LUA_STRING(state, 1);
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
 			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();

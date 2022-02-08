@@ -12,3 +12,5 @@
 #include <conio.h>
 #include <xmmintrin.h>
 #include <comdef.h>
+
+	typedef int64_t modern_Boolean;

@@ -203,6 +203,7 @@
     <ClInclude Include="ActionSetShadowCast.h" />
     <ClInclude Include="ActionSkipRemainingActions.h" />
     <ClInclude Include="ActionStance.h" />
+    <ClInclude Include="ActionTranslateText.h" />
     <ClInclude Include="ActionType.h" />
     <ClInclude Include="ActionWait.h" />
     <ClInclude Include="ActionWaitUntil.h" />
@@ -441,6 +442,7 @@
     <ClCompile Include="ActionSetInterfaceText.cpp" />
     <ClCompile Include="ActionSetShadowCast.cpp" />
     <ClCompile Include="ActionSkipRemainingActions.cpp" />
+    <ClCompile Include="ActionTranslateText.cpp" />
     <ClCompile Include="ActionWait.cpp" />
     <ClCompile Include="ActionWaitUntil.cpp" />
     <ClCompile Include="Allocator.cpp" />

@@ -17,6 +17,7 @@
 #include "ActionSetShadowCast.h"
 #include "ActionWaitUntil.h"
 #include "ActionInitializeText.h"
+#include "ActionTranslateText.h"
 #include "ConditionFactory.h"
 #include "modern/modern_cstring.h"
 
@@ -68,8 +69,8 @@ RendererManager::RendererManager(
 	m_interfaceShader(inter),
 	m_focus(nullptr),
 	m_collision(false),
-	m_fpsText(nullptr),
-	m_objectsText(nullptr),
+	//m_fpsText(nullptr),
+	//m_objectsText(nullptr),
 	m_fps(0)
 {
 
@@ -101,20 +102,29 @@ RendererManager::RendererManager(
 	//m_fpsText->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(), m_interfaceShader, m_font, 20.f);
 
 	Timer::CreateInstantTimer(new ActionInitializeText(
-		&m_fpsText,
+		m_fpsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
 		m_font, 20.f
 	));
 
-	Timer::CreateInstantTimer(new ActionInitializeText(
-		&m_objectsText,
+	class ActionExecuteActionArray* marray = new ActionExecuteActionArray();
+	marray->push(new ActionInitializeText(
+		m_objectsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
 		m_font, 20.f
 	));
+
+	marray->push(new ActionTranslateText(
+		m_objectsText,
+		struct DirectX::XMFLOAT3(0.f, 20.f, 0.f
+		)));
+	
+
+	Timer::CreateInstantTimer(marray);
 }
 
 
@@ -143,17 +153,17 @@ RendererManager::~RendererManager()
 		}
 	}
 
-	if (m_fpsText)
-	{
-		delete m_fpsText;
-		m_fpsText = nullptr;
-	}
-
-	if (m_objectsText)
-	{
-		delete m_objectsText;
-		m_objectsText = nullptr;
-	}
+	//if (m_fpsText)
+	//{
+	//	delete m_fpsText;
+	//	m_fpsText = nullptr;
+	//}
+	//
+	//if (m_objectsText)
+	//{
+	//	delete m_objectsText;
+	//	m_objectsText = nullptr;
+	//}
 }
 
 
@@ -250,10 +260,24 @@ void RendererManager::PushInterface(Interface* const object)
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
+			class Text* const A = (class Text*)m_fpsText.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+
+			}
+			class Text* const B = (class Text*)m_objectsText.get();
+			if (B)
+			{
+				modern_guard g(B);
+				B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			}
+
 			//if (m_fpsText)
-			//	m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-			if (m_objectsText)
-				m_objectsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				//m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			//if (m_objectsText)
+				//m_objectsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 
 			//m_unitsShader->End(deviceContext);
 			//TextFont* font = TextFont::GetFontByName("ExocetLight");
@@ -306,10 +330,25 @@ void RendererManager::PushInterface(Interface* const object)
 	{
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
-		if(m_fpsText)
-		m_fpsText->Update();
-		if (m_objectsText)
-			m_objectsText->Update();
+
+		class Text* const A = (class Text*)m_fpsText.get();
+		if (A)
+		{
+			modern_guard g(A);
+			A->Update();
+
+		}
+		class Text* const B = (class Text*)m_objectsText.get();
+		if (B)
+		{
+			modern_guard g(B);
+			B->Update();
+		}
+
+		//if(m_fpsText)
+		//m_fpsText->Update();
+		//if (m_objectsText)
+		//	m_objectsText->Update();
 		//const float dt = ipp::Timer::GetDeltaTime();
 		//updatetime += dt;
 
@@ -481,11 +520,23 @@ void RendererManager::SetFps(const int32 fps)
 {
 //	m_objects.UpdateFps(fps);
 	UserInterfaceGame::SetFPS(fps);
+	class Text* const A = (class Text*)m_fpsText.get();
+	if (A)
+	{
+		modern_guard g(A);
+			A->SetText(modern_cstring(fps).c_str());
 
-	if(m_fpsText)
-	m_fpsText->SetText(modern_cstring(fps).c_str());
-	if (m_objectsText)
-		m_objectsText->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
+	}
+	class Text* const B = (class Text*)m_objectsText.get();
+	if (B)
+	{
+		modern_guard g(B);
+		B->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
+	}
+	//if(m_fpsText)
+	//m_fpsText->SetText(modern_cstring(fps).c_str());
+	//if (m_objectsText)
+	//	m_objectsText->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
 }
 
 void RendererManager::SetFocus(Unit* const unit)
@@ -516,7 +567,10 @@ TextFont* const RendererManager::GetFont()
 	return m_font;
 }
 
-std::stack<Unit*> _vectorcall RendererManager::GetUnitsInRange(class Unit * const object,const float range) noexcept
+std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(
+	class Unit * const object,
+	const float range)
+	noexcept
 {
 	//return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
 	return m_layers[enum_cast<int32_t>(object->GetLayerType())]->GetUnitsInRange(object, range);

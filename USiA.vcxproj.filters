@@ -79,9 +79,6 @@
     <Filter Include="Header Files\modern">
       <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project">
-      <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Lua\Locations">
       <UniqueIdentifier>{b9a7356f-1231-4d9e-8384-5a289124e713}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,9 @@
     </Filter>
     <Filter Include="Files\gfx">
       <UniqueIdentifier>{f500fffa-7ad5-400d-b4a0-40ab61aa6da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Project">
+      <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -831,6 +831,9 @@
     <ClInclude Include="DeleteHandleTrash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ActionTranslateText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1401,6 +1404,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteHandleTrash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionTranslateText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

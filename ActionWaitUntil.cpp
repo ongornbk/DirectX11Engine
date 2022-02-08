@@ -17,12 +17,10 @@ ActionWaitUntil::~ActionWaitUntil()
 
 void ActionWaitUntil::execute()
 {
-	//WHY??
 }
 
 const ActionBehavior ActionWaitUntil::execute_in_array()
 {
-	//this->execute(); WHY??
 	return ActionBehavior::ACTION_BEHAVIOR_SPLITARRAY;
 }
 

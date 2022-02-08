@@ -5,12 +5,13 @@
 #include "TextAlignment.h"
 #include <comdef.h>
 #include "modern/modern.h"
+#include "modern/modern_class.h"
 
 using std::string;
 
 
 
-class Text
+class Text : public modern_class
 {
 public:
 
@@ -28,7 +29,8 @@ public:
 		const struct DirectX::XMFLOAT4X4& projectionMatrix,
 		class Shader* const shader);
 
-	void SetPosition(XMFLOAT3 position);
+	void SetPosition(const struct DirectX::XMFLOAT3& position);
+	void Translate(const struct DirectX::XMFLOAT3& vec);
 	void SetText(std::string text);
 	//void SetText(const _bstr_t text);
 	string GetText();
@@ -50,5 +52,9 @@ private:
 
 	void Initialize();
 	void UpdatePosition();
+
+public:
+
+	const modern_handle& GetHandle();
 };
 

@@ -1,6 +1,10 @@
 #include "ActionIfThenElse.h"
 
-ActionIfThenElse::ActionIfThenElse(class ICondition* const __condition, class IAction* const __then, class IAction* const __else) : m_if(__condition), m_then(__then), m_else(__else)
+ActionIfThenElse::ActionIfThenElse(
+	class ICondition* const __condition,
+	class IAction* const __then,
+	class IAction* const __else)
+	: m_if(__condition), m_then(__then), m_else(__else)
 {
 }
 
@@ -35,7 +39,6 @@ IAction* const ActionIfThenElse::GetThen()
 
 const ActionBehavior ActionIfThenElse::execute_in_array()
 {
-	//this->execute();//WHY???
 	if (m_if->CheckCondition())
 		return m_then->execute_in_array();
 	m_then = m_else;

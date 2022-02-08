@@ -6,7 +6,7 @@ struct modern_class;
 
 class modern_handle
 {
-	volatile modern_class** m_object;
+	volatile struct modern_class** m_object;
 	volatile int64_t*      m_num;
 	friend struct modern_class;
 
@@ -22,7 +22,7 @@ public:
 	
 	void make_handle(const class modern_handle& diff);
 	~modern_handle();
-	volatile modern_class* operator->();
-	volatile modern_class* get();
+	volatile struct modern_class* operator->();
+	volatile struct modern_class* const get();
 };
 

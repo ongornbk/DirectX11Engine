@@ -69,6 +69,7 @@ static int32_t tilesub[32] ={
 
 	void SetCellMultiplier(const float multiplier) noexcept
 	{
+		if(modern_checkFloat32(multiplier))
 		m_cellMultiplier = multiplier/100.0f;
 	}
 
@@ -246,7 +247,7 @@ void Tile::SetGlobals(
 		}
 	}
 	
-	m_animatedVertexBuffer = new VertexBuffer();
+	m_animatedVertexBuffer = new class VertexBuffer();
 	(void)m_animatedVertexBuffer->Initialize(device, shader, m_size, true);
 
 	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");

@@ -6,7 +6,7 @@
 
 using::GlobalUtilities::random;
 
-DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) noexcept
+struct DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) noexcept
 {
 	float xx = object.x;
 	float yy = object.y;

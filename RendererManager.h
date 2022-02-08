@@ -100,8 +100,8 @@ private:
 	EObject* m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 	class TextFont* m_font;
-	class Text* m_fpsText;
-	class Text* m_objectsText;
+	class modern_handle m_fpsText;
+	class modern_handle m_objectsText;
 
 	int32 m_fps;
 	//EObjectVector m_objects;

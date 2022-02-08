@@ -5,7 +5,7 @@ void modern_handle::make_handle(
 	struct modern_class* const obj
 )
 {
-	m_object = new (volatile modern_class*);
+	m_object = new (volatile struct modern_class*);
 	m_num = new int64_t;
 	m_object[0] = obj;
 	m_num[0] = 1;
@@ -58,6 +58,8 @@ modern_handle::~modern_handle()
 		return;
 	if (m_num[0] <= 1)
 	{
+		if (m_object[0])
+			delete[] m_object;
 		m_object[0] = nullptr;
 		m_num[0] = 0;
 		delete m_num;
@@ -78,7 +80,7 @@ volatile modern_class* modern_handle::operator->()
 	return m_object[0];
 }
 
-volatile modern_class* modern_handle::get()
+volatile struct modern_class* const modern_handle::get()
 {
 	if (m_object)
 		return m_object[0];
