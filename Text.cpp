@@ -42,6 +42,12 @@ Text::~Text()
 
 	class GarbageCollector* const collector = GarbageCollector::GetInstance();
 	collector->AsyncDeleteArray(&m_letters);
+
+	//if (m_letters)
+	//{
+		//delete[] m_letters.;
+		//m_letters = nullptr;
+	//}
 }
 
 void Text::Update()

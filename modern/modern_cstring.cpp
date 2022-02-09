@@ -48,6 +48,33 @@ modern_cstring::modern_cstring(const char* text)
 	strncpy(m_string->data(), text, strlen(text));
 }
 
+modern_cstring::modern_cstring(const char* text, const size_t number)
+{
+	m_string.make_shared(new modern_array<char>());
+
+	size_t temp = number;
+	const size_t strl = strlen(text);
+
+	
+
+	if (number == 0)
+		m_string->push_back('0');
+
+	while (temp > 0)
+	{
+		m_string->push_back(cs_number[temp % 10u]);
+		temp /= 10u;
+	}
+
+	for (size_t i = 1; i <= strl; i++)
+	{
+		m_string->push_back(text[strl -i]);
+	}
+
+	m_string->reverse();
+	m_string->push_back('\0');
+}
+
 modern_cstring::modern_cstring(const size_t number)
 {
 	m_string.make_shared(new modern_array<char>());

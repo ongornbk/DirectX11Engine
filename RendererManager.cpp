@@ -84,7 +84,7 @@ RendererManager::RendererManager(
 	TileMap::SetCurrentTileMap(m_map);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
-	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f)+300.0f;
+	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f) + 300.0f;
 	m_rangeY = ((float)(Settings::GetResolutionY()) / 2.0f) + 300.0f;
 
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_CORPSE_TYPE)]    = new class RenderLayerCorpse();
@@ -97,9 +97,6 @@ RendererManager::RendererManager(
 
 	m_font = TextFont::GetFontByName("ExocetLight");
 	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
-
-	//m_fpsText = new Text();
-	//m_fpsText->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(), m_interfaceShader, m_font, 20.f);
 
 	Timer::CreateInstantTimer(new ActionInitializeText(
 		m_fpsText,
@@ -120,7 +117,7 @@ RendererManager::RendererManager(
 
 	marray->push(new ActionTranslateText(
 		m_objectsText,
-		struct DirectX::XMFLOAT3(0.f, 20.f, 0.f
+		struct DirectX::XMFLOAT3(0.f, 25.f, 0.f
 		)));
 	
 
@@ -226,26 +223,14 @@ void RendererManager::PushInterface(Interface* const object)
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
-		auto const device = Engine::GetEngine()->GetGraphics()->GetDevice();
+		struct ID3D11Device* const device = Engine::GetEngine()->GetGraphics()->GetDevice();
 		struct ShaderPackage pck(deviceContext,m_unitsShader,m_shadowShader,m_selectShader,m_interfaceShader);
-		//pck.m_context = deviceContext;
-		//pck.select = m_selectShader;
-		//pck.shadow = m_shadowShader;
-		//pck.standard = m_unitsShader;
-
 
 		GRAPHICS EnableAlphaBlending(true);
 
 
-
-
 			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
-
-
-			//m_unitsShader->Begin(deviceContext);
-			
-			//m_objects.Render(deviceContext, viewMatrix, projectionMatrix, pck);
 
 			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 			{
@@ -256,7 +241,6 @@ void RendererManager::PushInterface(Interface* const object)
 
 			pck.BeginStandard();
 
-			
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
@@ -524,14 +508,14 @@ void RendererManager::SetFps(const int32 fps)
 	if (A)
 	{
 		modern_guard g(A);
-			A->SetText(modern_cstring(fps).c_str());
+			A->SetText(modern_cstring("FPS ",fps).c_str());
 
 	}
 	class Text* const B = (class Text*)m_objectsText.get();
 	if (B)
 	{
 		modern_guard g(B);
-		B->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
+		B->SetText(modern_cstring("OBJ ",this->GetNumberOfObjects()).c_str());
 	}
 	//if(m_fpsText)
 	//m_fpsText->SetText(modern_cstring(fps).c_str());

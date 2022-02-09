@@ -452,12 +452,13 @@ void Engine::Update()
 		{
 			m_gameComponent->Update();
 		}
-		(void)m_input->Update();
+
 	float dt = ipp::Timer::GetDeltaTime();
 	m_updateLock.Update(dt);
 	m_renderLock.Update(dt);
 	if (m_updateLock.Run())
 	{
+		(void)m_input->Update();
 		dt = m_updateLock.GetDeltaTime();
 		m_cameraControl.Update(dt);
 		Timer::Update(dt);

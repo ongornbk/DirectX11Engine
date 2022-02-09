@@ -46,6 +46,7 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 
 	m_shader = shader;
 
+	m_letters[' '] = new LetterSprite(this, ' ', 20.f);
 	m_letters['a'] = new LetterSprite(this, 'a', 20.f);
 	m_letters['b'] = new LetterSprite(this, 'b', 20.f);
 	m_letters['c'] = new LetterSprite(this, 'c', 20.f);
@@ -84,6 +85,7 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 	m_letters['8'] = new LetterSprite(this, '8', 20.f);
 	m_letters['9'] = new LetterSprite(this, '9', 20.f);
 
+	m_letters[' ']->Initialize(device, context, shader, this);
 	m_letters['a']->Initialize(device, context, shader, this);
 	m_letters['b']->Initialize(device, context, shader, this);
 	m_letters['c']->Initialize(device, context, shader, this);
@@ -266,8 +268,8 @@ LetterSprite* const TextFont::GetSprite(class Text* const text,const char ch)
 	//assert(text);
 	assert(&m_letters);
 
-	if (ch == ' ')
-		return nullptr;
+	//if (ch == ' ')
+	//	return nullptr;
 
 	//if (ch > 255 || ch < 0)
 		//return nullptr;

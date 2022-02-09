@@ -20,11 +20,13 @@ LetterSprite::LetterSprite(
 
 	string fontname = font->GetName();
 
-	char *buffer = new char[fontname.size() + 1];
-	strcpy(buffer, fontname.c_str());
-	this->m_texture = ResourceManager::GetInstance()->GetTextureByName(buffer);
-	delete[] buffer;
-
+	if (m_char != ' ')
+	{
+		char* buffer = new char[fontname.size() + 1];
+		strcpy(buffer, fontname.c_str());
+		this->m_texture = ResourceManager::GetInstance()->GetTextureByName(buffer);
+		delete[] buffer;
+	}
 	
 }
 
@@ -44,10 +46,18 @@ void LetterSprite::Initialize(
 	class TextFont* const font
 )
 {
-	m_vertexBuffer = new class VertexBuffer();
-	float sizexy[2] = { m_size,m_size };
-	struct FLOATX6 coords = font->GetCoordsOfLetter(m_char);
-	(void)m_vertexBuffer->InitializePart(device, shader, sizexy,coords.__f32, true);
+	if (m_char == ' ')
+	{
+		float sizexy[2] = { m_size,m_size };
+		struct FLOATX6 coords = font->GetCoordsOfLetter('W');
+	}
+	else
+	{
+		m_vertexBuffer = new class VertexBuffer();
+		float sizexy[2] = { m_size,m_size };
+		struct FLOATX6 coords = font->GetCoordsOfLetter(m_char);
+		(void)m_vertexBuffer->InitializePart(device, shader, sizexy, coords.__f32, true);
+	}
 }
 
 void LetterSprite::Render(
@@ -58,6 +68,8 @@ void LetterSprite::Render(
 	class Shader* const shader 
 )
 {
+	if (m_char == ' ')
+		return;
 	shader->SetShaderParameters(deviceContext,m_texture->GetTexture());
 	shader->SetShaderParameters(deviceContext, world, viewMatrix, projectionMatrix);
 	m_vertexBuffer->Render(deviceContext);

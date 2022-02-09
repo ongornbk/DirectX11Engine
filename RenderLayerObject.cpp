@@ -386,7 +386,12 @@ std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(class EObje
 	uint32 cVec = object->m_vector;
 	uint32 cIndex = object->m_index;
 
-	modern_array_iterator<EObject*> it(m_objects[1][cVec].begin()/* + cIndex */ , m_objects[1][cVec].end());
+	modern_array_iterator<EObject*> it = 
+		(cIndex > 0 && cIndex < m_objects[1][cVec].size()) ? 
+		modern_array_iterator<EObject*>(m_objects[1][cVec].begin() + cIndex, m_objects[1][cVec].end()) : 
+		modern_array_iterator<EObject*>(m_objects[1][cVec].begin(), m_objects[1][cVec].end());
+
+
 
 		for (auto& obj : it)
 		{

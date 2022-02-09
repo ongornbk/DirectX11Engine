@@ -32,6 +32,7 @@ public:
 	modern_cstring(modern_cstring& string);
 	modern_cstring(const char* text_begin,const char* text_end);
 	modern_cstring(const char* text);
+	modern_cstring(const char* text, const size_t number);
 	modern_cstring(const size_t number);
 	modern_cstring(const int32_t number);
 	modern_cstring(const uint32_t number);

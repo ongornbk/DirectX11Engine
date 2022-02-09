@@ -92,12 +92,13 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 		{
 			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginInterface());
 		}
+		for (auto obj : m_children)
+		{
+			if (obj)
+				obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+		}
 	}
-	for (auto obj : m_children)
-	{
-		if (obj)
-			obj->Render(deviceContext, viewMatrix, projectionMatrix, shader);
-	}
+	
 }
 
 void _fastcall Interface::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
@@ -119,27 +120,42 @@ void Interface::Update(float dt)
 {
 	
 
-	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
+	//m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
 		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
+		if (m_behavior)
+		{
+			m_behavior->OnHover();
+		}
+
+		if (m_text)
+		{
+			m_text->Update();
+		}
+
+		for (auto obj : m_children)
+		{
+			if (obj)
+				obj->Update(dt);
+		}
 	}
 
-	if (m_behavior)
-	{
-		m_behavior->OnHover();
-	}
+	
+	
+	
+	
 
-	if (m_text)
-	{
-		m_text->Update();
-	}
+	
+	
+	
+	
 
-	for (auto obj : m_children)
-	{
-		if (obj)
-			obj->Update(dt);
-	}
+	
+	
+	
+	
+	
 }
 
 void Interface::SetZ(float z)

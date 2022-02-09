@@ -42,7 +42,7 @@ void InterfaceButtonBehavior::OnClick()
 	class Input* input = Engine::GetEngine()->GetInput();
 	if (input)
 	{
-		if (input->GetMouseState(0))
+		if (input->GetMousePressed(0))
 		{
 			if (m_click.length())
 			{
