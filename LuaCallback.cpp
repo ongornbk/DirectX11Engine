@@ -13,6 +13,7 @@
 #include "ActionRemoveObject.h"
 #include "ActionSetInterfaceText.h"
 #include "InterfaceButtonBehavior.h"
+#include "InterfaceCheckboxBehavior.h"
 #include "modern/modern.h"
 #include "Timer.h"
 
@@ -947,6 +948,25 @@ namespace lua_callback
 
 	}
 
+	static int32 SetInterfaceCheckboxBehavior(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if (inter)
+		{
+			class IInterfaceBehavior* const behavior = new class InterfaceCheckboxBehavior(inter);
+			inter->SetBehavior(behavior);
+			lua_pushinteger(state, (lua_Integer)behavior);
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+
+	}
+
 	static int32 SetInterfaceText(
 		struct lua_State* const state
 	) noexcept
@@ -1640,6 +1660,7 @@ namespace lua_callback
 		lua_register(m_lua, "CreateInterface", lua_callback::CreateInterface);
 		lua_register(m_lua, "InitializeInterface", lua_callback::InitializeInterface);
 		lua_register(m_lua, "SetInterfaceButtonBehavior", lua_callback::SetInterfaceButtonBehavior);
+		lua_register(m_lua, "SetInterfaceCheckboxBehavior", lua_callback::SetInterfaceCheckboxBehavior);
 		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
 		lua_register(m_lua, "SetInterfaceText", lua_callback::SetInterfaceText);
 	}

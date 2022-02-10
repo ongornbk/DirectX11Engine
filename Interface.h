@@ -57,6 +57,7 @@ public:
 	DirectX::XMFLOAT3 GetVector() noexcept override;
 
 	friend class InterfaceButtonBehavior;
+	friend class InterfaceCheckboxBehavior;
 
 private:
 	class Interface* m_parent;

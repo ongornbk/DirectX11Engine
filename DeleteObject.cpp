@@ -1,13 +1,14 @@
 #include "DeleteObject.h"
 #include "RenderContainer.h"
 
-DeleteObjectTrash::DeleteObjectTrash(void* const data) : ITrash(data)
+DeleteObjectTrash::DeleteObjectTrash(class EObject* const data) : m_data(data)
 {
 
 }
 
 DeleteObjectTrash::~DeleteObjectTrash()
 {
-	delete (class EObject*)m_data;
+	modern_guard g(m_data);
+	delete m_data;
 	m_data = nullptr;
 }

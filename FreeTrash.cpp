@@ -1,7 +1,7 @@
 #include "FreeTrash.h"
 #include <cstdlib>
 
-FreeTrash::FreeTrash(void* const data) : ITrash(data)
+FreeTrash::FreeTrash(void* const data) : m_data(data)
 {
 
 }

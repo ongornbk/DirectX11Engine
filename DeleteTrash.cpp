@@ -1,6 +1,6 @@
 #include "DeleteTrash.h"
 
-DeleteTrash::DeleteTrash(void* const data) : ITrash(data)
+DeleteTrash::DeleteTrash(void* const data) : m_data(data)
 {
 
 }

@@ -16,9 +16,9 @@ void GarbageCollector::AsyncDelete(void* ptr)
 
 void GarbageCollector::AsyncDelete(EObject* const obj)
 {
-	//m_garbage.push_back(DeleteObjectTrash(obj));
+	m_garbage.push_back(DeleteObjectTrash(obj));
 	//m_handles.emplace_back(obj->GetHandle());
-	delete obj;
+	//delete obj;
 }
 
 void GarbageCollector::AsyncFree(void* ptr)

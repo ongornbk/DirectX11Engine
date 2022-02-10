@@ -5,6 +5,7 @@
 template <class T>
 class DeleteArrayTrash : public ITrash
 {
+	void* m_data;
 public:
 	DeleteArrayTrash() = delete;
 	DeleteArrayTrash(modern_array<T>*& data);

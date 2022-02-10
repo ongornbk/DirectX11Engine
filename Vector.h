@@ -22,7 +22,8 @@ public:
 	
 	~Vector()
 	{
-		GarbageCollector::GetInstance()->AsyncFree(m_data);
+		//GarbageCollector::GetInstance()->AsyncFree(m_data);
+		free(m_data);
 	}
 
 	T* begin()

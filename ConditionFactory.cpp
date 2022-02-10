@@ -105,7 +105,6 @@ class ICondition* const ConditionFactory::CreateObjectCondition(IObjectVariable*
 	}
 }
 
-
 ICondition* const ConditionFactory::CreateAndCondition(ICondition* const A, ICondition* const B) noexcept
 {
 	return new AndCondition(A, B);

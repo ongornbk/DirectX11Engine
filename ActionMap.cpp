@@ -46,14 +46,14 @@ void* ActionMap::PopPointer()
 	{
 		class PointerParameter* const top = (class PointerParameter* const)m_stack.top();
 		void* const val = top->get();
-		GarbageCollector::GetInstance()->AsyncDelete(m_stack.top());
+		delete m_stack.top();
 		m_stack.pop();
 		return val;
 		break;
 	}
 	default:
 	{
-		GarbageCollector::GetInstance()->AsyncDelete(m_stack.top());
+		delete m_stack.top();
 		m_stack.pop();
 		return nullptr;
 	}
@@ -70,7 +70,8 @@ BasicParameter::BasicParameterValue ActionMap::PopBasic()
 	}
 	class BasicParameter* const top = (class BasicParameter* const)m_stack.top();
 	const BasicParameter::BasicParameterValue val = top->get();
-	GarbageCollector::GetInstance()->AsyncDelete(m_stack.top());
+	//GarbageCollector::GetInstance()->AsyncDelete(m_stack.top());
+	delete m_stack.top();
 	m_stack.pop();
 	return val;
 }

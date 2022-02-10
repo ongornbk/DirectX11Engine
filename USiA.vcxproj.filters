@@ -100,6 +100,48 @@
     <Filter Include="Resource Files\Project">
       <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{a915115a-301a-45a4-976c-a2582149eda0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions">
+      <UniqueIdentifier>{56c3ae34-9a3e-40d2-9254-4044f3dc0cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Conditions">
+      <UniqueIdentifier>{b3cad30f-e2df-4c62-8287-ec3699755f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variables">
+      <UniqueIdentifier>{4e2a8da2-bb4c-4e85-973f-c87d407fab0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variables\Boolean">
+      <UniqueIdentifier>{946cbe4e-0b96-4950-92fa-fd92ae8e07c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Timers">
+      <UniqueIdentifier>{c2d7588b-c19e-4bc2-8d6c-8ac4d64e12f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variables\Float">
+      <UniqueIdentifier>{00aecc71-4ce1-4a99-9bf8-ced6a9afa14c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variables\Integer">
+      <UniqueIdentifier>{6269d0ac-568a-457e-880a-72fbb3ef7ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variables\Object">
+      <UniqueIdentifier>{924ce0ab-0e61-4ffc-be35-6cb247fe4f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Conditions\Basic">
+      <UniqueIdentifier>{7e85d8dd-5af4-4e89-a296-55652b1a4c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Conditions\Boolean">
+      <UniqueIdentifier>{0837fbe0-fae7-4c7c-8de1-a643034d5e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Conditions\Float">
+      <UniqueIdentifier>{38d5650d-a27b-49ef-a052-bcb828d5cb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Operators">
+      <UniqueIdentifier>{c925bb6c-118d-47fe-9574-78cf46607b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Conditions\Object">
+      <UniqueIdentifier>{3ab99cb8-b123-4d77-ac65-b9067b5525e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -354,32 +396,8 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ability.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Allocator.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="IAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionRemoveObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ITimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpiringTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSetCellMultiplier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PeriodicTimer.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IParameter.h">
       <Filter>Header Files</Filter>
@@ -388,9 +406,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicParameter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionMessageFront.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITrigger.h">
@@ -447,9 +462,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionAttack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UnitStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -457,12 +469,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelStance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionExecuteAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionExecuteActionArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitTemplate.h">
@@ -525,22 +531,10 @@
     <ClInclude Include="RenderLayerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionChangeLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectManagementType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionPushObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionKillUnit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shadow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FuzzyTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectIntersectionInfo.h">
@@ -555,19 +549,7 @@
     <ClInclude Include="npc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionWait.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionStance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionBehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IActionSplitArrayBehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IActionTimer.h">
@@ -579,46 +561,13 @@
     <ClInclude Include="ICondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionWaitUntil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConditionTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IActionCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConditionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BooleanConditionEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IBooleanVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstBooleanVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstBooleanVariableTrue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstBooleanVariableFalse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanOperatorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanConditionNotEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableUnitIsDead.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableUnitIsAttacking.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableUnitIsAlive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IFloatVariable.h">
@@ -627,55 +576,7 @@
     <ClInclude Include="IIntegerVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FloatOperatorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableIsKeyDown.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstFloatVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionGreater.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionGreaterOrEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionLess.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionLessOrEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatConditionNotEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AndCondition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OrCondition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatVariableUnitGetRotation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSkipRemainingActions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionIfThenElse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatVariableUnitDistanceFromCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IntegerOperatorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstIntegerVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionEquals.h">
@@ -699,16 +600,7 @@
     <ClInclude Include="IObjectVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConstObjectVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectOperatorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectConditionEquals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectConditionNotEquals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IScript.h">
@@ -720,9 +612,6 @@
     <ClInclude Include="FrameLocker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionApplyColorFilter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_array.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
@@ -732,19 +621,7 @@
     <ClInclude Include="ColorFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FloatVariableDistanceBetweenObjects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSetShadowCast.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectFocusType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableUnitIsSelected.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BooleanVariableObjectIsSelected.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
@@ -771,16 +648,7 @@
     <ClInclude Include="RenderLayerInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IInterfaceBehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InterfaceBehaviorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InterfaceButtonBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PositionC.h">
@@ -792,14 +660,8 @@
     <ClInclude Include="TextAlignment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionSetInterfaceText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_cstring.h">
       <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionInitializeText.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IPTask.h">
       <Filter>Header Files</Filter>
@@ -831,8 +693,188 @@
     <ClInclude Include="DeleteHandleTrash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ActionApplyColorFilter.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionAttack.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionBehavior.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionChangeLayer.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteAction.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteActionArray.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionIfThenElse.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeText.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionKillUnit.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMap.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMessageFront.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionPushObject.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionRemoveObject.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetCellMultiplier.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceText.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetShadowCast.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSkipRemainingActions.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionStance.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
     <ClInclude Include="ActionTranslateText.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionType.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionWait.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionWaitUntil.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableUnitIsSelected.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableUnitIsDead.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableUnitIsAttacking.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableUnitIsAlive.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableObjectIsSelected.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableIsKeyDown.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstBooleanVariable.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstBooleanVariableFalse.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstBooleanVariableTrue.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstFloatVariable.h">
+      <Filter>Header Files\Variables\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstIntegerVariable.h">
+      <Filter>Header Files\Variables\Integer</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstObjectVariable.h">
+      <Filter>Header Files\Variables\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionTimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpiringTimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="AndCondition.h">
+      <Filter>Header Files\Conditions\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanConditionEquals.h">
+      <Filter>Header Files\Conditions\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanConditionNotEquals.h">
+      <Filter>Header Files\Conditions\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionEquals.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionGreater.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionGreaterOrEquals.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionLess.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionLessOrEquals.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatConditionNotEquals.h">
+      <Filter>Header Files\Conditions\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatVariableDistanceBetweenObjects.h">
+      <Filter>Header Files\Variables\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatVariableUnitDistanceFromCamera.h">
+      <Filter>Header Files\Variables\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatVariableUnitGetRotation.h">
+      <Filter>Header Files\Variables\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanOperatorType.h">
+      <Filter>Header Files\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatOperatorType.h">
+      <Filter>Header Files\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyTimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="OrCondition.h">
+      <Filter>Header Files\Conditions\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="PeriodicTimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectConditionEquals.h">
+      <Filter>Header Files\Conditions\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectConditionNotEquals.h">
+      <Filter>Header Files\Conditions\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ITimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="IAction.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceCheckboxBehavior.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceButtonBehavior.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceBehaviorType.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1407,6 +1449,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionTranslateText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceCheckboxBehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -184,7 +184,6 @@
     <ClInclude Include="2D\TextFormat.h" />
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
-    <ClInclude Include="Ability.h" />
     <ClInclude Include="ActionApplyColorFilter.h" />
     <ClInclude Include="ActionAttack.h" />
     <ClInclude Include="ActionBehavior.h" />
@@ -300,6 +299,7 @@
     <ClInclude Include="Interface.h" />
     <ClInclude Include="InterfaceBehaviorType.h" />
     <ClInclude Include="InterfaceButtonBehavior.h" />
+    <ClInclude Include="InterfaceCheckboxBehavior.h" />
     <ClInclude Include="IObjectVariable.h" />
     <ClInclude Include="IPTask.h" />
     <ClInclude Include="IRendererManager.h" />
@@ -514,6 +514,7 @@
     <ClCompile Include="IntegerConditionNotEquals.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="InterfaceButtonBehavior.cpp" />
+    <ClCompile Include="InterfaceCheckboxBehavior.cpp" />
     <ClCompile Include="IObjectVariable.cpp" />
     <ClCompile Include="IRendererManager.cpp" />
     <ClCompile Include="IScript.cpp" />

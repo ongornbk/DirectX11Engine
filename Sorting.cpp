@@ -460,22 +460,22 @@ __forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexce
 
 
 _Use_decl_annotations_
-template <class T>
+template <class T>//I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES X COLLISION.
 __forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index, const int32 xp) noexcept
 {
-	const int32 t0 = xp - index;
-	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+const int32 t0 = xp - index;
+if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
+{
+	return true;
+}
+else
+{
+return false;
+}
 }
 
 _Use_decl_annotations_
-template <class T>
+template <class T> //I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES Y COLLISION.
 __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index,const int32 yp) noexcept
 {
 	const int32 t0 = yp - index;
@@ -485,7 +485,7 @@ __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _I
 	}
 	else
 	{
-		return false;
+	return false;
 	}
 }
 

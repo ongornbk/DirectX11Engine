@@ -2,7 +2,7 @@
 #include "DeleteArrayTrash.h"
 
 template<class T>
-inline DeleteArrayTrash<T>::DeleteArrayTrash(modern_array<T>*& data) : ITrash((void*)data)
+inline DeleteArrayTrash<T>::DeleteArrayTrash(modern_array<T>*& data) : m_data((void*)data)
 {
 }
 
@@ -21,6 +21,6 @@ inline DeleteArrayTrash<T>::~DeleteArrayTrash()
 			}
 		}
 		delete arr;
-		ITrash::m_data = nullptr;
+		m_data = nullptr;
 	}
 }

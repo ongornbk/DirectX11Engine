@@ -15,7 +15,7 @@ RenderZMap::~RenderZMap()
 	for (auto vector : m_zVectors)
 	{
 		vector.second->Clear();
-		GarbageCollector::GetInstance()->AsyncDelete(vector.second);
+		delete vector.second;
 		m_zStance[vector.first] = false;
 	}
 	m_zVectors.clear();
