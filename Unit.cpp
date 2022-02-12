@@ -659,6 +659,8 @@ void Unit::Die(Unit* const killer)
 		action->push(new ActionRemoveObject(this));
 		break;
 	case UnitDecay::ENUM_DECAY:
+		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
+		action->push(new ActionWait(2.f));
 		action->push(new ActionRemoveObject(this));
 		break;
 	}
@@ -748,14 +750,14 @@ bool Unit::Attack(class Unit* const target)
 
 bool Unit::GetAttacked(class Unit* const attacker)
 {
-	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	//class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	//action->push(new ActionMessageFront(this));
-	//for (float i = 0.f; i < 1.f; i+= 0.01f)
+	//for (float i = 0.f; i < 1.f; i+= 0.05f)
 	//{
 	//	action->push(new ActionApplyColorFilter(attacker, DirectX::XMFLOAT4(1.f, i , i, 1.f)));
-	//	action->push(new ActionWait(0.02f));
+	//	action->push(new ActionWait(0.01f));
 	//}
-	Timer::CreateInstantTimer(action);
+	//Timer::CreateInstantTimer(action);
 	DoDamage(attacker);
 	const int32_t ran = modern_random(0, 2);
 	Engine* const engine = Engine::GetEngine();
@@ -770,6 +772,12 @@ bool Unit::GetAttacked(class Unit* const attacker)
 	case 2:
 		engine->PlaySound(L"attack3");
 		break;
+	}
+	//COMBATTEXT
+	{
+		//Interface* txt;
+		//txt->Initialize()
+		//txt.
 	}
 	if (m_stop || m_dead)
 	{
