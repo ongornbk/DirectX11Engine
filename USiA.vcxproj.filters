@@ -513,9 +513,6 @@
     <ClInclude Include="UnitDecay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InstantTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -568,12 +565,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IBooleanVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IFloatVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IIntegerVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IntegerOperatorType.h">
@@ -875,6 +866,27 @@
     </ClInclude>
     <ClInclude Include="Interface.h">
       <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IBindableBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetTextAlignment.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="IFloatVariable.h">
+      <Filter>Header Files\Variables\Float</Filter>
+    </ClInclude>
+    <ClInclude Include="IIntegerVariable.h">
+      <Filter>Header Files\Variables\Integer</Filter>
+    </ClInclude>
+    <ClInclude Include="InstantTimer.h">
+      <Filter>Header Files\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyExpiringTimer.h">
+      <Filter>Header Files\Timers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1452,6 +1464,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InterfaceCheckboxBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IBindableBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionSetTextAlignment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FuzzyExpiringTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

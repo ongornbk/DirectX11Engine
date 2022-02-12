@@ -1,12 +1,11 @@
 #include "InterfaceCheckboxBehavior.h"
 #include "UserInterface.h"
 #include "LUAManager.h"
-
+#include "Options.h"
 
 InterfaceCheckboxBehavior::InterfaceCheckboxBehavior(Interface* const inter) :
-	m_owner(inter)
+	m_owner(inter), m_checked(0)
 {
-	//m_click = "";
 }
 
 InterfaceCheckboxBehavior::~InterfaceCheckboxBehavior()
@@ -44,16 +43,57 @@ void InterfaceCheckboxBehavior::OnClick()
 	{
 		if (input->GetMousePressed(0))
 		{
-			m_checked = !m_checked;
-			if (m_checked)
+			if (m_key >= 0)
 			{
-				m_owner->SetColorFilter(1.5f, 1.5f, 1.5f, 1.f);
+				modern_handle opth;
+				opth.make_handle(Options::GetInstance());
+				volatile Options* const options = dynamic_cast<volatile Options* const>(opth.get());
+				if (options)
+				{
+					m_checked = !m_checked;
+					modern_guard g(options);
+					options->options[m_key] = m_checked;
+					if (m_checked)
+					{
+						m_owner->SetColorFilter(1.5f, 1.5f, 1.5f, 1.f);
+					}
+					else
+					{
+						m_owner->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+					}
+				}
 			}
 			else
 			{
-				m_owner->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+				m_checked = !m_checked;
+				if (m_checked)
+				{
+					m_owner->SetColorFilter(1.5f, 1.5f, 1.5f, 1.f);
+				}
+				else
+				{
+					m_owner->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+				}
 			}
 		}
+	}
+}
+
+void InterfaceCheckboxBehavior::Bind(const modern_cstring& option)
+{
+	modern_handle opth;
+	opth.make_handle(Options::GetInstance());
+	volatile Options* const options = dynamic_cast<volatile Options* const>(opth.get());
+	if (options)
+	{
+		modern_shared_guard g(options);
+		m_key = options->GetKey(option);
+
+
+
+
+
+		m_checked = options->options[m_key];
 	}
 }
 

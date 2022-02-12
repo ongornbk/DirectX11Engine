@@ -967,6 +967,32 @@ namespace lua_callback
 
 	}
 
+	static int32 BindBindableBehavior(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if (inter)
+		{
+			class IBindableBehavior* const behavior = dynamic_cast<IBindableBehavior*>(inter->GetBehavior());
+			if (behavior)
+			{
+				behavior->Bind(modern_cstring(lua_tostring(state, 2)));
+				lua_pushinteger(state, (lua_Integer)behavior);
+			}
+			else
+			{
+				lua_pushinteger(state, (lua_Integer)nullptr);
+			}
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+
+	}
+
 	static int32 SetInterfaceText(
 		struct lua_State* const state
 	) noexcept
@@ -1663,6 +1689,7 @@ namespace lua_callback
 		lua_register(m_lua, "SetInterfaceCheckboxBehavior", lua_callback::SetInterfaceCheckboxBehavior);
 		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
 		lua_register(m_lua, "SetInterfaceText", lua_callback::SetInterfaceText);
+		lua_register(m_lua, "BindBindableBehavior", lua_callback::BindBindableBehavior);
 	}
 
 }

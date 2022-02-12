@@ -213,6 +213,11 @@ void Interface::SetBehavior(IInterfaceBehavior* const behavior)
 	m_behavior = behavior;
 }
 
+IInterfaceBehavior* const Interface::GetBehavior()
+{
+	return m_behavior;
+}
+
 void Interface::PushChild(EObject* const child)
 {
 	m_children.push_back(child);

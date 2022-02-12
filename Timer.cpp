@@ -78,6 +78,17 @@ void Timer::CreateFuzzyTimer(IAction* const action, const float time)
 	else m_echoTimers.push_back(timer);
 }
 
+void Timer::CreateFuzzyExpiringTimer(IAction* const actionFuzzy, IAction* const actionExpiring, const float time)
+{
+	class FuzzyExpiringTimer* const timer = new FuzzyExpiringTimer();
+	timer->actionFuzzy = actionFuzzy;
+	timer->actionExpiring = actionExpiring;
+	timer->time = time;
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
+}
+
 void Timer::CreateConditionTimer(IAction* const action, ICondition* const condition)
 {
 	class ConditionTimer* const timer = new ConditionTimer();

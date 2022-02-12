@@ -30,8 +30,11 @@ public:
 		class Shader* const shader);
 
 	void SetPosition(const struct DirectX::XMFLOAT3& position);
+	void _vectorcall SetPosition(const DirectX::XMVECTOR& position);
+	void SetOffset(const struct DirectX::XMFLOAT3& offset);
 	void Translate(const struct DirectX::XMFLOAT3& vec);
 	void SetText(std::string text);
+	void SetAlignment(const enum class TextAlignment alignment);
 	//void SetText(const _bstr_t text);
 	string GetText();
 	float GetSize() const noexcept;
@@ -49,6 +52,7 @@ private:
 	enum class TextAlignment m_alignment;
 
 	DirectX::XMFLOAT3 m_position;
+	DirectX::XMFLOAT3 m_offset;
 
 	void Initialize();
 	void UpdatePosition();

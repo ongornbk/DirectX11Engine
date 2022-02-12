@@ -49,6 +49,7 @@ public:
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
+	class IInterfaceBehavior* const GetBehavior();
 	void PushChild(class EObject* const child);
 	void SetText(std::string text);
 	class Interface* const GetParent() const noexcept;

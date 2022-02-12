@@ -69,7 +69,7 @@ void GameChat::Update() noexcept
 	float coY = 0.0f;
 	for (auto&& text : m_texts)
 	{
-		text->SetPosition({ m_pos.x,m_pos.y - coY ,m_pos.z });
+		text->SetPosition(DirectX::XMFLOAT3{ m_pos.x,m_pos.y - coY ,m_pos.z });
 		text->Update();
 		coY += offsetY;
 	}

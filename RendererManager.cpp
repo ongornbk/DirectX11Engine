@@ -20,6 +20,8 @@
 #include "ActionTranslateText.h"
 #include "ConditionFactory.h"
 #include "modern/modern_cstring.h"
+#include "Options.h"
+#include "ActionSetTextAlignment.h"
 
 #include <future>
 #include <mutex>
@@ -41,6 +43,7 @@ namespace
 	//static RenderZMap             g_units;
 	static atomic<int32>          m_cleanupMode;
 	static atomic<int32>          m_editMode;
+	static modern_handle          m_activeOptions;
 }
 
 void _cdecl CleanupFrame()
@@ -75,6 +78,8 @@ RendererManager::RendererManager(
 {
 
 	m_instance = this;
+	new Options();
+	m_activeOptions.make_handle(Options::GetInstance());
 
 
 	
@@ -98,7 +103,10 @@ RendererManager::RendererManager(
 	m_font = TextFont::GetFontByName("ExocetLight");
 	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
 
-	Timer::CreateInstantTimer(new ActionInitializeText(
+
+	class ActionExecuteActionArray* const marray = new ActionExecuteActionArray();
+
+	marray->push(new ActionInitializeText(
 		m_fpsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
@@ -106,7 +114,13 @@ RendererManager::RendererManager(
 		m_font, 20.f
 	));
 
-	class ActionExecuteActionArray* marray = new ActionExecuteActionArray();
+	marray->push(new ActionSetTextAlignment(m_fpsText,TextAlignment::TEXT_ALIGN_LEFT));
+
+	marray->push(new ActionTranslateText(
+		m_fpsText,
+		struct DirectX::XMFLOAT3(-935.f, 490.f, 0.f
+		)));
+
 	marray->push(new ActionInitializeText(
 		m_objectsText,
 		engine->GetGraphics()->GetDevice(),
@@ -115,9 +129,11 @@ RendererManager::RendererManager(
 		m_font, 20.f
 	));
 
+	marray->push(new ActionSetTextAlignment(m_objectsText, TextAlignment::TEXT_ALIGN_LEFT));
+
 	marray->push(new ActionTranslateText(
 		m_objectsText,
-		struct DirectX::XMFLOAT3(0.f, 25.f, 0.f
+		struct DirectX::XMFLOAT3(-935.f, 520.f, 0.f
 		)));
 	
 
@@ -244,18 +260,21 @@ void RendererManager::PushInterface(Interface* const object)
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
-			class Text* const A = (class Text*)m_fpsText.get();
-			if (A)
+			if (((Options*)m_activeOptions.get())->option_ShowFPS)
 			{
-				modern_guard g(A);
-				A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				class Text* const A = (class Text*)m_fpsText.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 
-			}
-			class Text* const B = (class Text*)m_objectsText.get();
-			if (B)
-			{
-				modern_guard g(B);
-				B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				}
+				class Text* const B = (class Text*)m_objectsText.get();
+				if (B)
+				{
+					modern_guard g(B);
+					B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				}
 			}
 
 			//if (m_fpsText)
@@ -315,18 +334,23 @@ void RendererManager::PushInterface(Interface* const object)
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
 
-		class Text* const A = (class Text*)m_fpsText.get();
-		if (A)
+		if (((Options*)m_activeOptions.get())->option_ShowFPS)
 		{
-			modern_guard g(A);
-			A->Update();
+			class Text* const A = (class Text*)m_fpsText.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->SetPosition(m_cameraPosition);
+				A->Update();
 
-		}
-		class Text* const B = (class Text*)m_objectsText.get();
-		if (B)
-		{
-			modern_guard g(B);
-			B->Update();
+			}
+			class Text* const B = (class Text*)m_objectsText.get();
+			if (B)
+			{
+				modern_guard g(B);
+				B->SetPosition(m_cameraPosition);
+				B->Update();
+			}
 		}
 
 		//if(m_fpsText)

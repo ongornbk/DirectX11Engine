@@ -26,7 +26,7 @@ void ActionInitializeText::execute()
         {
             modern_guard g(A);
             A->Initialize(m_device, m_deviceContext, m_shader, m_font, m_size);
-            A->SetPosition({ 0.f,0.f,0.f });
+            A->SetPosition(DirectX::XMFLOAT3{ 0.f,0.f,0.f });
 
         }
     }

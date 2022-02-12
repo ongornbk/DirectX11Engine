@@ -92,65 +92,24 @@ void Text::Render(
 void Text::SetPosition(const struct XMFLOAT3& position)
 {
 	m_position = position;
-	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
-	switch (m_alignment)
-	{
-	case TextAlignment::TEXT_ALIGN_LEFT:
-	{
-		for (auto&& letter : m_letters)
-		{
-			letter->SetPosition(modern_xfloat3_sum(position, sumup));
-			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
-			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
-		}
-		m_width = sumup.x;
-		break;
-	}
-	case TextAlignment::TEXT_ALIGN_CENTER:
-	{
-		for (auto&& letter : m_letters)
-		{
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
-		}
-		m_width = sumup.x;
-		sumup.x = (m_width / -2.f);
-		for (auto&& letter : m_letters)
-		{
-			letter->SetPosition(modern_xfloat3_sum(position, sumup));
-			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
-			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
-		}
-		break;
-	}
-	case TextAlignment::TEXT_ALIGN_RIGHT:
-	{
-		for (auto&& letter : m_letters)
-		{
-			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
-		}
-		m_width = sumup.x;
-		sumup.x = (m_width * -1.f);
-		for (auto&& letter : m_letters)
-		{
-			letter->SetPosition(modern_xfloat3_sum(position, sumup));
-			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
-			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
-		}
-		break;
-	}
-	}
+	UpdatePosition();
+}
 
+void _vectorcall Text::SetPosition(const DirectX::XMVECTOR& position)
+{
+	DirectX::XMStoreFloat3(&m_position, position);
+	UpdatePosition();
+}
+
+void Text::SetOffset(const DirectX::XMFLOAT3& offset)
+{
+	m_offset = offset;
+	UpdatePosition();
 }
 
 void Text::Translate(const struct DirectX::XMFLOAT3& vec)
 {
-	this->SetPosition(modern_xfloat3_sum(m_position, vec));
+	this->SetOffset(modern_xfloat3_sum(m_position, vec));
 }
 
 void Text::SetText(std::string text)
@@ -222,6 +181,10 @@ void Text::SetText(std::string text)
 
 		//this->Initialize();
 }
+void Text::SetAlignment(const TextAlignment alignment)
+{
+	m_alignment = alignment;
+}
 /*
 void Text::SetText(const _bstr_t text)
 {
@@ -284,7 +247,60 @@ void Text::Initialize()
 
 void Text::UpdatePosition()
 {
-	Text::SetPosition(m_position);
+	DirectX::XMFLOAT3 sumup = { 0.f,0.f,0.f };
+	DirectX::XMFLOAT3 pos = modern_xfloat3_sum(m_position, m_offset);
+	switch (m_alignment)
+	{
+	case TextAlignment::TEXT_ALIGN_LEFT:
+	{
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		break;
+	}
+	case TextAlignment::TEXT_ALIGN_CENTER:
+	{
+		for (auto&& letter : m_letters)
+		{
+			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		sumup.x = (m_width / -2.f);
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		break;
+	}
+	case TextAlignment::TEXT_ALIGN_RIGHT:
+	{
+		for (auto&& letter : m_letters)
+		{
+			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		m_width = sumup.x;
+		sumup.x = (m_width * -1.f);
+		for (auto&& letter : m_letters)
+		{
+			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
+			if (letter->GetLetter() == ' ')
+				sumup.x += m_spaceWidth * 0.48f;
+			else
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+		}
+		break;
+	}
+	}
 }
 
 const modern_handle& Text::GetHandle()

@@ -200,6 +200,7 @@
     <ClInclude Include="ActionSetCellMultiplier.h" />
     <ClInclude Include="ActionSetInterfaceText.h" />
     <ClInclude Include="ActionSetShadowCast.h" />
+    <ClInclude Include="ActionSetTextAlignment.h" />
     <ClInclude Include="ActionSkipRemainingActions.h" />
     <ClInclude Include="ActionStance.h" />
     <ClInclude Include="ActionTranslateText.h" />
@@ -262,6 +263,7 @@
     <ClInclude Include="FrameLocker.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="FreeTrash.h" />
+    <ClInclude Include="FuzzyExpiringTimer.h" />
     <ClInclude Include="FuzzyTimer.h" />
     <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
@@ -282,6 +284,7 @@
     <ClInclude Include="IActionTimer.h" />
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
+    <ClInclude Include="IBindableBehavior.h" />
     <ClInclude Include="IBooleanVariable.h" />
     <ClInclude Include="ICondition.h" />
     <ClInclude Include="IFloatVariable.h" />
@@ -350,6 +353,7 @@
     <ClInclude Include="ObjectIntersectionInfo.h" />
     <ClInclude Include="ObjectManagementType.h" />
     <ClInclude Include="ObjectOperatorType.h" />
+    <ClInclude Include="Options.h" />
     <ClInclude Include="OrCondition.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
@@ -441,6 +445,7 @@
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="ActionSetInterfaceText.cpp" />
     <ClCompile Include="ActionSetShadowCast.cpp" />
+    <ClCompile Include="ActionSetTextAlignment.cpp" />
     <ClCompile Include="ActionSkipRemainingActions.cpp" />
     <ClCompile Include="ActionTranslateText.cpp" />
     <ClCompile Include="ActionWait.cpp" />
@@ -488,6 +493,7 @@
     <ClCompile Include="FloatVariableUnitGetRotation.cpp" />
     <ClCompile Include="FrameLocker.cpp" />
     <ClCompile Include="FreeTrash.cpp" />
+    <ClCompile Include="FuzzyExpiringTimer.cpp" />
     <ClCompile Include="FuzzyTimer.cpp" />
     <ClCompile Include="GameChat.cpp" />
     <ClCompile Include="game_math.cpp" />
@@ -499,6 +505,7 @@
     <ClCompile Include="IActionCondition.cpp" />
     <ClCompile Include="IActionSplitArrayBehavior.cpp" />
     <ClCompile Include="IActionTimer.cpp" />
+    <ClCompile Include="IBindableBehavior.cpp" />
     <ClCompile Include="IBooleanVariable.cpp" />
     <ClCompile Include="ColorFilter.cpp" />
     <ClCompile Include="ICondition.cpp" />
@@ -555,6 +562,7 @@
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="ObjectConditionEquals.cpp" />
     <ClCompile Include="ObjectConditionNotEquals.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="OrCondition.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
