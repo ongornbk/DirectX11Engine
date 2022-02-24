@@ -375,10 +375,29 @@ void Engine::AddFont(string filename, float width, float height)
 
 void Engine::PlayMusic(WCHAR * music)
 {
+
+	
 	wstring tmp0 = wstring(music);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
+
 	class ISound* const __music = m_canals.__GetSound(tmp1);
 	assert(__music);
+	
+	
+	if (m_playingMusic)
+	{
+		m_playingMusic->Stop();
+	}
+	m_playingMusic = __music;
+	__music->Play();
+}
+
+void Engine::PlayMusic(modern_string& music)
+{
+	class ISound* const __music = m_canals.__GetSound(music);
+	assert(__music);
+
+
 	if (m_playingMusic)
 	{
 		m_playingMusic->Stop();

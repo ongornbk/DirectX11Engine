@@ -25,10 +25,15 @@ modern_string::modern_string(modern_string& string)
 modern_string::modern_string(const wchar_t* text)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
-	m_string->reserve(wcslen(text)+1);
-	m_string->resize(wcslen(text)+1);
-#pragma warning(disable : 4996)
-	wcscpy(m_string->data(), text);
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (text[i] == '\0')
+			goto END;
+		m_string->push_back(text[i]);
+
+	}
+END:
+	m_string->push_back(L'\0');
 }
 
 modern_string::modern_string(const wchar_t* text_begin, const wchar_t* text_end)
@@ -49,10 +54,18 @@ modern_string::modern_string(const wchar_t* text_begin, const wchar_t* text_end)
 modern_string::modern_string(const char* text)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
-	m_string->reserve(strlen(text) + 1);
-	m_string->resize(strlen(text) + 1);
-#pragma warning(disable : 4996)
-	mbstowcs(m_string->data(), text, strlen(text));
+	//m_string->reserve(strlen(text) + 1);
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (text[i] == '\0')
+			goto END;
+		m_string->push_back(wchar_t());
+		mbtowc(m_string->data() + i, text + i, 1);
+	}
+//#pragma warning(disable : 4996)
+	//mbstowcs(m_string->data(), text, m_string->size());
+	END:
+		m_string->push_back(L'\0');
 }
 
 modern_string::modern_string(const size_t number)
@@ -136,7 +149,7 @@ modern_string::~modern_string()
 {
 }
 
-const wchar_t* modern_string::c_wstr() const noexcept
+wchar_t* const modern_string::c_wstr() const noexcept
 {
 	return m_string->data();
 }

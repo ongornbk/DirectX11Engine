@@ -184,6 +184,7 @@
     <ClInclude Include="2D\TextFormat.h" />
     <ClInclude Include="2D\TextSize.h" />
     <ClInclude Include="2D\Types.h" />
+    <ClInclude Include="ActionAddAlpha.h" />
     <ClInclude Include="ActionApplyColorFilter.h" />
     <ClInclude Include="ActionAttack.h" />
     <ClInclude Include="ActionBehavior.h" />
@@ -191,11 +192,13 @@
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
     <ClInclude Include="ActionIfThenElse.h" />
+    <ClInclude Include="ActionInitializeInterface.h" />
     <ClInclude Include="ActionInitializeText.h" />
     <ClInclude Include="ActionKillUnit.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionMessageFront.h" />
     <ClInclude Include="ActionPushObject.h" />
+    <ClInclude Include="ActionPushTimer.h" />
     <ClInclude Include="ActionRemoveObject.h" />
     <ClInclude Include="ActionSetCellMultiplier.h" />
     <ClInclude Include="ActionSetInterfaceText.h" />
@@ -303,7 +306,10 @@
     <ClInclude Include="InterfaceBehaviorType.h" />
     <ClInclude Include="InterfaceButtonBehavior.h" />
     <ClInclude Include="InterfaceCheckboxBehavior.h" />
+    <ClInclude Include="InterfaceSliderBehavior.h" />
+    <ClInclude Include="InterfaceStatusBarBehavior.h" />
     <ClInclude Include="IObjectVariable.h" />
+    <ClInclude Include="IPlayer.h" />
     <ClInclude Include="IPTask.h" />
     <ClInclude Include="IRendererManager.h" />
     <ClInclude Include="IScript.h" />
@@ -344,6 +350,7 @@
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
     <ClInclude Include="MultiSound.h" />
+    <ClInclude Include="NorCondition.h" />
     <ClInclude Include="npc.h" />
     <ClInclude Include="ObjectAnchorType.h" />
     <ClInclude Include="ObjectConditionEquals.h" />
@@ -430,17 +437,20 @@
     <ClInclude Include="WindowHandle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionAddAlpha.cpp" />
     <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionAttack.cpp" />
     <ClCompile Include="ActionChangeLayer.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
     <ClCompile Include="ActionIfThenElse.cpp" />
+    <ClCompile Include="ActionInitializeInterface.cpp" />
     <ClCompile Include="ActionInitializeText.cpp" />
     <ClCompile Include="ActionKillUnit.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionMessageFront.cpp" />
     <ClCompile Include="ActionPushObject.cpp" />
+    <ClCompile Include="ActionPushTimer.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="ActionSetInterfaceText.cpp" />
@@ -522,7 +532,10 @@
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="InterfaceButtonBehavior.cpp" />
     <ClCompile Include="InterfaceCheckboxBehavior.cpp" />
+    <ClCompile Include="InterfaceSliderBehavior.cpp" />
+    <ClCompile Include="InterfaceStatusBarBehavior.cpp" />
     <ClCompile Include="IObjectVariable.cpp" />
+    <ClCompile Include="IPlayer.cpp" />
     <ClCompile Include="IRendererManager.cpp" />
     <ClCompile Include="IScript.cpp" />
     <ClCompile Include="ISound.cpp" />
@@ -559,6 +572,7 @@
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="MultiSound.cpp" />
+    <ClCompile Include="NorCondition.cpp" />
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="ObjectConditionEquals.cpp" />
     <ClCompile Include="ObjectConditionNotEquals.cpp" />

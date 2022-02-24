@@ -121,3 +121,12 @@ void LetterSpriteStruct::Render(ID3D11DeviceContext* const deviceContext, const 
 		m_letter->Render(deviceContext, s_world,viewMatrix,projectionMatrix,shader);
 	}
 }
+
+void LetterSpriteStruct::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, Shader* const shader)
+{
+	if (m_letter)
+	{
+		DirectX::XMStoreFloat4x4(&s_world, XMMatrixTranslation(m_position.x+3.f, m_position.y-3.f, m_position.z));
+		m_letter->Render(deviceContext, s_world, viewMatrix, projectionMatrix, shader);
+	}
+}

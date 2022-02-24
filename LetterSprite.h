@@ -54,6 +54,13 @@ public:
 		class Shader* const shader
 	);
 
+	void PreRender(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix,
+		class Shader* const shader
+	);
+
 	void Update();
 
 	void _vectorcall SetPosition(const struct DirectX::XMFLOAT3& position);

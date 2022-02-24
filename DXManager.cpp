@@ -489,7 +489,7 @@ void DXManager::InitializeViewport( int32 screenWidth,  int32 screenHeight)
 	viewport.Width = static_cast<float>(screenWidth);
 	viewport.Height = static_cast<float>(screenHeight);
 	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	viewport.MaxDepth = 1.f;
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
 

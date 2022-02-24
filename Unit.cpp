@@ -14,6 +14,8 @@
 #include "ActionIfThenElse.h"
 #include "ActionApplyColorFilter.h"
 #include "ActionPushObject.h"
+#include "ActionPushTimer.h"
+#include "ActionAddAlpha.h"
 #include "ConditionFactory.h"
 #include "modern/modern.h"
 #include "Timer.h"
@@ -202,9 +204,10 @@ void Unit::PreRender(
 
 			//const __m128 cameraPosition = Camera::GetCurrentCamera()->GetPosition();//to opt
 
-			const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix);
+			const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationZ(-0.8f) * XMLoadFloat4x4(&m_worldMatrix) * DirectX::XMMatrixTranslation(18.f, 10.f, 0.f);
 			struct DirectX::XMFLOAT4X4 shadowMatrix;
 			DirectX::XMStoreFloat4x4(&shadowMatrix, rotationMatrix);
+			
 			shader.SetShaderParameters(deviceContext, m_modelVariant.GetTexture());
 			shader.SetShaderParameters(deviceContext, shadowMatrix, viewMatrix, projectionMatrix);
 			//shader.shadow->SetShaderScaleParameters(deviceContext,m_scale);
@@ -653,10 +656,13 @@ void Unit::Die(Unit* const killer)
 	switch(m_decayType)
 	{
 	case UnitDecay::ENUM_LEAVE_CORPSE:
-
+	{
+		class FuzzyExpiringTimer* const fuzz = new FuzzyExpiringTimer();
+		fuzz->Initialize(new ActionAddAlpha(this, -0.01), new ActionRemoveObject(this), 1.f);
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
-		action->push(new ActionWait(20.f));
-		action->push(new ActionRemoveObject(this));
+		action->push(new ActionWait(10.f));
+		action->push(new ActionPushTimer(fuzz));
+	}
 		break;
 	case UnitDecay::ENUM_DECAY:
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
@@ -827,7 +833,8 @@ void Unit::DoDamage(class Unit* const attacker)
 
 void Unit::SetFootstepsSound(class ISound * const sound)
 {
-	m_footstepsSound = sound;
+	//m_footstepsSound = sound;
+	//m_footstepsHandle = sound->GetSound();
 }
 
 void Unit::BeginRunning()
@@ -836,8 +843,9 @@ void Unit::BeginRunning()
 	{
 		if (m_footstepsHandle)
 		{
-			//m_footstepsHandle->stop();
-			//m_footstepsHandle = m_footstepsSound->StartPlaying();
+			//if(m_footstepsHandle.)
+		//	m_footstepsHandle->stop();
+		//	m_footstepsHandle = m_footstepsSound->StartPlaying();
 		}
 		else
 		{
@@ -850,7 +858,7 @@ void Unit::EndRunning()
 {
 	if (m_footstepsHandle)
 	{
-	//	m_footstepsHandle->stop();
+		//m_footstepsHandle->stop();
 		//m_footstepsHandle = nullptr;
 	}
 }

@@ -21,7 +21,7 @@ modern_handle const &Options::GetInstance()
 
 const int64_t Options::GetKey(const modern_cstring& name) volatile
 {
-    for (int64_t i = 0; i < (sizeof(options) / sizeof(int64_t)); i++)
+    for (int64_t i = 0; i < OPTIONS_LENGTH; i++)
     {
         if (strcmp(m_optionsNames[i], name.c_str()))
         {
@@ -32,4 +32,5 @@ const int64_t Options::GetKey(const modern_cstring& name) volatile
             return i;
         }
     }
+    return 0;
 }

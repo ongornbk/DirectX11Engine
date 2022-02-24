@@ -89,6 +89,19 @@ void Text::Render(
 	}
 }
 
+void Text::PreRender(
+	struct ID3D11DeviceContext* const deviceContext,
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
+	class Shader* const shader
+)
+{
+	for (auto&& letter : m_letters)
+	{
+		letter->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+	}
+}
+
 void Text::SetPosition(const struct XMFLOAT3& position)
 {
 	m_position = position;

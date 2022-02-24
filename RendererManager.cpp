@@ -22,6 +22,7 @@
 #include "modern/modern_cstring.h"
 #include "Options.h"
 #include "ActionSetTextAlignment.h"
+#include "ActionInitializeInterface.h"
 
 #include <future>
 #include <mutex>
@@ -104,6 +105,10 @@ RendererManager::RendererManager(
 	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
 
 
+
+	
+
+
 	class ActionExecuteActionArray* const marray = new ActionExecuteActionArray();
 
 	marray->push(new ActionInitializeText(
@@ -135,6 +140,15 @@ RendererManager::RendererManager(
 		m_objectsText,
 		struct DirectX::XMFLOAT3(-935.f, 520.f, 0.f
 		)));
+
+	marray->push(new ActionInitializeInterface(
+		m_selectStatus, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"button"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(400.f, 200.f)
+	));
 	
 
 	Timer::CreateInstantTimer(marray);
@@ -255,8 +269,8 @@ void RendererManager::PushInterface(Interface* const object)
 
 
 
-			pck.BeginStandard();
-
+			pck.BeginInterface();
+			GRAPHICS EnableAlphaBlending(true);
 
 			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
 
@@ -266,6 +280,7 @@ void RendererManager::PushInterface(Interface* const object)
 				if (A)
 				{
 					modern_guard g(A);
+					A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
 					A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 
 				}
@@ -273,8 +288,19 @@ void RendererManager::PushInterface(Interface* const object)
 				if (B)
 				{
 					modern_guard g(B);
+					B->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
 					B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 				}
+			}
+
+			class Interface* const A = (class Interface*)m_selectStatus.get();
+			if (A)
+			{
+				modern_guard g(A);
+				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
+				A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
 			}
 
 			//if (m_fpsText)
@@ -351,6 +377,15 @@ void RendererManager::PushInterface(Interface* const object)
 				B->SetPosition(m_cameraPosition);
 				B->Update();
 			}
+		}
+
+		class Interface* const A = (class Interface*)m_selectStatus.get();
+		if (A)
+		{
+			modern_guard g(A);
+			//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+			//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			A->Update(dt);
 		}
 
 		//if(m_fpsText)

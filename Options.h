@@ -3,11 +3,13 @@
 #include "modern/modern_handle.h"
 #include "modern/modern_cstring.h"
 
-#define OPTIONS_LENGTH 1
+#define OPTIONS_LENGTH 3
 
 static constexpr char* m_optionsNames[OPTIONS_LENGTH] =
 {
-	"SHOW_FPS"
+	"NULL",
+	"SHOW_FPS",
+	"SOUND"
 };
 
 class Options : public modern_class
@@ -25,7 +27,9 @@ public:
 	{
 		struct
 		{
+			modern_Boolean option_null;
 			modern_Boolean option_ShowFPS;
+			modern_Boolean option_Sound;
 		};
 		int64_t options[OPTIONS_LENGTH];
 	};

@@ -24,6 +24,8 @@ public:
 		const float ysize
 	);
 
+	void PostInitializeText();
+
 	_Use_decl_annotations_
 		void _fastcall Render(
 			struct ID3D11DeviceContext* const deviceContext,
@@ -49,6 +51,7 @@ public:
 	const enum class RenderLayerType GetLayerType() const noexcept override;
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
+	void SetOffset(DirectX::XMFLOAT3 offset);
 	class IInterfaceBehavior* const GetBehavior();
 	void PushChild(class EObject* const child);
 	void SetText(std::string text);
@@ -59,13 +62,15 @@ public:
 
 	friend class InterfaceButtonBehavior;
 	friend class InterfaceCheckboxBehavior;
+	friend class InterfaceSliderBehavior;
 
 private:
 	class Interface* m_parent;
 	class IInterfaceBehavior* m_behavior;
 	modern_array<class EObject*> m_children;
 
-	DirectX::BoundingBox m_box;
+	DirectX::BoundingBox m_box;//??
+	DirectX::XMFLOAT3 m_offset;
 
 	ID3D11DeviceContext* m_deviceContext;
 

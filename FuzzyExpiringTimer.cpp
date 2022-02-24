@@ -32,3 +32,10 @@ FuzzyExpiringTimer::~FuzzyExpiringTimer()
 		actionExpiring = nullptr;
 	}
 }
+
+void FuzzyExpiringTimer::Initialize(IAction* const fuzzy, IAction* const expiring, const float _time)
+{
+	actionFuzzy = fuzzy;
+	actionExpiring = expiring;
+	this->time = _time;
+}

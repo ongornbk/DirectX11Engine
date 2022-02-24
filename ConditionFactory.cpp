@@ -114,3 +114,8 @@ ICondition* const ConditionFactory::CreateOrCondition(ICondition* const A, ICond
 {
 	return new OrCondition(A, B);
 }
+
+ICondition* const ConditionFactory::CreateNorCondition(ICondition* const A, ICondition* const B) noexcept
+{
+	return new NorCondition(A, B);
+}

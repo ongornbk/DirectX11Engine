@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <queue>
+#include "modern/modern_string.h"
 #pragma region
 using std::string;
 using std::map;
@@ -40,6 +41,7 @@ public:
 
 	void AddSound(class ISound* const sound, string name);
     void GetSound(string name);
+	void GetSound(class modern_string& name);
 	void Stop();
 
 };
@@ -53,6 +55,7 @@ public:
 	static Canals* GetInstance();
 
 	ISound* __GetSound(string sound);
+	ISound* __GetSound(class modern_string& sound);
 	void __AddSound(CanalType type, string name, ISound* sound);
 
 	void Play(WCHAR * sound);

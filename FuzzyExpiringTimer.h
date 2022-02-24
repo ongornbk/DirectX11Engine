@@ -17,5 +17,7 @@ public:
 
 	FuzzyExpiringTimer();
 	~FuzzyExpiringTimer();
+
+	void Initialize(class IAction* const fuzzy, class IAction* const expiring, const float _time);
 };
 

@@ -102,6 +102,7 @@ private:
 	class TextFont* m_font;
 	class modern_handle m_fpsText;
 	class modern_handle m_objectsText;
+	class modern_handle m_selectStatus;
 
 	int32 m_fps;
 	//EObjectVector m_objects;

@@ -35,3 +35,8 @@ void ColorFilter::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
 	if (color.w >= 0.f)
 		m_colorFilter.w = color.w;
 }
+
+void ColorFilter::AddAlpha(const float alpha) noexcept
+{
+	m_colorFilter.w += alpha;
+}

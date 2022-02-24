@@ -40,7 +40,7 @@ public:
 	modern_string(modern_exception& exception);
 	~modern_string();
 
-	[[nodiscard]] const wchar_t* c_wstr() const noexcept;
+	[[nodiscard]] wchar_t* const c_wstr() const noexcept;
 	[[nodiscard]] const _bstr_t& c_str() const noexcept;
 	[[nodiscard]] 
 	[[nodiscard]] size_t size() const noexcept;

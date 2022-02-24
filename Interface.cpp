@@ -73,10 +73,28 @@ void Interface::Initialize(
 
 	//m_boundingSphere.Radius = collision;
 	m_boundingSphere.Center = position;
+	m_offset = {};
 	//m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	//m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 	m_type = EObject::EObjectType::OBJECT_TYPE_INTERFACE;
+
+	
+}
+
+void Interface::PostInitializeText()
+{
+	if (m_behavior)
+	{
+		switch (m_behavior->GetType())
+		{
+		case InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_SLIDER:
+		{
+			m_text->SetOffset({ 0.f,40.f,0.f });
+			break;
+		}
+		}
+	}
 }
 
 void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
@@ -90,6 +108,7 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 		m_vertexBuffer->Render(deviceContext);
 		if (m_text)
 		{
+			m_text->PreRender(deviceContext, viewMatrix, projectionMatrix, shader.BeginShadow());
 			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginInterface());
 		}
 		for (auto obj : m_children)
@@ -123,7 +142,8 @@ void Interface::Update(float dt)
 	//m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
-		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
+		DirectX::XMFLOAT3 xmn = modern_xfloat3_sum(m_boundingSphere.Center, m_offset);
+		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(xmn.x,xmn.y, xmn.z));
 		if (m_behavior)
 		{
 			m_behavior->OnHover();
@@ -211,6 +231,12 @@ void Interface::SetBehavior(IInterfaceBehavior* const behavior)
 		delete m_behavior;
 	}
 	m_behavior = behavior;
+	
+}
+
+void Interface::SetOffset(DirectX::XMFLOAT3 offset)
+{
+	m_offset = offset;
 }
 
 IInterfaceBehavior* const Interface::GetBehavior()

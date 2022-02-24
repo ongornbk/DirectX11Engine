@@ -50,6 +50,16 @@ ISound* Canals::__GetSound(string sound)
 	return a_sound;
 }
 
+ISound* Canals::__GetSound(modern_string& sound)
+{
+	for (int32 i = 0; i < NUMBER_OF_CANALS; i++)
+	{
+		m_canals[i]->GetSound(sound);
+	}
+
+	return a_sound;
+}
+
 void Canals::__AddSound(CanalType type, string name, ISound * sound)
 {
 
@@ -116,6 +126,11 @@ void Sound_Canal::GetSound(string name)
 	{
 		a_sound = tmp;
 	}
+}
+
+void Sound_Canal::GetSound(modern_string& name)
+{
+	this->GetSound(string(name.c_str()));
 }
 
 void Sound_Canal::Stop()

@@ -12,7 +12,9 @@ void ActionSetInterfaceText::execute()
 {
 	if (m_interface)
 	{
+		modern_guard g(m_interface);
 		m_interface->SetText(m_text);
+		m_interface->PostInitializeText();
 	}
 }
 

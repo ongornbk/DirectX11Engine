@@ -44,6 +44,7 @@
 #pragma region Others
 #include "AndCondition.h"
 #include "OrCondition.h"
+#include "NorCondition.h"
 #pragma endregion
 
 namespace ConditionFactory
@@ -54,4 +55,5 @@ namespace ConditionFactory
 	class ICondition* const CreateObjectCondition(class IObjectVariable* const A, class IObjectVariable* const B, const enum class ObjectOperatorType operator_type) noexcept;
 	class ICondition* const CreateAndCondition(class ICondition* const A, class ICondition* const B) noexcept;
 	class ICondition* const CreateOrCondition(class ICondition* const A, class ICondition* const B) noexcept;
+	class ICondition* const CreateNorCondition(class ICondition* const A, class ICondition* const B) noexcept;
 }

@@ -51,6 +51,7 @@ public:
 	void AddFont(string filename, float width, float height);
 
 	void PlayMusic(WCHAR* music);
+	void PlayMusic(class modern_string& music);
 	void StopMusic();
 	void PlaySound(WCHAR* music);
 

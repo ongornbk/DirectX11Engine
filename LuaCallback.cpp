@@ -14,6 +14,7 @@
 #include "ActionSetInterfaceText.h"
 #include "InterfaceButtonBehavior.h"
 #include "InterfaceCheckboxBehavior.h"
+#include "InterfaceSliderBehavior.h"
 #include "modern/modern.h"
 #include "Timer.h"
 
@@ -279,15 +280,20 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 PlayMusic(lua_State* state) noexcept
+		static  int32 PlayMusic(
+			struct lua_State* const state
+		)
 		{
 #pragma warning(disable : 4996)
-			std::string str = LUA_STRING(state, 1);
-			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			wcscpy(wide_string, ws.c_str());
-			m_engine->PlayMusic(wide_string);
-			delete[] wide_string;
+
+			modern_string str = modern_string(LUA_STRING(state, 1));
+			m_engine->PlayMusic(str.c_wstr());
+			//std::string str = LUA_STRING(state, 1);
+			//wchar_t* wide_string = new wchar_t[str.length() + 1];
+			//std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
+			//wcscpy(wide_string, ws.c_str());
+			//m_engine->PlayMusic(wide_string);
+			//delete[] wide_string;
 			return 0;
 		}
 
@@ -688,13 +694,26 @@ namespace lua_callback
 	) noexcept
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
-		if (Unit::CheckIfValid(A))
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		if (Unit::CheckIfValid(unit))
 		{
-			modern_guard guard(A);
-			std::string  str = lua_tostring(state, 1);
+			modern_guard guard(unit);
+			std::string  str = lua_tostring(state, 2);
 			class ISound* const sound = Canals::GetInstance()->__GetSound(str);
-			(A)->SetFootstepsSound(sound);
+			if (sound)
+			{
+				(unit)->SetFootstepsSound(sound);
+			}
+			else
+			{
+				ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+				ipp::Console::GetInstance()->Println("Failed To Set Sound :: " + str);
+			}
+		}
+		else
+		{
+			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->Println("Failed To Set Sound :: Bad Unit Pointer!!!");
 		}
 		return 0;
 	}
@@ -704,11 +723,16 @@ namespace lua_callback
 	) noexcept
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
-		if (Unit::CheckIfValid(A))
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		if (Unit::CheckIfValid(unit))
 		{
-			modern_guard guard(A);
-			A->BeginRunning();
+			modern_guard guard(unit);
+			unit->BeginRunning();
+		}
+		else
+		{
+			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->Println("Failed To Begin Running :: Bad Unit Pointer!!!");
 		}
 		return 0;
 	}
@@ -717,7 +741,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) noexcept
 	{
-		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_lastPickedUnit.get();
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid((Unit*)unit))
 		{
 			((Unit*)unit)->EndRunning();
@@ -967,6 +991,25 @@ namespace lua_callback
 
 	}
 
+	static int32 SetInterfaceSliderBehavior(
+		struct lua_State* const state
+	) noexcept
+	{
+		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		if (inter)
+		{
+			class IInterfaceBehavior* const behavior = new class InterfaceSliderBehavior(inter);
+			inter->SetBehavior(behavior);
+			lua_pushinteger(state, (lua_Integer)behavior);
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+
+	}
+
 	static int32 BindBindableBehavior(
 		struct lua_State* const state
 	) noexcept
@@ -1051,6 +1094,7 @@ namespace lua_callback
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
+			modern_guard g(object);
 			object->m_flags.m_pushable = (bool)lua_toboolean(state, 2);
 		}
 		return 0;
@@ -1687,6 +1731,7 @@ namespace lua_callback
 		lua_register(m_lua, "InitializeInterface", lua_callback::InitializeInterface);
 		lua_register(m_lua, "SetInterfaceButtonBehavior", lua_callback::SetInterfaceButtonBehavior);
 		lua_register(m_lua, "SetInterfaceCheckboxBehavior", lua_callback::SetInterfaceCheckboxBehavior);
+		lua_register(m_lua, "SetInterfaceSliderBehavior", lua_callback::SetInterfaceSliderBehavior);
 		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
 		lua_register(m_lua, "SetInterfaceText", lua_callback::SetInterfaceText);
 		lua_register(m_lua, "BindBindableBehavior", lua_callback::BindBindableBehavior);

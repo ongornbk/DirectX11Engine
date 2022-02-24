@@ -38,6 +38,15 @@ void Timer::Update(const float dt)
 		m_timers.merge(m_echoTimers);
 }
 
+void Timer::Push(ITimer* const timer)
+{
+	if (!timer)
+		return;
+	if (m_stance.load() == 0)
+		m_timers.push_back(timer);
+	else m_echoTimers.push_back(timer);
+}
+
 void Timer::CreateExpiringTimer(class IAction* const action, const float time)
 {
 	class ExpiringTimer* const timer = new ExpiringTimer();
