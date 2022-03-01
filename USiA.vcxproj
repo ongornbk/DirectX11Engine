@@ -201,6 +201,7 @@
     <ClInclude Include="ActionPushTimer.h" />
     <ClInclude Include="ActionRemoveObject.h" />
     <ClInclude Include="ActionSetCellMultiplier.h" />
+    <ClInclude Include="ActionSetInterfaceOffset.h" />
     <ClInclude Include="ActionSetInterfaceText.h" />
     <ClInclude Include="ActionSetShadowCast.h" />
     <ClInclude Include="ActionSetTextAlignment.h" />
@@ -344,6 +345,8 @@
     <ClInclude Include="modern\modern_shared.h" />
     <ClInclude Include="modern\modern_shared_guard.h" />
     <ClInclude Include="modern\modern_string.h" />
+    <ClInclude Include="modern\modern_string_cast.h" />
+    <ClInclude Include="modern\modern_string_casting_type.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_weak.h" />
     <ClInclude Include="modern\modern_xmath.h" />
@@ -453,6 +456,7 @@
     <ClCompile Include="ActionPushTimer.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
+    <ClCompile Include="ActionSetInterfaceOffset.cpp" />
     <ClCompile Include="ActionSetInterfaceText.cpp" />
     <ClCompile Include="ActionSetShadowCast.cpp" />
     <ClCompile Include="ActionSetTextAlignment.cpp" />

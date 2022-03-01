@@ -415,6 +415,7 @@ void Unit::Update(const float dt)
 			{
 				m_flags.m_selected = true;
 				GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
+				GLOBAL m_selectStatus = true;
 			}
 			else
 			{

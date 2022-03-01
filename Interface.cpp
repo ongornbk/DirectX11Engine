@@ -239,6 +239,16 @@ void Interface::SetOffset(DirectX::XMFLOAT3 offset)
 	m_offset = offset;
 }
 
+void Interface::SetPosition(const DirectX::XMFLOAT3& position)
+{
+	m_boundingSphere.Center = position;
+}
+
+void _vectorcall Interface::SetPosition(DirectX::FXMVECTOR& position)
+{
+	DirectX::XMStoreFloat3(&m_boundingSphere.Center, position);
+}
+
 IInterfaceBehavior* const Interface::GetBehavior()
 {
 	return m_behavior;

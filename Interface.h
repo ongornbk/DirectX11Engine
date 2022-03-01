@@ -52,6 +52,8 @@ public:
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
 	void SetOffset(DirectX::XMFLOAT3 offset);
+	void SetPosition(const struct DirectX::XMFLOAT3& position);
+	void _vectorcall SetPosition(DirectX::FXMVECTOR& position);
 	class IInterfaceBehavior* const GetBehavior();
 	void PushChild(class EObject* const child);
 	void SetText(std::string text);

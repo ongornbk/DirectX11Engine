@@ -36,6 +36,14 @@ void ColorFilter::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
 		m_colorFilter.w = color.w;
 }
 
+void ColorFilter::SetColorFilter(const float filter) noexcept
+{
+	m_colorFilter.w = filter;
+	m_colorFilter.x = filter;
+	m_colorFilter.y = filter;
+	m_colorFilter.z = filter;
+}
+
 void ColorFilter::AddAlpha(const float alpha) noexcept
 {
 	m_colorFilter.w += alpha;

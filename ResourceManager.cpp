@@ -217,6 +217,11 @@ void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
 	m_textures.push_back(resourceTexture);
 }
 
+void ResourceManager::LoadTextureResource(modern_string& name)
+{
+	LoadTextureResource(name.c_wstr());
+}
+
 void ResourceManager::LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type)
 {
 	ResourceSound* resourceSound = new ResourceSound();

@@ -1,9 +1,3 @@
-#pragma once
-#include "modern_def.h"
-#include "modern_class.h"
-#include "modern_guard_status.h"
-
-
 /*
 Copyright(C) < 02.06.2020 > ongornbk@gmail.com
 
@@ -18,20 +12,10 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
+#pragma once
+#include "modern_string_casting_type.h"
 
-class modern_guard
+struct modern_string_cast
 {
-	volatile std::atomic<int64_t>* m_lock;
 
-public:
-
-	modern_guard() = delete;
-	modern_guard(class modern_guard& guard) = delete;
-	_stdcall modern_guard(struct modern_class* const object) noexcept;
-	_stdcall modern_guard(volatile struct modern_class* const object) noexcept;
-	_stdcall modern_guard(const struct modern_class* const object) noexcept;
-	_stdcall modern_guard(std::atomic<int64_t>& lock) noexcept;
-	_stdcall ~modern_guard() noexcept;
 };
-
-volatile class modern_guard& modern_guard_anonymous(struct modern_class* const object) noexcept;

@@ -23,6 +23,7 @@
 #include "Options.h"
 #include "ActionSetTextAlignment.h"
 #include "ActionInitializeInterface.h"
+#include "ActionSetInterfaceOffset.h"
 
 #include <future>
 #include <mutex>
@@ -145,9 +146,28 @@ RendererManager::RendererManager(
 		m_selectStatus, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
-		class  modern_string(L"button"),
+		class  modern_string(L"health_bar"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(400.f, 200.f)
+		struct DirectX::XMFLOAT2(200.f, 100.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_selectStatus,
+		struct DirectX::XMFLOAT3(0.f,480.f,0.f)
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_selectStatusBorder, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"health_bar_border"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(200.f, 100.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_selectStatusBorder,
+		struct DirectX::XMFLOAT3(0.f, 480.f, 0.f)
 	));
 	
 
@@ -292,15 +312,29 @@ void RendererManager::PushInterface(Interface* const object)
 					B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 				}
 			}
-
-			class Interface* const A = (class Interface*)m_selectStatus.get();
-			if (A)
 			{
-				modern_guard g(A);
-				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
-				A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+				class Interface* const A = (class Interface*)m_selectStatus.get();
+				if (A)
+				{
+					modern_guard g(A);
+					//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+					//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+					//A->m_flags.m_rendering = true;
+					//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
+					A->SetColorFilter(0.f, 0.f, 0.f, 0.3f);
+					A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+					//A->SetColorFilter(1.f);
+					//A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+				}
+			}
+			{
+				class Interface* const A = (class Interface*)m_selectStatusBorder.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetColorFilter(1.f);
+					A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+				}
 			}
 
 			//if (m_fpsText)
@@ -357,6 +391,9 @@ void RendererManager::PushInterface(Interface* const object)
 
 	void RendererManager::Update(const float dt,const bool renderframe)
 	{
+
+		GLOBAL m_selectStatus = false;
+
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
 
@@ -378,16 +415,28 @@ void RendererManager::PushInterface(Interface* const object)
 				B->Update();
 			}
 		}
-
-		class Interface* const A = (class Interface*)m_selectStatus.get();
-		if (A)
 		{
-			modern_guard g(A);
-			//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-			//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-			A->Update(dt);
+			class Interface* const A = (class Interface*)m_selectStatus.get();
+			if (A)
+			{
+				modern_guard g(A);
+				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				A->SetPosition(m_cameraPosition);
+				A->Update(dt);
+				
+			}
+		} {
+			class Interface* const A = (class Interface*)m_selectStatusBorder.get();
+			if (A)
+			{
+				modern_guard g(A);
+				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				A->SetPosition(m_cameraPosition);
+				A->Update(dt);
+			}
 		}
-
 		//if(m_fpsText)
 		//m_fpsText->Update();
 		//if (m_objectsText)
@@ -431,8 +480,8 @@ void RendererManager::PushInterface(Interface* const object)
 				}
 				else
 				{
-						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
-						{
+						{						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+
 							m_layers[i]->Update(dt);
 						}
 				}
@@ -461,6 +510,29 @@ void RendererManager::PushInterface(Interface* const object)
 
 //#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
+
+			{
+			class Interface* const A = (class Interface*)m_selectStatus.get();
+			class Interface* const B = (class Interface*)m_selectStatusBorder.get();
+			if (A)
+			{
+				modern_guard g1(A);
+				modern_guard g2(B);
+				if (GLOBAL m_selectStatus)
+				{
+					A->m_flags.m_rendering = true;
+					B->m_flags.m_rendering = true;
+				}
+				else
+				{
+					A->m_flags.m_rendering = false;
+					B->m_flags.m_rendering = false;
+				}
+			}
+
+			
+				
+			}
 			//	break;
 			//}
 			//}

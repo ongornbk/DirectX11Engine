@@ -10,6 +10,7 @@ protected:
 public:
 	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept;
 	void SetColorFilter(const struct DirectX::XMFLOAT4& color) noexcept;
+	void SetColorFilter(const float filter) noexcept;
 
 	void AddAlpha(const float alpha) noexcept;
 };

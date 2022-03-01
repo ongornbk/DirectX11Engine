@@ -7,7 +7,7 @@ ActionInitializeInterface::ActionInitializeInterface(
     modern_string& paths,
     const DirectX::XMFLOAT3& position,
     const DirectX::XMFLOAT2& size
-) : m_device(device), m_deviceContext(deviceContext), m_shader(shader), m_position(position), m_size(size)
+) : m_device(device), m_deviceContext(deviceContext), m_shader(shader), m_position(position), m_size(size), m_paths(paths)
 {
     m_interface.make_handle((new Interface())->GetHandle());
     inter.make_handle(m_interface);

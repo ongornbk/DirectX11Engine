@@ -65,3 +65,8 @@ modern_guard::~modern_guard() noexcept
 {
 	m_lock->exchange(modern_guard_status::GUARD_STATUS_FREE, std::memory_order::memory_order_release);
 }
+
+volatile class modern_guard& modern_guard_anonymous(modern_class* const object) noexcept
+{
+	return *(new volatile class modern_guard(object));
+}

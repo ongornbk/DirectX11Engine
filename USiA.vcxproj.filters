@@ -64,9 +64,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Lua">
       <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
     </Filter>
@@ -168,6 +165,9 @@
     </Filter>
     <Filter Include="Header Files\Object\Unit\Task">
       <UniqueIdentifier>{7cc9b053-3d0d-4d1c-9eba-fe1a2c16a116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Settings">
+      <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -927,14 +927,23 @@
     <ClInclude Include="InterfaceStatusBarBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionInitializeInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ActionAddAlpha.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionPushTimer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_string_casting_type.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_string_cast.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeInterface.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceOffset.h">
+      <Filter>Header Files\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1547,19 +1556,22 @@
     <ClCompile Include="ActionPushTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionSetInterfaceOffset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="x64\Release\bin\settings\interface.ini">
-      <Filter>Settings</Filter>
+      <Filter>Shaders\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\settings.file">
-      <Filter>Settings</Filter>
+      <Filter>Shaders\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\tile.file">
-      <Filter>Settings</Filter>
+      <Filter>Shaders\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua">
       <Filter>Lua</Filter>

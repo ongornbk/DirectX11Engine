@@ -23,6 +23,7 @@ public:
 	std::stack<Unit*>    m_stack;
 	VariablesManager     m_variables;
 	uint32               m_size;
+	modern_Boolean       m_selectStatus;
 
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
