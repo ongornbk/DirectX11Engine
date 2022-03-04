@@ -161,6 +161,7 @@ public:
 	bool GetAttacked(class Unit* const attacker);
 	bool StartCasting(const DirectX::XMFLOAT2 target);
 	void DoDamage(class Unit* const attacker);
+	void Select(modern_Boolean selct = 1);
 
 	void SetFootstepsSound(class ISound* sound);
 

@@ -126,12 +126,12 @@ void RenderLayerObject::Clear()
 {
 	for (int32 cv = 0; cv < MAP_DIVISION; cv++)
 	{
-		for (auto&& object : m_objects[0][cv])
+		for (auto&& agent : m_objects[0][cv])
 		{
-			if (object)
+			if (agent)
 			{
-				object->Release();
-				object = nullptr;
+				agent->Release();
+				agent = nullptr;
 			}
 		}
 		m_objects[0][cv].clear();
@@ -164,9 +164,9 @@ void RenderLayerObject::Push(RegionPointObject* const tree)
 	m_objects[1][0].push_back(tree);
 }
 
-void RenderLayerObject::Push(EObject* const object)
+void RenderLayerObject::Push(EObject* const agent)
 {
-	m_objects[1][0].push_back(object);
+	m_objects[1][0].push_back(agent);
 }
 
 void RenderLayerObject::Push(Interface* const inter)
@@ -195,14 +195,14 @@ int64_t _fastcall CheckDistance(
 	}
 }
 
-void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object, const float range) noexcept
+void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* agent, const float range) noexcept
 {
 	
 	for (auto&& unit : vec)
 	{
-		if (unit && unit != object && (unit->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+		if (unit && unit != agent && (unit->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 		{
-			switch (CheckDistance(unit, object, range))
+			switch (CheckDistance(unit, agent, range))
 			{
 			case 2:
 				sa.push((Unit*)unit);
@@ -220,7 +220,7 @@ ENDLOOP:
 }
 
 
-std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* agent, float range) noexcept
 {
 	
 	class std::stack<class Unit*> unitsLeft;
@@ -231,8 +231,8 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 
 	//ThreadPoolHandle pool; TO DO
 
-	uint32 cVec = object->m_vector;
-	uint32 VIndex = object->m_index;
+	uint32 cVec = agent->m_vector;
+	uint32 VIndex = agent->m_index;
 
 	switch (cVec)
 	{
@@ -245,9 +245,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsCenter.push((Unit*)obj);
@@ -260,9 +260,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec + 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsRight.push((Unit*)obj);
@@ -282,9 +282,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsLeft.push((Unit*)obj);
@@ -297,9 +297,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsCenter.push((Unit*)obj);
@@ -319,9 +319,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsLeft.push((Unit*)obj);
@@ -334,9 +334,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
-						switch (CheckDistance(obj, object, range))
+						switch (CheckDistance(obj, agent, range))
 						{
 						case 2:
 							unitsCenter.push((Unit*)obj);
@@ -349,9 +349,9 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 			{
 				{
 					for (auto& obj : m_objects[1][cVec + 1])
-						if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+						if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
 						{
-							switch (CheckDistance(obj, object, range))
+							switch (CheckDistance(obj, agent, range))
 							{
 							case 2:
 								unitsRight.push((Unit*)obj);
@@ -378,13 +378,222 @@ std::stack<Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Unit* object, f
 	return unitsCenter;
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(class EObject* const object, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerObject::GetUnitsInRange(Agent* agent, float range) noexcept
+{
+	class std::stack<class Unit*> unitsLeft;
+	class std::stack<class Unit*> unitsCenter;
+	class std::stack<class Unit*> unitsRight;
+
+	//std::stack<Unit*> unitsA[3];
+
+	//ThreadPoolHandle pool; TO DO
+
+	uint32 cVec = agent->m_vector;
+	uint32 VIndex = agent->m_index;
+
+	switch (cVec)
+	{
+	case 0U:
+	{
+
+		//#pragma omp parallel num_threads(2)
+		{
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec + 1])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsRight.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+		}
+		break;
+	}
+	case 31U:
+	{
+		//#pragma omp parallel num_threads(2)
+		{
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec - 1])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsLeft.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+		}
+		break;
+	}
+	default:
+	{
+		//#pragma omp parallel num_threads(3)
+		{
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec - 1])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsLeft.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+			//#pragma omp single
+			{
+				for (auto& obj : m_objects[1][cVec])
+				{
+					if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					{
+						switch (CheckDistance(obj, agent, range))
+						{
+						case 2:
+							unitsCenter.push((Unit*)obj);
+							break;
+						}
+					}
+				}
+			}
+			//#pragma omp single
+			{
+				{
+					for (auto& obj : m_objects[1][cVec + 1])
+						if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+						{
+							switch (CheckDistance(obj, agent, range))
+							{
+							case 2:
+								unitsRight.push((Unit*)obj);
+								break;
+							}
+						}
+				}
+			}
+		}
+		break;
+	}
+	}
+
+	while (!unitsLeft.empty()) {
+		unitsCenter.push(unitsLeft.top());
+		unitsLeft.pop();
+	}
+
+	while (!unitsRight.empty()) {
+		unitsCenter.push(unitsRight.top());
+		unitsRight.pop();
+	}
+
+	return unitsCenter;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//return std::stack<class Unit*>();
+}
+
+std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(class EObject* const agent, float range) noexcept
 {
 
 	class std::stack<class Tree*> m_trees;
 
-	uint32 cVec = object->m_vector;
-	uint32 cIndex = object->m_index;
+	uint32 cVec = agent->m_vector;
+	uint32 cIndex = agent->m_index;
 
 	modern_array_iterator<EObject*> it = 
 		(cIndex > 0 && cIndex < m_objects[1][cVec].size()) ? 
@@ -395,9 +604,9 @@ std::stack<class Tree*> _vectorcall RenderLayerObject::GetTreesBelow(class EObje
 
 		for (auto& obj : it)
 		{
-			if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_TREE))
+			if (obj && obj != agent && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_TREE))
 			{
-				switch (CheckDistance(obj, object, range))
+				switch (CheckDistance(obj, agent, range))
 				{
 				case 0:
 				{

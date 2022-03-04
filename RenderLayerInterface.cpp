@@ -123,6 +123,11 @@ std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Unit* 
 	return std::stack<class Unit*>();
 }
 
+std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Agent* agent, float range) noexcept
+{
+	return std::stack<class Unit*>();
+}
+
 std::stack<class Tree*> _vectorcall RenderLayerInterface::GetTreesBelow(class EObject* const object, float range) noexcept
 {
 	return std::stack<class Tree*>();

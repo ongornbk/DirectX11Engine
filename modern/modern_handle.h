@@ -19,6 +19,7 @@ protected:
 public:
 
 	modern_handle();
+	[[nodiscard]]modern_handle(const class modern_handle& diff);
 	
 	void make_handle(const class modern_handle& diff);
 	~modern_handle();

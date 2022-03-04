@@ -516,15 +516,21 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 	//{
 	//	return true;
 	//}
-
+		const float Aradius = A->m_boundingSphere.Radius;
+		const float Bradius = B->m_boundingSphere.Radius;
+		const float By = B->m_boundingSphere.Center.y;
+		const float Ay = A->m_boundingSphere.Center.y;
+#pragma region Agent Case
+		if (Aradius == 0.f || Bradius == 0.f)
+			return Ay > By;
+#pragma endregion
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
-	const float Aradius = A->m_boundingSphere.Radius;
-	const float Bradius = B->m_boundingSphere.Radius;
+
 	const float Ax = A->m_boundingSphere.Center.x;
-	const float Ay = A->m_boundingSphere.Center.y;
+
 	const float Bx = B->m_boundingSphere.Center.x;
-	const float By = B->m_boundingSphere.Center.y;
+
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
@@ -599,13 +605,18 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 	const class modern_guard AG(A);
 	const class modern_guard BG(B);
 
-	const bool Apushable = A->m_flags.m_pushable;
-	const bool Bpushable = B->m_flags.m_pushable;
+
 	const float Aradius = A->m_boundingSphere.Radius;
 	const float Bradius = B->m_boundingSphere.Radius;
-	const float Ax = A->m_boundingSphere.Center.x;
-	const float Ay = A->m_boundingSphere.Center.y;
 	const float Bx = B->m_boundingSphere.Center.x;
+	const float Ax = A->m_boundingSphere.Center.x;
+#pragma region Agent Case
+	if (Aradius == 0.f || Bradius == 0.f)
+		return Ax > Bx;
+#pragma endregion
+	const bool Apushable = A->m_flags.m_pushable;
+	const bool Bpushable = B->m_flags.m_pushable;
+	const float Ay = A->m_boundingSphere.Center.y;
 	const float By = B->m_boundingSphere.Center.y;
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;

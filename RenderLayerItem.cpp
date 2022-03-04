@@ -353,6 +353,11 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 	return unitsCenter;
 }
 
+std::stack<class Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Agent* agent, float range) noexcept
+{
+	return std::stack<class Unit*>();
+}
+
 std::stack<class Tree*> _vectorcall RenderLayerItem::GetTreesBelow(class EObject* const object, float range) noexcept
 {
 	return std::stack<class Tree*>();

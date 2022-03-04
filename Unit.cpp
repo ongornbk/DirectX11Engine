@@ -401,29 +401,29 @@ void Unit::Update(const float dt)
 
 
 
-		float mousePosition[2];
-		UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
-		DirectX::FXMVECTOR point = XMVectorSet(mousePosition[0],mousePosition[1], 0.0f, 0.0f);
-		DirectX::BoundingBox select;
-		select.Center = m_boundingSphere.Center;
-		select.Center.y += m_size / 4.f;
-		select.Extents.x = m_size / 2.f;
-		select.Extents.y = m_size / 2.f;
-		select.Extents.z = m_size / 2.f;
-		{
-			if (select.Contains(point))
-			{
-				m_flags.m_selected = true;
-				GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
-				GLOBAL m_selectStatus = true;
-			}
-			else
-			{
-				m_flags.m_selected = false;
-			}
-		}
+	//	float mousePosition[2];
+	//	UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
+	//	DirectX::FXMVECTOR point = XMVectorSet(mousePosition[0],mousePosition[1], 0.0f, 0.0f);
+	//	DirectX::BoundingBox select;
+	//	select.Center = m_boundingSphere.Center;
+	//	select.Center.y += m_size / 4.f;
+	//	select.Extents.x = m_size / 2.f;
+	//	select.Extents.y = m_size / 2.f;
+	//	select.Extents.z = m_size / 2.f;
+	//	{
+	//		if (select.Contains(point))
+	//		{
+	//			m_flags.m_selected = true;
+	//			GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
+	//			GLOBAL m_selectStatus = true;
+	//		}
+	//		else
+	//		{
+	//			m_flags.m_selected = false;
+	//		}
+	//	}
 	}
-
+	//
 	m_intersection = false;
 }	
 
@@ -830,6 +830,20 @@ void Unit::DoDamage(class Unit* const attacker)
 		Die(attacker);
 		m_stats.m_health = 0.f;
 	}
+}
+
+void Unit::Select(modern_Boolean selct)
+{
+	if (selct)
+		{
+			m_flags.m_selected = true;
+			GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
+			GLOBAL m_selectStatus = true;
+		}
+		else
+		{
+			m_flags.m_selected = false;
+		}
 }
 
 void Unit::SetFootstepsSound(class ISound * const sound)

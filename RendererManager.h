@@ -12,8 +12,10 @@
 #include "modern/modern_array.h"
 #include "RenderLayer.h"
 #include "ObjectFocusType.h"
+#include "Agent.h"
 #include <stack>
 #include <map>
+#include <list>
 
 #pragma region
 class Engine;
@@ -22,6 +24,7 @@ class Unit;
 class Doodads;
 class AnimatedDoodads;
 class Tree;
+class Agent;
 class RegionPointObject;
 class UserInterfaceGame;
 class UserInterfaceGameMenu;
@@ -52,6 +55,7 @@ public:
 
 
 	void PushUnit(class Unit* unit);
+	void PushAgent(class Agent* const agent);
 	void PushDoodads(class Doodads* doodads);
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
 	void PushTree(class Tree* doodads);
@@ -78,6 +82,7 @@ public:
 	class TextFont* const GetFont();
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Agent* const agent, const float range) noexcept;
 
 	static class RendererManager* GetInstance();
 	size_t GetNumberOfObjects();
@@ -104,6 +109,9 @@ private:
 	class modern_handle m_objectsText;
 	class modern_handle m_selectStatus;
 	class modern_handle m_selectStatusBorder; //TEMP THERE SHOULD BE AN ARRAY IN INTERFACE TO DRAW 
+	class modern_handle m_cursorAgent;
+
+	std::list<modern_handle> m_selectGroup;
 
 	int32 m_fps;
 	//EObjectVector m_objects;

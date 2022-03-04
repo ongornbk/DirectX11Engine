@@ -105,7 +105,9 @@ RendererManager::RendererManager(
 	m_font = TextFont::GetFontByName("ExocetLight");
 	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
 
-
+	class Agent* const agent_cursor = new class Agent();
+	agent_cursor->Initialize(struct DirectX::XMFLOAT3(0.f, 0.f, 0.f));
+	m_cursorAgent.make_handle(agent_cursor->GetHandle());
 
 	
 
@@ -148,7 +150,7 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(200.f, 100.f)
+		struct DirectX::XMFLOAT2(160.f, 60.f)
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -162,7 +164,7 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(200.f, 100.f)
+		struct DirectX::XMFLOAT2(160.f, 60.f)
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -220,6 +222,11 @@ void RendererManager::PushUnit(
 )
 {
 	m_layers[enum_cast<int32_t>(unit->GetLayerType())]->Push(unit);
+}
+
+void RendererManager::PushAgent(Agent* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
 }
 
 void RendererManager::PushDoodads(class Doodads * doodads)
@@ -511,28 +518,65 @@ void RendererManager::PushInterface(Interface* const object)
 //#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 
-			{
-			class Interface* const A = (class Interface*)m_selectStatus.get();
-			class Interface* const B = (class Interface*)m_selectStatusBorder.get();
-			if (A)
-			{
-				modern_guard g1(A);
-				modern_guard g2(B);
-				if (GLOBAL m_selectStatus)
-				{
-					A->m_flags.m_rendering = true;
-					B->m_flags.m_rendering = true;
-				}
-				else
-				{
-					A->m_flags.m_rendering = false;
-					B->m_flags.m_rendering = false;
-				}
-			}
-
 			
-				
+
+			for (auto obj : m_selectGroup)
+			{
+				//modern_guard g(obj);
+				((Unit*)obj.get())->Select(0);
 			}
+			m_selectGroup.clear();
+
+
+
+			class Agent* const agent_cursor = (class Agent* const)m_cursorAgent.get();
+			if (agent_cursor)
+			{
+				float mousePosition[2];
+				UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
+				DirectX::XMFLOAT3 point = DirectX::XMFLOAT3(mousePosition[0], mousePosition[1], 0.0f);
+				modern_guard g(agent_cursor);
+				agent_cursor->SetVector(point);
+				auto gr = this->GetUnitsInRange(agent_cursor, 90.f);
+				while (gr.size())
+				{
+					if (gr.top() != m_focus)
+					{
+						gr.top()->Select();
+						m_selectGroup.push_back(modern_handle(gr.top()->GetHandle()));
+					}
+					gr.pop();
+				}
+			}
+			else
+			{
+				assert(agent_cursor);//Agent might be deleted sometimes
+			}
+#pragma region After Cursor Stuff
+			{
+				class Interface* const A = (class Interface*)m_selectStatus.get();
+				class Interface* const B = (class Interface*)m_selectStatusBorder.get();
+				if (A)
+				{
+					modern_guard g1(A);
+					modern_guard g2(B);
+					if (GLOBAL m_selectStatus)
+					{
+						A->m_flags.m_rendering = true;
+						B->m_flags.m_rendering = true;
+
+					}
+					else
+					{
+						A->m_flags.m_rendering = false;
+						B->m_flags.m_rendering = false;
+					}
+				}
+
+
+
+			}
+#pragma endregion
 			//	break;
 			//}
 			//}
@@ -675,6 +719,7 @@ void RendererManager::Clear()
 			m_layers[i]->Clear();
 		}
 	}
+	this->PushAgent((class Agent*)m_cursorAgent.get());
 }
 
 TextFont* const RendererManager::GetFont()
@@ -689,6 +734,11 @@ std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(
 {
 	//return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
 	return m_layers[enum_cast<int32_t>(object->GetLayerType())]->GetUnitsInRange(object, range);
+}
+
+std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(Agent* const agent, const float range) noexcept
+{
+	return m_layers[enum_cast<int32_t>(agent->GetLayerType())]->GetUnitsInRange(agent, range);
 }
 
 RendererManager * RendererManager::GetInstance()

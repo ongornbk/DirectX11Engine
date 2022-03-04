@@ -945,6 +945,9 @@
     <ClInclude Include="ActionSetInterfaceOffset.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1557,6 +1560,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionSetInterfaceOffset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

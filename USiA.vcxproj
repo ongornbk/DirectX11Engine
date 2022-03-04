@@ -211,6 +211,7 @@
     <ClInclude Include="ActionType.h" />
     <ClInclude Include="ActionWait.h" />
     <ClInclude Include="ActionWaitUntil.h" />
+    <ClInclude Include="Agent.h" />
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="AndCondition.h" />
     <ClInclude Include="AnimatedDoodads.h" />
@@ -464,6 +465,7 @@
     <ClCompile Include="ActionTranslateText.cpp" />
     <ClCompile Include="ActionWait.cpp" />
     <ClCompile Include="ActionWaitUntil.cpp" />
+    <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AndCondition.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />

@@ -17,6 +17,13 @@ modern_handle::modern_handle()
 	m_object = nullptr;
 }
 
+modern_handle::modern_handle(const modern_handle& diff)
+{
+	m_object = diff.m_object;
+	m_num = diff.m_num;
+	m_num[0]++;
+}
+
 void modern_handle::make_handle(
 	const class modern_handle& diff
 )

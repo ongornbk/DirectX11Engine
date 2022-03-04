@@ -38,6 +38,7 @@ public:
 	void Push(class EObject* const object) override;
 	void Push(class Interface* const inter) override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept override;
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(Agent* agent, float range) noexcept override;
 	std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range)noexcept override;
 
 };
