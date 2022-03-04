@@ -2,6 +2,7 @@
 #include "RenderContainer.h"
 #include "modern/modern.h"
 #include "game_math.h"
+#include "SortPair.h"
 #include <forward_list>
 
 namespace
@@ -42,6 +43,12 @@ void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION
 
 _Use_decl_annotations_
 void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
+
+_Use_decl_annotations_
+void _cdecl PostSort() noexcept;
+
+_Use_decl_annotations_
+void _cdecl PushPair(class EObject* const a, class EObject* const b) noexcept;
 
 //_Use_decl_annotations_
 //void _vectorcall StaticSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;

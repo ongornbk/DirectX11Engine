@@ -1,8 +1,13 @@
 #pragma once
 #include "RenderContainer.h"
+#include "AgentIntersectStance.h"
 
 class Agent : public EObject
 {
+	class EObject* m_intersectA;
+	class EObject* m_intersectB;
+	enum class AgentIntersectStance m_intersectStance;
+
 public:
 	Agent();
 	~Agent();

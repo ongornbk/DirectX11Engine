@@ -3,7 +3,7 @@
 #include "ActionRemoveObject.h"
 #include "Timer.h"
 
-Agent::Agent()
+Agent::Agent() : m_intersectStance(AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT)
 {
     m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
     m_boundingSphere.Radius = 0.0f;
@@ -32,6 +32,7 @@ void _fastcall Agent::PreRender(ID3D11DeviceContext* const deviceContext, const 
 
 void Agent::Update(float dt)
 {
+    m_intersectStance = AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT;
 }
 
 void Agent::SetZ(float z)
@@ -50,7 +51,34 @@ int32 Agent::isReleased() const noexcept
 
 void Agent::Intersect(EObject* const other)
 {
+    if (other == nullptr)
+        return;
+    if (other == this)
+        return;
 
+
+
+    switch (m_intersectStance)
+    {
+    
+    case AgentIntersectStance::AGENT_STANCE_SWA_INTERSECT:
+    {
+        if (m_intersectA == other)
+            return;
+        m_intersectB = other;
+        PushPair(m_intersectA, m_intersectB);
+        m_intersectA = m_intersectB;
+        
+        //std::cout << "DDDdddDDDdDdD" << std::endl;
+        break;
+    }
+    case AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT:
+    {
+        m_intersectA = other;
+        m_intersectStance = AgentIntersectStance::AGENT_STANCE_SWA_INTERSECT;
+        break;
+    }
+    }
 }
 
 const RenderLayerType Agent::GetLayerType() const noexcept

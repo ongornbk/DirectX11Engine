@@ -2,10 +2,12 @@
 #include "RenderLayer.h"
 #include "modern/modern_array.h"
 
+
 class RenderLayerObject :
 	public RenderLayer
 {
 	class modern_array<class EObject*> m_objects[2][MAP_DIVISION];
+	
 public:
 	RenderLayerObject();
 	~RenderLayerObject();

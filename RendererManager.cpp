@@ -550,7 +550,7 @@ void RendererManager::PushInterface(Interface* const object)
 			}
 			else
 			{
-				assert(agent_cursor);//Agent might be deleted sometimes
+				assert(agent_cursor);
 			}
 #pragma region After Cursor Stuff
 			{

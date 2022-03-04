@@ -57,6 +57,7 @@ void _stdcall RenderLayerObject::QSort()
 //#pragma omp parallel
 	QSortByXV(m_objects);
 	QSortByYV(m_objects);
+	PostSort();
 //#pragma omp barrier
 }
 

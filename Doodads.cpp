@@ -7,7 +7,12 @@
 
 using ipp::memory_cast;
 
-Doodads::Doodads()
+namespace
+{
+	static Global* m_global = nullptr;
+}
+
+Doodads::Doodads() : ColorFilter(1.f, 1.f, 1.f, 1.f)
 {
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
@@ -45,7 +50,7 @@ void Doodads::Initialize(
 
 	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+	(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{
@@ -78,26 +83,9 @@ void Doodads::Render(
 	
 	if (m_flags.m_rendering)
 	{
-		//if (m_flags.m_selectable && m_flags.m_selected)
-		//{
-		//
-		//	shader.BeginSelect();
-		//
-		//	class Shader* const csh = shader.select;
-		//
-		//	csh->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		//	csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
-		//	m_vertexBuffer->Render(deviceContext);
-		//
-		//	//shader.End();
-		//	shader.BeginStandard();
-		//}
-
-		class Shader* const csh = shader.BeginStandard();
-
-		csh->SetShaderParameters(deviceContext, m_texture->GetTexture());
-		csh->SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
-		//csh->SetShaderColorParameters(deviceContext, m_colors);
+		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
@@ -147,7 +135,7 @@ void Doodads::Update(float dt)
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
-		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y + (m_size / 1.5f), m_boundingSphere.Center.z - (m_size / 1.5f)));
+		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
 	}
 
 }

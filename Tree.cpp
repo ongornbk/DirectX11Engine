@@ -46,7 +46,7 @@ void Tree::Initialize(
 {
 	m_size = size;
 
-	m_vertexBuffer = new VertexBuffer();
+	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
 	(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
 

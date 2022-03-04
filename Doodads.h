@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include "RenderContainer.h"
 
-class Doodads : public EObject
+class Doodads : public EObject, public ColorFilter
 {
 public:
 	Doodads();

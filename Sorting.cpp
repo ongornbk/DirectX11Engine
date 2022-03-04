@@ -16,6 +16,12 @@
 #include <vector>
 
 namespace
+
+{
+	std::vector<SortPair> m_postPairs;
+}
+
+namespace
 {
 
 
@@ -521,8 +527,16 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 		const float By = B->m_boundingSphere.Center.y;
 		const float Ay = A->m_boundingSphere.Center.y;
 #pragma region Agent Case
-		if (Aradius == 0.f || Bradius == 0.f)
+		if (Aradius == 0.f)
+		{
+			A->Intersect(B);
 			return Ay > By;
+		}
+		if (Bradius == 0.f)
+		{
+			B->Intersect(A);
+			return Ay > By;
+		}
 #pragma endregion
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -611,8 +625,16 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 	const float Bx = B->m_boundingSphere.Center.x;
 	const float Ax = A->m_boundingSphere.Center.x;
 #pragma region Agent Case
-	if (Aradius == 0.f || Bradius == 0.f)
+	if (Aradius == 0.f)
+	{
+		A->Intersect(B);
 		return Ax > Bx;
+	}
+	if (Bradius == 0.f)
+	{
+		B->Intersect(A);
+		return Ax > Bx;
+	}
 #pragma endregion
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
@@ -851,6 +873,23 @@ void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 		}
 	}
 //#pragma omp barrier
+}
+
+void _cdecl PostSort() noexcept
+{
+	for (class SortPair& pair : m_postPairs)
+	{
+		__sort__SortByX()(pair.m_A, pair.m_B);
+		__sort__SortByY()(pair.m_A, pair.m_B);
+		//std::cout << "TTYYYYTTTTYT" << std::endl;
+	}
+	
+	m_postPairs.clear();
+}
+
+void _cdecl PushPair(EObject* const a, EObject* const b) noexcept
+{
+	m_postPairs.push_back(SortPair(a, b));
 }
 
 //BUGGED

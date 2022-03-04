@@ -166,7 +166,7 @@
     <Filter Include="Header Files\Object\Unit\Task">
       <UniqueIdentifier>{7cc9b053-3d0d-4d1c-9eba-fe1a2c16a116}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Settings">
+    <Filter Include="Settings">
       <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -948,6 +948,12 @@
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AgentIntersectStance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortPair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1565,19 +1571,22 @@
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortPair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="x64\Release\bin\settings\interface.ini">
-      <Filter>Shaders\Settings</Filter>
+      <Filter>Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\settings.file">
-      <Filter>Shaders\Settings</Filter>
+      <Filter>Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\tile.file">
-      <Filter>Shaders\Settings</Filter>
+      <Filter>Settings</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua">
       <Filter>Lua</Filter>
@@ -1695,6 +1704,12 @@
     </None>
     <None Include="DeleteArrayTrash.inl">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Tree.lua">
+      <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Doodads.lua">
+      <Filter>Lua\core</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
