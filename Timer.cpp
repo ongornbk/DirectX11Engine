@@ -107,3 +107,8 @@ void Timer::CreateConditionTimer(IAction* const action, ICondition* const condit
 		m_timers.push_back(timer);
 	else m_echoTimers.push_back(timer);
 }
+
+size_t Timer::CountTimers()
+{
+	return m_timers.size();
+}

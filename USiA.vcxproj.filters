@@ -169,6 +169,9 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Task">
+      <UniqueIdentifier>{0e29404e-64ca-4e02-87c6-29bcb2b221ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -624,15 +627,6 @@
     <ClInclude Include="modern\modern_cstring.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
-    <ClInclude Include="IPTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PTaskGCClear.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PTaskRender.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_class.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
@@ -953,6 +947,15 @@
     </ClInclude>
     <ClInclude Include="SortPair.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPTask.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskGCClear.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskRender.h">
+      <Filter>Header Files\Task</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

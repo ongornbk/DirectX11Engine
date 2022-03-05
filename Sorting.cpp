@@ -984,8 +984,8 @@ void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexce
 			}
 			case ObjectManagementType::OBJECT_MANAGEMENT_DELETE:
 			{
-				collector->AsyncDelete(obj);
-				//delete obj;
+				//collector->AsyncDelete(obj);//
+				delete obj;
 				obj = nullptr;
 				vectemp.remove(j);
 				j--;

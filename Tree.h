@@ -48,6 +48,9 @@ public:
 	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
 	DirectX::XMFLOAT3 GetVector() noexcept override;
 
+	void SetStance(const modern_Boolean stance) noexcept;
+	const modern_Boolean GetStance() const noexcept;
+
 	static void SetGlobal(class Global* global) noexcept;
 
 	RenderHandle GetRenderHandle();
@@ -56,12 +59,13 @@ private:
 
 	ID3D11DeviceContext* m_deviceContext;
 
-	XMFLOAT3      m_lastPosition;
+	XMFLOAT3       m_lastPosition;
 
-	XMFLOAT4X4    m_worldMatrix;
-	float         m_size;
+	XMFLOAT4X4     m_worldMatrix;
+	float          m_size;
+	modern_Boolean m_stance;//Maybe enum class
 
-	Texture*      m_texture;
-	VertexBuffer* m_vertexBuffer;
+	Texture*       m_texture;
+	VertexBuffer*  m_vertexBuffer;
 };
 

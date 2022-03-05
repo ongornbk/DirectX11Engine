@@ -22,6 +22,8 @@ Tree::Tree() :
 	m_boundingSphere.Radius = 0.0f;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+
+	m_stance = 0;
 }
 
 
@@ -184,6 +186,16 @@ void Tree::SetVector(const DirectX::XMFLOAT3& vec) noexcept
 DirectX::XMFLOAT3 Tree::GetVector() noexcept
 {
 	return { 0.f,0.f,0.f };
+}
+
+void Tree::SetStance(const modern_Boolean stance) noexcept
+{
+	m_stance = stance;
+}
+
+const modern_Boolean Tree::GetStance() const noexcept
+{
+	return m_stance;
 }
 
 void Tree::SetGlobal(class Global * const global) noexcept

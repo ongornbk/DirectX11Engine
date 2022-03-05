@@ -57,6 +57,7 @@ public:
 	class IInterfaceBehavior* const GetBehavior();
 	void PushChild(class EObject* const child);
 	void SetText(std::string text);
+	void SetText(class modern_string& text);
 	class Interface* const GetParent() const noexcept;
 
 	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;

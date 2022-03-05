@@ -279,6 +279,18 @@ void Interface::SetText(std::string text)
 			//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 }
 
+void Interface::SetText(modern_string& text)
+{
+	class TextFont* const font = RendererManager::GetInstance()->GetFont();
+	if (font == nullptr)
+		return;
+
+	m_text = new Text;
+	m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(), font->GetShader(), font, 20.f);
+	m_text->SetText(text);
+	m_text->SetPosition(m_boundingSphere.Center);
+}
+
 Interface* const Interface::GetParent() const noexcept
 {
 	return m_parent;

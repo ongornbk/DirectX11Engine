@@ -107,6 +107,7 @@ private:
 	class TextFont* m_font;
 	class modern_handle m_fpsText;
 	class modern_handle m_objectsText;
+	class modern_handle m_timersText;
 	class modern_handle m_selectStatus;
 	class modern_handle m_selectStatusBorder; //TEMP THERE SHOULD BE AN ARRAY IN INTERFACE TO DRAW 
 	class modern_handle m_cursorAgent;

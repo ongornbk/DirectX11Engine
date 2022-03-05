@@ -254,6 +254,11 @@ void ResourceManager::LoadSoundResource(WCHAR* soundFileName,const enum class So
 	m_sounds.push_back(resourceSound);
 }
 
+void ResourceManager::LoadSoundResource(class modern_string& soundFileName, const SoundType type)
+{
+	LoadSoundResource(soundFileName.c_wstr(),type);
+}
+
 void ResourceManager::LoadUnitTemplateResource(modern_string& filename)
 {
 }

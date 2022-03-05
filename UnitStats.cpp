@@ -2,9 +2,9 @@
 
 UnitStats::UnitStats()
 {
-	m_health = 18.f;
+	m_health = 100.f;
 	m_maxHealth = 100.f;
-	m_attackDamage = 20.f;
+	m_attackDamage = 10.f;
 }
 
 UnitStats::~UnitStats()

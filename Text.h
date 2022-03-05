@@ -40,6 +40,7 @@ public:
 	void SetOffset(const struct DirectX::XMFLOAT3& offset);
 	void Translate(const struct DirectX::XMFLOAT3& vec);
 	void SetText(std::string text);
+	void SetText(class modern_string& text);
 	void SetAlignment(const enum class TextAlignment alignment);
 	//void SetText(const _bstr_t text);
 	string GetText();

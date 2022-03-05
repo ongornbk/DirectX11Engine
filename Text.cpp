@@ -194,6 +194,43 @@ void Text::SetText(std::string text)
 
 		//this->Initialize();
 }
+void Text::SetText(modern_string& text)
+{
+
+	std::wstring ws(text.c_wstr());
+	m_text = std::string(ws.begin(), ws.end());
+
+	bool updatePosition = false;
+
+	if (m_letters.empty() == false)
+	{
+
+
+		for (auto&& ele : m_letters)
+		{
+			delete ele;
+			ele = nullptr;
+		}
+		m_letters.clear();
+		m_letters.shrink();
+		updatePosition = true;
+	}
+
+
+	for (int32_t i = 0; i < m_text.length(); i++)
+	{
+
+		auto t = m_font->GetSprite(this, m_text[i]);
+		if (t)
+			m_letters.push_back(new LetterSpriteStruct(t));
+
+	}
+
+
+	if (updatePosition)
+		UpdatePosition();
+
+}
 void Text::SetAlignment(const TextAlignment alignment)
 {
 	m_alignment = alignment;

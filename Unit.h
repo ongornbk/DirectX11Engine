@@ -172,6 +172,7 @@ public:
 	void LoadSounds(std::string* path);
 
 	class ISound* GetFootstepsSound() const noexcept;
+	[[nodiscard]] class modern_string& const GetName() noexcept;
 
 	friend class Task;
 	friend class TaskGotoPoint;
@@ -204,6 +205,8 @@ private:
 	class ISound*         m_footstepsSound{};
 	class sf::Sound*     m_footstepsHandle{};
 	class UnitTemplate*  m_template;
+
+	class modern_string m_name;
 
 	struct ID3D11DeviceContext * m_deviceContext;
 

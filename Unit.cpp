@@ -98,6 +98,8 @@ void Unit::Initialize(
 	const struct DirectX::XMFLOAT3& position,
 	const bool wander)
 {
+	m_name = paths;
+
 	std::wstring tmp0 = std::wstring(paths);
 	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
 	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(tmp1);
@@ -470,26 +472,29 @@ void Unit::Intersect(class EObject* const other)
 			{
 				case Task::Type::TASKGOTOPOINT:
 				{
+					if (other == nullptr || other == this)
+					{
+						return;
+					}
+					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
+					{
+						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop|| ((class Unit*)other)->m_wanderingFlag == false)
+						{
 					
-					//if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
-					//{
-					//	if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop)
-					//	{
-					//
-					//	}
-					//	else
-					//	{
-					//		//TaskAttack* task = new TaskAttack();
-					//		//task->object = this;
-					//		//task->target = (class Unit*)other;
-					//		//task->Initialize();
-					//		//m_tasks.SetTask(task);
-					//	}
-					//}
-					//else
-					//{
-						m_tasks.Discard();
-					//}
+						}
+						else
+						{
+							//TaskAttack* task = new TaskAttack();
+							//task->object.make_handle(this->GetHandle());
+							//task->target.make_handle(other->GetHandle());
+							//task->Initialize();
+							//m_tasks.SetTask(task);
+						}
+					}
+					else
+					{
+					m_tasks.Discard();
+					}
 					break;
 				}
 			default:
@@ -890,6 +895,11 @@ void Unit::LoadSounds(std::string* path)
 class ISound * Unit::GetFootstepsSound() const noexcept
 {
 	return m_footstepsSound;
+}
+
+modern_string& const Unit::GetName() noexcept
+{
+	return m_name;
 }
 
 void Unit::Resize(

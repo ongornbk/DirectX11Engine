@@ -22,6 +22,8 @@ public:
 	static void CreateFuzzyTimer(class IAction* const action,const float time);
 	static void CreateFuzzyExpiringTimer(class IAction* const actionFuzzy, class IAction* const actionExpiring, const float time);
 	static void CreateConditionTimer(class IAction* const action,class ICondition* const condition);
+
+	static size_t CountTimers();
 };
 
 

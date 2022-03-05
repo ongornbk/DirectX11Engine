@@ -28,6 +28,7 @@ public:
 	void LoadTextureResource( WCHAR* textureFileName);
 	void LoadTextureResource(modern_string& name);
 	void LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type);
+	void LoadSoundResource(class modern_string& soundFileName, const enum class SoundType type);
 	void LoadUnitTemplateResource(modern_string& filename);
 	void PrintOutTextures();
 	void Release();

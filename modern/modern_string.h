@@ -41,7 +41,7 @@ public:
 	~modern_string();
 
 	[[nodiscard]] wchar_t* const c_wstr() const noexcept;
-	[[nodiscard]] const _bstr_t& c_str() const noexcept;
+	[[nodiscard]] char* const c_str() const noexcept;
 	[[nodiscard]] 
 	[[nodiscard]] size_t size() const noexcept;
 	[[nodiscard]] int32_t to_int32() noexcept;

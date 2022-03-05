@@ -241,7 +241,7 @@ void TaskAttack::Initialize()
 	class Unit* const B = (class Unit*)target.get();
 	if(A&&B)
 	{
-		//modern_shared_guard guardA(A);
+		modern_shared_guard guardA(A);
 		modern_shared_guard guardB(B);
 		const DirectX::XMFLOAT3 position = A->GetPosition();
 		const DirectX::XMFLOAT3 destination = B->m_boundingSphere.Center;
@@ -260,7 +260,7 @@ bool TaskAttack::Update()
 
 	if (A && B)
 	{
-		//modern_guard guardA(A);
+		modern_guard guardA(A);
 		modern_shared_guard guardB(B);
 
 		DirectX::XMFLOAT3 position = A->GetPosition();

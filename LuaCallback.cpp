@@ -111,15 +111,8 @@ namespace lua_callback
 			struct lua_State* const state
 		)
 		{
-#pragma warning(disable : 4996)
-			//modern_string textureName(LUA_STRING(state, 1));
-			//m_resources->LoadTextureResource(textureName.data()); BUGGED IN A FUNNY WAY BUT DOESNT CRASH SOMEHOW
 			modern_string str(LUA_STRING(state, 1));
-			//wchar_t* wide_string = new wchar_t[str.length() + 1];
-			//std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			//wcscpy(wide_string, ws.c_str());
 			m_resources->LoadTextureResource(str);
-			//delete[] wide_string;
 			return 0;
 		}
 
@@ -127,13 +120,8 @@ namespace lua_callback
 			struct lua_State* const state
 		)
 		{
-#pragma warning(disable : 4996)
-			std::string str = LUA_STRING(state, 1);
-			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			wcscpy(wide_string, ws.c_str());
-			m_resources->LoadSoundResource(wide_string,SoundType::SOUND_TYPE_MULTI);
-			delete[] wide_string;
+			modern_string str(LUA_STRING(state, 1));
+			m_resources->LoadSoundResource(str,SoundType::SOUND_TYPE_MULTI);
 			return 0;
 		}
 
@@ -141,13 +129,8 @@ namespace lua_callback
 			struct lua_State* const state
 		)
 		{
-#pragma warning(disable : 4996)
-			std::string str = LUA_STRING(state, 1);
-			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			wcscpy(wide_string, ws.c_str());
-			m_resources->LoadSoundResource(wide_string, SoundType::SOUND_TYPE_SINGLE);
-			delete[] wide_string;
+			modern_string str(LUA_STRING(state, 1));
+			m_resources->LoadSoundResource(str, SoundType::SOUND_TYPE_SINGLE);
 			return 0;
 		}
 

@@ -154,7 +154,7 @@ wchar_t* const modern_string::c_wstr() const noexcept
 	return m_string->data();
 }
 
-const _bstr_t& modern_string::c_str() const noexcept
+char* const modern_string::c_str() const noexcept
 {
 	return _bstr_t(m_string->data());
 }
@@ -249,6 +249,22 @@ modern_string& modern_string::operator=(modern_string& string)
 		m_string.make_shared(string.m_string);
 
 		return *this;
+}
+
+modern_string& modern_string::operator=(const wchar_t* string)
+{
+	m_string.make_shared(new class modern_array<wchar_t>());
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (string[i] == '\0')
+			goto END;
+		m_string->push_back(string[i]);
+
+	}
+END:
+	m_string->push_back(L'\0');
+
+	return *this;
 }
 
 

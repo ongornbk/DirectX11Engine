@@ -126,7 +126,7 @@ RendererManager::RendererManager(
 
 	marray->push(new ActionTranslateText(
 		m_fpsText,
-		struct DirectX::XMFLOAT3(-935.f, 490.f, 0.f
+		struct DirectX::XMFLOAT3(-935.f, 460.f, 0.f
 		)));
 
 	marray->push(new ActionInitializeText(
@@ -141,6 +141,21 @@ RendererManager::RendererManager(
 
 	marray->push(new ActionTranslateText(
 		m_objectsText,
+		struct DirectX::XMFLOAT3(-935.f, 490.f, 0.f
+		)));
+
+	marray->push(new ActionInitializeText(
+		m_timersText,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		m_font, 20.f
+	));
+
+	marray->push(new ActionSetTextAlignment(m_timersText, TextAlignment::TEXT_ALIGN_LEFT));
+
+	marray->push(new ActionTranslateText(
+		m_timersText,
 		struct DirectX::XMFLOAT3(-935.f, 520.f, 0.f
 		)));
 
@@ -318,6 +333,13 @@ void RendererManager::PushInterface(Interface* const object)
 					B->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
 					B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 				}
+				class Text* const C = (class Text*)m_timersText.get();
+				if (C)
+				{
+					modern_guard g(C);
+					C->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+					C->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+				}
 			}
 			{
 				class Interface* const A = (class Interface*)m_selectStatus.get();
@@ -420,6 +442,13 @@ void RendererManager::PushInterface(Interface* const object)
 				modern_guard g(B);
 				B->SetPosition(m_cameraPosition);
 				B->Update();
+			}
+			class Text* const C = (class Text*)m_timersText.get();
+			if (C)
+			{
+				modern_guard g(C);
+				C->SetPosition(m_cameraPosition);
+				C->Update();
 			}
 		}
 		{
@@ -564,6 +593,7 @@ void RendererManager::PushInterface(Interface* const object)
 					{
 						A->m_flags.m_rendering = true;
 						B->m_flags.m_rendering = true;
+						A->SetText(((class Unit* const)GLOBAL m_lastSelectedUnit.get())->GetName());
 
 					}
 					else
@@ -599,6 +629,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 			if (tree->m_boundingSphere.Center.y > object->m_boundingSphere.Center.y)
 			{
 				//NON-TRANSPARENT
+				tree->SetStance(0);
 				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
 				tree->CastShadow();
 				continue;
@@ -606,9 +637,16 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 			else
 			{
 				//TRANSPARENT
+				
 				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
 				tree->CastShadow(false);
+				if (tree->GetStance())
+				{
+					continue;
+				}
+				tree->SetStance(1);
 			}
+
 			switch (type)
 			{
 			case ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL:
@@ -691,6 +729,12 @@ void RendererManager::SetFps(const int32 fps)
 	{
 		modern_guard g(B);
 		B->SetText(modern_cstring("OBJ ",this->GetNumberOfObjects()).c_str());
+	}
+	class Text* const C = (class Text*)m_timersText.get();
+	if (C)
+	{
+		modern_guard g(C);
+		C->SetText(modern_cstring("TIM ", Timer::CountTimers()).c_str());
 	}
 	//if(m_fpsText)
 	//m_fpsText->SetText(modern_cstring(fps).c_str());
