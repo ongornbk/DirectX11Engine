@@ -67,6 +67,12 @@ public:
 		const struct XMFLOAT4X4& viewMatrix,
 		const struct XMFLOAT4X4& projectionMatrix
 	);
+	void Render(
+		struct ID3D11DeviceContext* const deviceContext,
+		const struct XMFLOAT4X4& viewMatrix,
+		const struct XMFLOAT4X4& projectionMatrix,
+		const struct XMFLOAT4X4& interfaceMatrix
+	);
 	void Update(const float dt,const bool renderframe = false);
 	void Focus(class EObject* const object,const enum class ObjectFocusType type);
 	void SetInterface(const uint32 type,class Shader* shader);

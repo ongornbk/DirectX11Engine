@@ -469,9 +469,11 @@ _Use_decl_annotations_
 template <class T>//I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES X COLLISION.
 __forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index, const int32 xp) noexcept
 {
+
 const int32 t0 = xp - index;
 if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 {
+
 	return true;
 }
 else
@@ -484,6 +486,7 @@ _Use_decl_annotations_
 template <class T> //I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES Y COLLISION.
 __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index,const int32 yp) noexcept
 {
+
 	const int32 t0 = yp - index;
 	if (t0 <= (RENDER_CELLS_RANGE) && t0 >= (-RENDER_CELLS_RANGE))
 	{
@@ -497,6 +500,7 @@ __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _I
 
 __forceinline void _stdcall __intersect_test__(int32& xp,int32& yp) noexcept
 {
+
 	float cameraPosition[4];
 	_mm_store_ps(cameraPosition, Camera::GetCurrentCamera()->GetPosition());
 	xp = GetXCell(cameraPosition[0]);
@@ -512,16 +516,10 @@ for ( int32 i = 0u; i < MAP_DIVISION; i++)
 
 bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
-	//IT FIXED SOME GLITCHES LIKE A MAGIC WAND 
-	//try
-	//{
+
 		const volatile class modern_guard AG(A);
 		const volatile class modern_guard BG(B);
-	//}
-	//catch (...)
-	//{
-	//	return true;
-	//}
+
 		const float Aradius = A->m_boundingSphere.Radius;
 		const float Bradius = B->m_boundingSphere.Radius;
 		const float By = B->m_boundingSphere.Center.y;
@@ -529,11 +527,13 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 #pragma region Agent Case
 		if (Aradius == 0.f)
 		{
+
 			A->Intersect(B);
 			return Ay > By;
 		}
 		if (Bradius == 0.f)
 		{
+
 			B->Intersect(A);
 			return Ay > By;
 		}
@@ -615,7 +615,7 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 
 bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
-
+#pragma execution_frequency(very_high)
 	const class modern_guard AG(A);
 	const class modern_guard BG(B);
 
@@ -627,11 +627,13 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 #pragma region Agent Case
 	if (Aradius == 0.f)
 	{
+
 		A->Intersect(B);
 		return Ax > Bx;
 	}
 	if (Bradius == 0.f)
 	{
+
 		B->Intersect(A);
 		return Ax > Bx;
 	}

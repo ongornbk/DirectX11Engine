@@ -98,8 +98,9 @@ void Unit::Initialize(
 	const struct DirectX::XMFLOAT3& position,
 	const bool wander)
 {
-	m_name = paths;
-
+	//modern_pair<modern_string, modern_string>& sp = modern_string::SplitString(paths, L'.');
+	//m_name = sp.first;
+	m_name = L"Barbarian";
 	std::wstring tmp0 = std::wstring(paths);
 	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
 	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(tmp1);
@@ -166,7 +167,7 @@ void Unit::Render(
 		if (m_flags.m_selectable && m_flags.m_selected)
 		{
 
-			RendererManager::GetInstance()->Focus(this,ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
+			//RendererManager::GetInstance()->Focus(this,ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
 
 			class Shader* const csh = shader.BeginSelect();
 
@@ -849,6 +850,16 @@ void Unit::Select(modern_Boolean selct)
 		{
 			m_flags.m_selected = false;
 		}
+}
+
+const float Unit::GetHealth() const noexcept
+{
+	return m_stats.m_health;
+}
+
+const float Unit::GetMaxHealth() const noexcept
+{
+	return m_stats.m_maxHealth;
 }
 
 void Unit::SetFootstepsSound(class ISound * const sound)

@@ -172,6 +172,9 @@
     <Filter Include="Header Files\Task">
       <UniqueIdentifier>{0e29404e-64ca-4e02-87c6-29bcb2b221ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HTML">
+      <UniqueIdentifier>{635539f5-5b6e-4a71-bb29-e72822fbc707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -1713,6 +1716,9 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Doodads.lua">
       <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\manual\InputKeyboard.html">
+      <Filter>HTML</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

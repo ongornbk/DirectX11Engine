@@ -54,6 +54,7 @@ public:
 	void PlayMusic(class modern_string& music);
 	void StopMusic();
 	void PlaySound(WCHAR* music);
+	void PlaySound(class modern_string& music);
 
 	CameraControl* GetCameraControl();
 	FrameWork* GetFrameWork();

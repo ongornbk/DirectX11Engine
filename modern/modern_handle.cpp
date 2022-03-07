@@ -11,6 +11,16 @@ void modern_handle::make_handle(
 	m_num[0] = 1;
 }
 
+void modern_handle::make_handle(
+	volatile struct modern_class* const obj
+) volatile
+{
+	m_object = new (volatile struct modern_class*);
+	m_num = new int64_t;
+	m_object[0] = obj;
+	m_num[0] = 1;
+}
+
 modern_handle::modern_handle()
 {
 	m_num = nullptr;
@@ -27,6 +37,33 @@ modern_handle::modern_handle(const modern_handle& diff)
 void modern_handle::make_handle(
 	const class modern_handle& diff
 )
+{
+	if (m_object)
+	{
+		if (m_num[0] <= 1)
+		{
+			m_object[0] = nullptr;
+			m_num[0] = 0;
+			delete m_num;
+			delete m_object;
+			m_num = nullptr;
+			m_object = 0;
+			//	std::cout << "delete handle" << std::endl;
+		}
+		else
+		{
+			m_num[0]--;
+			//	std::cout << (m_num[0])+1 << "::. " << m_num[0] << std::endl;
+		}
+	}
+	m_object = diff.m_object;
+	m_num = diff.m_num;
+	m_num[0]++;
+
+	//std::cout << m_num[0] - 1 << "::. " << m_num[0] << std::endl;
+}
+
+void modern_handle::make_handle(volatile class modern_handle& diff) volatile
 {
 	if (m_object)
 	{

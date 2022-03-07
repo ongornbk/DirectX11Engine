@@ -85,6 +85,216 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 	m_letters['8'] = new LetterSprite(this, '8', 20.f);
 	m_letters['9'] = new LetterSprite(this, '9', 20.f);
 
+	m_letters['('] = new LetterSprite(this, '(', 20.f);
+	m_letters['$'] = new LetterSprite(this, '$
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+', 20.f);
+
 	m_letters[' ']->Initialize(device, context, shader, this);
 	m_letters['a']->Initialize(device, context, shader, this);
 	m_letters['b']->Initialize(device, context, shader, this);
@@ -123,6 +333,9 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 	m_letters['7']->Initialize(device, context, shader, this);
 	m_letters['8']->Initialize(device, context, shader, this);
 	m_letters['9']->Initialize(device, context, shader, this);
+
+	m_letters['(']->Initialize(device, context, shader, this);
+	m_letters['$']->Initialize(device, context, shader, this);
 
 	if (m_flag)
 	{
@@ -444,6 +657,10 @@ void TextFont::InitializeCoordinates(std::vector<float> coords)
 	m_char['('].m_top = coords.at(145);
 	m_char['('].m_right = coords.at(146);
 	m_char['('].m_bottom = coords.at(147);
+	m_char['$'].m_left = coords.at(148);
+	m_char['$'].m_top = coords.at(149);
+	m_char['$'].m_right = coords.at(150);
+	m_char['$'].m_bottom = coords.at(151);
 
 	if (m_flag)
 	{

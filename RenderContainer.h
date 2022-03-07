@@ -71,5 +71,6 @@ public:
 	}m_type;
 
 	const modern_handle& GetHandle();
+	volatile modern_handle& GetHandle() volatile;
 };
 

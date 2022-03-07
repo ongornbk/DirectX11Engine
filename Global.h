@@ -14,7 +14,7 @@ public:
 	~Global(void);
 	modern_handle                      m_lastPickedUnit;
 	modern_handle                      m_lastSelectedUnit;
-	MSVC_VOLATILE EObject*             m_lastCreatedRenderContainer;
+	modern_handle                      m_lastCreatedRenderContainer;
 	modern_handle                      m_pickedObject;
 	MSVC_VOLATILE ObjectFlags          m_lastFlags{};
 	MSVC_VOLATILE Task*                m_lastTask;

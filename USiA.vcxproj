@@ -675,6 +675,7 @@
     <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Initialization.lua" />
     <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Update.lua" />
     <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua" />
+    <None Include="x64\Release\bin\x64\lua\manual\InputKeyboard.html" />
     <None Include="x64\Release\bin\x64\lua\Renderafter.lua" />
     <None Include="x64\Release\content\Textures\models\amazon.mod" />
     <None Include="x64\Release\content\Textures\models\amazon_light.mod" />

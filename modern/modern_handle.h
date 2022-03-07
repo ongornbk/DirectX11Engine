@@ -15,6 +15,7 @@ protected:
 
 	//explicit modern_handle(struct modern_class* const obj);
 	void make_handle(struct modern_class* const obj);
+	void make_handle(volatile struct modern_class* const obj) volatile;
 	void Release() const;
 public:
 
@@ -22,6 +23,7 @@ public:
 	[[nodiscard]]modern_handle(const class modern_handle& diff);
 	
 	void make_handle(const class modern_handle& diff);
+	void make_handle(volatile class modern_handle& diff) volatile;
 	~modern_handle();
 	volatile struct modern_class* operator->();
 	volatile struct modern_class* const get();

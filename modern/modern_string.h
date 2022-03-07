@@ -35,6 +35,7 @@ public:
 	modern_string(const char* text);
 	modern_string(const size_t number);
 	modern_string(const int32_t number);
+	modern_string(const int32_t num1, wchar_t* text, int32_t num2);
 	modern_string(const uint32_t number);
 	explicit modern_string(const char character);
 	modern_string(modern_exception& exception);

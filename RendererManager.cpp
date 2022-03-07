@@ -165,12 +165,12 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(160.f, 60.f)
+		struct DirectX::XMFLOAT2(200.f, 60.f)
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
 		m_selectStatus,
-		struct DirectX::XMFLOAT3(0.f,480.f,0.f)
+		struct DirectX::XMFLOAT3(0.f,0.f,0.f)
 	));
 
 	marray->push(new ActionInitializeInterface(
@@ -179,12 +179,12 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(160.f, 60.f)
+		struct DirectX::XMFLOAT2(200.f, 60.f)
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
 		m_selectStatusBorder,
-		struct DirectX::XMFLOAT3(0.f, 480.f, 0.f)
+		struct DirectX::XMFLOAT3(0.f, 500.f, 0.f)
 	));
 	
 
@@ -295,125 +295,136 @@ void RendererManager::PushInterface(Interface* const object)
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
-		struct ID3D11Device* const device = Engine::GetEngine()->GetGraphics()->GetDevice();
-		struct ShaderPackage pck(deviceContext,m_unitsShader,m_shadowShader,m_selectShader,m_interfaceShader);
-
-		GRAPHICS EnableAlphaBlending(true);
-
-
-			m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
-
-
-			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
-			{
-				m_layers[i]->Render(deviceContext, viewMatrix, projectionMatrix, pck);
-			}
-
-
-
-			pck.BeginInterface();
-			GRAPHICS EnableAlphaBlending(true);
-
-			m_ui->Render(deviceContext, viewMatrix, projectionMatrix);
-
-			if (((Options*)m_activeOptions.get())->option_ShowFPS)
-			{
-				class Text* const A = (class Text*)m_fpsText.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-					A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-
-				}
-				class Text* const B = (class Text*)m_objectsText.get();
-				if (B)
-				{
-					modern_guard g(B);
-					B->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-					B->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				}
-				class Text* const C = (class Text*)m_timersText.get();
-				if (C)
-				{
-					modern_guard g(C);
-					C->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-					C->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_selectStatus.get();
-				if (A)
-				{
-					modern_guard g(A);
-					//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-					//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-					//A->m_flags.m_rendering = true;
-					//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
-					A->SetColorFilter(0.f, 0.f, 0.f, 0.3f);
-					A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
-					//A->SetColorFilter(1.f);
-					//A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_selectStatusBorder.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetColorFilter(1.f);
-					A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
-				}
-			}
-
-			//if (m_fpsText)
-				//m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-			//if (m_objectsText)
-				//m_objectsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-
-			//m_unitsShader->End(deviceContext);
-			//TextFont* font = TextFont::GetFontByName("ExocetLight");
-			//font->Initialize(device, deviceContext, pck.GetShader());
-			//font.
-			//LetterSprite* sp = font->GetSprite(nullptr, 'a');
-			//sp->Update();
-			//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
-
-			//Text* text = new Text;
-			//text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
-			//text->SetText("qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq");
-			//text->SetPosition({ 0.f,0.f,0.f });
-			//text->Update();
-			//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
-
-			//m_shader->End(deviceContext);
-
-			//m_shader->Begin(deviceContext);
-
-			
-
-			
-
-			//GetDC()
-
-			
-
-			//Text t;
-			////m_shader->Begin(deviceContext);
-			//
-			//t.Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), deviceContext, m_shader, font, 20.f);
-			//t.SetText("baba");
-			//t.SetPosition({ 0.f,0.f,0.f });
-			//t.Update();
-			//t.Render(deviceContext, viewMatrix, projectionMatrix,m_shader);
-
-			
-
-			pck.End();
-
-			//pck.End();
-		
+		this->Render(deviceContext, viewMatrix, projectionMatrix, projectionMatrix);
+	}
 	
+
+
+void RendererManager::Render(
+	ID3D11DeviceContext* const deviceContext,
+	const XMFLOAT4X4& viewMatrix,
+	const XMFLOAT4X4& projectionMatrix,
+	const XMFLOAT4X4& interfaceMatrix
+)
+{
+	struct ID3D11Device* const device = Engine::GetEngine()->GetGraphics()->GetDevice();
+	struct ShaderPackage pck(deviceContext, m_unitsShader, m_shadowShader, m_selectShader, m_interfaceShader);
+
+	GRAPHICS EnableAlphaBlending(true);
+
+
+	m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
+
+
+	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+	{
+		m_layers[i]->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+	}
+
+
+
+	pck.BeginInterface();
+	GRAPHICS EnableAlphaBlending(true);
+
+	m_ui->Render(deviceContext, viewMatrix, interfaceMatrix);
+
+	if (((Options*)m_activeOptions.get())->option_ShowFPS)
+	{
+		class Text* const A = (class Text*)m_fpsText.get();
+		if (A)
+		{
+			modern_guard g(A);
+			A->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+
+		}
+		class Text* const B = (class Text*)m_objectsText.get();
+		if (B)
+		{
+			modern_guard g(B);
+			B->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			B->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+		}
+		class Text* const C = (class Text*)m_timersText.get();
+		if (C)
+		{
+			modern_guard g(C);
+			C->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			C->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+		}
+	}
+	{
+		class Interface* const A = (class Interface*)m_selectStatus.get();
+		if (A)
+		{
+			modern_guard g(A);
+			//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
+			//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			//A->m_flags.m_rendering = true;
+			//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
+			//A->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck);
+			//A->SetColorFilter(1.f);
+			A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+		}
+	}
+	{
+		class Interface* const A = (class Interface*)m_selectStatusBorder.get();
+		if (A)
+		{
+			modern_guard g(A);
+			//A->SetColorFilter(1.f);
+			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+		}
+	}
+
+	//if (m_fpsText)
+		//m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+	//if (m_objectsText)
+		//m_objectsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+
+	//m_unitsShader->End(deviceContext);
+	//TextFont* font = TextFont::GetFontByName("ExocetLight");
+	//font->Initialize(device, deviceContext, pck.GetShader());
+	//font.
+	//LetterSprite* sp = font->GetSprite(nullptr, 'a');
+	//sp->Update();
+	//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+
+	//Text* text = new Text;
+	//text->Initialize(device, deviceContext, pck.GetShader(), font, 20.f);
+	//text->SetText("qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq");
+	//text->SetPosition({ 0.f,0.f,0.f });
+	//text->Update();
+	//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+
+	//m_shader->End(deviceContext);
+
+	//m_shader->Begin(deviceContext);
+
+
+
+
+
+	//GetDC()
+
+
+
+	//Text t;
+	////m_shader->Begin(deviceContext);
+	//
+	//t.Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), deviceContext, m_shader, font, 20.f);
+	//t.SetText("baba");
+	//t.SetPosition({ 0.f,0.f,0.f });
+	//t.Update();
+	//t.Render(deviceContext, viewMatrix, projectionMatrix,m_shader);
+
+
+
+	pck.End();
+
+	//pck.End();
+
+
 }
 
 	//static float updatetime = 0.f;
@@ -458,7 +469,9 @@ void RendererManager::PushInterface(Interface* const object)
 				modern_guard g(A);
 				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
 				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				A->SetPosition(m_cameraPosition);
+				XMFLOAT3 mm(0.f, 500.f, 0.f);
+				XMVECTOR offca = m_cameraPosition + XMLoadFloat3(&mm);
+				A->SetPosition(offca);
 				A->Update(dt);
 				
 			}
@@ -593,8 +606,14 @@ void RendererManager::PushInterface(Interface* const object)
 					{
 						A->m_flags.m_rendering = true;
 						B->m_flags.m_rendering = true;
-						A->SetText(((class Unit* const)GLOBAL m_lastSelectedUnit.get())->GetName());
-
+						class Unit* const unit = (class Unit* const)GLOBAL m_lastSelectedUnit.get();
+						if (unit)
+						{
+							modern_shared_guard g(unit);
+							int32_t che = unit->GetHealth();
+							int32_t mhe = unit->GetMaxHealth();
+							A->SetText(modern_string(che, L"$", mhe));
+						}
 					}
 					else
 					{

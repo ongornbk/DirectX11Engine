@@ -108,7 +108,6 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 		m_vertexBuffer->Render(deviceContext);
 		if (m_text)
 		{
-			m_text->PreRender(deviceContext, viewMatrix, projectionMatrix, shader.BeginShadow());
 			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginInterface());
 		}
 		for (auto obj : m_children)
@@ -122,9 +121,22 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 
 void _fastcall Interface::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
 {
-	if (m_flags.m_cast_shadow)
+	if (m_flags.m_rendering)
 	{
 		shader.BeginShadow();
+		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
+		m_vertexBuffer->Render(deviceContext);
+		if (m_text)
+		{
+			m_text->PreRender(deviceContext, viewMatrix, projectionMatrix, shader.BeginShadow());
+		}
+		for (auto obj : m_children)
+		{
+			if (obj)
+				obj->PreRender(deviceContext, viewMatrix, projectionMatrix, shader);
+		}
 	}
 }
 

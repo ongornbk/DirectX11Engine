@@ -163,6 +163,9 @@ public:
 	void DoDamage(class Unit* const attacker);
 	void Select(modern_Boolean selct = 1);
 
+	const float GetHealth() const noexcept;
+	const float GetMaxHealth() const noexcept;
+
 	void SetFootstepsSound(class ISound* sound);
 
 	void BeginRunning();

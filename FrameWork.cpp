@@ -61,8 +61,13 @@ bool FrameWork::Initialize(GameComponent* gameComponent)
 void FrameWork::Run()
 {
 
+
+
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
+
+
+
 
 	while (msg.message != WM_QUIT)
 	{
@@ -73,10 +78,16 @@ void FrameWork::Run()
 		}
 		else
 		{
+
+
 			ipp::Timer::Update();
+
+
 			Engine::GetEngine()->Run();
 		}
 	}
+
+
 }
 
 void FrameWork::SetComponent(GameComponent* gameComponent)

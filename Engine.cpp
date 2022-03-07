@@ -222,34 +222,42 @@ namespace
 void Engine::Run()
 {
 	clock_t beginFrame = clock();
-	Update();
 
-	
+	{
+		
 
-	Render();
-
-	lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
-
-	clock_t endFrame = clock();
-
-	deltaTime += endFrame - beginFrame;
-	frames++;
-
-	if (clockToMilliseconds(deltaTime)>100.0) {
-		frameRate = (double)frames*0.5 + frameRate * 0.5;
-		frames = 0;
-		deltaTime -= (clock_t)100;
-		averageFrameTimeMilliseconds = 100.0 / (frameRate == 0 ? 0.01 : frameRate);
-
-		const  int32 fps = ( int32)(1000 / averageFrameTimeMilliseconds);
-
-		m_rendererManager->SetFps(fps);
-
-		//std::cout << fps << std::endl;
-
+		Update();
 	}
 
+	{
+		Render();
+	}
 
+		{
+			
+			
+
+			lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+			clock_t endFrame = clock();
+
+			deltaTime += endFrame - beginFrame;
+			frames++;
+
+			if (clockToMilliseconds(deltaTime) > 100.0) {
+				frameRate = (double)frames * 0.5 + frameRate * 0.5;
+				frames = 0;
+				deltaTime -= (clock_t)100;
+				averageFrameTimeMilliseconds = 100.0 / (frameRate == 0 ? 0.01 : frameRate);
+
+				const  int32 fps = (int32)(1000 / averageFrameTimeMilliseconds);
+
+				m_rendererManager->SetFps(fps);
+
+				//std::cout << fps << std::endl;
+
+			}
+		}
+	
 }
 
 void Engine::Release()
@@ -368,6 +376,7 @@ void Engine::AddModelPaths(string name)
 	delete[] wide_string;
 }
 
+
 void Engine::AddFont(string filename, float width, float height)
 {
 	TextFont::LoadFontFromFile(filename, width, height);
@@ -420,6 +429,14 @@ void Engine::PlaySound(WCHAR * music)
 	sound->Play();
 }
 
+void Engine::PlaySound(modern_string& music)
+{
+	class ISound* const sound = m_canals.__GetSound(music);
+	assert(sound);
+if(sound)
+	sound->Play();
+}
+
 CameraControl * Engine::GetCameraControl()
 {
 	return &m_cameraControl;
@@ -466,30 +483,48 @@ void Engine::Update()
 		class Canals* const canals = Canals::GetInstance();
 		if (canals)
 			canals->Update();
-	}
+
+		class Camera* const cc = Camera::GetCurrentCamera();
+		if (cc)
+		{
+			if (m_input->IsKeyHit(78))
+			{
+				cc->ZoomIn();
+			}
+
+			if (m_input->IsKeyHit(74))
+			{
+				cc->ZoomOut();
+			}
+		}
+
 		if (m_gameComponent != nullptr)
 		{
 			m_gameComponent->Update();
+
+			{
+				float dt = ipp::Timer::GetDeltaTime();
+				m_updateLock.Update(dt);
+				m_renderLock.Update(dt);
+			}
+
+
+			{
+				if (m_updateLock.Run())
+				{
+					(void)m_input->Update();
+					float dt = m_updateLock.GetDeltaTime();
+					m_cameraControl.Update(dt);
+					Timer::Update(dt);
+					m_rendererManager->Update(dt, m_renderLock.State());
+				}
+				else
+				{
+					std::this_thread::yield();
+				}
+			}
 		}
-
-	float dt = ipp::Timer::GetDeltaTime();
-	m_updateLock.Update(dt);
-	m_renderLock.Update(dt);
-	if (m_updateLock.Run())
-	{
-		(void)m_input->Update();
-		dt = m_updateLock.GetDeltaTime();
-		m_cameraControl.Update(dt);
-		Timer::Update(dt);
-		m_rendererManager->Update(dt,m_renderLock.State());
 	}
-	else
-	{
-		std::this_thread::yield();
-	}
-
-
-	
 }
 
 void Engine::Render()
@@ -522,9 +557,9 @@ void Engine::PRender()
 
 		XMFLOAT4X4 viewMatrix = m_camera->GetView();
 		XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
+		XMFLOAT4X4 interfaceOrtho = m_camera->GetInterfaceOrtho();
 
-
-		m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+		m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix, interfaceOrtho);
 
 		if (m_gameComponent != NULL)
 		{

@@ -112,6 +112,44 @@ modern_string::modern_string(const int32_t number)
 	m_string->push_back('\0');
 }
 
+modern_string::modern_string(const int32_t num1, wchar_t* text, int32_t num2)
+{
+	m_string.make_shared(new class modern_array<wchar_t>());
+
+	modern_string num1t(num1);
+	modern_string num2t(num2);
+
+	wchar_t*& t1 = num1t.data();
+	wchar_t*& t2 = num2t.data();
+
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (t1[i] == '\0')
+			goto END1;
+		m_string->push_back(t1[i]);
+
+	}
+END1:
+
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (text[i] == '\0')
+			goto END2;
+		m_string->push_back(text[i]);
+
+	}
+END2:
+	for (int64_t i = 0; i < 100; i++)
+	{
+		if (t2[i] == '\0')
+			goto END3;
+		m_string->push_back(t2[i]);
+
+	}
+END3:
+	m_string->push_back(L'\0');
+}
+
 modern_string::modern_string(const uint32_t number)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());

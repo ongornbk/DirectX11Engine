@@ -54,14 +54,21 @@ public:
 	const struct DirectX::XMFLOAT4X4& GetView() noexcept;
 	const struct DirectX::XMFLOAT4X4& GetProjection() noexcept;
 	const struct DirectX::XMFLOAT4X4&  GetOrtho() noexcept;
+	const struct DirectX::XMFLOAT4X4& GetInterfaceOrtho() noexcept;
 
 	void Update();
+
+	void ZoomIn() const noexcept;
+	void ZoomOut() const noexcept;
+
+	const int64_t GetZoom() const noexcept;
 
 private:
 
 	struct DirectX::XMFLOAT4X4 m_view;
 	struct DirectX::XMFLOAT4X4 m_projection;
 	struct DirectX::XMFLOAT4X4 m_ortho;
+	struct DirectX::XMFLOAT4X4 m_interfaceOrtho;
 	DirectX::XMVECTOR   m_position;
 	DirectX::XMVECTOR   m_rotation;
 

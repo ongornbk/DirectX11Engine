@@ -280,28 +280,28 @@ namespace lua_callback
 			return 0;
 		}
 
-		static  int32 StopMusic(lua_State* state) noexcept
+		static  int32 StopMusic(
+			struct lua_State* const state
+		) noexcept
 		{
 			m_engine->StopMusic();
 			return 0;
 		}
 
-		static  int32 AddInterfaceSound(lua_State* state)
+		static  int32 AddInterfaceSound(
+			struct lua_State* const state
+		)
 		{
 			std::string str = LUA_STRING(state, 1);
 			m_engine->AddInterfaceSound(str, LUA_FLOAT(state, 2));
 			return 0;
 		}
 
-		static  int32 PlaySound(lua_State* state) noexcept
+		static  int32 PlaySound(
+			struct lua_State* const state
+		)
 		{
-#pragma warning(disable : 4996)
-			std::string str = LUA_STRING(state, 1);
-			wchar_t* wide_string = new wchar_t[str.length() + 1];
-			std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-			wcscpy(wide_string, ws.c_str());
-			m_engine->PlaySound(wide_string);
-			delete[] wide_string;
+			m_engine->PlaySound(class modern_string(LUA_STRING(state, 1)));
 			return 0;
 		}
 	}
@@ -401,7 +401,8 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const unit = new class Unit();
-		m_global->m_pickedObject.make_handle(unit->GetHandle());
+		//m_global->m_pickedObject.make_handle(unit->GetHandle());
+		m_global->m_lastCreatedRenderContainer.make_handle(unit->GetHandle());
 		lua_pushinteger(state,(lua_Integer)unit);
 		return 1;
 	}
@@ -490,11 +491,8 @@ namespace lua_callback
 	) noexcept
 	{
 		class Doodads* const doodads = new class Doodads();
-		m_global->m_lastCreatedRenderContainer = doodads;
+		m_global->m_lastCreatedRenderContainer.make_handle(doodads->GetHandle());
 		lua_pushinteger(state, (lua_Integer)(doodads));
-		//const union LuaPointer lptr(doodads);
-		//lua_pushinteger(state, lptr.lua.first);
-		//lua_pushinteger(state, lptr.lua.second);
 		return 1;
 	}
 
@@ -503,7 +501,7 @@ namespace lua_callback
 	) noexcept
 	{
 		class AnimatedDoodads* const doodads = new class AnimatedDoodads();
-		m_global->m_lastCreatedRenderContainer = doodads;
+		m_global->m_lastCreatedRenderContainer.make_handle(doodads->GetHandle());
 		lua_pushinteger(state, (lua_Integer)(doodads));
 		return 1;
 	}
@@ -513,11 +511,8 @@ namespace lua_callback
 	) noexcept
 	{
 		class Tree* const tree = new class Tree();
-		m_global->m_lastCreatedRenderContainer = tree;
+		m_global->m_lastCreatedRenderContainer.make_handle(tree->GetHandle());
 		lua_pushinteger(state, (lua_Integer)(tree));
-		//const union LuaPointer lptr(tree);
-		//lua_pushinteger(state, lptr.lua.first);
-		//lua_pushinteger(state, lptr.lua.second);
 		return 1;
 	}
 
@@ -527,16 +522,15 @@ namespace lua_callback
 	{
 		class Interface* const parent = (class Interface* const)lua_tointeger(state, 1);
 		class Interface* const inter = new class Interface();
-		m_global->m_lastCreatedRenderContainer = inter;
+		m_global->m_lastCreatedRenderContainer.make_handle(inter->GetHandle());
 		lua_pushinteger(state, (lua_Integer)(inter));
 		if (parent)
 		{
+			modern_guard g1(inter);
+			modern_guard g2(parent);
 			inter->SetParent(parent);
 			parent->PushChild(inter);
 		}
-		//const union LuaPointer lptr(tree);
-		//lua_pushinteger(state, lptr.lua.first);
-		//lua_pushinteger(state, lptr.lua.second);
 		return 1;
 	}
 
@@ -576,7 +570,7 @@ namespace lua_callback
 		struct lua_State* const
 	) noexcept
 	{
-		class Unit* const unit = (class Unit*)m_global->m_lastCreatedRenderContainer;
+		volatile class Unit* const unit = dynamic_cast<volatile class Unit* const>(m_global->m_lastCreatedRenderContainer.get());
 		if (unit)
 		{
 			m_global->m_lastPickedUnit.make_handle(unit->GetHandle());
@@ -591,6 +585,7 @@ namespace lua_callback
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
 		{
+			modern_guard g(unit);
 			class TaskGotoPoint* const task = new TaskGotoPoint();
 			task->destination.x = LUA_FLOAT(state, 2);
 			task->destination.y = LUA_FLOAT(state, 3);
@@ -607,6 +602,7 @@ namespace lua_callback
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
 		{
+			modern_guard g(unit);
 			class TaskGotoPoint* const task = new TaskGotoPoint();
 			task->destination.x = LUA_FLOAT(state, 2);
 			task->destination.y = LUA_FLOAT(state, 3);
@@ -1509,6 +1505,7 @@ namespace lua_callback
 
 		if (unit0)
 		{
+			modern_guard g(unit0);
 			result = unit0->StartCasting(point);
 		}
 		lua_pushboolean(state, result);

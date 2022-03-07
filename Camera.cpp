@@ -7,6 +7,9 @@ namespace
 {
 	static class Camera*   m_currentCamera = nullptr;
 	static class Global*   m_global = nullptr;
+
+	static float m_zoom[10] = { 0.33f,0.66f,1.f,1.33f,1.5f,1.66f,1.75f,2.f,2.5f,3.f };
+	static int64_t m_currentZoom = 2;
 }
 
 Camera::Camera(void)
@@ -15,6 +18,7 @@ Camera::Camera(void)
 	m_rotation = _mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
 	m_currentCamera = this;
 	m_global = Global::GetInstance();
+	DirectX::XMStoreFloat4x4(&m_interfaceOrtho, DirectX::XMMatrixOrthographicLH(1920.f, 1080.f, 10, 100));
 }
 Camera::~Camera(void)
 {
@@ -107,10 +111,15 @@ const struct DirectX::XMFLOAT4X4& Camera::GetOrtho() noexcept
 	return m_ortho;
 }
 
+const DirectX::XMFLOAT4X4& Camera::GetInterfaceOrtho() noexcept
+{
+	return m_interfaceOrtho;
+}
+
 
 void Camera::Update()
 {
-
+	DirectX::XMStoreFloat4x4(&m_ortho, DirectX::XMMatrixOrthographicLH(1920.f*m_zoom[m_currentZoom], 1080.f * m_zoom[m_currentZoom], 10, 100));
 const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(
 	m_rotation.m128_f32[0],
 	m_rotation.m128_f32[1],
@@ -122,4 +131,21 @@ DirectX::XMVECTOR up = DirectX::XMVector3TransformCoord(m_global->camera_up, rot
 
 lookat += m_position;
 DirectX::XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
+}
+
+void Camera::ZoomIn() const noexcept
+{
+	if (m_currentZoom > 0)
+		m_currentZoom -= 1;
+}
+
+void Camera::ZoomOut() const noexcept
+{
+	if (m_currentZoom < 9)
+		m_currentZoom += 1;
+}
+
+const int64_t Camera::GetZoom() const noexcept
+{
+	return m_currentZoom;
 }
