@@ -5,7 +5,6 @@
 #include "Timer.h"
 #include "IPP.h"
 
-using ipp::memory_cast;
 
 namespace
 {

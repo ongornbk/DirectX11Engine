@@ -2,9 +2,7 @@
 #include "RenderContainer.h"
 #include "AgentIntersectStance.h"
 
-/*
-* https://allegro.pl/oferta/zasilacz-samsung-bn44-00623b-l46x1q-dhs-ue46f6800-11907269263
-*/
+
 
 class Agent : public EObject
 {

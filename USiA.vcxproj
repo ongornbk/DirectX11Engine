@@ -208,6 +208,7 @@
     <ClInclude Include="ActionSkipRemainingActions.h" />
     <ClInclude Include="ActionStance.h" />
     <ClInclude Include="ActionTranslateText.h" />
+    <ClInclude Include="ActionTreeSetStance.h" />
     <ClInclude Include="ActionType.h" />
     <ClInclude Include="ActionWait.h" />
     <ClInclude Include="ActionWaitUntil.h" />
@@ -349,6 +350,7 @@
     <ClInclude Include="modern\modern_string.h" />
     <ClInclude Include="modern\modern_string_cast.h" />
     <ClInclude Include="modern\modern_string_casting_type.h" />
+    <ClInclude Include="modern\modern_timer.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_weak.h" />
     <ClInclude Include="modern\modern_xmath.h" />
@@ -465,6 +467,7 @@
     <ClCompile Include="ActionSetTextAlignment.cpp" />
     <ClCompile Include="ActionSkipRemainingActions.cpp" />
     <ClCompile Include="ActionTranslateText.cpp" />
+    <ClCompile Include="ActionTreeSetStance.cpp" />
     <ClCompile Include="ActionWait.cpp" />
     <ClCompile Include="ActionWaitUntil.cpp" />
     <ClCompile Include="Agent.cpp" />
@@ -579,6 +582,7 @@
     <ClCompile Include="modern\modern_handle.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
+    <ClCompile Include="modern\modern_timer.cpp" />
     <ClCompile Include="MultiSound.cpp" />
     <ClCompile Include="NorCondition.cpp" />
     <ClCompile Include="npc.cpp" />

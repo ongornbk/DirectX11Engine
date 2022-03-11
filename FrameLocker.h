@@ -3,9 +3,9 @@
 class FrameLocker
 {
 	bool  m_state;
-	float m_lock;
-	float m_time;
-	float m_deltaTime;
+	double m_lock;
+	double m_time;
+	double m_deltaTime;
 public:
 	FrameLocker(const float lock);
 	~FrameLocker();

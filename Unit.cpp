@@ -909,7 +909,7 @@ class ISound * Unit::GetFootstepsSound() const noexcept
 	return m_footstepsSound;
 }
 
-modern_string& const Unit::GetName() noexcept
+modern_string const& Unit::GetName() noexcept
 {
 	return m_name;
 }

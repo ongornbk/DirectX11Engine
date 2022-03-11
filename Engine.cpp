@@ -27,7 +27,6 @@ Engine* Engine::m_instance = nullptr;
 
 namespace
 {
-	volatile clock_t         beginFrame;
 	static ISound*                  m_playingMusic = nullptr;
 
 }
@@ -79,20 +78,19 @@ Engine::~Engine(void)
 		m_gameComponent = nullptr;
 	}
 
-	for (auto&& ele : m_renderingTasks)
-	{
-		delete ele;
-		ele = nullptr;
-	}
-
 	TextFont::ReleaseFonts();
 	lua::Close();
 }
 
-Engine::Engine(void) : 
-	m_updateLock(FrameLocker(320.f)),
-	m_timerLock(FrameLocker(100.f)),
-	m_renderLock(FrameLocker(60.000f))
+double Engine::GetDeltaTime() const noexcept
+{
+	return m_deltaTime;
+}
+
+Engine::Engine(void) //:
+	//m_updateLock(FrameLocker(320.f)),
+	//m_timerLock(FrameLocker(100.f)),
+	//m_renderLock(FrameLocker(60.000f))
 {
 #pragma region
 	m_gamePaused      = FALSE;
@@ -106,6 +104,9 @@ Engine::Engine(void) :
 	m_framework       = nullptr;
 	m_lua             = nullptr;
 #pragma endregion
+
+	m_timer.make_shared(new modern_timer());
+	m_timer->Start();
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)
@@ -198,8 +199,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 		ipp::Console::Println("No game component!", ipp::TextColors::RED);
 	}
 	
-	m_renderingTasks.push_back(new PTaskGCClear(GarbageCollector::GetInstance()));
-	m_renderingTasks.push_back(new PTaskRender(this));
+
 
 	return true;
 }
@@ -222,54 +222,47 @@ namespace
 
 void Engine::Run()
 {
-	
+	//clock_t beginFrame = clock();
+	m_deltaTime = m_timer->GetDeltaTime() / 1000.0;
+	m_timer->Restart();
 
 	{
-		
-		Timer::UpdateInstants(ipp::Timer::GetDeltaTime());
-		m_rendererManager->Sort();
-	}
 
-	{
+
 		Update();
 	}
 
 	{
 		Render();
-		lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
 	}
 
-		{
-			
-			
+	{
 
 
-			clock_t endFrame = clock();
 
-			deltaTime += endFrame - beginFrame;
-			frames++;
+		lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+		//clock_t endFrame = clock();
 
-			if (clockToMilliseconds(deltaTime) > 100.0) {
-				frameRate = (double)frames * 0.5 + frameRate * 0.5;
-				frames = 0;
-				deltaTime -= (clock_t)100;
-				averageFrameTimeMilliseconds = 100.0 / (frameRate == 0 ? 0.01 : frameRate);
+		//deltaTime += endFrame - beginFrame;
+		frames++;
 
-				const  int32 fps = (int32)(1000 / averageFrameTimeMilliseconds);
+		//if (clockToMilliseconds(deltaTime) > 100.0) {
+			//frameRate = (double)frames * 0.5 + frameRate * 0.5;
+			//frames = 0;
+			//deltaTime -= (clock_t)100;
+			//averageFrameTimeMilliseconds = 100.0 / (frameRate == 0 ? 0.01 : frameRate);
 
-				m_rendererManager->SetFps(fps);
+		//	const  int32 fps = (int32)(1000 / averageFrameTimeMilliseconds);
 
-				//std::cout << fps << std::endl;
+			m_rendererManager->SetFps((int32_t)(1.0 / GetDeltaTime()));
 
-			}
-		}
+			//std::cout << fps << std::endl;
+
+		
+	}
 	
 }
 
-void Engine::StartClock() volatile
-{
-	beginFrame = clock();
-}
 
 void Engine::Release()
 {
@@ -495,74 +488,59 @@ void Engine::Update()
 		if (canals)
 			canals->Update();
 
-		
+		class Camera* const cc = Camera::GetCurrentCamera();
+		if (cc)
+		{
+			if (m_input->IsKeyHit(78))
+			{
+				cc->ZoomIn();
+			}
+
+			if (m_input->IsKeyHit(74))
+			{
+				cc->ZoomOut();
+			}
+		}
 
 		if (m_gameComponent != nullptr)
 		{
-			
+			m_gameComponent->Update();
+
+			//{
+			//	float dt = GetDeltaTime();
+			//	m_updateLock.Update(dt);
+			//	m_renderLock.Update(dt);
+			//}
+
 
 			{
-				float dt = ipp::Timer::GetDeltaTime();
-				m_updateLock.Update(dt);
-				m_timerLock.Update(dt);
-				
-			}
-
-			{
-				
-			}
-			{
-				if (m_updateLock.Run())
-				{
+			//if (m_updateLock.Run())
+				//{
 					(void)m_input->Update();
-					if (m_timerLock.Run())
-					{
-						float dt = m_timerLock.GetDeltaTime();
-						Timer::Update(dt);
-					}
-					else
-					{
-
-					}
-					m_gameComponent->Update();
-					class Camera* const cc = Camera::GetCurrentCamera();
-					if (cc)
-					{
-						if (m_input->IsKeyHit(78))
-						{
-							cc->ZoomIn();
-						}
-
-						if (m_input->IsKeyHit(74))
-						{
-							cc->ZoomOut();
-						}
-					}
-					float dt = m_updateLock.GetDeltaTime();
+					double dt = GetDeltaTime();
 					m_cameraControl.Update(dt);
 					Timer::Update(dt);
-					m_rendererManager->Update(dt, m_renderLock.State());
-				}
-				else
-				{
-					//std::this_thread::yield();
-				}
+					m_rendererManager->Update(dt, true);
+			//	}
+			//	else
+			//	{
+				//	std::this_thread::yield();
+			//	}
 			}
-			m_rendererManager->Sort();
 		}
 	}
 }
 
 void Engine::Render()
 {
-	float dt = ipp::Timer::GetDeltaTime();
-	m_renderLock.Update(dt);
+	double dt = GetDeltaTime();
+	//m_renderLock.Update(dt);
 	//{
 //#pragma omp parallel for schedule(dynamic)
-		for (int32_t i = 0; i < m_renderingTasks.size(); i++)
-		{
-			m_renderingTasks[i]->execute();
-		}
+		//for (int32_t i = 0; i < m_renderingTasks.size(); i++)
+		//{
+			//m_renderingTasks[i]->execute();
+		//}
 //#pragma omp barrier
 		//{
 		//	class GarbageCollector* gbc = GarbageCollector::GetInstance();
@@ -572,13 +550,8 @@ void Engine::Render()
 		
 //#pragma omp barrier
 	//}
-
-}
-
-void Engine::PRender()
-{
-	if (m_renderLock.Run())
-	{
+	//if (m_renderLock.Run())
+	//{
 		m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
 		m_camera->Update();
 
@@ -600,7 +573,35 @@ void Engine::PRender()
 
 		m_graphics->EndScene();
 
-	}
+	//}
+}
+
+void Engine::PRender()
+{
+	//if (m_renderLock.Run())
+	//{
+		m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
+		m_camera->Update();
+
+		XMFLOAT4X4 viewMatrix = m_camera->GetView();
+		XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
+		XMFLOAT4X4 interfaceOrtho = m_camera->GetInterfaceOrtho();
+
+		m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix, interfaceOrtho);
+
+		if (m_gameComponent != NULL)
+		{
+			m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
+		}
+
+
+
+
+
+
+		m_graphics->EndScene();
+
+	//}
 }
 
 extern "C"

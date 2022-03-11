@@ -62,23 +62,22 @@ void FrameWork::Run()
 {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
-	
-		while (msg.message != WM_QUIT)
-		{
-			if (PeekMessage(&msg, NULL, 0u, 0u, PM_REMOVE))
 
-			{
-				(void)TranslateMessage(&msg);
-				(void)DispatchMessage(&msg);
-			}
-			else
-			{
-				Engine::GetEngine()->StartClock();
-				ipp::Timer::Update();
-				Engine::GetEngine()->Run();
-			}
+
+
+
+	while (msg.message != WM_QUIT)
+	{
+		if (PeekMessage(&msg, NULL, 0u, 0u, PM_REMOVE))
+		{
+			(void)TranslateMessage(&msg);
+			(void)DispatchMessage(&msg);
 		}
-	
+		else
+		{
+			Engine::GetEngine()->Run();
+		}
+	}
 
 }
 

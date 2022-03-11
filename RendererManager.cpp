@@ -1,3 +1,4 @@
+#pragma region
 #include "RendererManager.h"
 #include "IPP.h"
 #include "SettingsC.h"
@@ -24,14 +25,11 @@
 #include "ActionSetTextAlignment.h"
 #include "ActionInitializeInterface.h"
 #include "ActionSetInterfaceOffset.h"
-
+#include "ActionTreeSetStance.h"
+#pragma endregion
 #include <future>
 #include <mutex>
 #include <stack>
-
-//TEMP
-//#include <d2d1.h>
-//#include <dwrite.h>
 
 class Unit;
 
@@ -547,7 +545,7 @@ void RendererManager::Render(
 			//m_objects.Sort();
 			//m_objects.QSort();
 
-			
+			this->Sort();
 
 //#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
@@ -594,6 +592,7 @@ void RendererManager::Render(
 				{
 					modern_guard g(unith);
 					unith->Select();
+					Focus(unith, ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
 					m_selectGroup.push_back(modern_handle(unith->GetHandle()));
 				}
 			}
@@ -617,8 +616,8 @@ void RendererManager::Render(
 						if (unit)
 						{
 							modern_shared_guard g(unit);
-							int32_t che = unit->GetHealth();
-							int32_t mhe = unit->GetMaxHealth();
+							int32_t che = (int32_t)unit->GetHealth();
+							int32_t mhe = (int32_t)unit->GetMaxHealth();
 							A->SetText(modern_string(che, L".", mhe));
 						}
 					}
@@ -680,9 +679,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
 				tree->CastShadow(false);
 				if (tree->GetStance())
-				{
 					continue;
-				}
 				tree->SetStance(1);
 			}
 
@@ -694,6 +691,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
 				action->push(new ActionSetShadowCast(tree, true));
 				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+				action->push(new ActionTreeSetStance(tree, 0));
 				Timer::CreateInstantTimer(action);
 			}
 				break;
@@ -706,6 +704,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 				)));
 				action->push(new ActionSetShadowCast(tree, true));
 				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+				action->push(new ActionTreeSetStance(tree, 0));
 				Timer::CreateInstantTimer(action);
 			}
 				break;

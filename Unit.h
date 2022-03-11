@@ -175,7 +175,7 @@ public:
 	void LoadSounds(std::string* path);
 
 	class ISound* GetFootstepsSound() const noexcept;
-	[[nodiscard]] class modern_string& const GetName() noexcept;
+	[[nodiscard]] class modern_string const& GetName() noexcept;
 
 	friend class Task;
 	friend class TaskGotoPoint;

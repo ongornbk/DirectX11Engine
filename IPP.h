@@ -9,10 +9,7 @@
 namespace ipp
 {
 
-	constexpr double     PI_extended = 3.14159265358979323844;
-	constexpr float      PI    = 3.14159f;
-	constexpr float      SQRT2 = 1.41421f;
-	constexpr float      E = 2.71828f;
+
 
 	enum TextColors
 	{
@@ -33,10 +30,7 @@ namespace ipp
 		WHITE = 15
 	};
 
-	template <class _Out_ ReturnType, class _In_ Type> inline ReturnType memory_cast(Type obj)
-	{
-		return *(returntype*)(obj);
-	}
+
 
 	namespace math
 	{
@@ -131,22 +125,6 @@ namespace ipp
 	private:
 		explicit Console(void);
 
-	};
-
-	class Timer
-	{
-	public:
-
-		static void Update();
-
-		static float GetDeltaTime();
-		static void  GetDeltaTime(float &dt);
-	private:
-
-		static int64_t m_prevFrame;
-		static int64_t m_currentFrame;
-		static int64_t m_freq;
-		static float m_deltaTime;
 	};
 
 

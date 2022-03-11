@@ -3,6 +3,7 @@
 #include <sal.h>
 #include <atomic>
 #include <thread>
+#include <chrono>
 #include <cstdint>
 #include <Windows.h>
 #ifdef DrawText

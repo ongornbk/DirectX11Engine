@@ -5,11 +5,6 @@
 #include <string>
 #include <inttypes.h>
 
-__int64 ipp::Timer::m_prevFrame = 0;
-__int64 ipp::Timer::m_currentFrame = 0;
-__int64 ipp::Timer::m_freq = 0;
-float ipp::Timer::m_deltaTime = 0.0f;
-
 
 namespace
 {
@@ -260,70 +255,8 @@ std::string ipp::__Console::__GetInput()
 	return input;
 }
 
-void ipp::Timer::Update()
-{
-	m_deltaTime = 0.0f;
-	QueryPerformanceFrequency((LARGE_INTEGER*)&m_freq);
-	QueryPerformanceCounter((LARGE_INTEGER*)&m_currentFrame);
-	int deltaTicks = (int)(m_currentFrame - m_prevFrame);
-	m_deltaTime = ((float)deltaTicks / (float)m_freq);
-	m_prevFrame = m_currentFrame;
-}
 
-float ipp::Timer::GetDeltaTime()
-{
-	float dt = m_deltaTime;
-	if (dt <= 0.0f || dt > 1.0f)
-	{
-		dt = 0.025f;
-	}
 
-	return dt;
-}
-
-void ipp::Timer::GetDeltaTime(float & dt)
-{
-	dt = m_deltaTime;
-	if (dt <= 0.0f || dt > 1.0f)
-	{
-		dt = 0.025f;
-	}
-}
-
-float ipp::math::Sin(const float degrees)
-{
-	return sin(degrees * (ipp::PI / 180.0f));
-}
-
-float ipp::math::Cos(const float degrees)
-{
-	return cos(degrees * (ipp::PI / 180.0f));
-}
-
-float ipp::math::Tan(const float degrees)
-{
-	return tan(degrees * (ipp::PI / 180.0f));
-}
-
-float ipp::math::Asin(const float degrees)
-{
-	return asin(degrees) * (180.0f / ipp::PI);
-}
-
-float ipp::math::Acos(const float degrees)
-{
-	return acos(degrees) * (180.0f / ipp::PI);
-}
-
-float ipp::math::Atan(const float degrees)
-{
-	return atan(degrees) * (180.0f / ipp::PI);
-}
-
-float ipp::math::Atan2(const float y,const float x)
-{
-	return atan2(y, x) * (180.f / ipp::PI);
-}
 
 void _fastcall ipp::math::clamp(char& value, const char min, const char max)
 {

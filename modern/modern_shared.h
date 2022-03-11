@@ -35,6 +35,12 @@ public:
 		m_numOfCopies = nullptr; 
 	}
 
+	explicit constexpr modern_shared(T* const pointer) : m_pointer(pointer),m_numOfCopies(new int32_t())
+	{
+		(*m_numOfCopies) = 1;
+		std::cout << "fdfdfdfdf";
+	}
+
 	~modern_shared() 
 	{ 
 		if (m_numOfCopies)

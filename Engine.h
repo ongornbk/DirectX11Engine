@@ -16,6 +16,8 @@
 #include "FrameLocker.h"
 #include "PTaskGCClear.h"
 #include "PTaskRender.h"
+#include "modern/modern_shared.h"
+#include "modern/modern_timer.h"
 
 class RendererManager;
 class FrameWork;
@@ -24,16 +26,15 @@ struct lua_State;
 #undef PlaySound
 class Engine
 {
-	FrameLocker m_timerLock;
-	FrameLocker m_updateLock;
-	FrameLocker m_renderLock;
+	//FrameLocker m_timerLock;
+	//FrameLocker m_updateLock;
+	//FrameLocker m_renderLock;
 public:
 	~Engine(void);
 
 	bool InitializeGraphics(HWND hwnd);
 	bool Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework);
 	void Run();
-	void StartClock() volatile;
 
 	void Release();
 
@@ -67,6 +68,12 @@ public:
 	static Engine* GetEngine();
 protected:
 private:
+
+	modern_shared<modern_timer> m_timer;
+	double                      m_deltaTime;
+
+	double GetDeltaTime() const noexcept;
+
 	Engine(void);
 
 	friend class PTaskRender;
@@ -94,8 +101,6 @@ private:
 	ThreadPool       m_threadPool;
 
 	lua_State*       m_lua;
-
-	modern_array<IPTask*> m_renderingTasks;
 
 
 };
