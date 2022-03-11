@@ -27,7 +27,7 @@ Engine* Engine::m_instance = nullptr;
 
 namespace
 {
-
+	volatile clock_t         beginFrame;
 	static ISound*                  m_playingMusic = nullptr;
 
 }
@@ -91,6 +91,7 @@ Engine::~Engine(void)
 
 Engine::Engine(void) : 
 	m_updateLock(FrameLocker(320.f)),
+	m_timerLock(FrameLocker(100.f)),
 	m_renderLock(FrameLocker(60.000f))
 {
 #pragma region
@@ -221,23 +222,28 @@ namespace
 
 void Engine::Run()
 {
-	clock_t beginFrame = clock();
+	
 
 	{
 		
+		Timer::UpdateInstants(ipp::Timer::GetDeltaTime());
+		m_rendererManager->Sort();
+	}
 
+	{
 		Update();
 	}
 
 	{
 		Render();
+		lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
 	}
 
 		{
 			
 			
 
-			lua::Execute(lua::LUA_LOCATION_RENDERAFTER);
+
 			clock_t endFrame = clock();
 
 			deltaTime += endFrame - beginFrame;
@@ -258,6 +264,11 @@ void Engine::Run()
 			}
 		}
 	
+}
+
+void Engine::StartClock() volatile
+{
+	beginFrame = clock();
 }
 
 void Engine::Release()
@@ -484,35 +495,49 @@ void Engine::Update()
 		if (canals)
 			canals->Update();
 
-		class Camera* const cc = Camera::GetCurrentCamera();
-		if (cc)
-		{
-			if (m_input->IsKeyHit(78))
-			{
-				cc->ZoomIn();
-			}
-
-			if (m_input->IsKeyHit(74))
-			{
-				cc->ZoomOut();
-			}
-		}
+		
 
 		if (m_gameComponent != nullptr)
 		{
-			m_gameComponent->Update();
+			
 
 			{
 				float dt = ipp::Timer::GetDeltaTime();
 				m_updateLock.Update(dt);
-				m_renderLock.Update(dt);
+				m_timerLock.Update(dt);
+				
 			}
 
-
+			{
+				
+			}
 			{
 				if (m_updateLock.Run())
 				{
 					(void)m_input->Update();
+					if (m_timerLock.Run())
+					{
+						float dt = m_timerLock.GetDeltaTime();
+						Timer::Update(dt);
+					}
+					else
+					{
+
+					}
+					m_gameComponent->Update();
+					class Camera* const cc = Camera::GetCurrentCamera();
+					if (cc)
+					{
+						if (m_input->IsKeyHit(78))
+						{
+							cc->ZoomIn();
+						}
+
+						if (m_input->IsKeyHit(74))
+						{
+							cc->ZoomOut();
+						}
+					}
 					float dt = m_updateLock.GetDeltaTime();
 					m_cameraControl.Update(dt);
 					Timer::Update(dt);
@@ -520,16 +545,18 @@ void Engine::Update()
 				}
 				else
 				{
-					std::this_thread::yield();
+					//std::this_thread::yield();
 				}
 			}
+			m_rendererManager->Sort();
 		}
 	}
 }
 
 void Engine::Render()
 {
-
+	float dt = ipp::Timer::GetDeltaTime();
+	m_renderLock.Update(dt);
 	//{
 //#pragma omp parallel for schedule(dynamic)
 		for (int32_t i = 0; i < m_renderingTasks.size(); i++)

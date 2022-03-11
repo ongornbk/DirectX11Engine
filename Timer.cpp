@@ -9,10 +9,23 @@ namespace
 	static std::list<class ITimer*> m_stoppedTimers;
 	static std::list<class ITimer*> m_timers;
 	static std::list<class ITimer*> m_echoTimers;
+	static std::list<class ITimer*> m_instantTimers;
 	static std::atomic<int64_t> m_stance = 0;
 }
 
+void Timer::UpdateInstants(const float dt)
+{
 
+	for (auto& element = m_instantTimers.begin(); element != m_instantTimers.end(); element++)
+	{
+		if ((*element)->update(dt))
+		{
+			delete* element;
+			m_timers.erase(element);
+		}
+	}
+
+}
 
 void Timer::Update(const float dt)
 {
@@ -72,10 +85,10 @@ void Timer::CreateInstantTimer(IAction* const action)
 {
 	class InstantTimer* const timer = new InstantTimer();
 	timer->action = action;
-	if (m_stance.load() == 0)
-		m_timers.push_back(timer);
-	else m_echoTimers.push_back(timer);
+		m_instantTimers.push_back(timer);
 }
+
+
 
 void Timer::CreateFuzzyTimer(IAction* const action, const float time)
 {

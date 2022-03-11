@@ -335,7 +335,7 @@ void RendererManager::Render(
 		{
 			modern_guard g(A);
 			A->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
-			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+			A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
 
 		}
 		class Text* const B = (class Text*)m_objectsText.get();
@@ -364,7 +364,7 @@ void RendererManager::Render(
 			//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck);
 			//A->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck);
 			//A->SetColorFilter(1.f);
-			A->Render(deviceContext, viewMatrix, projectionMatrix, pck);
+			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
 		}
 	}
 	{
@@ -547,15 +547,7 @@ void RendererManager::Render(
 			//m_objects.Sort();
 			//m_objects.QSort();
 
-			if (m_collision)
-			{
-				for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
-				{
-					m_layers[i]->Sort();
-					m_layers[i]->QSort();
-				}
-
-			}
+			
 
 //#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
@@ -579,15 +571,30 @@ void RendererManager::Render(
 				DirectX::XMFLOAT3 point = DirectX::XMFLOAT3(mousePosition[0], mousePosition[1], 0.0f);
 				modern_guard g(agent_cursor);
 				agent_cursor->SetVector(point);
-				auto gr = this->GetUnitsInRange(agent_cursor, 90.f);
+				auto gr = this->GetUnitsInRange(agent_cursor, 80.f);
+				float distanceh = INFINITY;
+				class Unit* unith = nullptr;
 				while (gr.size())
 				{
-					if (gr.top() != m_focus)
+					if (gr.top() != m_focus&& gr.top()->m_flags.m_selectable == true)
 					{
-						gr.top()->Select();
-						m_selectGroup.push_back(modern_handle(gr.top()->GetHandle()));
+						//gr.top()->Select();
+						modern_shared_guard g(gr.top());
+						float distance = modern_xfloat3_distance2(agent_cursor->GetVector(), gr.top()->GetPosition());
+						//m_selectGroup.push_back(modern_handle(gr.top()->GetHandle()));
+						if (distance < distanceh)
+						{
+							distanceh = distance;
+							unith = gr.top();
+						}
 					}
 					gr.pop();
+				}
+				if(Unit::CheckIfValid(unith))
+				{
+					modern_guard g(unith);
+					unith->Select();
+					m_selectGroup.push_back(modern_handle(unith->GetHandle()));
 				}
 			}
 			else
@@ -612,7 +619,7 @@ void RendererManager::Render(
 							modern_shared_guard g(unit);
 							int32_t che = unit->GetHealth();
 							int32_t mhe = unit->GetMaxHealth();
-							A->SetText(modern_string(che, L"$", mhe));
+							A->SetText(modern_string(che, L".", mhe));
 						}
 					}
 					else
@@ -633,6 +640,19 @@ void RendererManager::Render(
 
 		}
 //#pragma omp barrier
+	}
+
+	void RendererManager::Sort()
+	{
+		if (m_collision)
+		{
+			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+			{
+				m_layers[i]->Sort();
+				m_layers[i]->QSort();
+			}
+
+		}
 	}
 
 void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)

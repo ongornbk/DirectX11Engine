@@ -14,6 +14,7 @@ class Timer : public ITimer
 {
 public:
 
+	static void UpdateInstants(const float dt);
 	static void Update(const float dt);
 	static void Push(class ITimer* const timer);
 	static void CreateExpiringTimer(class IAction* const action, const float time);

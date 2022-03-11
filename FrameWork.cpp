@@ -60,33 +60,25 @@ bool FrameWork::Initialize(GameComponent* gameComponent)
 
 void FrameWork::Run()
 {
-
-
-
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
-
-
-
-
-	while (msg.message != WM_QUIT)
-	{
-		if (PeekMessage(&msg, NULL, 0u, 0u, PM_REMOVE))
+	
+		while (msg.message != WM_QUIT)
 		{
-			(void)TranslateMessage(&msg);
-			(void)DispatchMessage(&msg);
+			if (PeekMessage(&msg, NULL, 0u, 0u, PM_REMOVE))
+
+			{
+				(void)TranslateMessage(&msg);
+				(void)DispatchMessage(&msg);
+			}
+			else
+			{
+				Engine::GetEngine()->StartClock();
+				ipp::Timer::Update();
+				Engine::GetEngine()->Run();
+			}
 		}
-		else
-		{
-
-
-			ipp::Timer::Update();
-
-
-			Engine::GetEngine()->Run();
-		}
-	}
-
+	
 
 }
 

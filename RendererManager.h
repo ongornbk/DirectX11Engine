@@ -74,6 +74,7 @@ public:
 		const struct XMFLOAT4X4& interfaceMatrix
 	);
 	void Update(const float dt,const bool renderframe = false);
+	void Sort();
 	void Focus(class EObject* const object,const enum class ObjectFocusType type);
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);

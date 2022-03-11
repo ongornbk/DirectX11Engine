@@ -100,5 +100,5 @@ void Agent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
 
 DirectX::XMFLOAT3 Agent::GetVector() noexcept
 {
-    return DirectX::XMFLOAT3();
+    return m_boundingSphere.Center;
 }

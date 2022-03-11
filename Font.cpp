@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+﻿#include "ResourceManager.h"
 #include "Font.h"
 #include "IPP.h"
 #include "Vector.h"
@@ -86,214 +86,9 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 	m_letters['9'] = new LetterSprite(this, '9', 20.f);
 
 	m_letters['('] = new LetterSprite(this, '(', 20.f);
-	m_letters['$'] = new LetterSprite(this, '$
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-', 20.f);
+	m_letters['$'] = new LetterSprite(this, '$', 20.f);
+	m_letters['£'] = new LetterSprite(this, '£', 20.f);
+	m_letters['.'] = new LetterSprite(this, '.', 20.f);
 
 	m_letters[' ']->Initialize(device, context, shader, this);
 	m_letters['a']->Initialize(device, context, shader, this);
@@ -336,6 +131,8 @@ void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Sh
 
 	m_letters['(']->Initialize(device, context, shader, this);
 	m_letters['$']->Initialize(device, context, shader, this);
+	m_letters['£']->Initialize(device, context, shader, this);
+	m_letters['.']->Initialize(device, context, shader, this);
 
 	if (m_flag)
 	{
@@ -508,7 +305,6 @@ void TextFont::InitializeCoordinates(std::vector<float> coords)
 	}
 
 
-
 	m_char['a'].m_left = coords.at(0);
 	m_char['a'].m_top = coords.at(1);
 	m_char['a'].m_right = coords.at(2);
@@ -661,6 +457,14 @@ void TextFont::InitializeCoordinates(std::vector<float> coords)
 	m_char['$'].m_top = coords.at(149);
 	m_char['$'].m_right = coords.at(150);
 	m_char['$'].m_bottom = coords.at(151);
+	m_char['£'].m_left = coords.at(152);
+	m_char['£'].m_top = coords.at(153);
+	m_char['£'].m_right = coords.at(154);
+	m_char['£'].m_bottom = coords.at(155);
+	m_char['.'].m_left = coords.at(156);
+	m_char['.'].m_top = coords.at(157);
+	m_char['.'].m_right = coords.at(158);
+	m_char['.'].m_bottom = coords.at(159);
 
 	if (m_flag)
 	{

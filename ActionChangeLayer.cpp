@@ -21,8 +21,10 @@ void ActionChangeLayer::execute()
 		modern_guard g(A);
 		A->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_REMOVE;
 		CleanupFrame();
+
 		//RendererManager::GetInstance()->Push(m_object, m_layer);
 		Timer::CreateInstantTimer(new ActionPushObject(A, m_layer));
+
 	}
 }
 

@@ -50,7 +50,7 @@ void Doodads::Initialize(
 
 	m_vertexBuffer = new class VertexBuffer();
 	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
+	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{

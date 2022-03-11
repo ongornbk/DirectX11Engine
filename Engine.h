@@ -24,6 +24,7 @@ struct lua_State;
 #undef PlaySound
 class Engine
 {
+	FrameLocker m_timerLock;
 	FrameLocker m_updateLock;
 	FrameLocker m_renderLock;
 public:
@@ -32,6 +33,7 @@ public:
 	bool InitializeGraphics(HWND hwnd);
 	bool Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework);
 	void Run();
+	void StartClock() volatile;
 
 	void Release();
 
