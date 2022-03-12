@@ -3,7 +3,7 @@
 #include "LetterSprite.h"
 #include "modern/modern_array.h"
 #include <string>
-#include <vector>
+#include "modern/modern_vector.h"
 
 
 
@@ -42,7 +42,7 @@ float GetWidthOfLetter(char letter);
 class LetterSprite* const GetSprite(class Text* const text,const char ch);
 class Shader* const GetShader() noexcept;
 
-void InitializeCoordinates(std::vector<float> coords);
+void InitializeCoordinates(class modern_vector<float>& coords);
 
 private:
 

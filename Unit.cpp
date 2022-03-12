@@ -277,7 +277,7 @@ void Unit::Update(const float dt)
 				//}
 				//DirectX::XMMATRIX
 			//}
-			m_rotation[0] += modern_sign(m_rotation[1] - m_rotation[0]);
+			m_rotation[0] = m_rotation[1];
 
 
 

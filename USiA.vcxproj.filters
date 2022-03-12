@@ -966,6 +966,9 @@
     <ClInclude Include="ActionTreeSetStance.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_vector.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1591,6 +1594,9 @@
     </ClCompile>
     <ClCompile Include="ActionTreeSetStance.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_vector.cpp">
+      <Filter>Header Files\modern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

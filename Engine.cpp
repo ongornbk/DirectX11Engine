@@ -13,6 +13,7 @@
 #include "ActionApplyColorFilter.h"
 #include "ActionMessageFront.h"
 #include "GarbageCollector.h"
+#include "modern/modern_vector.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -107,6 +108,7 @@ Engine::Engine(void) //:
 
 	m_timer.make_shared(new modern_timer());
 	m_timer->Start();
+	
 }
 
 bool Engine::InitializeGraphics(HWND hwnd)

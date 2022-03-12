@@ -9,6 +9,7 @@
 #include <iostream>
 
 
+
 #define FONTPATH "../../content/Textures/font/"
 
 namespace
@@ -194,7 +195,7 @@ void TextFont::LoadFontFromFile(std::string filename,float width,float height)
 	}
 	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 	istringstream ss(BUFFER);
-	std::vector<float> coordinates;
+	modern_vector<float> coordinates;
 	string token,token2;
 
 	
@@ -292,9 +293,10 @@ Shader* const TextFont::GetShader() noexcept
 	return m_shader;
 }
 
-void TextFont::InitializeCoordinates(std::vector<float> coords)
+void TextFont::InitializeCoordinates(class modern_vector<float>& coords)
 {
-	std::reverse(coords.begin(), coords.end());
+	//std::reverse(coords.begin(), coords.end());
+	coords.reverse();
 
 	if (coords.size() < 148)
 	{

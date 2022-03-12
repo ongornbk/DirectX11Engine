@@ -352,6 +352,7 @@
     <ClInclude Include="modern\modern_string_casting_type.h" />
     <ClInclude Include="modern\modern_timer.h" />
     <ClInclude Include="modern\modern_unique.h" />
+    <ClInclude Include="modern\modern_vector.h" />
     <ClInclude Include="modern\modern_weak.h" />
     <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
@@ -583,6 +584,7 @@
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="modern\modern_timer.cpp" />
+    <ClCompile Include="modern\modern_vector.cpp" />
     <ClCompile Include="MultiSound.cpp" />
     <ClCompile Include="NorCondition.cpp" />
     <ClCompile Include="npc.cpp" />

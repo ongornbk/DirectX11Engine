@@ -1,10 +1,10 @@
 #include "Sorting.h"
 #include "Defines.h"
 #include "Camera.h"
-#include "Vector.h"
 #include "ThreadPool.h"
 #include "modern/modern_guard.h"
 #include "modern/modern_shared_guard.h"
+#include "modern/modern_vector.h"
 //#include "Math.h"
 #include "Tile.h"
 #include "game_math.h"
@@ -13,12 +13,11 @@
 #include <omp.h>
 #include <DirectXMath.h>
 #include <iostream>
-#include <vector>
 
 namespace
 
 {
-	std::vector<SortPair> m_postPairs;
+	modern_vector<SortPair> m_postPairs;
 }
 
 namespace

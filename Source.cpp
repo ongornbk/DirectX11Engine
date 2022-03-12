@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <streambuf>
+#include "modern/modern_vector.h"
 
 #pragma region
 #define SETTINGS Settings::get()->
@@ -46,11 +47,11 @@ void main(const int argc,char** const argv)
 		//xml.Parse(BUFFER);
 
 		istringstream ss(BUFFER);
-		vector<string> settings;
+		modern_vector<string> settings;
 		string token, token2;
 		while (getline(ss, token, '\n'))
 		{
-			settings.push_back(token);
+			settings.push_backr(token);
 		}
 
 		if (settings.size() == SETTINGS_NUMBER_OF_ARGUMENTS)
