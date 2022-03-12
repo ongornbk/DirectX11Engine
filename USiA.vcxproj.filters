@@ -969,6 +969,9 @@
     <ClInclude Include="modern\modern_vector.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_framelock.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1596,6 +1599,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_vector.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_framelock.cpp">
       <Filter>Header Files\modern</Filter>
     </ClCompile>
   </ItemGroup>

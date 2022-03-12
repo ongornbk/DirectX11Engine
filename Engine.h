@@ -13,11 +13,11 @@
 #include "Canals.h"
 #include "ThreadPool.h"
 #include "ActionMap.h"
-#include "FrameLocker.h"
 #include "PTaskGCClear.h"
 #include "PTaskRender.h"
 #include "modern/modern_shared.h"
 #include "modern/modern_timer.h"
+#include "modern/modern_framelock.h"
 
 class RendererManager;
 class FrameWork;
@@ -26,9 +26,9 @@ struct lua_State;
 #undef PlaySound
 class Engine
 {
-	//FrameLocker m_timerLock;
-	//FrameLocker m_updateLock;
-	//FrameLocker m_renderLock;
+	modern_framelock m_timerLock;
+	modern_framelock m_updateLock;
+	modern_framelock m_renderLock;
 public:
 	~Engine(void);
 

@@ -517,7 +517,7 @@ void RendererManager::Render(
 				}
 				//g_units.Update(dt);
 				//m_objects.Update(dt);
-				if (renderframe)
+				//if (renderframe)
 				{
 					for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 					{
@@ -525,13 +525,13 @@ void RendererManager::Render(
 						m_layers[i]->Update(dt);
 					}
 				}
-				else
-				{
-						{						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
-
-							m_layers[i]->Update(dt);
-						}
-				}
+				//else
+				//{
+				//		{						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+				//
+				//			m_layers[i]->Update(dt);
+				//		}
+				//}
 
 			}
 
@@ -545,6 +545,7 @@ void RendererManager::Render(
 			//m_objects.Sort();
 			//m_objects.QSort();
 
+			
 			this->Sort();
 
 //#pragma omp critical
@@ -552,7 +553,7 @@ void RendererManager::Render(
 
 			
 
-			for (auto obj : m_selectGroup)
+			for (auto&& obj : m_selectGroup)
 			{
 				//modern_guard g(obj);
 				((Unit*)obj.get())->Select(0);

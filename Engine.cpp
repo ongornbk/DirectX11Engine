@@ -88,10 +88,10 @@ double Engine::GetDeltaTime() const noexcept
 	return m_deltaTime;
 }
 
-Engine::Engine(void) //:
-	//m_updateLock(FrameLocker(320.f)),
-	//m_timerLock(FrameLocker(100.f)),
-	//m_renderLock(FrameLocker(60.000f))
+Engine::Engine(void) :
+	m_updateLock(modern_framelock(320.0)),
+	m_timerLock(modern_framelock(100.0)),
+	m_renderLock(modern_framelock(60.0))
 {
 #pragma region
 	m_gamePaused      = FALSE;
@@ -486,48 +486,54 @@ Engine * Engine::GetEngine()
 void Engine::Update()
 {
 	{
-		class Canals* const canals = Canals::GetInstance();
-		if (canals)
-			canals->Update();
+		
 
-		class Camera* const cc = Camera::GetCurrentCamera();
-		if (cc)
-		{
-			if (m_input->IsKeyHit(78))
-			{
-				cc->ZoomIn();
-			}
-
-			if (m_input->IsKeyHit(74))
-			{
-				cc->ZoomOut();
-			}
-		}
+		double dt = GetDeltaTime();
 
 		if (m_gameComponent != nullptr)
 		{
-			m_gameComponent->Update();
+			
 
 			//{
 			//	float dt = GetDeltaTime();
-			//	m_updateLock.Update(dt);
-			//	m_renderLock.Update(dt);
+				m_updateLock.Update(dt);
+				m_renderLock.Update(dt);
 			//}
 
 
-			{
-			//if (m_updateLock.Run())
-				//{
+			//{
+			if (m_updateLock.Run())
+				{
+				double ldt = m_updateLock.GetDeltaTime();
+				class Canals* const canals = Canals::GetInstance();
+				if (canals)
+					canals->Update();
+
+				class Camera* const cc = Camera::GetCurrentCamera();
+				if (cc)
+				{
+					if (m_input->IsKeyHit(78))
+					{
+						cc->ZoomIn();
+					}
+
+					if (m_input->IsKeyHit(74))
+					{
+						cc->ZoomOut();
+					}
+				}
+				Timer::Update(ldt);
 					(void)m_input->Update();
-					double dt = GetDeltaTime();
-					m_cameraControl.Update(dt);
-					Timer::Update(dt);
-					m_rendererManager->Update(dt, true);
-			//	}
-			//	else
-			//	{
-				//	std::this_thread::yield();
-			//	}
+
+					m_gameComponent->Update();
+					m_cameraControl.Update(ldt);
+
+					m_rendererManager->Update(ldt, true);
+				}
+				else
+				{
+				m_rendererManager->Sort();
+				
 			}
 		}
 	}
@@ -552,8 +558,8 @@ void Engine::Render()
 		
 //#pragma omp barrier
 	//}
-	//if (m_renderLock.Run())
-	//{
+	if (m_renderLock.Run())
+	{
 		m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
 		m_camera->Update();
 
@@ -575,7 +581,7 @@ void Engine::Render()
 
 		m_graphics->EndScene();
 
-	//}
+	}
 }
 
 void Engine::PRender()

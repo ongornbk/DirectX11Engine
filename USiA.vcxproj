@@ -339,6 +339,7 @@
     <ClInclude Include="modern\modern_cstring.h" />
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_exception.h" />
+    <ClInclude Include="modern\modern_framelock.h" />
     <ClInclude Include="modern\modern_guard.h" />
     <ClInclude Include="modern\modern_guard_status.h" />
     <ClInclude Include="modern\modern_handle.h" />
@@ -579,6 +580,7 @@
     <ClCompile Include="MenuRendererManager.cpp" />
     <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />
+    <ClCompile Include="modern\modern_framelock.cpp" />
     <ClCompile Include="modern\modern_guard.cpp" />
     <ClCompile Include="modern\modern_handle.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
