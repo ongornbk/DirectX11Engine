@@ -7,7 +7,6 @@
 #include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
-#include <queue>
 #include <deque>
 #pragma comment(lib,"sfml-audio.lib")
 using namespace std;

@@ -114,6 +114,7 @@ inline float modern_acos(float a);
 inline float modern_atan(float a);
 inline float modern_atan2(float a, float b);
 inline float modern_angle_between_points2(modern_point& a, modern_point& b);
+inline float modern_radians_between_points2(modern_point& a, modern_point& b);
 inline float modern_distance_between_points2(modern_point& a, modern_point& b);
 inline modern_point modern_polar_projection2(modern_point& source, float distance, float angle);
 

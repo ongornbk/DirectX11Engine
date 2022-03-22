@@ -233,6 +233,7 @@ private:
 
 	float               m_previousSpeed;
 	float               m_rotations;
+	float               m_rad_rotation;
 	int                 m_stopped;
 	bool                m_stop;
 	bool                m_intersection;

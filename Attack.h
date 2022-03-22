@@ -1,4 +1,5 @@
 #pragma once
+#include "AttackType.h"
 
 struct Attack
 {
@@ -9,4 +10,6 @@ struct Attack
 	float range;
 	mutable bool active;
 	float m_attackDelay;
+
+	enum class AttackType m_atype;
 };

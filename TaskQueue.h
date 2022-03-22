@@ -1,7 +1,6 @@
 #pragma once
 #include "Task.h"
-#include <queue>
-using std::queue;
+#include "modern/modern_queue.h"
 
 class TaskQueue
 {
@@ -17,6 +16,6 @@ public:
 	enum Task::Type GetActiveType() const noexcept;
 	class Task* const GetActiveTask() const noexcept;
 private:
-	queue<Task*> m_tasks;
+	modern_queue m_tasks;
 	class Unit*  m_owner{};
 };

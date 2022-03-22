@@ -1,7 +1,6 @@
 #pragma once
 #include "ITrash.h"
 #include "gdef.h"
-#include <queue>
 #include <deque>
 #include "modern/modern_array.h"
 #include "RenderContainer.h"

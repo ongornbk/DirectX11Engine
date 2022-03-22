@@ -242,6 +242,11 @@ void RendererManager::PushAgent(Agent* const agent)
 	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
 }
 
+void RendererManager::PushProjectile(Projectile* const proj)
+{
+	m_layers[enum_cast<int32_t>(proj->GetLayerType())]->Push(proj);
+}
+
 void RendererManager::PushDoodads(class Doodads * doodads)
 {
 	m_layers[enum_cast<int32_t>(doodads->GetLayerType())]->Push(doodads);

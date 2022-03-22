@@ -13,6 +13,7 @@
 #include "RenderLayer.h"
 #include "ObjectFocusType.h"
 #include "Agent.h"
+#include "Projectile.h"
 #include <stack>
 #include <map>
 #include <list>
@@ -25,6 +26,7 @@ class Doodads;
 class AnimatedDoodads;
 class Tree;
 class Agent;
+class Projectile;
 class RegionPointObject;
 class UserInterfaceGame;
 class UserInterfaceGameMenu;
@@ -56,6 +58,7 @@ public:
 
 	void PushUnit(class Unit* unit);
 	void PushAgent(class Agent* const agent);
+	void PushProjectile(class Projectile* const proj);
 	void PushDoodads(class Doodads* doodads);
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
 	void PushTree(class Tree* doodads);

@@ -67,9 +67,6 @@
     <Filter Include="Lua">
       <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
     </Filter>
@@ -174,6 +171,9 @@
     </Filter>
     <Filter Include="HTML">
       <UniqueIdentifier>{635539f5-5b6e-4a71-bb29-e72822fbc707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +301,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsManager.h">
@@ -972,6 +969,21 @@
     <ClInclude Include="modern\modern_framelock.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_queue.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_element.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeProjectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1604,6 +1616,15 @@
     <ClCompile Include="modern\modern_framelock.cpp">
       <Filter>Header Files\modern</Filter>
     </ClCompile>
+    <ClCompile Include="modern\modern_queue.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInitializeProjectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1659,9 +1680,6 @@
     </None>
     <None Include="x64\Release\content\Textures\models\griswold.mod">
       <Filter>Models</Filter>
-    </None>
-    <None Include="game_exe.hpp">
-      <Filter>Header Files</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\baboon.mod">
       <Filter>Models</Filter>

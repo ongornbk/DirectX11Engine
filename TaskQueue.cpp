@@ -23,20 +23,24 @@ TaskQueue::TaskQueue()
 
 TaskQueue::~TaskQueue()
 {
-	while (!m_tasks.empty())
+	Task* task = (Task*)m_tasks.pop();
+	while (task)
 	{
-		m_tasks.front()->Release();
-		m_tasks.pop();
+		task->Release();
+		//m_tasks.pop();
+		task = (Task*)m_tasks.pop();
 }
 }
 
 void TaskQueue::Discard()
 {
-	while (!m_tasks.empty())
+	Task* task = (Task*)m_tasks.pop();
+	while (task)
 	{
 		//GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
-		m_tasks.front()->Release();
-		m_tasks.pop();
+		//m_tasks.front();
+		task->Release();
+		task = (Task*)m_tasks.pop();
 	}
 	//if (m_owner)
 	//	m_owner->EndRunning();
@@ -45,9 +49,11 @@ void TaskQueue::Discard()
 
 bool TaskQueue::Update()
 {
-	if (!m_tasks.empty())
+	//Task*
+	Task* task = (Task*)m_tasks.front();
+	if (task)
 	{
-		if (m_tasks.front()->Update())
+		if (task->Update())
 		{
 			return true;
 		}
@@ -60,7 +66,7 @@ bool TaskQueue::Update()
 					//if (m_owner)
 					//	m_owner->EndRunning();
 				//}
-				m_tasks.front()->Release();
+				task->Release();
 				m_tasks.pop();
 			}
 			//if (m_tasks.size())
@@ -105,15 +111,13 @@ void TaskQueue::SetOwner(Unit * object)
 
 Task::Type TaskQueue::GetActiveType() const noexcept
 {
-	if (m_tasks.empty())
-		return Task::Type::NONE;
+	if (m_tasks.front())
+		return ((Task*)m_tasks.front())->m_type;
 	else
-		return m_tasks.front()->m_type;
+		return Task::Type::NONE;
 }
 
 Task* const TaskQueue::GetActiveTask() const noexcept
 {
-	if (m_tasks.empty())
-		return nullptr;
-	else return m_tasks.front();
+	return ((Task*)m_tasks.front());
 }

@@ -7,6 +7,11 @@ inline DirectX::XMFLOAT3 XM_CALLCONV modern_xfloat3_multiply(
 	const float x
 );
 
+inline DirectX::XMFLOAT3 XM_CALLCONV modern_xfloat3_div(
+	const struct XMFLOAT3& Float3,
+	const float x
+);
+
 inline DirectX::XMFLOAT3 XM_CALLCONV modern_xfloat3_sum(
 	const struct XMFLOAT3& A,
 	const struct XMFLOAT3& B

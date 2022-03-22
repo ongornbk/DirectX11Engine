@@ -68,7 +68,7 @@ bool TaskGotoPoint::Update()
 				break;
 			}
 			}
-
+			A->m_rad_rotation = atan2(destination.y - position.y, destination.x - position.x);
 			float rotation = modern_xangle2_between_points3(position, destination);
 
 			rotation += 180.f;
@@ -141,6 +141,7 @@ bool TaskPatrol::Update()
 				break;
 			}
 			}
+			A->m_rad_rotation = atan2(destination.y - position.y, destination.x - position.x);
 			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
 			rotation += 90.0f;
 			rotation /= (360.f / A->GetNumberOfRotations());
@@ -200,6 +201,7 @@ bool TaskFollow::Update()
 				break;
 			}
 			}
+			A->m_rad_rotation = atan2(destination.y - position.y, destination.x - position.x);
 			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
 			rotation += 90.f;
 			rotation /= (360.f / A->GetNumberOfRotations());
@@ -274,8 +276,9 @@ bool TaskAttack::Update()
 		if (inrange)
 		{
 			atk.active = false;
-			float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
-			rotation += 90.0f;
+			A->m_rad_rotation = modern_pi - atan2(position.y - destination.y, position.x - destination.x);
+			float rotation = (A->m_rad_rotation * 180.0f / 3.141f);
+			//rotation += 90.f;
 			rotation /= (360.f / A->GetNumberOfRotations());
 			rotation = A->GetNumberOfRotations() - rotation;
 			A->SetRotation(rotation);

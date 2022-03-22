@@ -1,0 +1,7 @@
+#pragma once
+
+enum class AttackType
+{
+	ENUM_ATTACK_TYPE_MELEE,
+	ENUM_ATTACK_TYPE_RANGED_PROJECTILE
+};

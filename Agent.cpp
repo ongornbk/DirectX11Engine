@@ -11,6 +11,8 @@ Agent::Agent() : m_intersectStance(AgentIntersectStance::AGENT_STANCE_PRE_INTERS
     m_flags.m_pushable = false;
     m_flags.m_selectable = false;
     m_flags.m_rendering = false;
+
+    m_type = EObjectType::OBJECT_TYPE_AGENT;
 }
 
 Agent::~Agent()

@@ -20,6 +20,8 @@
 #include "modern/modern.h"
 #include "Timer.h"
 #include "UnitTemplate.h"
+#include "Projectile.h"
+#include "SettingsC.h"
 
 Unit::Unit() :
 	ColorFilter(1.f, 1.f, 1.f, 1.f),
@@ -43,8 +45,9 @@ Unit::Unit() :
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, DirectX::XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 
-	m_attack.range = 80.f;
+	m_attack.range = 800.f;
 	m_attack.active = false;
+	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE;
 
 	m_tasks.SetOwner(this);
 }
@@ -748,7 +751,11 @@ bool Unit::BeginAttack(class Unit* const target)
 		m_attack.active = true;
 		
 			class IAction* const action = new ActionAttack(this, target);
-				Timer::CreateExpiringTimer(action, m_attack.m_attackDelay);
+			Timer::CreateExpiringTimer(action, m_attack.m_attackDelay);
+			
+		
+		
+			
 
 		}
 		return true;
@@ -758,8 +765,48 @@ bool Unit::BeginAttack(class Unit* const target)
 
 bool Unit::Attack(class Unit* const target)
 {
-	m_attack.active = false;
-	return ((class Unit* const)target)->GetAttacked(this);
+	switch (m_attack.m_atype)
+	{
+	case AttackType::ENUM_ATTACK_TYPE_MELEE:
+	{
+		m_attack.active = false;
+		return ((class Unit* const)target)->GetAttacked(this);
+		break;
+	}
+	case AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE:
+	{
+		m_attack.active = false;
+		class Projectile* const proj = new Projectile();
+		DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+		f3 = modern_xfloat3_sub(m_boundingSphere.Center,target->GetPosition());
+		const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+		if (length > 0.f)
+		{
+			f3 = modern_xfloat3_div(f3, length);
+			f3 = modern_xfloat3_multiply(f3,-500.f);
+		}
+		
+		proj->Initialize(
+			Engine::GetEngine()->GetGraphics()->GetDevice(),
+			Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+			ResourceManager::GetInstance()->GetShaderByName(L"units"),
+			L"proj_test",
+			100.f,
+			20.f,
+			m_boundingSphere.Center,
+			f3,
+			this
+		);
+		RendererManager::GetInstance()->PushProjectile(proj);
+
+		class IAction* const action = new ActionRemoveObject(proj);
+		Timer::CreateExpiringTimer(action,m_attack.range / 500.f);
+		return false;
+		break;
+	}
+	}
+
 }
 
 bool Unit::GetAttacked(class Unit* const attacker)

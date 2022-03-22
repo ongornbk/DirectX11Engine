@@ -137,6 +137,11 @@ inline float modern_angle_between_points2(modern_point& a, modern_point& b)
 	return modern_ragtodeg * atan2f(a.m_union.x - b.m_union.x, a.m_union.y - b.m_union.y);
 }
 
+inline float modern_radians_between_points2(modern_point& a, modern_point& b)
+{
+	return atan2f(a.m_union.x - b.m_union.x, a.m_union.y - b.m_union.y);
+}
+
 inline float modern_distance_between_points2(modern_point& a, modern_point& b)
 {
 	float dx = a.m_union.x - b.m_union.x;
