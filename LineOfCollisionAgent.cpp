@@ -41,28 +41,17 @@ void _fastcall LineOfCollisionAgent::PreRender(ID3D11DeviceContext* const device
 void LineOfCollisionAgent::Update(float dt)
 {
     class LineOfCollision* const collline = (class LineOfCollision* const)m_parent.get();
-    m_intersectStance = AgentIntersectStance::AGENT_STANCE_DIS_INTERSECT;
+    class LineOfCollisionAgent* const second = collline->GetSecond(this);
+
     for (auto obj : collline->m_objects)
     {
-        class LineOfCollision* const collline = (class LineOfCollision* const)m_parent.get();
-        class LineOfCollisionAgent* const second = collline->GetSecond(this);
         class Unit* const unit = (class Unit* const)(obj.get());
         if (unit == nullptr)
         {
             continue;
         }
-        //
-        float ao = modern_xfloat3_distance2(m_boundingSphere.Center, unit->m_boundingSphere.Center);
-        float bo = modern_xfloat3_distance2(second->m_boundingSphere.Center, unit->m_boundingSphere.Center);
-        float ab = modern_xfloat3_distance2(m_boundingSphere.Center, second->m_boundingSphere.Center);
-        
-        float pl = (ao + bo + ab) / 2.f;
-        
-        float Ppl = sqrtf((pl - ao) * (pl - bo) * (pl - ab));
-        
-        float he = 40.f * Ppl / ab;
-        //std::cout << "::  :: " << he << " :: " << unit->m_boundingSphere.Radius << std::endl;
-        if (he < unit->m_boundingSphere.Radius)
+
+        if (modern_xfloat3_distance2(unit->m_boundingSphere.Center,m_boundingSphere.Center,second->m_boundingSphere.Center) * 20.f< (unit->m_boundingSphere.Radius))
         {
             switch (unit->m_type)
             {
@@ -71,6 +60,10 @@ void LineOfCollisionAgent::Update(float dt)
                 
                // unit->GoBack();
                 Timer::CreateInstantTimer(new ActionGoBack(unit));
+               //if (unit->IsWandering())
+               //{
+               //    unit->DiscardTasks();
+               //}
                 break;
             }
             }
@@ -102,58 +95,9 @@ void LineOfCollisionAgent::Intersect(EObject* const other)
     if (other->m_boundingSphere.Radius == 0.f)
         return;
 
-
-   //switch (m_intersectStance)
-   //{
-   //
-   //case AgentIntersectStance::AGENT_STANCE_SWA_INTERSECT:
-   //{
-   //    if (m_intersectA == other)
-   //        return;
-   //    m_intersectB = other;
-   //    PushPair(m_intersectA, m_intersectB);
-   //    m_intersectA = m_intersectB;
-   //
-   //    //std::cout << "DDDdddDDDdDdD" << std::endl;
-   //    break;
-   //}
-   //case AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT:
-   //{
-   //    m_intersectA = other;
-   //    m_intersectStance = AgentIntersectStance::AGENT_STANCE_SWA_INTERSECT;
-   //    break;
-   //}
-   //}
-
     class LineOfCollision* const collline = (class LineOfCollision* const)m_parent.get();
-    //class LineOfCollisionAgent* const second = collline->GetSecond(this);
     class Unit* const unit = (class Unit* const)(other);
-    //
-    //float ao = modern_xfloat3_distance2(m_boundingSphere.Center, other->m_boundingSphere.Center);
-    //float bo = modern_xfloat3_distance2(second->m_boundingSphere.Center, other->m_boundingSphere.Center);
-    //float ab = modern_xfloat3_distance2(m_boundingSphere.Center, second->m_boundingSphere.Center);
-    //
-    //float pl = (ao + bo + ab) / 2.f;
-    //
-    //float Ppl = sqrtf((pl - ao) * (pl - bo) * (pl - ab));
-    //
-    //float he = 2.f * Ppl / ab;
-    //
-    //if (he < unit->m_boundingSphere.Radius)
-    //{
-    //    switch (other->m_type)
-    //    {
-    //    case EObjectType::OBJECT_TYPE_UNIT:
-    //    {
-    //        
-    //       // unit->GoBack();
-    //        Timer::CreateInstantTimer(new ActionGoBack(unit));
-    //        break;
-    //    }
-    //    }
-    //}
-    //else
-    //{
+
         if (collline->m_rect.Intersects(unit->m_boundingSphere))
         {
 

@@ -27,9 +27,20 @@ inline float XM_CALLCONV modern_xfloat3_distance2(
 	const struct XMFLOAT3& b
 );
 
+inline float XM_CALLCONV modern_xfloat3_distance2(
+	const struct XMFLOAT3& tip,
+	const struct XMFLOAT3& baseA,
+	const struct XMFLOAT3& baseB
+);
+
 inline float XM_CALLCONV modern_xangle2_between_points3(
 	const struct XMFLOAT3& A,
 	const struct XMFLOAT3& B
+);
+
+inline void XM_CALLCONV modern_xfloat3_rotate_deg(
+	struct DirectX::XMFLOAT3& A,
+	const float deg
 );
 
 #include "modern_xmath.inl"

@@ -67,14 +67,24 @@ void _fastcall Projectile::Render(ID3D11DeviceContext* const deviceContext, cons
 {
     if (m_flags.m_rendering)
     {
+        DirectX::XMMATRIX rotationMatrix = XMMatrixRotationZ(atan2f(m_velocity.y,m_velocity.x)) * XMLoadFloat4x4(&m_worldMatrix);
+        DirectX::XMStoreFloat4x4(&m_worldMatrix, rotationMatrix);
         shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
-        shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+        shader.SetShaderParameters(deviceContext,m_worldMatrix, viewMatrix, projectionMatrix);
         m_vertexBuffer->Render(deviceContext);
     }
 }
 
 void _fastcall Projectile::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
 {
+    //if (m_flags.m_rendering)
+    //{
+    //    DirectX::XMMATRIX shadowrotationMatrix = XMMatrixRotationZ(atan2f(m_velocity.y, m_velocity.x)) * XMLoadFloat4x4(&m_worldMatrix) * XMMatrixTranslation(16.f, 16.f, 0.f);
+    //    DirectX::XMStoreFloat4x4(&m_worldMatrix, shadowrotationMatrix);
+    //    shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
+    //    shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
+    //    m_vertexBuffer->Render(deviceContext);
+    //}
 }
 
 void Projectile::Update(float dt)

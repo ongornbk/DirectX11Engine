@@ -322,7 +322,10 @@ void Unit::Update(const float dt)
 			);
 
 
-			if (m_modelVariant.GetMaxFrames() == 1.f) return;
+			//if (m_modelVariant.GetMaxFrames() == 1.f)
+			//{
+			//	return;
+			//}
 			if (m_currentFrame < m_modelVariant.GetMaxFrames())
 			{
 				m_currentSpeed += m_animationSpeed * dt;
@@ -333,33 +336,7 @@ void Unit::Update(const float dt)
 					m_currentSpeed = 0.f;
 					if (m_currentFrame >= m_modelVariant.GetMaxFrames())
 					{
-						if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_DEATH)
-						{
-							if (m_decayType == UnitDecay::ENUM_DECAY)
-							{
-								this->Remove();
-							}
-							else
-							{
-								//m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
-								ForceAnimation(ModelStance::MODEL_STANCE_DEAD);
-								m_flags.m_cast_shadow = false;
-								//m_isLooping = false;
-							}
-						}
-
-						if (m_isLooping)
-						{
-							m_currentFrame = 0.f;
-						}
-						else
-						{
-							m_stop = false;
-							m_isLooping = true;
-							m_currentFrame = 0.f;
-							m_previousFrame = -1.f;
-							m_modelVariant.SetVariant(m_stopped);
-						}
+						AnimationEnd();
 					}
 
 				}
@@ -653,6 +630,8 @@ void Unit::Die(Unit* const killer)
 	//killer == nullptr is correct
 	if (m_dead)
 		return;
+
+	m_tasks.Discard();
 	m_flags.m_selectable = false;
 	m_dead = true;
 	m_attack.active = false;
@@ -722,6 +701,11 @@ bool Unit::IsAlive() const noexcept
 	return !m_dead;
 }
 
+bool Unit::IsWandering() const noexcept
+{
+	return m_wanderingFlag;
+}
+
 bool Unit::BeginAttack(class Unit* const target)
 {
 	if (m_stop)
@@ -740,9 +724,9 @@ bool Unit::BeginAttack(class Unit* const target)
 		DirectX::XMFLOAT3 destination = target->m_boundingSphere.Center;
 		float rotation = atan2(destination.y - position.y, destination.x - position.x) * 180.0f / 3.141f;
 		rotation += 90.f;
-		rotation /= (360 / m_rotations);
+		rotation /= (360.f / m_rotations);
 		rotation = m_rotations - rotation;
-		SetRotation(rotation);
+		ForceRotation(rotation);
 		//const int32 atkt = ipp::math::RandomInt32(0, 1);
 		//if(atkt)
 		PlayAnimation(ModelStance::MODEL_STANCE_ATTACK_1);
@@ -783,14 +767,13 @@ bool Unit::Attack(class Unit* const target)
 
 		{
 			class Projectile* const proj = new Projectile();
-			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
-			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			DirectX::XMFLOAT3 f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
 			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
 			if (length > 0.f)
 			{
 				f3 = modern_xfloat3_div(f3, length);
-				f3 = modern_xfloat3_multiply(f3, -800.f);
+				f3 = modern_xfloat3_multiply(f3, -1200.f);
 			}
 
 			proj->Initialize(
@@ -807,7 +790,7 @@ bool Unit::Attack(class Unit* const target)
 			RendererManager::GetInstance()->PushProjectile(proj);
 
 			class IAction* const action = new ActionRemoveObject(proj);
-			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+			Timer::CreateExpiringTimer(action, m_attack.range / 1200.f);
 		}
 		{
 			class Projectile* const proj = new Projectile();
@@ -818,11 +801,10 @@ bool Unit::Attack(class Unit* const target)
 			if (length > 0.f)
 			{
 				f3 = modern_xfloat3_div(f3, length);
-				f3 = modern_xfloat3_multiply(f3, -800.f);
+				f3 = modern_xfloat3_multiply(f3, -1200.f);
 			}
 
-			f3.x = f3.x * cos(modern_degtorad * 10.f) - f3.y * sin(modern_degtorad * 10.f);
-			f3.y = f3.x * sin(modern_degtorad * 10.f) + f3.y * cos(modern_degtorad * 10.f);
+			modern_xfloat3_rotate_deg(f3, 10.f);
 
 			proj->Initialize(
 				Engine::GetEngine()->GetGraphics()->GetDevice(),
@@ -838,7 +820,7 @@ bool Unit::Attack(class Unit* const target)
 			RendererManager::GetInstance()->PushProjectile(proj);
 
 			class IAction* const action = new ActionRemoveObject(proj);
-			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+			Timer::CreateExpiringTimer(action, m_attack.range / 1200.f);
 		}
 		{
 			class Projectile* const proj = new Projectile();
@@ -849,11 +831,10 @@ bool Unit::Attack(class Unit* const target)
 			if (length > 0.f)
 			{
 				f3 = modern_xfloat3_div(f3, length);
-				f3 = modern_xfloat3_multiply(f3, -800.f);
+				f3 = modern_xfloat3_multiply(f3, -1200.f);
 			}
 
-			f3.x = f3.x * cos(modern_degtorad * -10.f) - f3.y * sin(modern_degtorad * -10.f);
-			f3.y = f3.x * sin(modern_degtorad * -10.f) + f3.y * cos(modern_degtorad * -10.f);
+			modern_xfloat3_rotate_deg(f3, -10.f);
 
 			proj->Initialize(
 				Engine::GetEngine()->GetGraphics()->GetDevice(),
@@ -869,7 +850,7 @@ bool Unit::Attack(class Unit* const target)
 			RendererManager::GetInstance()->PushProjectile(proj);
 
 			class IAction* const action = new ActionRemoveObject(proj);
-			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+			Timer::CreateExpiringTimer(action, m_attack.range / 1200.f);
 		}
 		{
 			class Projectile* const proj = new Projectile();
@@ -880,11 +861,10 @@ bool Unit::Attack(class Unit* const target)
 			if (length > 0.f)
 			{
 				f3 = modern_xfloat3_div(f3, length);
-				f3 = modern_xfloat3_multiply(f3, -800.f);
+				f3 = modern_xfloat3_multiply(f3, -1200.f);
 			}
 
-			f3.x = f3.x * cos(modern_degtorad * 20.f) - f3.y * sin(modern_degtorad * 20.f);
-			f3.y = f3.x * sin(modern_degtorad * 20.f) + f3.y * cos(modern_degtorad * 20.f);
+			modern_xfloat3_rotate_deg(f3, 20.f);
 
 			proj->Initialize(
 				Engine::GetEngine()->GetGraphics()->GetDevice(),
@@ -900,7 +880,7 @@ bool Unit::Attack(class Unit* const target)
 			RendererManager::GetInstance()->PushProjectile(proj);
 
 			class IAction* const action = new ActionRemoveObject(proj);
-			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+			Timer::CreateExpiringTimer(action, m_attack.range / 1200.f);
 		}
 		{
 			class Projectile* const proj = new Projectile();
@@ -911,11 +891,10 @@ bool Unit::Attack(class Unit* const target)
 			if (length > 0.f)
 			{
 				f3 = modern_xfloat3_div(f3, length);
-				f3 = modern_xfloat3_multiply(f3, -800.f);
+				f3 = modern_xfloat3_multiply(f3, -1200.f);
 			}
 
-			f3.x = f3.x * cos(modern_degtorad * -20.f) - f3.y * sin(modern_degtorad * -20.f);
-			f3.y = f3.x * sin(modern_degtorad * -20.f) + f3.y * cos(modern_degtorad * -20.f);
+			modern_xfloat3_rotate_deg(f3, -20.f);
 
 			proj->Initialize(
 				Engine::GetEngine()->GetGraphics()->GetDevice(),
@@ -931,7 +910,7 @@ bool Unit::Attack(class Unit* const target)
 			RendererManager::GetInstance()->PushProjectile(proj);
 
 			class IAction* const action = new ActionRemoveObject(proj);
-			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+			Timer::CreateExpiringTimer(action, m_attack.range / 1200.f);
 		}
 		return false;
 		break;
@@ -976,7 +955,7 @@ bool Unit::GetAttacked(class Unit* const attacker)
 		return false;
 	}
 	{
-		PlayAnimation(ModelStance::MODEL_STANCE_GETHIT);
+		ForceAnimation(ModelStance::MODEL_STANCE_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;
 	}
@@ -1358,6 +1337,258 @@ void Unit::InitializeModel(Unit* const other)
 		m_currentFrame = other->m_currentFrame;
 		m_previousFrame = other->m_previousFrame;
 	}
+}
+
+void Unit::AnimationEnd()
+{
+	REPEAT:
+	switch (m_modelVariant.GetVariant())
+	{
+	case ModelStance::MODEL_STANCE_RUN:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_WALK:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_DEAD:
+	{
+		m_currentFrame = 0.f;
+		m_previousFrame = -1.f;
+		break;
+	}
+	case ModelStance::MODEL_STANCE_NEUTRAL:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_ATTACK_1:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_ATTACK_2:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_GETHIT:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_DEATH:
+	{
+		if (m_decayType == UnitDecay::ENUM_DECAY)
+		{
+			this->Remove();
+		}
+		else
+		{
+			m_isLooping = false;
+			ForceAnimation(ModelStance::MODEL_STANCE_DEAD);
+			m_flags.m_cast_shadow = false;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_SPECIALCAST:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_SPECIAL_1:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_SPECIAL_2:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_SPECIAL_3:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_KICK:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_TOWNNEUTRAL:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	case ModelStance::MODEL_STANCE_TOWNWALK:
+	{
+		if (m_isLooping)
+		{
+			m_currentFrame = 0.f;
+		}
+		else
+		{
+			m_stop = false;
+			m_isLooping = true;
+			m_currentFrame = 0.f;
+			m_previousFrame = -1.f;
+			m_modelVariant.SetVariant(m_stopped);
+			goto REPEAT;
+		}
+		break;
+	}
+	}
+
+	
+
 }
 
 
