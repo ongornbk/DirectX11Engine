@@ -14,6 +14,7 @@
 #include "ObjectFocusType.h"
 #include "Agent.h"
 #include "Projectile.h"
+#include "LineOfCollision.h"
 #include <stack>
 #include <map>
 #include <list>
@@ -26,6 +27,7 @@ class Doodads;
 class AnimatedDoodads;
 class Tree;
 class Agent;
+class LineOfCollisionAgent;
 class Projectile;
 class RegionPointObject;
 class UserInterfaceGame;
@@ -62,6 +64,7 @@ public:
 	void PushDoodads(class Doodads* doodads);
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
 	void PushTree(class Tree* doodads);
+	void PushLineOfCollisionAgent(class LineOfCollisionAgent* const agent);
 	void Push(class EObject* const object, const enum class RenderLayerType layer);
 	void PushRegionPointObject(class RegionPointObject* object);
 	void PushInterface(class Interface * const object);
@@ -123,6 +126,12 @@ private:
 	class modern_handle m_cursorAgent;
 
 	std::list<modern_handle> m_selectGroup;
+
+	modern_handle test_line0;
+	modern_handle test_line1;
+	modern_handle test_line2;
+	modern_handle test_line3;
+
 
 	int32 m_fps;
 	//EObjectVector m_objects;

@@ -984,6 +984,15 @@
     <ClInclude Include="ActionInitializeProjectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LineOfCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LineOfCollisionAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGoBack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1623,6 +1632,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionInitializeProjectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineOfCollision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineOfCollisionAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGoBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

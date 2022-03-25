@@ -45,7 +45,7 @@ Unit::Unit() :
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, DirectX::XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 
-	m_attack.range = 800.f;
+	m_attack.range = 1000.f;
 	m_attack.active = false;
 	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE;
 
@@ -341,7 +341,8 @@ void Unit::Update(const float dt)
 							}
 							else
 							{
-								m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
+								//m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_DEAD);
+								ForceAnimation(ModelStance::MODEL_STANCE_DEAD);
 								m_flags.m_cast_shadow = false;
 								//m_isLooping = false;
 							}
@@ -776,32 +777,162 @@ bool Unit::Attack(class Unit* const target)
 	case AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE:
 	{
 		m_attack.active = false;
-		class Projectile* const proj = new Projectile();
-		DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
-		f3 = modern_xfloat3_sub(m_boundingSphere.Center,target->GetPosition());
-		const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
-		if (length > 0.f)
+		Engine* const engine = Engine::GetEngine();
+			engine->PlaySound(L"attack1_arrow");
+
 		{
-			f3 = modern_xfloat3_div(f3, length);
-			f3 = modern_xfloat3_multiply(f3,-500.f);
-		}
-		
-		proj->Initialize(
-			Engine::GetEngine()->GetGraphics()->GetDevice(),
-			Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
-			ResourceManager::GetInstance()->GetShaderByName(L"units"),
-			L"proj_test",
-			100.f,
-			20.f,
-			m_boundingSphere.Center,
-			f3,
-			this
-		);
-		RendererManager::GetInstance()->PushProjectile(proj);
+			class Projectile* const proj = new Projectile();
+			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
 
-		class IAction* const action = new ActionRemoveObject(proj);
-		Timer::CreateExpiringTimer(action,m_attack.range / 500.f);
+			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+			if (length > 0.f)
+			{
+				f3 = modern_xfloat3_div(f3, length);
+				f3 = modern_xfloat3_multiply(f3, -800.f);
+			}
+
+			proj->Initialize(
+				Engine::GetEngine()->GetGraphics()->GetDevice(),
+				Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+				ResourceManager::GetInstance()->GetShaderByName(L"units"),
+				L"arrow0",
+				32.f,
+				25.f,
+				m_boundingSphere.Center,
+				f3,
+				this
+			);
+			RendererManager::GetInstance()->PushProjectile(proj);
+
+			class IAction* const action = new ActionRemoveObject(proj);
+			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+		}
+		{
+			class Projectile* const proj = new Projectile();
+			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+			if (length > 0.f)
+			{
+				f3 = modern_xfloat3_div(f3, length);
+				f3 = modern_xfloat3_multiply(f3, -800.f);
+			}
+
+			f3.x = f3.x * cos(modern_degtorad * 10.f) - f3.y * sin(modern_degtorad * 10.f);
+			f3.y = f3.x * sin(modern_degtorad * 10.f) + f3.y * cos(modern_degtorad * 10.f);
+
+			proj->Initialize(
+				Engine::GetEngine()->GetGraphics()->GetDevice(),
+				Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+				ResourceManager::GetInstance()->GetShaderByName(L"units"),
+				L"arrow0",
+				32.f,
+				25.f,
+				m_boundingSphere.Center,
+				f3,
+				this
+			);
+			RendererManager::GetInstance()->PushProjectile(proj);
+
+			class IAction* const action = new ActionRemoveObject(proj);
+			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+		}
+		{
+			class Projectile* const proj = new Projectile();
+			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+			if (length > 0.f)
+			{
+				f3 = modern_xfloat3_div(f3, length);
+				f3 = modern_xfloat3_multiply(f3, -800.f);
+			}
+
+			f3.x = f3.x * cos(modern_degtorad * -10.f) - f3.y * sin(modern_degtorad * -10.f);
+			f3.y = f3.x * sin(modern_degtorad * -10.f) + f3.y * cos(modern_degtorad * -10.f);
+
+			proj->Initialize(
+				Engine::GetEngine()->GetGraphics()->GetDevice(),
+				Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+				ResourceManager::GetInstance()->GetShaderByName(L"units"),
+				L"arrow0",
+				32.f,
+				25.f,
+				m_boundingSphere.Center,
+				f3,
+				this
+			);
+			RendererManager::GetInstance()->PushProjectile(proj);
+
+			class IAction* const action = new ActionRemoveObject(proj);
+			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+		}
+		{
+			class Projectile* const proj = new Projectile();
+			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+			if (length > 0.f)
+			{
+				f3 = modern_xfloat3_div(f3, length);
+				f3 = modern_xfloat3_multiply(f3, -800.f);
+			}
+
+			f3.x = f3.x * cos(modern_degtorad * 20.f) - f3.y * sin(modern_degtorad * 20.f);
+			f3.y = f3.x * sin(modern_degtorad * 20.f) + f3.y * cos(modern_degtorad * 20.f);
+
+			proj->Initialize(
+				Engine::GetEngine()->GetGraphics()->GetDevice(),
+				Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+				ResourceManager::GetInstance()->GetShaderByName(L"units"),
+				L"arrow0",
+				32.f,
+				25.f,
+				m_boundingSphere.Center,
+				f3,
+				this
+			);
+			RendererManager::GetInstance()->PushProjectile(proj);
+
+			class IAction* const action = new ActionRemoveObject(proj);
+			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+		}
+		{
+			class Projectile* const proj = new Projectile();
+			DirectX::XMFLOAT3 f3 = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+
+			f3 = modern_xfloat3_sub(m_boundingSphere.Center, target->GetPosition());
+			const float length = sqrtf((f3.x * f3.x) + (f3.y * f3.y));
+			if (length > 0.f)
+			{
+				f3 = modern_xfloat3_div(f3, length);
+				f3 = modern_xfloat3_multiply(f3, -800.f);
+			}
+
+			f3.x = f3.x * cos(modern_degtorad * -20.f) - f3.y * sin(modern_degtorad * -20.f);
+			f3.y = f3.x * sin(modern_degtorad * -20.f) + f3.y * cos(modern_degtorad * -20.f);
+
+			proj->Initialize(
+				Engine::GetEngine()->GetGraphics()->GetDevice(),
+				Engine::GetEngine()->GetGraphics()->GetDeviceContext(),
+				ResourceManager::GetInstance()->GetShaderByName(L"units"),
+				L"arrow0",
+				32.f,
+				25.f,
+				m_boundingSphere.Center,
+				f3,
+				this
+			);
+			RendererManager::GetInstance()->PushProjectile(proj);
+
+			class IAction* const action = new ActionRemoveObject(proj);
+			Timer::CreateExpiringTimer(action, m_attack.range / 800.f);
+		}
 		return false;
 		break;
 	}
@@ -840,6 +971,19 @@ bool Unit::GetAttacked(class Unit* const attacker)
 		//txt->Initialize()
 		//txt.
 	}
+	if (m_stop || m_dead)
+	{
+		return false;
+	}
+	{
+		PlayAnimation(ModelStance::MODEL_STANCE_GETHIT);
+		SetVelocity(0.0f, 0.0f, 0.0f);
+		return true;
+	}
+}
+
+bool Unit::GetHit(Unit* const hitter)
+{
 	if (m_stop || m_dead)
 	{
 		return false;

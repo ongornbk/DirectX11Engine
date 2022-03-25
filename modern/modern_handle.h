@@ -4,6 +4,7 @@
 struct modern_class;
 
 
+
 class modern_handle
 {
 	volatile struct modern_class** m_object;
@@ -11,6 +12,7 @@ class modern_handle
 	friend struct modern_class;
 
 	modern_handle& operator=(modern_handle const&);
+	bool operator< (const modern_handle& rhs);
 protected:
 
 	//explicit modern_handle(struct modern_class* const obj);
@@ -27,5 +29,8 @@ public:
 	~modern_handle();
 	volatile struct modern_class* operator->();
 	volatile struct modern_class* const get();
+
+	friend bool operator< (const modern_handle& lhs, const modern_handle& rhs);
 };
 
+bool operator< (const modern_handle& lhs, const modern_handle& rhs);

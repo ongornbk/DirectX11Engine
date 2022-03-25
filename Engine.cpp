@@ -403,8 +403,11 @@ void Engine::PlayMusic(WCHAR * music)
 	{
 		m_playingMusic->Stop();
 	}
-	m_playingMusic = __music;
-	__music->Play();
+	if (__music)
+	{
+		m_playingMusic = __music;
+		__music->Play();
+	}
 }
 
 void Engine::PlayMusic(modern_string& music)

@@ -187,6 +187,9 @@ RendererManager::RendererManager(
 	
 
 	Timer::CreateInstantTimer(marray);
+
+
+
 }
 
 
@@ -260,6 +263,11 @@ void RendererManager::PushAnimatedDoodads(class AnimatedDoodads * doodads)
 void RendererManager::PushTree(class Tree * tree)
 {
 	m_layers[enum_cast<int32_t>(tree->GetLayerType())]->Push(tree);
+}
+
+void RendererManager::PushLineOfCollisionAgent(LineOfCollisionAgent* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
 }
 
 void RendererManager::Push(class EObject* const object, const enum class RenderLayerType layer)
@@ -808,6 +816,11 @@ void RendererManager::Clear()
 		}
 	}
 	this->PushAgent((class Agent*)m_cursorAgent.get());
+
+	test_line0.make_handle((new LineOfCollision({-1000.f,0.f}, {0.f,1000.f}))->GetHandle());
+	test_line1.make_handle((new LineOfCollision({ 0.f,1000.f }, { 1000.f,0.f }))->GetHandle());
+	test_line2.make_handle((new LineOfCollision({ -1000.f,0.f }, { 0.f,-1000.f }))->GetHandle());
+	test_line3.make_handle((new LineOfCollision({ 0.f,-1000.f }, { 1000.f,0.f }))->GetHandle());
 }
 
 TextFont* const RendererManager::GetFont()

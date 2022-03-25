@@ -159,6 +159,7 @@ public:
 	bool BeginAttack(class Unit* const target);
 	bool Attack(class Unit* const target);
 	bool GetAttacked(class Unit* const attacker);
+	bool GetHit(class Unit* const hitter);
 	bool StartCasting(const DirectX::XMFLOAT2 target);
 	void DoDamage(class Unit* const attacker);
 	void Select(modern_Boolean selct = 1);

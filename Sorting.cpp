@@ -614,7 +614,6 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 
 bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
 {
-#pragma execution_frequency(very_high)
 	const class modern_guard AG(A);
 	const class modern_guard BG(B);
 

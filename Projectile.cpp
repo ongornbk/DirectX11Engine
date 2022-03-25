@@ -115,10 +115,16 @@ void Projectile::Intersect(EObject* const other)
                 modern_shared_guard guard(owner);
                 if (modern_xfloat3_distance2(m_boundingSphere.Center, target->GetPosition()) < (m_collision + target->GetCollisionRadius()))
                 {
+                    target->GetHit(owner);
                     target->DoDamage(owner);
+
                     class IAction* const action = new ActionRemoveObject(this);
                     Timer::CreateInstantTimer(action);
                     m_flags.m_hide = true;
+
+                    Engine* const engine = Engine::GetEngine();
+                    engine->PlaySound(L"impact_arrow");
+
                 }
             }
 

@@ -191,6 +191,7 @@
     <ClInclude Include="ActionChangeLayer.h" />
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
+    <ClInclude Include="ActionGoBack.h" />
     <ClInclude Include="ActionIfThenElse.h" />
     <ClInclude Include="ActionInitializeInterface.h" />
     <ClInclude Include="ActionInitializeProjectile.h" />
@@ -323,6 +324,8 @@
     <ClInclude Include="ITrash.h" />
     <ClInclude Include="ITrigger.h" />
     <ClInclude Include="LetterSprite.h" />
+    <ClInclude Include="LineOfCollision.h" />
+    <ClInclude Include="LineOfCollisionAgent.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="LUAManager.h" />
     <ClInclude Include="LuaPointer.h" />
@@ -457,6 +460,7 @@
     <ClCompile Include="ActionChangeLayer.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
+    <ClCompile Include="ActionGoBack.cpp" />
     <ClCompile Include="ActionIfThenElse.cpp" />
     <ClCompile Include="ActionInitializeInterface.cpp" />
     <ClCompile Include="ActionInitializeProjectile.cpp" />
@@ -560,6 +564,8 @@
     <ClCompile Include="ITimer.cpp" />
     <ClCompile Include="ITrash.cpp" />
     <ClCompile Include="ITrigger.cpp" />
+    <ClCompile Include="LineOfCollision.cpp" />
+    <ClCompile Include="LineOfCollisionAgent.cpp" />
     <ClCompile Include="LuaCallback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraControl.cpp" />
