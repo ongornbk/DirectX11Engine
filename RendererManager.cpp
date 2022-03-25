@@ -54,6 +54,7 @@ void _cdecl CleanupFrame()
 void _cdecl EditFrame()
 {
 	m_editMode.store(1, std::memory_order::memory_order_seq_cst);
+	;
 }
 
 RendererManager::RendererManager(
