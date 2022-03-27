@@ -41,6 +41,12 @@ inline float XM_CALLCONV modern_xfloat3_distance2(
 	return sqrtf((f.x * f.x) + (f.y * f.y));
 }
 
+inline float XM_CALLCONV modern_xfloat3_distance2(const DirectX::XMVECTOR& aV, const DirectX::XMFLOAT3& b)
+{
+	const DirectX::XMVECTOR bV = DirectX::XMLoadFloat3(&b);
+	return DirectX::XMVector3Length(DirectX::XMVectorSubtract(aV,bV)).m128_f32[0];
+}
+
 inline float XM_CALLCONV modern_xfloat3_distance2(
 	const struct DirectX::XMFLOAT3& tip,
 	const struct DirectX::XMFLOAT3& baseA,

@@ -38,6 +38,50 @@ inline T modern_pow(T a,int32_t b)
 			return a * modern_pow(a, b / 2) * modern_pow(a, b / 2);
 }
 
+template<class T>
+inline T modern_clamp(T value, T min, T max)
+{
+		if (value > max)
+		{
+			return max;
+		}
+		if (value < min)
+		{
+			return min;
+		}
+		return value;
+}
+
+template<class T>
+inline T modern_clamp_reverse_div(T value, T min, T max)
+{
+	assert(max > 0);
+	if (max - value >= max)
+	{
+		return max;
+	}
+	if ((max - value) <= min)
+	{
+		return min;
+	}
+	return (max-value) / max;
+}
+
+template<class T>
+inline T modern_clamp_div(T value, T min, T max)
+{
+	assert(max > 0);
+	if (value > max)
+	{
+		return max;
+	}
+	if (value < min)
+	{
+		return min;
+	}
+	return value / max;
+}
+
 inline int32_t modern_random(int32_t min, int32_t max)
 {
 	assert(max >= min);

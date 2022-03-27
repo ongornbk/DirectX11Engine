@@ -58,6 +58,7 @@ public:
 	void StopMusic();
 	void PlaySound(WCHAR* music);
 	void PlaySound(class modern_string& music);
+	void PlaySound(WCHAR* sound, const float volume);
 
 	CameraControl* GetCameraControl();
 	FrameWork* GetFrameWork();

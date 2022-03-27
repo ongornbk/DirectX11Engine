@@ -446,6 +446,15 @@ if(sound)
 	sound->Play();
 }
 
+void Engine::PlaySound(WCHAR* sound, const float volume)
+{
+	wstring tmp0 = wstring(sound);
+	string  tmp1 = string(tmp0.begin(), tmp0.end());
+	class ISound* const __sound = m_canals.__GetSound(tmp1);
+	assert(__sound);
+	__sound->Play(volume);
+}
+
 CameraControl * Engine::GetCameraControl()
 {
 	return &m_cameraControl;

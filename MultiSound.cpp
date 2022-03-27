@@ -55,8 +55,26 @@ sf::SoundSource::Status MultiSound::GetStatus()
 
 void MultiSound::Play()
 {
-	m_instances.push_back(sf::Sound(m_soundBuffer));
-	m_instances.back().play();
+	if (m_instances.size() < 10u)
+	{
+		m_instances.push_back(sf::Sound(m_soundBuffer));
+		m_instances.back().play();
+	}
+}
+
+void MultiSound::Play(const float volume)
+{
+	if (volume < 10.f)
+	{
+		return;
+	}
+	if (m_instances.size() < 10u)
+	{
+		sf::Sound& sound = sf::Sound(m_soundBuffer);
+		sound.setVolume(volume);
+		m_instances.push_back(sound);
+		m_instances.back().play();
+	}
 }
 
 class sf::Sound* MultiSound::StartPlaying()

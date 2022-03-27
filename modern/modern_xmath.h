@@ -28,6 +28,11 @@ inline float XM_CALLCONV modern_xfloat3_distance2(
 );
 
 inline float XM_CALLCONV modern_xfloat3_distance2(
+	const DirectX::XMVECTOR& aV,
+	const struct DirectX::XMFLOAT3& b
+);
+
+inline float XM_CALLCONV modern_xfloat3_distance2(
 	const struct XMFLOAT3& tip,
 	const struct XMFLOAT3& baseA,
 	const struct XMFLOAT3& baseB

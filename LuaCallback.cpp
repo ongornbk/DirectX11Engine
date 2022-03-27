@@ -1525,6 +1525,36 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 SetAttackType(
+		struct lua_State* const state
+	)
+	{
+		
+		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
+		const enum class AttackType type0 = enum_cast<const enum class AttackType>(lua_tointeger(state,2));
+		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
+			return 0;
+
+		unit0->SetAttackType(type0);
+
+		return 0;
+	}
+
+	static int32 SetAttackRange(
+		struct lua_State* const state
+	)
+	{
+
+		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
+		const float range0 = (float)lua_tonumber(state, 2);
+		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
+			return 0;
+
+		unit0->SetAttackRange(range0);
+
+		return 0;
+	}
+
 	static int32 PushPointerParameter(
 		struct lua_State* const state
 	)
@@ -1650,6 +1680,8 @@ namespace lua_callback
 		lua_register(m_lua, "GetDistanceBetweenUnits", lua_callback::GetDistanceBetweenUnits);
 		lua_register(m_lua, "StartCasting", lua_callback::StartCasting);
 		lua_register(m_lua, "KillUnit", lua_callback::KillUnit);
+		lua_register(m_lua, "SetAttackType", lua_callback::SetAttackType);
+		lua_register(m_lua, "SetAttackRange", lua_callback::SetAttackRange);
 		//Doodads
 		lua_register(m_lua, "CreateDoodads", lua_callback::CreateDoodads);
 		lua_register(m_lua, "InitializeDoodads", lua_callback::InitializeDoodads);

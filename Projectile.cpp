@@ -123,7 +123,10 @@ void Projectile::Intersect(EObject* const other)
             if (owner != target)
             {
                 modern_shared_guard guard(owner);
-                if (modern_xfloat3_distance2(m_boundingSphere.Center, target->GetPosition()) < (m_collision + target->GetCollisionRadius()))
+                
+                const float distance = modern_xfloat3_distance2(m_boundingSphere.Center, target->GetPosition());
+                const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
+                if (distance < (m_collision + target->GetCollisionRadius()))
                 {
                     target->GetHit(owner);
                     target->DoDamage(owner);
@@ -133,8 +136,7 @@ void Projectile::Intersect(EObject* const other)
                     m_flags.m_hide = true;
 
                     Engine* const engine = Engine::GetEngine();
-                    engine->PlaySound(L"impact_arrow");
-
+                    engine->PlaySound(L"impact_arrow",modern_clamp_reverse_div(soundDistance,0.f,1000.f)*100.f);
                 }
             }
 

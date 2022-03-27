@@ -10,6 +10,7 @@ public:
 	bool IsInitialized() override;
 	sf::SoundSource::Status GetStatus() override;
 	void Play() override;
+	void Play(const float volume) override;
 	class sf::Sound* StartPlaying() override;
 	void Stop() override;
 	void SetLooping(bool looping = true) override;

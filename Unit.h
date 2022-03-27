@@ -145,6 +145,9 @@ public:
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
 	void Die(class Unit* const killer);
+	void SetAttackType(const enum class AttackType type) noexcept;
+	void SetAttackRange(const float range) noexcept;
+
 	const UnitStats& GetStats();
 
 	Attack& GetAttack();

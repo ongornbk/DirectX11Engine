@@ -17,6 +17,7 @@ public:
 	virtual bool IsInitialized() = 0;
 	virtual sf::SoundSource::Status GetStatus() = 0;
 	virtual void Play() = 0;
+	virtual void Play(const float volume) = 0;
 	virtual class sf::Sound* StartPlaying() = 0;
 	virtual void Stop() = 0;
 	virtual void SetLooping(bool looping = true) = 0;

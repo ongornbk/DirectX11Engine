@@ -103,6 +103,9 @@ template <class T> inline T modern_min(T a, T b);
 template <class T> inline T modern_max(T a, T b);
 template <class T> inline T modern_abs(T a);
 template <class T> inline T modern_pow(T a,int32_t b);
+template <class T> inline T modern_clamp(T value, T min, T max);
+template <class T> inline T modern_clamp_div(T value, T min, T max);
+template <class T> inline T modern_clamp_reverse_div(T value, T min, T max);
 
 inline const modern_Boolean modern_checkFloat32(const float f32) noexcept;
 

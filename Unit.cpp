@@ -45,9 +45,9 @@ Unit::Unit() :
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, DirectX::XMMatrixIdentity());
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 
-	m_attack.range = 1000.f;
+	m_attack.range = 100.f;
 	m_attack.active = false;
-	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE;
+	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_MELEE;
 
 	m_tasks.SetOwner(this);
 }
@@ -233,6 +233,12 @@ void Unit::Update(const float dt)
 
 	if (m_dead)
 		goto SKIP_BEGIN;
+
+	{
+		m_stats.m_health += m_stats.m_healthRegeneration * dt;
+		if (m_stats.m_health > m_stats.m_maxHealth)
+			m_stats.m_health = m_stats.m_maxHealth;
+	}
 
 	if (!m_flags.m_blocked)
 	{
@@ -467,11 +473,11 @@ void Unit::Intersect(class EObject* const other)
 						}
 						else
 						{
-							//TaskAttack* task = new TaskAttack();
-							//task->object.make_handle(this->GetHandle());
-							//task->target.make_handle(other->GetHandle());
-							//task->Initialize();
-							//m_tasks.SetTask(task);
+							TaskAttack* task = new TaskAttack();
+							task->object.make_handle(this->GetHandle());
+							task->target.make_handle(other->GetHandle());
+							task->Initialize();
+							m_tasks.SetTask(task);
 						}
 					}
 					else
@@ -643,6 +649,10 @@ void Unit::Die(Unit* const killer)
 	//m_flags.m_cast_shadow = false;
 	//m_flags.m_pushable = false;
 
+	Engine* const engine = Engine::GetEngine();
+	const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
+	engine->PlaySound(L"death0", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+
 	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
 	switch(m_decayType)
 	{
@@ -663,6 +673,18 @@ void Unit::Die(Unit* const killer)
 	}
 	Timer::CreateInstantTimer(action);
 }
+
+void Unit::SetAttackType(const enum class AttackType type) noexcept
+{
+	m_attack.m_atype = type;
+}
+
+void Unit::SetAttackRange(const float range) noexcept
+{
+	m_attack.range = range;
+}
+
+
 
 const UnitStats& Unit::GetStats()
 {
@@ -712,10 +734,24 @@ bool Unit::BeginAttack(class Unit* const target)
 	{
 		return false;
 	}
+	switch (m_modelVariant.GetVariant())
+	{
+	case ModelStance::MODEL_STANCE_GETHIT:
+	{
+		return false;
+		break;
+	}
+	case ModelStance::MODEL_STANCE_ATTACK_1:
+	{
+		return false;
+		break;
+	}
+	}
 	if (this->GetLayerType() != target->GetLayerType())
 	{
 		return false;
 	}
+	
 	else
 	{
 		if (target)
@@ -750,6 +786,8 @@ bool Unit::BeginAttack(class Unit* const target)
 
 bool Unit::Attack(class Unit* const target)
 {
+	if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_GETHIT)
+		return false;
 	switch (m_attack.m_atype)
 	{
 	case AttackType::ENUM_ATTACK_TYPE_MELEE:
@@ -763,8 +801,8 @@ bool Unit::Attack(class Unit* const target)
 		m_attack.active = false;
 
 		Engine* const engine = Engine::GetEngine();
-			engine->PlaySound(L"attack1_arrow");
-
+			const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
+			engine->PlaySound(L"attack1_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
 		{
 			class Projectile* const proj = new Projectile();
 
@@ -932,16 +970,18 @@ bool Unit::GetAttacked(class Unit* const attacker)
 	DoDamage(attacker);
 	const int32_t ran = modern_random(0, 2);
 	Engine* const engine = Engine::GetEngine();
+	const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
 	switch (ran)
 	{
 	case 0:
-		engine->PlaySound(L"attack1");
+
+		engine->PlaySound(L"attack1", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
 		break;
 	case 1:
-		engine->PlaySound(L"attack2");
+		engine->PlaySound(L"attack2", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
 		break;
 	case 2:
-		engine->PlaySound(L"attack3");
+		engine->PlaySound(L"attack3", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
 		break;
 	}
 	//COMBATTEXT
@@ -968,6 +1008,7 @@ bool Unit::GetHit(Unit* const hitter)
 		return false;
 	}
 	{
+
 		PlayAnimation(ModelStance::MODEL_STANCE_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
 		return true;

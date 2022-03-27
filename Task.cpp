@@ -276,12 +276,13 @@ bool TaskAttack::Update()
 		if (inrange)
 		{
 			atk.active = false;
-			A->m_rad_rotation = modern_pi - atan2(position.y - destination.y, position.x - destination.x);
-			float rotation = (A->m_rad_rotation * 180.0f / 3.141f);
-			//rotation += 90.f;
+			float rotation = modern_atan2(destination.y - position.y, destination.x - position.x);
+			rotation += 90.f;
 			rotation /= (360.f / A->GetNumberOfRotations());
 			rotation = A->GetNumberOfRotations() - rotation;
 			A->SetRotation(rotation);
+
+
 			switch (A->GetWalkingStance())
 			{
 			case WalkingStance::WALKING_STANCE_RUN:

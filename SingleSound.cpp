@@ -57,6 +57,12 @@ void SingleSound::Play()
 	m_sound->play();
 }
 
+void SingleSound::Play(const float volume)
+{
+	m_sound->setVolume(volume);
+	m_sound->play();
+}
+
 class sf::Sound* SingleSound::StartPlaying()
 {
 	SingleSound::SetLooping(true);
