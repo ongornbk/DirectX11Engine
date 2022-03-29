@@ -212,7 +212,7 @@ void TextFont::LoadFontFromFile(std::string filename,float width,float height)
 		}
 	}
 
-	std::reverse(coordinates.begin(), coordinates.end());
+	coordinates.reverse();
 
 	font->InitializeCoordinates(coordinates);
 	m_fonts.push_back(font);

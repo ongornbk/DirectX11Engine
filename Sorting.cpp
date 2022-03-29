@@ -604,8 +604,8 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 			else         B->m_boundingSphere.Center.x += Scollision;
 			}
 		}
-		//A->Intersect(B);
-		//B->Intersect(A);
+		A->Intersect(B);
+		B->Intersect(A);
 		//CRITICAL
 		//return 	A->m_boundingSphere.Center.y > B->m_boundingSphere.Center.y;
 	}

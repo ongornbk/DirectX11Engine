@@ -55,8 +55,19 @@ void _stdcall RenderLayerObject::Sort()
 void _stdcall RenderLayerObject::QSort()
 {
 //#pragma omp parallel
-	QSortByXV(m_objects);
-	QSortByYV(m_objects);
+	if (m_counter % 2)
+	{
+		QSortByXV(m_objects);
+		QSortByYV(m_objects);
+	}
+	else
+	{
+		QSortByYV(m_objects);
+		QSortByXV(m_objects);
+	}
+
+	m_counter++;
+
 	PostSort();
 //#pragma omp barrier
 }
@@ -73,7 +84,12 @@ void _stdcall RenderLayerObject::StaticQSort()
 //	StaticQSortByYV(m_objectsXY);
 }
 
-void _vectorcall RenderLayerObject::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerObject::Render(
+	struct ID3D11DeviceContext* const deviceContext,
+	const DirectX::XMFLOAT4X4& viewMatrix,
+	const DirectX::XMFLOAT4X4& projectionMatrix,
+	const struct ShaderPackage& shader
+) noexcept
 {
 	class modern_array<class modern_array<class EObject*>*> mvpp;
 

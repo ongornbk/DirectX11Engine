@@ -27,6 +27,24 @@ inline T modern_abs(T a)
 }
 
 template<class T>
+inline T modern_ceil(T a)
+{
+	return std::ceil(a);
+}
+
+template<class T>
+inline T modern_floor(T a)
+{
+	return std::floor(a);
+}
+
+template<class T>
+inline T modern_round(T a)
+{
+	return std::round(a);
+}
+
+template<class T>
 
 inline T modern_pow(T a,int32_t b)
 {

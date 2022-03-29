@@ -203,6 +203,7 @@
     <ClInclude Include="ActionPushTimer.h" />
     <ClInclude Include="ActionRemoveObject.h" />
     <ClInclude Include="ActionSetCellMultiplier.h" />
+    <ClInclude Include="ActionSetInterfaceBehavior.h" />
     <ClInclude Include="ActionSetInterfaceOffset.h" />
     <ClInclude Include="ActionSetInterfaceText.h" />
     <ClInclude Include="ActionSetShadowCast.h" />
@@ -340,6 +341,7 @@
     <ClInclude Include="modern\modern_array.h" />
     <ClInclude Include="modern\modern_array_iterator.h" />
     <ClInclude Include="modern\modern_class.h" />
+    <ClInclude Include="modern\modern_class_view.h" />
     <ClInclude Include="modern\modern_cstring.h" />
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_element.h" />
@@ -385,6 +387,9 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="PTaskGCClear.h" />
     <ClInclude Include="PTaskRender.h" />
+    <ClInclude Include="RectOfCollision.h" />
+    <ClInclude Include="RectOfCollisionAgentFirst.h" />
+    <ClInclude Include="RectOfCollisionAgentSecond.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RegionPointObject.h" />
     <ClInclude Include="RenderContainer.h" />
@@ -443,6 +448,7 @@
     <ClInclude Include="UserInterfaceGame.h" />
     <ClInclude Include="UserInterfaceGameMenu.h" />
     <ClInclude Include="UserInterfaceMainMenu.h" />
+    <ClInclude Include="UserInterfaceState.h" />
     <ClInclude Include="VariablesManager.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
@@ -472,6 +478,7 @@
     <ClCompile Include="ActionPushTimer.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
+    <ClCompile Include="ActionSetInterfaceBehavior.cpp" />
     <ClCompile Include="ActionSetInterfaceOffset.cpp" />
     <ClCompile Include="ActionSetInterfaceText.cpp" />
     <ClCompile Include="ActionSetShadowCast.cpp" />
@@ -590,6 +597,7 @@
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="MenuRendererManager.cpp" />
     <ClCompile Include="modern\modern_class.cpp" />
+    <ClCompile Include="modern\modern_class_view.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />
     <ClCompile Include="modern\modern_framelock.cpp" />
     <ClCompile Include="modern\modern_guard.cpp" />
@@ -612,6 +620,9 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="PTaskGCClear.cpp" />
     <ClCompile Include="PTaskRender.cpp" />
+    <ClCompile Include="RectOfCollision.cpp" />
+    <ClCompile Include="RectOfCollisionAgentFirst.cpp" />
+    <ClCompile Include="RectOfCollisionAgentSecond.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
@@ -685,6 +696,7 @@
     <None Include="x64\Release\bin\x64\lua\core\Camera.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Doodads.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Handle.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Interface.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Music.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Object.lua" />

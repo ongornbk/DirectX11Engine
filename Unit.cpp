@@ -467,7 +467,7 @@ void Unit::Intersect(class EObject* const other)
 					}
 					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
 					{
-						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop|| ((class Unit*)other)->m_wanderingFlag == false)
+						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
 						{
 					
 						}

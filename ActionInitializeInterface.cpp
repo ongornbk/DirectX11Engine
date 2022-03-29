@@ -28,6 +28,7 @@ void ActionInitializeInterface::execute()
         {
             modern_guard g(A);
             A->Initialize(m_device, m_deviceContext, m_shader, m_paths.c_wstr(),m_position, m_size.x,m_size.y);
+            A->m_flags.m_rendering = true;
             //A->SetPosition(DirectX::XMFLOAT3{ 0.f,0.f,0.f });
 
         }

@@ -6,7 +6,7 @@
 #include "Options.h"
 
 InterfaceStatusBarBehavior::InterfaceStatusBarBehavior(Interface* const inter) :
-	m_owner(inter)
+	m_owner(inter), m_status(1.f)
 {
 
 }
@@ -25,6 +25,12 @@ void InterfaceStatusBarBehavior::OnClick()
 {
 
 	
+}
+
+void InterfaceStatusBarBehavior::SetStatus(const float status)
+{
+	m_status = status;
+	m_owner->m_scale.x = status;
 }
 
 

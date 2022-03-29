@@ -1,5 +1,7 @@
 #include "LineOfCollision.h"
 #include "RendererManager.h"
+#include "Timer.h"
+#include "ActionRemoveObject.h"
 
 LineOfCollision::LineOfCollision(const DirectX::XMFLOAT2 pA, const DirectX::XMFLOAT2 pB)
 {
@@ -19,6 +21,12 @@ LineOfCollision::LineOfCollision(const DirectX::XMFLOAT2 pA, const DirectX::XMFL
 
 	RendererManager::GetInstance()->PushLineOfCollisionAgent(A);
 	RendererManager::GetInstance()->PushLineOfCollisionAgent(B);
+}
+
+LineOfCollision::~LineOfCollision()
+{
+	Timer::CreateInstantTimer(new class ActionRemoveObject((class LineOfCollisionAgent* const)pointA.get()));
+	Timer::CreateInstantTimer(new class ActionRemoveObject((class LineOfCollisionAgent* const)pointB.get()));
 }
 
 LineOfCollisionAgent* const LineOfCollision::GetSecond(LineOfCollisionAgent* const first)

@@ -5,7 +5,7 @@
 #include "ActionRemoveObject.h"
 #include "Timer.h"
 
-Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f)
+Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f),m_scale(1.f,1.f)
 {
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
@@ -155,7 +155,15 @@ void Interface::Update(float dt)
 	if (m_flags.m_rendering)
 	{
 		DirectX::XMFLOAT3 xmn = modern_xfloat3_sum(m_boundingSphere.Center, m_offset);
-		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(xmn.x,xmn.y, xmn.z));
+		DirectX::XMStoreFloat4x4(&m_worldMatrix,
+			DirectX::XMMatrixMultiply(
+				DirectX::XMMatrixScaling(m_scale.x, m_scale.y, 1.f),
+			DirectX::XMMatrixTranslation(
+				xmn.x,
+				xmn.y,
+				xmn.z //- (m_size / 1.5f)
+			)));
+	
 		if (m_behavior)
 		{
 			m_behavior->OnHover();

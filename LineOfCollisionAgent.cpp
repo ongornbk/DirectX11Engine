@@ -21,6 +21,7 @@ LineOfCollisionAgent::LineOfCollisionAgent() : m_intersectStance(AgentIntersectS
 
 LineOfCollisionAgent::~LineOfCollisionAgent()
 {
+    
 }
 
 void LineOfCollisionAgent::Initialize(const XMFLOAT2 position, class LineOfCollision* const parent)
@@ -30,8 +31,10 @@ void LineOfCollisionAgent::Initialize(const XMFLOAT2 position, class LineOfColli
     m_parent.make_handle(parent->GetHandle());
 }
 
+
 void _fastcall LineOfCollisionAgent::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
 {
+
 }
 
 void _fastcall LineOfCollisionAgent::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)

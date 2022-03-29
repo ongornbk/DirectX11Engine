@@ -1,4 +1,5 @@
 #include "modern_handle.h"
+#include "modern_class_view.h"
 #include <iostream>
 
 modern_handle& modern_handle::operator=(modern_handle const& diff)
@@ -63,6 +64,13 @@ modern_handle::modern_handle(const modern_handle& diff)
 {
 	m_object = diff.m_object;
 	m_num = diff.m_num;
+	m_num[0]++;
+}
+
+modern_handle::modern_handle(modern_class_view& view)
+{
+	m_object = view.GetHandle().m_object;
+	m_num = view.GetHandle().m_num;
 	m_num[0]++;
 }
 

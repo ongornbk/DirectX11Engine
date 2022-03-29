@@ -66,6 +66,7 @@ public:
 	friend class InterfaceButtonBehavior;
 	friend class InterfaceCheckboxBehavior;
 	friend class InterfaceSliderBehavior;
+	friend class InterfaceStatusBarBehavior;
 
 private:
 	class Interface* m_parent;
@@ -78,6 +79,7 @@ private:
 	ID3D11DeviceContext* m_deviceContext;
 
 	XMFLOAT4X4    m_worldMatrix;
+	XMFLOAT2      m_scale;
 	float         m_size;
 
 	Texture* m_texture;

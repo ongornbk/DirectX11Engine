@@ -2,7 +2,7 @@
 #include <cstdint>
 
 struct modern_class;
-
+class modern_class_view;
 
 
 class modern_handle
@@ -23,7 +23,9 @@ public:
 
 	modern_handle();
 	[[nodiscard]]modern_handle(const class modern_handle& diff);
+	[[nodiscard]] modern_handle(class modern_class_view& view);
 	
+
 	void make_handle(const class modern_handle& diff);
 	void make_handle(volatile class modern_handle& diff) volatile;
 	~modern_handle();

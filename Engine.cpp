@@ -534,13 +534,13 @@ void Engine::Update()
 						cc->ZoomOut();
 					}
 				}
-				Timer::Update(ldt);
+				Timer::Update((float)ldt);
 					(void)m_input->Update();
 
 					m_gameComponent->Update();
-					m_cameraControl.Update(ldt);
+					m_cameraControl.Update((float)ldt);
 
-					m_rendererManager->Update(ldt, true);
+					m_rendererManager->Update((float)ldt, true);
 				}
 				else
 				{

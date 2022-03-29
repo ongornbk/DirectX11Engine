@@ -16,6 +16,7 @@
 #include "InterfaceCheckboxBehavior.h"
 #include "InterfaceSliderBehavior.h"
 #include "modern/modern.h"
+#include "modern/modern_class_view.h"
 #include "Timer.h"
 
 #include <atlbase.h>
@@ -721,9 +722,15 @@ namespace lua_callback
 	) noexcept
 	{
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
-		if (Unit::CheckIfValid((Unit*)unit))
+		if (Unit::CheckIfValid(unit))
 		{
-			((Unit*)unit)->EndRunning();
+			modern_guard guard(unit);
+			unit->EndRunning();
+		}
+		else
+		{
+			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->Println("Failed To End Running :: Bad Unit Pointer!!!");
 		}
 		return 0;
 	}
@@ -1366,6 +1373,46 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 MakeHandle(
+		struct lua_State* const state
+	)
+	{
+		struct modern_class* const class__ = (struct modern_class* const)lua_tointeger(state, 1);
+		if (class__)
+		{
+		class modern_class_view view(class__);
+			lua_pushinteger(state, (lua_Integer)new modern_handle(view));
+		}
+		
+		return 1;
+	}
+
+	static int32 ReleaseHandle(
+		struct lua_State* const state
+	)
+	{
+		class modern_handle* const handle = (class modern_handle* const)lua_tointeger(state, 1);
+		if (handle)
+		{
+			delete handle;
+		}
+
+		return 0;
+	}
+
+	static int32 HandleGet(
+		struct lua_State* const state
+	)
+	{
+		class modern_handle* const handle = (class modern_handle* const)lua_tointeger(state, 1);
+		if (handle)
+		{
+			lua_pushinteger(state, (lua_Integer)handle->get());
+		}
+
+		return 1;
+	}
+
 	static int32 GameChatMessageFront(
 		struct lua_State* const state
 	)
@@ -1747,6 +1794,10 @@ namespace lua_callback
 		lua_register(m_lua, "SetButtonOnClick", lua_callback::SetButtonOnClick);
 		lua_register(m_lua, "SetInterfaceText", lua_callback::SetInterfaceText);
 		lua_register(m_lua, "BindBindableBehavior", lua_callback::BindBindableBehavior);
+		//Handle
+		lua_register(m_lua, "MakeHandle", lua_callback::MakeHandle);
+		lua_register(m_lua, "ReleaseHandle", lua_callback::ReleaseHandle);
+		lua_register(m_lua, "HandleGet", lua_callback::HandleGet);
 	}
 
 }

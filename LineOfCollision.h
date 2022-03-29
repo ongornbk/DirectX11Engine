@@ -13,6 +13,7 @@ protected:
 	BoundingBox              m_rect;
 public:
 	LineOfCollision(const struct DirectX::XMFLOAT2 pA, const struct DirectX::XMFLOAT2 pB);
+	~LineOfCollision();
 
 	LineOfCollisionAgent* const GetSecond(LineOfCollisionAgent* const first);
 

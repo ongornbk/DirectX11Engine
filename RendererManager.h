@@ -15,6 +15,8 @@
 #include "Agent.h"
 #include "Projectile.h"
 #include "LineOfCollision.h"
+#include "RectOfCollision.h"
+#include "UserInterfaceState.h"
 #include <stack>
 #include <map>
 #include <list>
@@ -65,13 +67,15 @@ public:
 	void PushAnimatedDoodads(class AnimatedDoodads* doodads);
 	void PushTree(class Tree* doodads);
 	void PushLineOfCollisionAgent(class LineOfCollisionAgent* const agent);
+	void PushRectOfCollisionAgent(class RectOfCollisionAgentFirst* const agent);
+	void PushRectOfCollisionAgent(class RectOfCollisionAgentSecond* const agent);
 	void Push(class EObject* const object, const enum class RenderLayerType layer);
 	void PushRegionPointObject(class RegionPointObject* object);
 	void PushInterface(class Interface * const object);
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
-		const struct XMFLOAT4X4& viewMatrix,
-		const struct XMFLOAT4X4& projectionMatrix
+		const struct DirectX::XMFLOAT4X4& viewMatrix,
+		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	);
 	void Render(
 		struct ID3D11DeviceContext* const deviceContext,
@@ -124,6 +128,9 @@ private:
 	class modern_handle m_selectStatus;
 	class modern_handle m_selectStatusBorder; //TEMP THERE SHOULD BE AN ARRAY IN INTERFACE TO DRAW 
 	class modern_handle m_cursorAgent;
+	//class modern_handle m_cursor;
+	class modern_handle m_gameUI;
+	class modern_handle m_healthGlobe;
 
 	std::list<modern_handle> m_selectGroup;
 
@@ -132,6 +139,7 @@ private:
 	modern_handle test_line2;
 	modern_handle test_line3;
 
+	enum class UserInterfaceState m_type = UserInterfaceState::ENUM_USERINTERFACE_TEMPNONE;
 
 	int32 m_fps;
 	//EObjectVector m_objects;

@@ -26,6 +26,10 @@
 #include "ActionInitializeInterface.h"
 #include "ActionSetInterfaceOffset.h"
 #include "ActionTreeSetStance.h"
+#include "RectOfCollisionAgentFirst.h"
+#include "RectOfCollisionAgentSecond.h"
+#include "InterfaceStatusBarBehavior.h"
+#include "ActionSetInterfaceBehavior.h"
 #pragma endregion
 #include <future>
 #include <mutex>
@@ -108,8 +112,6 @@ RendererManager::RendererManager(
 	agent_cursor->Initialize(struct DirectX::XMFLOAT3(0.f, 0.f, 0.f));
 	m_cursorAgent.make_handle(agent_cursor->GetHandle());
 
-	
-
 
 	class ActionExecuteActionArray* const marray = new ActionExecuteActionArray();
 
@@ -172,6 +174,30 @@ RendererManager::RendererManager(
 		struct DirectX::XMFLOAT3(0.f,0.f,0.f)
 	));
 
+	marray->push(new ActionSetInterfaceBehavior(
+		m_selectStatus,
+		new InterfaceStatusBarBehavior((class Interface* const)m_selectStatus.get())
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_healthGlobe, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"health_globe"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(138.f, 138.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_healthGlobe,
+		struct DirectX::XMFLOAT3(-405.f, -460.f, 0.f)
+	));
+
+	marray->push(new ActionSetInterfaceBehavior(
+		m_healthGlobe,
+		new InterfaceStatusBarBehavior((class Interface* const)m_healthGlobe.get())
+	));
+
 	marray->push(new ActionInitializeInterface(
 		m_selectStatusBorder, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
@@ -184,6 +210,20 @@ RendererManager::RendererManager(
 	marray->push(new ActionSetInterfaceOffset(
 		m_selectStatusBorder,
 		struct DirectX::XMFLOAT3(0.f, 500.f, 0.f)
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_gameUI, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"ui_game"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(1920.f, 175.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_gameUI,
+		struct DirectX::XMFLOAT3(0.f, -460.f, 0.f)
 	));
 	
 
@@ -271,6 +311,16 @@ void RendererManager::PushLineOfCollisionAgent(LineOfCollisionAgent* const agent
 	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
 }
 
+void RendererManager::PushRectOfCollisionAgent(RectOfCollisionAgentFirst* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
+}
+
+void RendererManager::PushRectOfCollisionAgent(RectOfCollisionAgentSecond* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
+}
+
 void RendererManager::Push(class EObject* const object, const enum class RenderLayerType layer)
 {
 	m_layers[enum_cast<int32_t>(layer)]->Push(object);
@@ -338,6 +388,32 @@ void RendererManager::Render(
 	pck.BeginInterface();
 	GRAPHICS EnableAlphaBlending(true);
 
+	switch (m_type)
+	{
+	case UserInterfaceState::ENUM_USERINTERFACE_GAME:
+	{
+		{
+			class Interface* const A = (class Interface*)m_healthGlobe.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+			}
+		}
+		{
+			class Interface* const A = (class Interface*)m_gameUI.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+			}
+		}
+		
+		break;
+	}
+	}
+
+
 	m_ui->Render(deviceContext, viewMatrix, interfaceMatrix);
 
 	if (((Options*)m_activeOptions.get())->option_ShowFPS)
@@ -388,6 +464,16 @@ void RendererManager::Render(
 			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
 		}
 	}
+
+	//{
+	//	class Interface* const A = (class Interface*)m_cursor.get();
+	//	if (A)
+	//	{
+	//		modern_guard g(A);
+	//		//A->SetColorFilter(1.f);
+	//		A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+	//	}
+	//}
 
 	//if (m_fpsText)
 		//m_fpsText->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
@@ -449,6 +535,45 @@ void RendererManager::Render(
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
 
+		switch (m_type)
+		{
+		case UserInterfaceState::ENUM_USERINTERFACE_GAME:
+		{
+			{
+				class Interface* const A = (class Interface*)m_gameUI.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetPosition(m_cameraPosition);
+					A->Update(dt);
+				}
+			}
+			{
+				class Interface* const A = (class Interface*)m_healthGlobe.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetPosition(m_cameraPosition);
+					A->Update(dt);
+					class Unit* const unit = (class Unit* const)m_focus;
+					if (Unit::CheckIfValid(unit))
+					{
+						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
+						modern_shared_guard g(unit);
+						const float che = modern_ceil(unit->GetHealth());
+						const float mhe = unit->GetMaxHealth();
+						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+						if (behaviorA)
+						{
+							behaviorA->SetStatus(che / mhe);
+						}
+					}
+				}
+			}
+			break;
+		}
+		}
+
 		if (((Options*)m_activeOptions.get())->option_ShowFPS)
 		{
 			class Text* const A = (class Text*)m_fpsText.get();
@@ -498,6 +623,18 @@ void RendererManager::Render(
 				A->Update(dt);
 			}
 		}
+		//{
+		//	class Interface* const A = (class Interface*)m_cursor.get();
+		//	if (A)
+		//	{
+		//		modern_guard g(A);
+		//		//A->SetColorFilter(1.f);
+		//
+		//		//A->SetOffset( XMFLOAT3(m_cameraPosition.m128_f32[0] + i2.x, m_cameraPosition.m128_f32[1] - i2.y ,0.f));
+		//		A->SetPosition(m_cameraPosition);
+		//		A->Update(dt);
+		//	}
+		//}
 		//if(m_fpsText)
 		//m_fpsText->Update();
 		//if (m_objectsText)
@@ -627,13 +764,18 @@ void RendererManager::Render(
 					{
 						A->m_flags.m_rendering = true;
 						B->m_flags.m_rendering = true;
+						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
 						class Unit* const unit = (class Unit* const)GLOBAL m_lastSelectedUnit.get();
 						if (unit)
 						{
 							modern_shared_guard g(unit);
-							int32_t che = (int32_t)unit->GetHealth();
-							int32_t mhe = (int32_t)unit->GetMaxHealth();
-							A->SetText(modern_string(che, L".", mhe));
+							const float che = modern_ceil(unit->GetHealth());
+							const float mhe = unit->GetMaxHealth();
+							A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+							if (behaviorA)
+							{
+								behaviorA->SetStatus(che / mhe);
+							}
 						}
 					}
 					else
@@ -736,6 +878,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 
 void RendererManager::SetInterface(const uint32 type,class Shader* shader)
 {
+	m_type = enum_cast<enum class UserInterfaceState>(type);
 	m_ui->SetScene(type, shader);
 }
 

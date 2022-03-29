@@ -993,6 +993,24 @@
     <ClInclude Include="ActionGoBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RectOfCollisionAgentFirst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RectOfCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RectOfCollisionAgentSecond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterfaceState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_class_view.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1643,6 +1661,21 @@
     <ClCompile Include="ActionGoBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RectOfCollisionAgentFirst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RectOfCollision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RectOfCollisionAgentSecond.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionSetInterfaceBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_class_view.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1779,6 +1812,9 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\manual\InputKeyboard.html">
       <Filter>HTML</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Handle.lua">
+      <Filter>Lua\core</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
