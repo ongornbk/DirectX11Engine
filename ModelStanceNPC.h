@@ -1,0 +1,9 @@
+#pragma once
+
+enum class ModelStanceNPC
+{
+	MODEL_STANCE_NPC_IDLE_0,
+	MODEL_STANCE_NPC_IDLE_1,
+	MODEL_STANCE_NPC_WALK,
+	MODEL_STANCE_NPC_SPECIAL
+};

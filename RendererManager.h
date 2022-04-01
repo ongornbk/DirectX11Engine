@@ -98,6 +98,9 @@ public:
 	void Clear();
 	class TextFont* const GetFont();
 
+	class Interface* const GetHealthBarMini();
+	class Interface* const GetHealthBarMiniBorder();
+
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Agent* const agent, const float range) noexcept;
 
@@ -131,6 +134,10 @@ private:
 	//class modern_handle m_cursor;
 	class modern_handle m_gameUI;
 	class modern_handle m_healthGlobe;
+	class modern_handle m_manaGlobe;
+	class modern_handle m_exp;
+	class modern_handle m_healthBar;
+	class modern_handle m_healthBarBorder;
 
 	std::list<modern_handle> m_selectGroup;
 

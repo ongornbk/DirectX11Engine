@@ -22,6 +22,7 @@
 #include "UnitTemplate.h"
 #include "Projectile.h"
 #include "SettingsC.h"
+#include "InterfaceStatusBarBehavior.h"
 
 Unit::Unit() :
 	ColorFilter(1.f, 1.f, 1.f, 1.f),
@@ -48,6 +49,8 @@ Unit::Unit() :
 	m_attack.range = 100.f;
 	m_attack.active = false;
 	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_MELEE;
+
+	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
 
 	m_tasks.SetOwner(this);
 }
@@ -77,6 +80,8 @@ Unit::Unit(class Unit* const other) :
 
 	m_attack.range = other->GetAttack().range;
 	m_attack.active = other->GetAttack().active;
+
+	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
 
 	m_tasks.SetOwner(this);
 }
@@ -123,7 +128,7 @@ void Unit::Initialize(
 
 	InitializeModel(device, deviceContext, shader, ptr);
 	m_wanderingFlag = wander;
-	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
+
 	switch (ptr->m_leaveCorpse)
 	{
 	case true:
@@ -191,6 +196,35 @@ void Unit::Render(
 		m_vertexBuffer->Render(deviceContext);
 		csh->SetShaderColorParameters(deviceContext, XMFLOAT4(1.f,1.f,1.f,1.f));
 
+		if (m_dead == false)
+		{
+			class Interface* const healthBar = RendererManager::GetInstance()->GetHealthBarMini();
+			if (healthBar)
+			{
+				modern_guard g(healthBar);
+				healthBar->SetPosition(m_boundingSphere.Center);
+				healthBar->SetOffset({ 0.f, 100.f, 0.f });
+				class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)healthBar->GetBehavior();
+				const float che = modern_ceil(GetHealth());
+				const float mhe = GetMaxHealth();
+				//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+				if (behaviorA)
+				{
+					behaviorA->SetStatus(che / mhe);
+				}
+				healthBar->Update(0.f);
+				healthBar->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+
+				class Interface* const healthBarBorder = RendererManager::GetInstance()->GetHealthBarMiniBorder();
+				if (healthBarBorder)
+				{
+					healthBarBorder->SetPosition(m_boundingSphere.Center);
+					healthBarBorder->SetOffset({ 0.f, 100.f, 0.f });
+					healthBarBorder->Update(0.f);
+					healthBarBorder->Render(deviceContext, viewMatrix, projectionMatrix, shader);
+				}
+			}
+		}
 	}
 
 }
@@ -238,6 +272,11 @@ void Unit::Update(const float dt)
 		m_stats.m_health += m_stats.m_healthRegeneration * dt;
 		if (m_stats.m_health > m_stats.m_maxHealth)
 			m_stats.m_health = m_stats.m_maxHealth;
+	}
+	{
+		m_stats.m_mana += m_stats.m_manaRegeneration * dt;
+		if (m_stats.m_mana > m_stats.m_maxMana)
+			m_stats.m_mana = m_stats.m_maxMana;
 	}
 
 	if (!m_flags.m_blocked)
@@ -643,6 +682,8 @@ void Unit::Die(Unit* const killer)
 	m_attack.active = false;
 	//m_isLooping = false;
 
+	ApplyExperienceBonus(killer);
+
 	ForceAnimation(ModelStance::MODEL_STANCE_DEATH);
 	SetVelocity(0.0f, 0.0f, 0.0f);
 	Unit::EndRunning();
@@ -672,6 +713,21 @@ void Unit::Die(Unit* const killer)
 		break;
 	}
 	Timer::CreateInstantTimer(action);
+}
+
+void Unit::ApplyExperienceBonus(Unit* const killer)
+{
+	if (killer && killer != this)
+	{
+		//modern_guard g(killer);
+		killer->m_stats.m_exp += m_stats.m_expBonus;
+		while (killer->m_stats.m_exp > killer->m_stats.m_maxExp)
+		{
+			killer->m_stats.m_exp -= killer->m_stats.m_maxExp;
+			killer->m_stats.m_maxExp *= 2.f;
+			killer->m_stats.m_level++;
+		}
+	}
 }
 
 void Unit::SetAttackType(const enum class AttackType type) noexcept
@@ -1024,7 +1080,7 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 	else
 	{
 		DirectX::XMFLOAT3 position = GetPosition();
-		float rotation = atan2(target.y - position.y, target.x - position.x) * 180.0f / 3.141f;
+		float rotation = atan2(target.y - position.y, target.x - position.x) * modern_ragtodeg;
 		rotation += 90.0f;
 		rotation /= (360.f / m_rotations);
 		rotation = m_rotations - rotation;
@@ -1072,6 +1128,41 @@ const float Unit::GetHealth() const noexcept
 const float Unit::GetMaxHealth() const noexcept
 {
 	return m_stats.m_maxHealth;
+}
+
+const float Unit::GetHealthPercentage() const noexcept
+{
+	return (m_stats.m_health / m_stats.m_maxHealth) * 100.f;
+}
+
+const float Unit::GetMana() const noexcept
+{
+	return m_stats.m_mana;
+}
+
+const float Unit::GetMaxMana() const noexcept
+{
+	return m_stats.m_maxMana;
+}
+
+const float Unit::GetManaPercentage() const noexcept
+{
+	return (m_stats.m_mana / m_stats.m_maxMana) * 100.f;
+}
+
+const float Unit::GetExperience() const noexcept
+{
+	return m_stats.m_exp;
+}
+
+const float Unit::GetMaxExperience() const noexcept
+{
+	return m_stats.m_maxExp;
+}
+
+const float Unit::GetExperiencePercentage() const noexcept
+{
+	return (m_stats.m_exp / m_stats.m_maxExp) * 100.f;
 }
 
 void Unit::SetFootstepsSound(class ISound * const sound)

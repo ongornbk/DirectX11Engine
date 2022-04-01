@@ -1011,6 +1011,12 @@
     <ClInclude Include="modern\modern_class_view.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="ModelVariant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelStanceNPC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1675,6 +1681,9 @@
     </ClCompile>
     <ClCompile Include="modern\modern_class_view.cpp">
       <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelVariant.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

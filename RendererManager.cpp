@@ -185,7 +185,7 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_globe"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(138.f, 138.f)
+		struct DirectX::XMFLOAT2(140.f, 140.f)
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -196,6 +196,77 @@ RendererManager::RendererManager(
 	marray->push(new ActionSetInterfaceBehavior(
 		m_healthGlobe,
 		new InterfaceStatusBarBehavior((class Interface* const)m_healthGlobe.get())
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_manaGlobe, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"mana_globe"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(138.f, 138.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_manaGlobe,
+		struct DirectX::XMFLOAT3(405.f, -460.f, 0.f)
+	));
+
+	marray->push(new ActionSetInterfaceBehavior(
+		m_manaGlobe,
+		new InterfaceStatusBarBehavior((class Interface* const)m_manaGlobe.get())
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_exp, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"ui_exp"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(644.f, 8.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_exp,
+		struct DirectX::XMFLOAT3(0.f, -476.f, 0.f)
+	));
+
+	marray->push(new ActionSetInterfaceBehavior(
+		m_exp,
+		new InterfaceStatusBarBehavior((class Interface* const)m_exp.get())
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_healthBar, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"health_bar_mini"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(80.f, 10.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_healthBar,
+		struct DirectX::XMFLOAT3(0.f, -476.f, 0.f)
+	));
+
+	marray->push(new ActionSetInterfaceBehavior(
+		m_healthBar,
+		new InterfaceStatusBarBehavior((class Interface* const)m_healthBar.get())
+	));
+
+	marray->push(new ActionInitializeInterface(
+		m_healthBarBorder, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"health_bar_mini_border"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(80.f, 10.f)
+	));
+
+	marray->push(new ActionSetInterfaceOffset(
+		m_healthBarBorder,
+		struct DirectX::XMFLOAT3(0.f, -476.f, 0.f)
 	));
 
 	marray->push(new ActionInitializeInterface(
@@ -393,7 +464,23 @@ void RendererManager::Render(
 	case UserInterfaceState::ENUM_USERINTERFACE_GAME:
 	{
 		{
+			class Interface* const A = (class Interface*)m_exp.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+			}
+		}
+		{
 			class Interface* const A = (class Interface*)m_healthGlobe.get();
+			if (A)
+			{
+				modern_guard g(A);
+				A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+			}
+		}
+		{
+			class Interface* const A = (class Interface*)m_manaGlobe.get();
 			if (A)
 			{
 				modern_guard g(A);
@@ -413,6 +500,7 @@ void RendererManager::Render(
 	}
 	}
 
+	//GRAPHICS EnableAlphaBlending(true);
 
 	m_ui->Render(deviceContext, viewMatrix, interfaceMatrix);
 
@@ -423,7 +511,7 @@ void RendererManager::Render(
 		{
 			modern_guard g(A);
 			A->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
-			A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
+			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 
 		}
 		class Text* const B = (class Text*)m_objectsText.get();
@@ -549,6 +637,28 @@ void RendererManager::Render(
 				}
 			}
 			{
+				class Interface* const A = (class Interface*)m_exp.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetPosition(m_cameraPosition);
+					A->Update(dt);
+					class Unit* const unit = (class Unit* const)m_focus;
+					if (Unit::CheckIfValid(unit))
+					{
+						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
+						modern_shared_guard g(unit);
+						const float che = modern_ceil(unit->GetExperience());
+						const float mhe = unit->GetMaxExperience();
+						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+						if (behaviorA)
+						{
+							behaviorA->SetStatus(che / mhe);
+						}
+					}
+				}
+			}
+			{
 				class Interface* const A = (class Interface*)m_healthGlobe.get();
 				if (A)
 				{
@@ -562,6 +672,28 @@ void RendererManager::Render(
 						modern_shared_guard g(unit);
 						const float che = modern_ceil(unit->GetHealth());
 						const float mhe = unit->GetMaxHealth();
+						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+						if (behaviorA)
+						{
+							behaviorA->SetStatus(che / mhe);
+						}
+					}
+				}
+			}
+			{
+				class Interface* const A = (class Interface*)m_manaGlobe.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetPosition(m_cameraPosition);
+					A->Update(dt);
+					class Unit* const unit = (class Unit* const)m_focus;
+					if (Unit::CheckIfValid(unit))
+					{
+						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
+						modern_shared_guard g(unit);
+						const float che = modern_ceil(unit->GetMana());
+						const float mhe = unit->GetMaxMana();
 						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
 						if (behaviorA)
 						{
@@ -970,6 +1102,16 @@ void RendererManager::Clear()
 TextFont* const RendererManager::GetFont()
 {
 	return m_font;
+}
+
+Interface* const RendererManager::GetHealthBarMini()
+{
+	return (class Interface* const)m_healthBar.get();
+}
+
+Interface* const RendererManager::GetHealthBarMiniBorder()
+{
+	return (class Interface* const)m_healthBarBorder.get();
 }
 
 std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(

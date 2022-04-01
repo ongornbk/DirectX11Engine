@@ -11,6 +11,7 @@
 #include "UnitDefaults.h"
 #include "UnitDecay.h"
 #include "ColorFilter.h"
+#include "ModelVariant.h"
 
 #define COLOR_FILTER_NOCHANGE -1.f
 
@@ -19,61 +20,6 @@ class UnitTemplate;
 class Unit : public EObject, public ColorFilter
 {
 public:
-
-
-
-	
-
-	struct ModelVariant
-	{
-		ModelVariant()
-		{
-			ZeroMemory(m_textures, sizeof(Texture*) * 15);
-			m_variant = 0;
-			m_prevVariant = 0;
-		}
-
-		ID3D11ShaderResourceView* GetTexture() const
-		{
-			return m_textures[m_variant]->GetTexture();
-		}
-		int32 GetVariant() const noexcept
-		{
-			return m_variant;
-		}
-		float GetMaxFrames() const noexcept
-		{
-			return m_maxFrames[m_variant];
-		}
-		float GetSize() const noexcept
-		{
-			return m_sizes[m_variant];
-		}
-
-		void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const noexcept
-		{
-			this->m_prevVariant = this->m_variant;
-			this->m_variant = variant;
-		}
-		void SetVariant(const int32 variant) const
-		{
-			this->m_prevVariant = this->m_variant;
-			this->m_variant = variant;
-		}
-		
-		bool Check() const noexcept
-		{
-			return (this->m_variant != this->m_prevVariant);
-		}
-
-		Texture*             m_textures[15];
-		float                m_maxFrames[15];
-		float                m_sizes[15];
-	private:
-		mutable int32                m_variant;
-		mutable int32                m_prevVariant;
-
-	};
 
 	Unit();
 	explicit Unit(class Unit* const other);
@@ -145,6 +91,7 @@ public:
 	void SetPosition(const XMFLOAT3 position);
 	void GoBack();
 	void Die(class Unit* const killer);
+	void ApplyExperienceBonus(class Unit* const killer);
 	void SetAttackType(const enum class AttackType type) noexcept;
 	void SetAttackRange(const float range) noexcept;
 
@@ -170,6 +117,15 @@ public:
 
 	const float GetHealth() const noexcept;
 	const float GetMaxHealth() const noexcept;
+	const float GetHealthPercentage() const noexcept;
+
+	const float GetMana() const noexcept;
+	const float GetMaxMana() const noexcept;
+	const float GetManaPercentage() const noexcept;
+
+	const float GetExperience() const noexcept;
+	const float GetMaxExperience() const noexcept;
+	const float GetExperiencePercentage() const noexcept;
 
 	void SetFootstepsSound(class ISound* sound);
 

@@ -337,6 +337,8 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuRendererManager.h" />
     <ClInclude Include="ModelStance.h" />
+    <ClInclude Include="ModelStanceNPC.h" />
+    <ClInclude Include="ModelVariant.h" />
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_array.h" />
     <ClInclude Include="modern\modern_array_iterator.h" />
@@ -596,6 +598,7 @@
     <ClCompile Include="IPP.cpp" />
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="MenuRendererManager.cpp" />
+    <ClCompile Include="ModelVariant.cpp" />
     <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_class_view.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />

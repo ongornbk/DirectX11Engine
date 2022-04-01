@@ -7,6 +7,15 @@ int32 npc::isReleased() const noexcept
 	return false;
 }
 
+npc::npc() : 
+	ColorFilter(1.f,1.f,1.f,1.f),
+	m_animationSpeed(30.f),
+	m_framesPerSecond(1.f),
+	m_currentSpeed(0.f)
+{
+	m_type = EObjectType::OBJECT_TYPE_NPC;
+}
+
 void _fastcall npc::Render(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
 {
 

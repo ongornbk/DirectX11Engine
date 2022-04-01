@@ -1,11 +1,15 @@
 #pragma once
 #include "RenderContainer.h"
 #include "Texture.h"
+#include "ColorFilter.h"
+#include "ModelVariant.h"
 
-class npc : public EObject
+class npc : public EObject, public ColorFilter
 {
 public:
 	int32 isReleased() const noexcept override;
+
+	npc();
 
 	_Use_decl_annotations_
 		void _fastcall Render(
@@ -30,8 +34,10 @@ public:
 
 private:
 
-	class Texture* m_texture;
-	float          m_frames;
-	float          m_size;
+	struct ModelVariant m_variant;
+
+	float               m_animationSpeed;
+	float               m_currentSpeed;
+	float               m_framesPerSecond;
 };
 
