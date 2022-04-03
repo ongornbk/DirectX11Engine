@@ -12,7 +12,8 @@ public:
 	void OnHover() override;
 	void OnClick() override;
 
-	void SetStatus(const float status);
+	void SetStatusScaleX(const float status);
+	void SetStatusCutYAnchorBottom(const float status);
 
 	const enum class InterfaceBehaviorType GetType() const noexcept override;
 

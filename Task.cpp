@@ -276,12 +276,19 @@ bool TaskAttack::Update()
 		if (inrange)
 		{
 			atk.active = false;
-			float rotation = modern_atan2(destination.y - position.y, destination.x - position.x);
-			rotation += 90.f;
-			rotation /= (360.f / A->GetNumberOfRotations());
-			rotation = A->GetNumberOfRotations() - rotation;
-			A->SetRotation(rotation);
+			//float rotation = modern_atan2(destination.y - position.y, destination.x - position.x);
+			//rotation += 90.f;
+			//rotation /= (360.f / A->GetNumberOfRotations());
+			//rotation = A->GetNumberOfRotations() - rotation;
+			//A->SetRotation(rotation);
 
+			float rotation = modern_xangle2_between_points3(position, destination);
+
+			rotation += 180.f;
+			rotation /= (360.f / A->GetNumberOfRotations());
+			XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], fmod(rotation + (A->GetNumberOfRotations() / 2.f), A->GetNumberOfRotations()), A->GetNumberOfRotations());
+			A->SetRotation(rotation + (A->GetNumberOfRotations() / 2.f));
+			A->SetVelocity(f3.x, f3.y, f3.z);
 
 			switch (A->GetWalkingStance())
 			{
@@ -297,8 +304,8 @@ bool TaskAttack::Update()
 			}
 			}
 
-			DirectX::XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], A->GetRotation());
-			A->SetVelocity(f3.x, f3.y, f3.z);
+			//DirectX::XMFLOAT3 f3 = calculateVelocity(A->m_speed[0], A->GetRotation());
+			//A->SetVelocity(f3.x, f3.y, f3.z);
 			CONTINUE_TASK;
 		}
 		else

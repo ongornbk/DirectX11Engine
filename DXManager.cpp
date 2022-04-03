@@ -139,6 +139,7 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 			}
 		}
 
+
 		if (numerator == 0u && denominator == 0u)
 		{
 			return false;

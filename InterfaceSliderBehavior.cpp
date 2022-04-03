@@ -15,12 +15,11 @@ InterfaceSliderBehavior::InterfaceSliderBehavior(Interface* const owner) :
 	m_button->SetParent(m_owner);
 	m_owner->PushChild(m_button);
 	m_button->m_flags.m_rendering = true;
-	m_button->Initialize(device, context, m_interfaceShader, L"slider_button", m_owner->m_boundingSphere.Center,38.f,29.f);
+	m_button->Initialize(device, context, m_interfaceShader, L"slider_button", m_owner->m_boundingSphere.Center,38.f,29.f,ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER);
 }
 
 InterfaceSliderBehavior::~InterfaceSliderBehavior()
 {
-
 }
 
 void InterfaceSliderBehavior::OnHover()

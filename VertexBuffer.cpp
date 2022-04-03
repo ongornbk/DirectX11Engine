@@ -106,7 +106,7 @@ bool VertexBuffer::Initialize(ID3D11Device * device, Shader * shader, float size
 
 	delete[] indices;
 
-	
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER;
 	
 	return true;
 }
@@ -177,7 +177,7 @@ bool VertexBuffer::Initialize(VertexBuffer* const other)
 
 	delete[] indices;
 
-
+	m_anchorType = other->GetAnchor();
 
 	return true;
 }
@@ -251,7 +251,77 @@ bool VertexBuffer::InitializeAnchorBottom(
 
 	delete[] indices;
 
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM;
 
+	return true;
+}
+
+bool VertexBuffer::InitializeAnchorLeft(ID3D11Device* device, Shader* shader, float size[2], bool writeable)
+{
+	m_shader = shader;
+	uint32_t* indices;
+	struct D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	struct D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	HRESULT result;
+
+	m_vertexCount = 4;
+	m_indexCount = 6;
+
+	m_vertices = new struct SpriteVertexType[m_vertexCount];
+	indices = new uint32_t[m_indexCount];
+	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
+
+	float halfSizey = size[1] / 2.0f;
+
+	m_vertices[0].position = DirectX::XMFLOAT3(0.f, -halfSizey, 0.0f);
+	m_vertices[0].uv = DirectX::XMFLOAT2(0.0f, 1.0f);
+
+	m_vertices[1].position = DirectX::XMFLOAT3(0.f, halfSizey, 0.0f);
+	m_vertices[1].uv = DirectX::XMFLOAT2(0.0f, 0.0f);
+
+	m_vertices[2].position = DirectX::XMFLOAT3(size[0], halfSizey, 0.0f);
+	m_vertices[2].uv = DirectX::XMFLOAT2(1.0f, 0.0f);
+
+	m_vertices[3].position = DirectX::XMFLOAT3(size[0], -halfSizey, 0.0f);
+	m_vertices[3].uv = DirectX::XMFLOAT2(1.0f, 1.0f);
+
+	vertexBufferDesc.Usage = (writeable) ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(struct SpriteVertexType) * m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = (writeable) ? D3D11_CPU_ACCESS_WRITE : 0;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	vertexData.pSysMem = m_vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	delete[] indices;
+
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT;
 
 	return true;
 }
@@ -321,7 +391,7 @@ bool VertexBuffer::InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader,
 
 	delete[] indices;
 
-
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP_LEFT;
 
 	return true;
 }
@@ -391,7 +461,7 @@ bool VertexBuffer::InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader,
 
 	delete[] indices;
 
-
+	m_anchorType = ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP_LEFT;
 
 	return true;
 }
@@ -582,6 +652,11 @@ void VertexBuffer::SetAnchor(const enum ObjectAnchorType type) noexcept
 void VertexBuffer::SetNumberOfElements(const int32 elements) noexcept
 {
 	m_numOfElements = elements;
+}
+
+const ObjectAnchorType VertexBuffer::GetAnchor() const noexcept
+{
+	return m_anchorType;
 }
 
 struct SpriteVertexType * VertexBuffer::GetVertices()

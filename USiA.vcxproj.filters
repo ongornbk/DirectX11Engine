@@ -1017,6 +1017,9 @@
     <ClInclude Include="ModelStanceNPC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_bpair.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1684,6 +1687,9 @@
     </ClCompile>
     <ClCompile Include="ModelVariant.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_bpair.cpp">
+      <Filter>Header Files\modern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

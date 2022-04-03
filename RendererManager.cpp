@@ -166,7 +166,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(200.f, 60.f)
+		struct DirectX::XMFLOAT2(200.f, 60.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -185,12 +186,13 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_globe"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(140.f, 140.f)
+		struct DirectX::XMFLOAT2(142.f, 142.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
 		m_healthGlobe,
-		struct DirectX::XMFLOAT3(-405.f, -460.f, 0.f)
+		struct DirectX::XMFLOAT3(-408.f, -463.f, 0.f)
 	));
 
 	marray->push(new ActionSetInterfaceBehavior(
@@ -204,7 +206,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"mana_globe"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(138.f, 138.f)
+		struct DirectX::XMFLOAT2(138.f, 138.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -223,7 +226,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"ui_exp"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(644.f, 8.f)
+		struct DirectX::XMFLOAT2(644.f, 8.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -242,7 +246,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar_mini"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(80.f, 10.f)
+		struct DirectX::XMFLOAT2(80.f, 10.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -261,7 +266,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar_mini_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(80.f, 10.f)
+		struct DirectX::XMFLOAT2(80.f, 10.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -275,7 +281,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"health_bar_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(200.f, 60.f)
+		struct DirectX::XMFLOAT2(200.f, 60.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -289,7 +296,8 @@ RendererManager::RendererManager(
 		m_interfaceShader,
 		class  modern_string(L"ui_game"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
-		struct DirectX::XMFLOAT2(1920.f, 175.f)
+		struct DirectX::XMFLOAT2(1920.f, 175.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER
 	));
 
 	marray->push(new ActionSetInterfaceOffset(
@@ -653,7 +661,7 @@ void RendererManager::Render(
 						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
 						if (behaviorA)
 						{
-							behaviorA->SetStatus(che / mhe);
+							behaviorA->SetStatusScaleX(che / mhe);
 						}
 					}
 				}
@@ -675,7 +683,7 @@ void RendererManager::Render(
 						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
 						if (behaviorA)
 						{
-							behaviorA->SetStatus(che / mhe);
+							behaviorA->SetStatusCutYAnchorBottom(che / mhe);
 						}
 					}
 				}
@@ -697,7 +705,7 @@ void RendererManager::Render(
 						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
 						if (behaviorA)
 						{
-							behaviorA->SetStatus(che / mhe);
+							behaviorA->SetStatusCutYAnchorBottom(che / mhe);
 						}
 					}
 				}
@@ -904,9 +912,10 @@ void RendererManager::Render(
 							const float che = modern_ceil(unit->GetHealth());
 							const float mhe = unit->GetMaxHealth();
 							A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+							A->PostInitializeText();
 							if (behaviorA)
 							{
-								behaviorA->SetStatus(che / mhe);
+								behaviorA->SetStatusScaleX(che / mhe);
 							}
 						}
 					}

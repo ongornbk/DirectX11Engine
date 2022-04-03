@@ -14,6 +14,7 @@ class ActionInitializeInterface :
     modern_string m_paths;
     DirectX::XMFLOAT3 m_position;
     DirectX::XMFLOAT2 m_size;
+    enum class ObjectAnchorType m_anchor;
 
     ActionInitializeInterface() = delete;
 
@@ -26,7 +27,8 @@ public:
               class  Shader*              const shader,
               class  modern_string&             paths,
         const struct DirectX::XMFLOAT3&         position,
-        const struct DirectX::XMFLOAT2&         size
+        const struct DirectX::XMFLOAT2&         size,
+        const enum class ObjectAnchorType       anchor
     );
     ~ActionInitializeInterface();
 

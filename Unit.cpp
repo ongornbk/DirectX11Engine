@@ -23,6 +23,7 @@
 #include "Projectile.h"
 #include "SettingsC.h"
 #include "InterfaceStatusBarBehavior.h"
+#include "modern/modern_bpair.h"
 
 Unit::Unit() :
 	ColorFilter(1.f, 1.f, 1.f, 1.f),
@@ -210,7 +211,7 @@ void Unit::Render(
 				//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
 				if (behaviorA)
 				{
-					behaviorA->SetStatus(che / mhe);
+					behaviorA->SetStatusScaleX(che / mhe);
 				}
 				healthBar->Update(0.f);
 				healthBar->Render(deviceContext, viewMatrix, projectionMatrix, shader);
@@ -506,18 +507,18 @@ void Unit::Intersect(class EObject* const other)
 					}
 					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
 					{
-						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
-						{
-					
-						}
-						else
-						{
-							TaskAttack* task = new TaskAttack();
-							task->object.make_handle(this->GetHandle());
-							task->target.make_handle(other->GetHandle());
-							task->Initialize();
-							m_tasks.SetTask(task);
-						}
+					//	if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
+					//	{
+					//
+					//	}
+					//	else
+					//	{
+					//		TaskAttack* task = new TaskAttack();
+					//		task->object.make_handle(this->GetHandle());
+					//		task->target.make_handle(other->GetHandle());
+					//		task->Initialize();
+					//		m_tasks.SetTask(task);
+					//	}
 					}
 					else
 					{
@@ -721,11 +722,26 @@ void Unit::ApplyExperienceBonus(Unit* const killer)
 	{
 		//modern_guard g(killer);
 		killer->m_stats.m_exp += m_stats.m_expBonus;
+		modern_Boolean flag = 0;
 		while (killer->m_stats.m_exp > killer->m_stats.m_maxExp)
 		{
 			killer->m_stats.m_exp -= killer->m_stats.m_maxExp;
 			killer->m_stats.m_maxExp *= 2.f;
 			killer->m_stats.m_level++;
+			flag++;
+			{
+				killer->m_stats.m_attackDamage += 1.f;
+				killer->m_stats.m_maxHealth += 10.f;
+				killer->m_stats.m_healthRegeneration += 0.1f;
+				killer->m_stats.m_health = killer->m_stats.m_maxHealth;
+			}
+		}
+		if (flag)
+		{
+			Engine* const engine = Engine::GetEngine();
+			const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
+			engine->PlaySound(L"levelup", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+
 		}
 	}
 }

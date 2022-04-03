@@ -14,6 +14,7 @@
 #include "ActionMessageFront.h"
 #include "GarbageCollector.h"
 #include "modern/modern_vector.h"
+#include "modern/modern_bpair.h"
 #include <map>
 #include <streambuf>
 #include <fstream>

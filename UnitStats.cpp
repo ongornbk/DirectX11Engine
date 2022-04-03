@@ -8,10 +8,10 @@ UnitStats::UnitStats()
 	m_maxMana = 100.f;
 	m_healthRegeneration = 1.f;
 	m_manaRegeneration = 1.f;
-	m_attackDamage = 10.f;
+	m_attackDamage = 15.f;
 	m_exp = 0.f;
 	m_maxExp = 100.f;
-	m_expBonus = 10.f;
+	m_expBonus = 15.f;
 	m_level = 1;
 }
 

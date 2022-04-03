@@ -909,6 +909,7 @@ namespace lua_callback
 			const float p_x = (const float)lua_tointeger(state, 5);
 			const float p_y = (const float)lua_tointeger(state, 6);
 			const float p_z = (const float)lua_tointeger(state, 7);
+			const enum class ObjectAnchorType anchor = enum_cast<const enum class ObjectAnchorType>(lua_tointeger(state, 8));
 
 
 			wchar_t* wide_string = new wchar_t[str.length() + 1];
@@ -922,7 +923,8 @@ namespace lua_callback
 				wide_string,
 				struct DirectX::XMFLOAT3(p_x, p_y, p_z),
 				x_size,
-				y_size
+				y_size,
+				anchor
 			);
 			m_renderer->PushInterface(inter);
 
@@ -1502,6 +1504,7 @@ namespace lua_callback
 	{
 		class UnitGroup* const unit_group = (class UnitGroup* const)lua_tointeger(state, 1);
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 2);
+
 		
 		if (unit_group&& unit)
 		{

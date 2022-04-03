@@ -342,6 +342,7 @@
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_array.h" />
     <ClInclude Include="modern\modern_array_iterator.h" />
+    <ClInclude Include="modern\modern_bpair.h" />
     <ClInclude Include="modern\modern_class.h" />
     <ClInclude Include="modern\modern_class_view.h" />
     <ClInclude Include="modern\modern_cstring.h" />
@@ -599,6 +600,7 @@
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="MenuRendererManager.cpp" />
     <ClCompile Include="ModelVariant.cpp" />
+    <ClCompile Include="modern\modern_bpair.cpp" />
     <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_class_view.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />

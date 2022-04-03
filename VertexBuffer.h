@@ -14,6 +14,7 @@ public:
 	bool Initialize(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool Initialize(class VertexBuffer* const other);
 	bool InitializeAnchorBottom(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
+	bool InitializeAnchorLeft(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader, DirectX::XMFLOAT2 size, bool writeable = false);
 	bool InitializePart(ID3D11Device* device, Shader* shader, float size[2],float coords[6], bool writeable = false);
@@ -22,6 +23,8 @@ public:
 	void SetAnchor(const enum ObjectAnchorType type) noexcept;
 	void SetNumberOfElements(const int32 elements = 1) noexcept;
 
+	const enum ObjectAnchorType GetAnchor() const noexcept;
+
 	SpriteVertexType* GetVertices();
 	ID3D11Buffer* GetVertexBuffer();
 	int GetIndexCount();
@@ -29,8 +32,8 @@ public:
 protected:
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
-	int m_vertexCount;
-	int m_indexCount;
+	int32_t m_vertexCount;
+	int32_t m_indexCount;
 	Shader* m_shader;
 private:
 

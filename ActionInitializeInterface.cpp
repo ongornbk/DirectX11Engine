@@ -6,8 +6,16 @@ ActionInitializeInterface::ActionInitializeInterface(
     Shader* const shader,
     modern_string& paths,
     const DirectX::XMFLOAT3& position,
-    const DirectX::XMFLOAT2& size
-) : m_device(device), m_deviceContext(deviceContext), m_shader(shader), m_position(position), m_size(size), m_paths(paths)
+    const DirectX::XMFLOAT2& size,
+    const enum class ObjectAnchorType anchor
+) : 
+    m_device(device),
+    m_deviceContext(deviceContext),
+    m_shader(shader),
+    m_position(position),
+    m_size(size),
+    m_paths(paths),
+    m_anchor(anchor)
 {
     m_interface.make_handle((new Interface())->GetHandle());
     inter.make_handle(m_interface);
@@ -27,7 +35,7 @@ void ActionInitializeInterface::execute()
         if (A)
         {
             modern_guard g(A);
-            A->Initialize(m_device, m_deviceContext, m_shader, m_paths.c_wstr(),m_position, m_size.x,m_size.y);
+            A->Initialize(m_device, m_deviceContext, m_shader, m_paths.c_wstr(),m_position, m_size.x,m_size.y,m_anchor);
             A->m_flags.m_rendering = true;
             //A->SetPosition(DirectX::XMFLOAT3{ 0.f,0.f,0.f });
 

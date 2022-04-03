@@ -21,7 +21,8 @@ public:
 		WCHAR* paths,
 		const XMFLOAT3 position,
 		const float xsize,
-		const float ysize
+		const float ysize,
+		const enum ObjectAnchorType anchor
 	);
 
 	void PostInitializeText();
@@ -82,8 +83,13 @@ private:
 	XMFLOAT2      m_scale;
 	float         m_size;
 
+	float m_width;
+	float m_height;
+
 	Texture* m_texture;
 	Text* m_text;
 	VertexBuffer* m_vertexBuffer;
+
+	
 };
 

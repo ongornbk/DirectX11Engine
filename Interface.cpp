@@ -5,7 +5,7 @@
 #include "ActionRemoveObject.h"
 #include "Timer.h"
 
-Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f),m_scale(1.f,1.f)
+Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f),m_scale(1.f,1.f),m_width(0.f),m_height(0.f)
 {
 	m_vertexBuffer = nullptr;
 	m_texture = nullptr;
@@ -49,7 +49,8 @@ void Interface::Initialize(
 	WCHAR* paths,
 	const struct DirectX::XMFLOAT3 position,
 	const float xsize,
-	const float ysize
+	const float ysize,
+	const enum ObjectAnchorType anchor
 )
 {
 	//m_size = size;
@@ -60,7 +61,58 @@ void Interface::Initialize(
 
 	m_vertexBuffer = new VertexBuffer();
 	float sizexy[2] = { xsize,ysize };
-	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+
+	m_width = xsize;
+	m_height = ysize;
+
+	switch (anchor)
+	{
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP_LEFT:
+	{
+		(void)m_vertexBuffer->InitializeAnchorTopLeft(device, shader, sizexy, true);
+		break;
+	}
+	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP:
+	//{
+	//	break;
+	//}
+	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP_RIGHT:
+	//{
+	//	break;
+	//}
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT:
+	{
+		(void)m_vertexBuffer->InitializeAnchorLeft(device, shader, sizexy, true);
+		break;
+	}
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER:
+	{
+		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+		break;
+	}
+	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_RIGHT:
+	//{
+	//	break;
+	//}
+	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM_LEFT:
+	//{
+	//	break;
+	//}
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM:
+	{
+		(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
+		break;
+	}
+	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM_RIGHT:
+	//{
+	//	break;
+	//}
+	default:
+	{
+		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+	}
+	}
+	
 
 	if (paths != NULL)
 	{
@@ -91,6 +143,11 @@ void Interface::PostInitializeText()
 		case InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_SLIDER:
 		{
 			m_text->SetOffset({ 0.f,40.f,0.f });
+			break;
+		}
+		case InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_STATUSBAR:
+		{
+			m_text->SetOffset({ m_box.Extents.x,0.f,0.f });
 			break;
 		}
 		}
@@ -262,11 +319,39 @@ void Interface::SetOffset(DirectX::XMFLOAT3 offset)
 void Interface::SetPosition(const DirectX::XMFLOAT3& position)
 {
 	m_boundingSphere.Center = position;
+	m_box.Center = position;
+	switch (m_vertexBuffer->GetAnchor())
+	{
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT:
+	{
+		m_boundingSphere.Center.x -= m_box.Extents.x;
+		break;
+	}
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM:
+	{
+		m_boundingSphere.Center.y -= m_box.Extents.y;
+		break;
+	}
+	}
 }
 
 void _vectorcall Interface::SetPosition(DirectX::FXMVECTOR& position)
 {
 	DirectX::XMStoreFloat3(&m_boundingSphere.Center, position);
+	DirectX::XMStoreFloat3(&m_box.Center, position);
+	switch (m_vertexBuffer->GetAnchor())
+	{
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT:
+	{
+		m_boundingSphere.Center.x -= m_box.Extents.x;
+		break;
+	}
+	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM:
+	{
+		m_boundingSphere.Center.y -= m_box.Extents.y;
+		break;
+	}
+	}
 }
 
 IInterfaceBehavior* const Interface::GetBehavior()
