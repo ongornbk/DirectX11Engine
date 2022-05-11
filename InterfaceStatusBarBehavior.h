@@ -14,6 +14,7 @@ public:
 
 	void SetStatusScaleX(const float status);
 	void SetStatusCutYAnchorBottom(const float status);
+	void SetStatusCutXAnchorLeft(const float status);
 
 	const enum class InterfaceBehaviorType GetType() const noexcept override;
 

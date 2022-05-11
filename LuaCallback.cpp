@@ -567,6 +567,15 @@ namespace lua_callback
 		return 1;
 	}
 
+	static int32_t GetKillingUnit(
+		struct lua_State* const state
+	) noexcept
+	{
+		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_killingUnit.get();
+		lua_pushinteger(state, (lua_Integer)unit);
+		return 1;
+	}
+
 	static int32_t PickLastCreatedUnit(
 		struct lua_State* const
 	) noexcept
@@ -1567,10 +1576,9 @@ namespace lua_callback
 	)
 	{
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
-		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
-			return 0;
-
-		unit0->Die(nullptr);
+		class Unit* const unit1 = (class Unit* const)lua_tointeger(state, 2);
+		if (unit0 && unit0->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT)
+		unit0->Die(unit1);
 
 		return 0;
 	}
@@ -1602,6 +1610,23 @@ namespace lua_callback
 
 		unit0->SetAttackRange(range0);
 
+		return 0;
+	}
+
+	static int32 PrintObjectDebugInfo(
+		struct lua_State* const state
+	)
+	{
+		class EObject* const obj = (class EObject* const)lua_tointeger(state, 1);
+		std::cout << "Object Debug Info : " << obj << std::endl;
+		std::cout << "BLOCKED : " << obj->m_flags.m_blocked << std::endl;
+		std::cout << "SHADOW : " << obj->m_flags.m_cast_shadow << std::endl;
+		std::cout << "COLLID : " << obj->m_flags.m_collided << std::endl;
+		std::cout << "HIDE : " << obj->m_flags.m_hide << std::endl;
+		std::cout << "PUSH : " << obj->m_flags.m_pushable << std::endl;
+		std::cout << "RENDER : " << obj->m_flags.m_rendering << std::endl;
+		std::cout << "SELECTA : " << obj->m_flags.m_selectable << std::endl;
+		std::cout << "SELECTE : " << obj->m_flags.m_selected << std::endl;
 		return 0;
 	}
 
@@ -1665,6 +1690,22 @@ namespace lua_callback
 			Engine::GetEngine()->SetGameComponent(new class GameScene());
 		}
 
+		return 0;
+	}
+
+	static int32 RegisterEvent(
+		struct lua_State* const state
+	)
+	{
+		EventManager::GetInstance()->RegisterEvent(state);
+		return 0;
+	}
+
+	static int32 DiscardEvent(
+		struct lua_State* const state
+	)
+	{
+		EventManager::GetInstance()->Discard();
 		return 0;
 	}
 
@@ -1745,6 +1786,7 @@ namespace lua_callback
 		//lua_register(m_lua,"PickHero", lua_callback::PickHero);
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "GetLastSelectedUnit", lua_callback::GetLastSelectedUnit);
+		lua_register(m_lua, "GetKillingUnit", lua_callback::GetKillingUnit);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);//@@
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);//@@
 		lua_register(m_lua, "SetTaskAttack", lua_callback::SetTaskAttack);//@@
@@ -1801,6 +1843,11 @@ namespace lua_callback
 		lua_register(m_lua, "MakeHandle", lua_callback::MakeHandle);
 		lua_register(m_lua, "ReleaseHandle", lua_callback::ReleaseHandle);
 		lua_register(m_lua, "HandleGet", lua_callback::HandleGet);
+		//Events
+		lua_register(m_lua, "RegisterEvent", lua_callback::RegisterEvent);
+		lua_register(m_lua, "DiscardEvent", lua_callback::DiscardEvent);
+		//Debug
+		lua_register(m_lua, "PrintObjectDebugInfo", lua_callback::PrintObjectDebugInfo);
 	}
 
 }

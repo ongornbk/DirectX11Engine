@@ -626,7 +626,10 @@ void RendererManager::Render(
 	void RendererManager::Update(const float dt,const bool renderframe)
 	{
 
-		GLOBAL m_selectStatus = false;
+		GLOBAL m_lastSelectedUnit.release();
+		GLOBAL m_dyingUnit.release();
+		GLOBAL m_killingUnit.release();
+		GLOBAL m_triggeringUnit.release();
 
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
@@ -900,14 +903,14 @@ void RendererManager::Render(
 				{
 					modern_guard g1(A);
 					modern_guard g2(B);
-					if (GLOBAL m_selectStatus)
+					class Unit* const unit = (class Unit* const)GLOBAL m_lastSelectedUnit.get();
+					if (unit)
 					{
 						A->m_flags.m_rendering = true;
 						B->m_flags.m_rendering = true;
 						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
 						class Unit* const unit = (class Unit* const)GLOBAL m_lastSelectedUnit.get();
-						if (unit)
-						{
+						
 							modern_shared_guard g(unit);
 							const float che = modern_ceil(unit->GetHealth());
 							const float mhe = unit->GetMaxHealth();
@@ -915,9 +918,9 @@ void RendererManager::Render(
 							A->PostInitializeText();
 							if (behaviorA)
 							{
-								behaviorA->SetStatusScaleX(che / mhe);
+								behaviorA->SetStatusCutXAnchorLeft(che / mhe);
 							}
-						}
+						
 					}
 					else
 					{

@@ -80,10 +80,10 @@ void main(const int argc,char** const argv)
 
 		class FrameWork* const frameWork = new class FrameWork();
 
-		if (frameWork->Initialize(new class MainMenu))
-		{
-			frameWork->Run();
-		}
+			if (frameWork->Initialize(new class MainMenu))
+			{
+				frameWork->Run();
+			}
 
 		delete frameWork;
 	}

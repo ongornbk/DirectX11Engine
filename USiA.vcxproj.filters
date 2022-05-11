@@ -1020,6 +1020,12 @@
     <ClInclude Include="modern\modern_bpair.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="ActionNotifyBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1691,6 +1697,12 @@
     <ClCompile Include="modern\modern_bpair.cpp">
       <Filter>Header Files\modern</Filter>
     </ClCompile>
+    <ClCompile Include="ActionNotifyBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1830,6 +1842,9 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Handle.lua">
       <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\Triggers_Initialization.lua">
+      <Filter>Lua</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

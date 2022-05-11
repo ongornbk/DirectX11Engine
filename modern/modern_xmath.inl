@@ -77,3 +77,10 @@ inline void XM_CALLCONV modern_xfloat3_rotate_deg(DirectX::XMFLOAT3& A, const fl
 	A.x = A.x * cosf(modern_degtorad * deg) - A.y * sinf(modern_degtorad * deg);
 	A.y = A.x * sinf(modern_degtorad * deg) + A.y * cosf(modern_degtorad * deg);
 }
+
+inline DirectX::XMFLOAT3 XM_CALLCONV modern_xpolar_projection2(DirectX::XMFLOAT3& source, const float distance, const float angle)
+{
+	float x = source.x + (distance * cosf(angle * modern_degtorad));
+	float y = source.y + (distance * sinf(angle * modern_degtorad));
+	return DirectX::XMFLOAT3(x, y,source.z);
+}

@@ -539,10 +539,16 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 #pragma endregion
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
+	const bool Acollided = A->m_flags.m_collided;
+	const bool Bcollided = B->m_flags.m_collided;
+
 
 	const float Ax = A->m_boundingSphere.Center.x;
 
 	const float Bx = B->m_boundingSphere.Center.x;
+
+	if (Acollided || Bcollided)
+		return Ax > Bx;
 
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;
@@ -638,8 +644,14 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 #pragma endregion
 	const bool Apushable = A->m_flags.m_pushable;
 	const bool Bpushable = B->m_flags.m_pushable;
+	const bool Acollided = A->m_flags.m_collided;
+	const bool Bcollided = B->m_flags.m_collided;
 	const float Ay = A->m_boundingSphere.Center.y;
 	const float By = B->m_boundingSphere.Center.y;
+
+	//if (Acollided || Bcollided)
+	//	return Ay > By;
+
 	const float Sradius = Aradius + Bradius;
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;

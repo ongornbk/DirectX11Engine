@@ -13,6 +13,7 @@
 #include "ActionApplyColorFilter.h"
 #include "ActionMessageFront.h"
 #include "GarbageCollector.h"
+#include "LUAManager.h"
 #include "modern/modern_vector.h"
 #include "modern/modern_bpair.h"
 #include <map>
@@ -43,7 +44,11 @@ Engine::~Engine(void)
 
 	//ThreadPoolHandle tph;
 	//tph.wait();
-
+	if (m_eventManager)
+	{
+		delete m_eventManager;
+		m_eventManager = nullptr;
+	}
 	if (m_graphics)
 	{
 		delete m_graphics;
@@ -154,6 +159,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	lua::Open();
 	lua_callback::RegisterFunctions();
+	m_lua = lua::GetInstance();
+	m_eventManager = new EventManager(m_lua);
 	lua::Execute(lua::LUA_LOCATION_ENGINE_INITIALIZATION);
 
 	ipp::Console::Println("Engine::Lua Open and exec");

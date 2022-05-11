@@ -97,6 +97,9 @@
       <Optimization>Full</Optimization>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -116,6 +119,9 @@
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -133,6 +139,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -160,7 +169,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OpenMPSupport>true</OpenMPSupport>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <IntelJCCErratum>true</IntelJCCErratum>
@@ -199,6 +208,7 @@
     <ClInclude Include="ActionKillUnit.h" />
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="ActionMessageFront.h" />
+    <ClInclude Include="ActionNotifyBlock.h" />
     <ClInclude Include="ActionPushObject.h" />
     <ClInclude Include="ActionPushTimer.h" />
     <ClInclude Include="ActionRemoveObject.h" />
@@ -258,6 +268,7 @@
     <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="ExpiringTimer.h" />
     <ClInclude Include="FloatConditionEquals.h" />
     <ClInclude Include="FloatConditionGreater.h" />
@@ -477,6 +488,7 @@
     <ClCompile Include="ActionKillUnit.cpp" />
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="ActionMessageFront.cpp" />
+    <ClCompile Include="ActionNotifyBlock.cpp" />
     <ClCompile Include="ActionPushObject.cpp" />
     <ClCompile Include="ActionPushTimer.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
@@ -522,6 +534,7 @@
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="ExpiringTimer.cpp" />
     <ClCompile Include="FloatConditionEquals.cpp" />
     <ClCompile Include="FloatConditionGreater.cpp" />
@@ -715,6 +728,7 @@
     <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua" />
     <None Include="x64\Release\bin\x64\lua\manual\InputKeyboard.html" />
     <None Include="x64\Release\bin\x64\lua\Renderafter.lua" />
+    <None Include="x64\Release\bin\x64\lua\Triggers_Initialization.lua" />
     <None Include="x64\Release\content\Textures\models\amazon.mod" />
     <None Include="x64\Release\content\Textures\models\amazon_light.mod" />
     <None Include="x64\Release\content\Textures\models\baboon.mod" />

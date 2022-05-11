@@ -23,27 +23,37 @@ TaskQueue::TaskQueue()
 
 TaskQueue::~TaskQueue()
 {
-	Task* task = (Task*)m_tasks.pop();
-	while (task)
+//	Task* task = (Task*)m_tasks.pop();
+//	while (task)
+//	{
+//		task->Release();
+//		//m_tasks.pop();
+//		task = (Task*)m_tasks.pop();
+//}
+	for (auto& obj : m_tasks)
 	{
-		task->Release();
-		//m_tasks.pop();
-		task = (Task*)m_tasks.pop();
-}
+		obj->Release();
+	}
 }
 
 void TaskQueue::Discard()
 {
-	Task* task = (Task*)m_tasks.pop();
-	while (task)
-	{
-		//GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
-		//m_tasks.front();
-		task->Release();
-		task = (Task*)m_tasks.pop();
-	}
+	//Task* task = (Task*)m_tasks.pop();
+	//while (task)
+	//{
+	//	//GarbageCollector::GetInstance()->AsyncDelete(m_tasks.front());
+	//	//m_tasks.front();
+	//	task->Release();
+	//	task = (Task*)m_tasks.pop();
+	//}
 	//if (m_owner)
 	//	m_owner->EndRunning();
+
+	for (auto& obj : m_tasks)
+	{
+		obj->Release();
+	}
+	m_tasks.clear();
 }
 
 
@@ -51,7 +61,7 @@ bool TaskQueue::Update()
 {
 	//Task*
 	Task* task = (Task*)m_tasks.front();
-	if (task)
+	if (m_tasks.size())
 	{
 		if (task->Update())
 		{
@@ -67,7 +77,8 @@ bool TaskQueue::Update()
 					//	m_owner->EndRunning();
 				//}
 				task->Release();
-				m_tasks.pop();
+				m_tasks.pop_front();
+				//m_tasks.pop();
 			}
 			//if (m_tasks.size())
 			//{
@@ -88,13 +99,17 @@ void TaskQueue::SetTask(
 )
 {
 	Discard();
-	m_tasks.push(task);
+	m_tasks.push_back(task);
 	//if (m_owner&&task->m_stance == Task::Stance::TSRUNNING)
 	//	m_owner->BeginRunning();
 }
 void TaskQueue::QueueTask(Task * task)
 {
-	m_tasks.push(task);
+	m_tasks.push_back(task);
+}
+void TaskQueue::QueueFrontTask(Task* const task)
+{
+	m_tasks.push_front(task);
 }
 void TaskQueue::Wander(Unit * unit)
 {
@@ -111,7 +126,7 @@ void TaskQueue::SetOwner(Unit * object)
 
 Task::Type TaskQueue::GetActiveType() const noexcept
 {
-	if (m_tasks.front())
+	if (m_tasks.size())
 		return ((Task*)m_tasks.front())->m_type;
 	else
 		return Task::Type::NONE;
@@ -119,5 +134,7 @@ Task::Type TaskQueue::GetActiveType() const noexcept
 
 Task* const TaskQueue::GetActiveTask() const noexcept
 {
-	return ((Task*)m_tasks.front());
+	if (m_tasks.size())
+		return ((Task*)m_tasks.front());
+	else return nullptr;
 }

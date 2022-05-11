@@ -15,6 +15,7 @@
 #include "ActionMap.h"
 #include "PTaskGCClear.h"
 #include "PTaskRender.h"
+#include "EventManager.h"
 #include "modern/modern_shared.h"
 #include "modern/modern_timer.h"
 #include "modern/modern_framelock.h"
@@ -90,6 +91,7 @@ private:
 	FrameWork* m_framework;
     Graphics* m_graphics;
 	Global*   m_global;
+	EventManager* m_eventManager{};
 	static Engine* m_instance;
 	Camera* m_camera;
 	Input* m_input;

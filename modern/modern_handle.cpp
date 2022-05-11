@@ -171,6 +171,27 @@ volatile struct modern_class* const modern_handle::get()
 	else return nullptr;
 }
 
+void modern_handle::release()
+{
+	if (m_object == nullptr)
+		return;
+	if (m_num[0] <= 1)
+	{
+		if (m_object[0])
+			delete[] m_object;
+		m_object[0] = nullptr;
+		m_num[0] = 0;
+		delete m_num;
+		delete m_object;
+	}
+	else
+	{
+		m_num[0]--;
+	}
+	m_num = nullptr;
+	m_object = nullptr;
+}
+
 bool operator<(const modern_handle& lhs, const modern_handle& rhs)
 {
 	return lhs.m_object[0] < rhs.m_object[0];

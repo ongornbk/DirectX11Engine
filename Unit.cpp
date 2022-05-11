@@ -23,6 +23,7 @@
 #include "Projectile.h"
 #include "SettingsC.h"
 #include "InterfaceStatusBarBehavior.h"
+#include "EventManager.h"
 #include "modern/modern_bpair.h"
 
 Unit::Unit() :
@@ -337,7 +338,7 @@ void Unit::Update(const float dt)
 			}
 			else
 			{
-				m_floats[1] = m_boundingSphere.Center;
+			m_floats[1] = m_boundingSphere.Center;
 			}
 			struct DirectX::XMFLOAT3 niuPos = modern_xfloat3_sum(m_boundingSphere.Center, modern_xfloat3_multiply(m_floats[0], dt));
 
@@ -673,6 +674,20 @@ void Unit::GoBack()
 
 void Unit::Die(Unit* const killer)
 {
+	Global* const gl = Global::GetInstance();
+
+	gl->m_dyingUnit.make_handle(this->GetHandle());
+	gl->m_triggeringUnit.make_handle(this->GetHandle());
+	if (killer)
+	{
+		gl->m_killingUnit.make_handle(killer->GetHandle());
+	}
+	else
+	{
+		gl->m_killingUnit.release();
+	}
+	if (EventManager::GetInstance()->EventDyingUnit())
+		return;
 	//killer == nullptr is correct
 	if (m_dead)
 		return;
@@ -1039,6 +1054,10 @@ bool Unit::GetAttacked(class Unit* const attacker)
 	//	action->push(new ActionWait(0.01f));
 	//}
 	//Timer::CreateInstantTimer(action);
+	if (m_stop || m_dead)
+	{
+		return false;
+	}
 	DoDamage(attacker);
 	const int32_t ran = modern_random(0, 2);
 	Engine* const engine = Engine::GetEngine();
@@ -1062,10 +1081,7 @@ bool Unit::GetAttacked(class Unit* const attacker)
 		//txt->Initialize()
 		//txt.
 	}
-	if (m_stop || m_dead)
-	{
-		return false;
-	}
+
 	{
 		ForceAnimation(ModelStance::MODEL_STANCE_GETHIT);
 		SetVelocity(0.0f, 0.0f, 0.0f);
@@ -1095,6 +1111,8 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 	}
 	else
 	{
+
+
 		DirectX::XMFLOAT3 position = GetPosition();
 		float rotation = atan2(target.y - position.y, target.x - position.x) * modern_ragtodeg;
 		rotation += 90.0f;
@@ -1128,10 +1146,10 @@ void Unit::Select(modern_Boolean selct)
 		{
 			m_flags.m_selected = true;
 			GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
-			GLOBAL m_selectStatus = true;
 		}
 		else
 		{
+		GLOBAL m_lastSelectedUnit.release();
 			m_flags.m_selected = false;
 		}
 }
@@ -1185,6 +1203,23 @@ void Unit::SetFootstepsSound(class ISound * const sound)
 {
 	//m_footstepsSound = sound;
 	//m_footstepsHandle = sound->GetSound();
+}
+
+void Unit::NotifyBlock(EObject* const other)
+{
+	
+		GoBack();
+		//m_flags.m_collided = false;
+		//TaskGotoPoint* tp = new TaskGotoPoint();
+		//tp->destination = modern_xpolar_projection2(this->m_boundingSphere.Center, 300.f,modern_xangle2_between_points3(m_boundingSphere.Center,other->GetVector())+120.f);
+		//tp->object.make_handle(this->GetHandle());
+		//m_tasks.QueueFrontTask(tp);
+		//DiscardTasks();
+		//m_boundingSphere.Radius = 0.f;
+		//m_flags.m_blocked = false;
+		if (m_wanderingFlag == true)
+		{
+	}
 }
 
 void Unit::BeginRunning()

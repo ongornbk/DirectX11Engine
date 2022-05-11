@@ -32,6 +32,8 @@ public:
 	volatile struct modern_class* operator->();
 	volatile struct modern_class* const get();
 
+	void release();
+
 	friend bool operator< (const modern_handle& lhs, const modern_handle& rhs);
 };
 

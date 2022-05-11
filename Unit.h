@@ -129,6 +129,8 @@ public:
 
 	void SetFootstepsSound(class ISound* sound);
 
+	void NotifyBlock(class EObject* const other);
+
 	void BeginRunning();
 	void EndRunning();
 

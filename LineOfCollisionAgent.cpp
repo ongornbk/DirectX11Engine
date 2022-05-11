@@ -2,6 +2,7 @@
 #include "ActionExecuteActionArray.h"
 #include "ActionRemoveObject.h"
 #include "ActionGoBack.h"
+#include "ActionNotifyBlock.h"
 #include "Timer.h"
 #include "LineOfCollision.h"
 
@@ -60,13 +61,13 @@ void LineOfCollisionAgent::Update(float dt)
             {
             case EObjectType::OBJECT_TYPE_UNIT:
             {
-                
-               // unit->GoBack();
-                Timer::CreateInstantTimer(new ActionGoBack(unit));
-               //if (unit->IsWandering())
-               //{
-               //    unit->DiscardTasks();
-               //}
+                //unit->m_flags.m_pushable = false;
+                //unit->m_flags.m_collided = true;
+                //unit->m_flags.m_collided = true;
+                class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+                //action->push(new ActionGoBack(unit));
+                action->push(new ActionNotifyBlock(unit, this));
+                Timer::CreateInstantTimer(action);
                 break;
             }
             }
@@ -111,6 +112,7 @@ void LineOfCollisionAgent::Intersect(EObject* const other)
         }
         else
         {
+            //unit->m_flags.m_pushable = true;
             collline->m_objects.erase(unit->GetHandle());
         }
     

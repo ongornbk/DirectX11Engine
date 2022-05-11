@@ -13,6 +13,9 @@ public:
 	Global(void);
 	~Global(void);
 	modern_handle                      m_lastPickedUnit;
+	modern_handle                      m_dyingUnit;
+	modern_handle                      m_killingUnit;
+	modern_handle                      m_triggeringUnit;
 	modern_handle                      m_lastSelectedUnit;
 	modern_handle                      m_lastCreatedRenderContainer;
 	modern_handle                      m_pickedObject;
@@ -23,7 +26,6 @@ public:
 	std::stack<Unit*>    m_stack;
 	VariablesManager     m_variables;
 	uint32               m_size;
-	modern_Boolean       m_selectStatus;
 
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
