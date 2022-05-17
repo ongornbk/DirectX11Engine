@@ -24,11 +24,15 @@ class modern_class_view
 
 	modern_class_view() = delete;
 
-	const class modern_handle& GetHandle();
-	volatile class modern_handle& GetHandle() volatile;
+	//const class modern_handle& GetHandle();
+	//volatile class modern_handle& GetHandle() volatile;
 public:
 	modern_class_view(struct modern_class* const modern);
+	modern_class_view(volatile struct modern_class* const modern);
 
-	friend class modern_handle;
+	//friend class modern_handle;
+
+	const class modern_handle& GetHandle();
+	volatile class modern_handle& GetHandle() volatile;
 };
 

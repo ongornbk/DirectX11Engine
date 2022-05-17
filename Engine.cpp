@@ -553,8 +553,10 @@ void Engine::Update()
 				else
 				{
 				m_rendererManager->Sort();
+				//EventManager::GetInstance()->PostSort();
 				
 			}
+			
 		}
 	}
 }

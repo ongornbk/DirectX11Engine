@@ -71,10 +71,15 @@ public:
 		OBJECT_TYPE_PROJECTILE,
 		OBJECT_TYPE_LINE_COLLISION_AGENT,
 		OBJECT_TYPE_RECT_COLLISION_AGENT,
-		OBJECT_TYPE_NPC
+		OBJECT_TYPE_NPC,
+		OBJECT_TYPE_REGION_AGENT,
+		OBJECT_TYPE_RENDER_AGENT
 	}m_type;
 
 	const modern_handle& GetHandle();
 	volatile modern_handle& GetHandle() volatile;
+
+protected:
+	void safe_remove() noexcept;
 };
 

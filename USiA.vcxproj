@@ -155,14 +155,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CONSOLE;_WIN32_WINNT=0x0601;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -173,7 +173,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <IntelJCCErratum>true</IntelJCCErratum>
-      <CallingConvention>FastCall</CallingConvention>
+      <CallingConvention>Cdecl</CallingConvention>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
@@ -200,6 +200,8 @@
     <ClInclude Include="ActionChangeLayer.h" />
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
+    <ClInclude Include="ActionExecuteLuaFunction.h" />
+    <ClInclude Include="ActionGlobalSetLeavingObject.h" />
     <ClInclude Include="ActionGoBack.h" />
     <ClInclude Include="ActionIfThenElse.h" />
     <ClInclude Include="ActionInitializeInterface.h" />
@@ -299,6 +301,7 @@
     <ClInclude Include="Handle.h" />
     <ClInclude Include="HandleIntersetionInfo.h" />
     <ClInclude Include="HandleType.h" />
+    <ClInclude Include="heddef.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionCondition.h" />
     <ClInclude Include="IActionSplitArrayBehavior.h" />
@@ -329,6 +332,7 @@
     <ClInclude Include="IObjectVariable.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="IPTask.h" />
+    <ClInclude Include="IRegionAgent.h" />
     <ClInclude Include="IRendererManager.h" />
     <ClInclude Include="IScript.h" />
     <ClInclude Include="ISound.h" />
@@ -364,8 +368,12 @@
     <ClInclude Include="modern\modern_guard.h" />
     <ClInclude Include="modern\modern_guard_status.h" />
     <ClInclude Include="modern\modern_handle.h" />
+    <ClInclude Include="modern\modern_ibmap.h" />
     <ClInclude Include="modern\modern_math.h" />
     <ClInclude Include="modern\modern_memory.h" />
+    <ClInclude Include="modern\modern_minheap.h" />
+    <ClInclude Include="modern\modern_node256.h" />
+    <ClInclude Include="modern\modern_pack4.h" />
     <ClInclude Include="modern\modern_pair.h" />
     <ClInclude Include="modern\modern_queue.h" />
     <ClInclude Include="modern\modern_shared.h" />
@@ -405,7 +413,11 @@
     <ClInclude Include="RectOfCollisionAgentFirst.h" />
     <ClInclude Include="RectOfCollisionAgentSecond.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="RegionAgent.h" />
+    <ClInclude Include="RegionAgentMaster.h" />
     <ClInclude Include="RegionPointObject.h" />
+    <ClInclude Include="RenderAgent.h" />
+    <ClInclude Include="RenderAgentParent.h" />
     <ClInclude Include="RenderContainer.h" />
     <ClInclude Include="RenderContainerVector.h" />
     <ClInclude Include="RendererManager.h" />
@@ -480,6 +492,8 @@
     <ClCompile Include="ActionChangeLayer.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
+    <ClCompile Include="ActionExecuteLuaFunction.cpp" />
+    <ClCompile Include="ActionGlobalSetLeavingObject.cpp" />
     <ClCompile Include="ActionGoBack.cpp" />
     <ClCompile Include="ActionIfThenElse.cpp" />
     <ClCompile Include="ActionInitializeInterface.cpp" />
@@ -581,6 +595,7 @@
     <ClCompile Include="InterfaceStatusBarBehavior.cpp" />
     <ClCompile Include="IObjectVariable.cpp" />
     <ClCompile Include="IPlayer.cpp" />
+    <ClCompile Include="IRegionAgent.cpp" />
     <ClCompile Include="IRendererManager.cpp" />
     <ClCompile Include="IScript.cpp" />
     <ClCompile Include="ISound.cpp" />
@@ -642,7 +657,11 @@
     <ClCompile Include="RectOfCollisionAgentFirst.cpp" />
     <ClCompile Include="RectOfCollisionAgentSecond.cpp" />
     <ClCompile Include="Region.cpp" />
+    <ClCompile Include="RegionAgent.cpp" />
+    <ClCompile Include="RegionAgentMaster.cpp" />
     <ClCompile Include="RegionPointObject.cpp" />
+    <ClCompile Include="RenderAgent.cpp" />
+    <ClCompile Include="RenderAgentParent.cpp" />
     <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />

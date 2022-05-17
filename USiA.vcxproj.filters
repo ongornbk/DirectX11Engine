@@ -1026,6 +1026,42 @@
     <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RegionAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="heddef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteLuaFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGlobalSetLeavingObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionAgentMaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRegionAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAgentParent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_ibmap.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_node256.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_minheap.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_pack4.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1701,6 +1737,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteLuaFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGlobalSetLeavingObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionAgentMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IRegionAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAgentParent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

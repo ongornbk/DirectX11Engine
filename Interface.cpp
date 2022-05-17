@@ -199,9 +199,7 @@ void _fastcall Interface::PreRender(ID3D11DeviceContext* const deviceContext, co
 
 void Interface::Remove()
 {
-	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-	action->push(new ActionRemoveObject(this));
-	Timer::CreateInstantTimer(action);
+	safe_remove();
 }
 
 void Interface::Update(float dt)
@@ -366,22 +364,15 @@ void Interface::PushChild(EObject* const child)
 
 void Interface::SetText(std::string text)
 {
-	//TextFont* font = TextFont::GetFontByName("ExocetLight");
-			//font->Initialize(device, deviceContext,);
-			//font.
 	class TextFont* const font = RendererManager::GetInstance()->GetFont();
 	if (font == nullptr)
 		return;
-			//LetterSprite* sp = font->GetSprite(nullptr, 'a');
-			//sp->Update();
-			//sp->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
 
 			m_text = new Text;
 			m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(),font->GetShader(), font, 20.f);
 			m_text->SetText(text);
 			m_text->SetPosition(m_boundingSphere.Center);
-			//text->Update();
-			//text->Render(deviceContext, viewMatrix, projectionMatrix, pck.GetShader());
+
 }
 
 void Interface::SetText(modern_string& text)

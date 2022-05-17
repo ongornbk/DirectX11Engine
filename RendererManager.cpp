@@ -30,6 +30,8 @@
 #include "RectOfCollisionAgentSecond.h"
 #include "InterfaceStatusBarBehavior.h"
 #include "ActionSetInterfaceBehavior.h"
+#include "RegionAgent.h"
+#include "RegionAgentMaster.h"
 #pragma endregion
 #include <future>
 #include <mutex>
@@ -58,7 +60,6 @@ void _cdecl CleanupFrame()
 void _cdecl EditFrame()
 {
 	m_editMode.store(1, std::memory_order::memory_order_seq_cst);
-	
 }
 
 RendererManager::RendererManager(
@@ -128,6 +129,21 @@ RendererManager::RendererManager(
 	marray->push(new ActionTranslateText(
 		m_fpsText,
 		struct DirectX::XMFLOAT3(-935.f, 460.f, 0.f
+		)));
+
+	marray->push(new ActionInitializeText(
+		m_bmapText,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		m_font, 20.f
+	));
+
+	marray->push(new ActionSetTextAlignment(m_bmapText, TextAlignment::TEXT_ALIGN_LEFT));
+
+	marray->push(new ActionTranslateText(
+		m_bmapText,
+		struct DirectX::XMFLOAT3(-935.f, 430.f, 0.f
 		)));
 
 	marray->push(new ActionInitializeText(
@@ -400,6 +416,22 @@ void RendererManager::PushRectOfCollisionAgent(RectOfCollisionAgentSecond* const
 	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
 }
 
+void RendererManager::PushRegionAgent(RegionAgent* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
+}
+
+void RendererManager::PushRegionAgentMaster(RegionAgentMaster* const agent)
+{
+	m_layers[enum_cast<int32_t>(agent->GetLayerType())]->Push(agent);
+}
+
+void RendererManager::PushRenderAgent(RenderAgent* const agent)
+{
+	//m_layers[enum_cast<uint64_t>(agent->GetLayerType())]->Push(agent);
+	m_layers[1]->Push(agent);
+}
+
 void RendererManager::Push(class EObject* const object, const enum class RenderLayerType layer)
 {
 	m_layers[enum_cast<int32_t>(layer)]->Push(object);
@@ -522,6 +554,14 @@ void RendererManager::Render(
 			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 
 		}
+		class Text* const D = (class Text*)m_bmapText.get();
+		if (D)
+		{
+			modern_guard g(D);
+			D->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			D->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+
+		}
 		class Text* const B = (class Text*)m_objectsText.get();
 		if (B)
 		{
@@ -626,10 +666,7 @@ void RendererManager::Render(
 	void RendererManager::Update(const float dt,const bool renderframe)
 	{
 
-		GLOBAL m_lastSelectedUnit.release();
-		GLOBAL m_dyingUnit.release();
-		GLOBAL m_killingUnit.release();
-		GLOBAL m_triggeringUnit.release();
+		GLOBAL release();
 
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
@@ -725,6 +762,14 @@ void RendererManager::Render(
 				modern_guard g(A);
 				A->SetPosition(m_cameraPosition);
 				A->Update();
+
+			}
+			class Text* const D = (class Text*)m_bmapText.get();
+			if (D)
+			{
+				modern_guard g(D);
+				D->SetPosition(m_cameraPosition);
+				D->Update();
 
 			}
 			class Text* const B = (class Text*)m_objectsText.get();
@@ -841,6 +886,7 @@ void RendererManager::Render(
 
 			
 			this->Sort();
+			//EventManager::GetInstance()->PostSort();
 
 //#pragma omp critical
 			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
@@ -955,6 +1001,11 @@ void RendererManager::Render(
 		}
 	}
 
+	void RendererManager::PostSortUpdate(const float dt, const bool renderframe)
+	{
+		Timer::UpdatePostSort(dt);
+	}
+
 void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
 {
 	if (object)
@@ -1064,6 +1115,13 @@ void RendererManager::SetFps(const int32 fps)
 			A->SetText(modern_cstring("FPS ",fps).c_str());
 
 	}
+	class Text* const D = (class Text*)m_bmapText.get();
+	if (D)
+	{
+		modern_guard g(D);
+		D->SetText(modern_cstring("BMP ", GLOBAL m_testMap.size()).c_str());
+
+	}
 	class Text* const B = (class Text*)m_objectsText.get();
 	if (B)
 	{
@@ -1105,10 +1163,11 @@ void RendererManager::Clear()
 	}
 	this->PushAgent((class Agent*)m_cursorAgent.get());
 
-	test_line0.make_handle((new LineOfCollision({-1000.f,0.f}, {0.f,1000.f}))->GetHandle());
-	test_line1.make_handle((new LineOfCollision({ 0.f,1000.f }, { 1000.f,0.f }))->GetHandle());
-	test_line2.make_handle((new LineOfCollision({ -1000.f,0.f }, { 0.f,-1000.f }))->GetHandle());
-	test_line3.make_handle((new LineOfCollision({ 0.f,-1000.f }, { 1000.f,0.f }))->GetHandle());
+	//test_line0.make_handle((new LineOfCollision({-1000.f,0.f}, {0.f,1000.f}))->GetHandle());
+	//test_line1.make_handle((new LineOfCollision({ 0.f,1000.f }, { 1000.f,0.f }))->GetHandle());
+	//test_line2.make_handle((new LineOfCollision({ -1000.f,0.f }, { 0.f,-1000.f }))->GetHandle());
+	//test_line3.make_handle((new LineOfCollision({ 0.f,-1000.f }, { 1000.f,0.f }))->GetHandle());
+	//test_region.make_handle((new Region({ 500.f,500.f }, { -500.f,-500.f }))->GetHandle());
 }
 
 TextFont* const RendererManager::GetFont()
@@ -1161,6 +1220,7 @@ size_t RendererManager::GetNumberOfObjects()
 __m128 RendererManager::GetNumberOfObjectsX4()
 {
 //	return m_objects.GetSizeX4();
+	return __m128();
 }
 
 std::vector<int64> RendererManager::GetNumberOfObjectsVector()

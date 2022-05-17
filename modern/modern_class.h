@@ -33,3 +33,4 @@ protected:
 
 };
 
+typedef struct modern_class* const modern_classp;

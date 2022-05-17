@@ -1709,6 +1709,119 @@ namespace lua_callback
 		return 0;
 	}
 
+	static int32 BindRegion(
+		struct lua_State* const state
+	)
+	{
+		class Region* const region = (class Region* const)lua_tointeger(state, 1);
+		lua_Integer bindc = lua_tointeger(state, 2);
+		switch (bindc)
+		{
+		case 1:
+		{
+			std::string entering = lua_tostring(state, 3);
+			if (region)
+			{
+				modern_guard g(region);
+				region->BindEnters(entering);
+			}
+			break;
+		}
+		case 2:
+		{
+			std::string leaving = lua_tostring(state, 3);
+			if (region)
+			{
+				modern_guard g(region);
+				region->BindLeaves(leaving);
+			}
+			break;
+		}
+		case 3:
+		{
+			std::string entering = lua_tostring(state, 3);
+			std::string leaving = lua_tostring(state, 4);
+			if (region)
+			{
+				modern_guard g(region);
+				region->Bind(entering,leaving);
+			}
+			break;
+		}
+		default:
+		{
+			break;
+		}
+		}
+			
+		return 0;
+
+
+	}
+
+	static int32 RegionGiveName(
+		struct lua_State* const state
+	)
+	{
+		class Region* const region = (class Region* const)lua_tointeger(state, 1);
+		std::string name = lua_tostring(state, 2);
+		if (region)
+		{
+			modern_guard g(region);
+			region->GiveName(name);
+		}
+		return 0;
+	}
+
+	static int32 CreateRegion(
+		struct lua_State* const state
+	)
+	{
+		const float region0_x = LUA_FLOAT(state, 1);
+		const float region0_y = LUA_FLOAT(state, 2);
+		const float region1_x = LUA_FLOAT(state, 3);
+		const float region1_y = LUA_FLOAT(state, 4);
+
+		class Region* const region = new class Region(region0_x, region0_y, region1_x, region1_y);
+		lua_pushinteger(state, (lua_Integer)new modern_handle(region->GetHandle()));
+
+		return 1;
+	}
+
+	static int32 GetEnteringObject(
+		struct lua_State* const state
+	)
+	{
+		//tempcode warning
+		auto const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_enteringObject.get());
+		if (obj)
+		{
+			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_enteringObject.get());
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+	}
+
+	static int32 GetLeavingObject(
+		struct lua_State* const state
+	)
+	{
+		//tempcode warning
+		auto const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_leavingObject.get());
+		if (obj)
+		{
+			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_leavingObject.get());
+		}
+		else
+		{
+			lua_pushinteger(state, (lua_Integer)nullptr);
+		}
+		return 1;
+	}
+
 	static void RegisterFunctions()
 	{
 		struct lua_State* const m_lua = lua::GetInstance();
@@ -1846,8 +1959,14 @@ namespace lua_callback
 		//Events
 		lua_register(m_lua, "RegisterEvent", lua_callback::RegisterEvent);
 		lua_register(m_lua, "DiscardEvent", lua_callback::DiscardEvent);
+		lua_register(m_lua, "BindRegion", lua_callback::BindRegion);
+		lua_register(m_lua, "GetEnteringObject", lua_callback::GetEnteringObject);
+		lua_register(m_lua, "GetLeavingObject", lua_callback::GetLeavingObject);
 		//Debug
-		lua_register(m_lua, "PrintObjectDebugInfo", lua_callback::PrintObjectDebugInfo);
+		lua_register(m_lua, "PrintObjectDebugInfo", lua_callback::PrintObjectDebugInfo); 
+		//Region
+		lua_register(m_lua, "CreateRegion", lua_callback::CreateRegion);
+		lua_register(m_lua, "RegionGiveName", lua_callback::RegionGiveName);
 	}
 
 }

@@ -208,9 +208,7 @@ const RenderLayerType AnimatedDoodads::GetLayerType() const noexcept
 
 void AnimatedDoodads::Remove()
 {
-	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-	action->push(new ActionRemoveObject(this));
-	Timer::CreateInstantTimer(action);
+	safe_remove();
 }
 
 void AnimatedDoodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept

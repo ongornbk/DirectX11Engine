@@ -1,0 +1,113 @@
+#include "RegionAgent.h"
+#include "ActionExecuteActionArray.h"
+#include "ActionRemoveObject.h"
+#include "Timer.h"
+#include "EventManager.h"
+#include "Global.h"
+
+RegionAgent::RegionAgent()
+{
+    m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+    m_boundingSphere.Radius = 0.0f;
+    m_flags.m_hide = false;//Release
+    m_flags.m_pushable = false;
+    m_flags.m_selectable = false;
+    m_flags.m_rendering = false;
+
+    m_type = EObjectType::OBJECT_TYPE_REGION_AGENT;
+
+    m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
+}
+
+RegionAgent::~RegionAgent()
+{
+
+}
+
+void RegionAgent::Initialize(const XMFLOAT2 position, class Region* const parent)
+{
+    m_boundingSphere.Center.x = position.x;
+    m_boundingSphere.Center.y = position.y;
+    m_parent.make_handle(parent->GetHandle());
+}
+
+
+void _fastcall RegionAgent::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
+{
+
+}
+
+void _fastcall RegionAgent::PreRender(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
+{
+}
+
+void RegionAgent::Update(float dt)
+{
+}
+
+void RegionAgent::SetZ(float z)
+{
+}
+
+void RegionAgent::Release()
+{
+    m_flags.m_hide = true;
+}
+
+int32 RegionAgent::isReleased() const noexcept
+{
+    return m_flags.m_hide;
+}
+
+void RegionAgent::Intersect(EObject* const other)
+{
+    if (other == nullptr)
+        return;
+    if (other == this)
+        return;
+    if (other->m_boundingSphere.Radius == 0.f)
+        return;
+
+    class Region* const collline = (class Region* const)m_parent.get();
+   
+    if (collline->m_rect.Intersects(other->m_boundingSphere))
+    {
+   
+        if (collline->m_objects.insert(other->GetHandle()).second && collline->m_eventEntersBindStatus)
+        {
+            Global::GetInstance()->m_triggeringRegion.make_handle(collline->GetHandle());
+            Global::GetInstance()->m_enteringObject.make_handle(other->GetHandle());
+            EventManager::GetInstance()->EventRegionEntering();
+        }
+    }
+    else
+    {
+        if (collline->m_objects.erase(other->GetHandle()) && collline->m_eventLeavesBindStatus)
+        {
+            Global::GetInstance()->m_triggeringRegion.make_handle(collline->GetHandle());
+            Global::GetInstance()->m_leavingObject.make_handle(other->GetHandle());
+            EventManager::GetInstance()->EventRegionLeaving();
+        }
+    }
+
+}
+
+const RenderLayerType RegionAgent::GetLayerType() const noexcept
+{
+    return RenderLayerType::ENUM_OBJECT_TYPE;
+}
+
+void RegionAgent::Remove()
+{
+    safe_remove();
+}
+
+void RegionAgent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+{
+    m_boundingSphere.Center = vec;
+}
+
+DirectX::XMFLOAT3 RegionAgent::GetVector() noexcept
+{
+    return m_boundingSphere.Center;
+}

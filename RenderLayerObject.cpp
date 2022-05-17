@@ -18,7 +18,7 @@ void RenderLayerObject::Update(const float dt)
 {
 //#pragma omp parallel
 	{
-		m_size = 0u;
+		m_size = 0ull;
 		for (int32_t i = 0; i < MAP_DIVISION; ++i)
 		{
 			m_size += m_objects[1][i].size();
@@ -55,18 +55,18 @@ void _stdcall RenderLayerObject::Sort()
 void _stdcall RenderLayerObject::QSort()
 {
 //#pragma omp parallel
-	if (m_counter % 2)
-	{
+	//if (m_counter % 2)
+	//{
 		QSortByXV(m_objects);
 		QSortByYV(m_objects);
-	}
-	else
-	{
-		QSortByYV(m_objects);
-		QSortByXV(m_objects);
-	}
+	//}
+	//else
+	//{
+	//	QSortByYV(m_objects);
+	//	QSortByXV(m_objects);
+	//}
 
-	m_counter++;
+	//m_counter++;
 
 	PostSort();
 //#pragma omp barrier

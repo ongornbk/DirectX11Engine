@@ -14,10 +14,12 @@ class Timer : public ITimer
 {
 public:
 	static void Update(const float dt);
+	static void UpdatePostSort(const float dt);
 	static void Push(class ITimer* const timer);
 	static void CreateExpiringTimer(class IAction* const action, const float time);
 	static void CreatePeriodicTimer(class IAction* const action, const float time, const float period);
 	static void CreateInstantTimer(class IAction* const action);
+	static void CreatePostSortInstantTimer(class IAction* const action);
 	static void CreateFuzzyTimer(class IAction* const action,const float time);
 	static void CreateFuzzyExpiringTimer(class IAction* const actionFuzzy, class IAction* const actionExpiring, const float time);
 	static void CreateConditionTimer(class IAction* const action,class ICondition* const condition);

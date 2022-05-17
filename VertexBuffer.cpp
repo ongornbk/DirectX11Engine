@@ -484,7 +484,7 @@ bool VertexBuffer::InitializePart(
 
 	m_vertices = new struct SpriteVertexType[m_vertexCount];
 	indices = new uint32_t[m_indexCount];
-	memcpy(indices, t_indices6, sizeof(uint32_t) * 6);
+	memcpy(indices, t_indices6, sizeof(uint32_t) * 6ull);
 
 	float halfSizex = size[0] / 2.0f;
 	float halfSizey = size[1] / 1.0f;

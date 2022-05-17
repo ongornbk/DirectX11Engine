@@ -62,9 +62,17 @@ modern_handle::modern_handle()
 
 modern_handle::modern_handle(const modern_handle& diff)
 {
-	m_object = diff.m_object;
-	m_num = diff.m_num;
-	m_num[0]++;
+	if (diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+		m_num[0]++;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
 }
 
 modern_handle::modern_handle(modern_class_view& view)
@@ -129,6 +137,7 @@ void modern_handle::make_handle(volatile class modern_handle& diff) volatile
 
 	//std::cout << m_num[0] - 1 << "::. " << m_num[0] << std::endl;
 }
+
 
 void modern_handle::Release() const
 {

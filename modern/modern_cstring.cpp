@@ -159,6 +159,7 @@ modern_cstring::~modern_cstring()
 const wchar_t* modern_cstring::c_wstr() const noexcept
 {
 	//return m_string->data();
+	return nullptr;
 }
 
 const char* modern_cstring::c_str() const noexcept

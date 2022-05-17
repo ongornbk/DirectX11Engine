@@ -6,6 +6,7 @@ class RenderLayerShadow :
 	public RenderLayer
 {
 	class modern_array<class EObject*> m_objects[2][MAP_DIVISION];
+
 public:
 	RenderLayerShadow();
 	~RenderLayerShadow();
@@ -40,6 +41,7 @@ public:
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) noexcept override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Agent* agent, float range) noexcept override;
 	std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range)noexcept override;
+
 };
 
 

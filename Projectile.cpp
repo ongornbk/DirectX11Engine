@@ -128,15 +128,19 @@ void Projectile::Intersect(EObject* const other)
                 const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
                 if (distance < (m_collision + target->GetCollisionRadius()))
                 {
-                    target->GetHit(owner);
-                    target->DoDamage(owner);
+                    if (GLOBAL m_testMap[modern_pack4(this, target)] == 0)
+                    {
+                        GLOBAL m_testMap[modern_pack4(this, target)]++;
+                        target->GetHit(owner);
+                        target->DoDamage(owner);
 
-                    class IAction* const action = new ActionRemoveObject(this);
-                    Timer::CreateInstantTimer(action);
-                    m_flags.m_hide = true;
+                       // class IAction* const action = new ActionRemoveObject(this);
+                       // Timer::CreateInstantTimer(action);
+                       // m_flags.m_hide = true;
 
-                    Engine* const engine = Engine::GetEngine();
-                    engine->PlaySound(L"impact_arrow",modern_clamp_reverse_div(soundDistance,0.f,1000.f)*100.f);
+                        Engine* const engine = Engine::GetEngine();
+                        engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+                    }
                 }
             }
 

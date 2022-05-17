@@ -113,6 +113,7 @@ public:
 	bool GetHit(class Unit* const hitter);
 	bool StartCasting(const DirectX::XMFLOAT2 target);
 	void DoDamage(class Unit* const attacker);
+	void Damage(const float damage);
 	void Select(modern_Boolean selct = 1);
 
 	const float GetHealth() const noexcept;

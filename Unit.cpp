@@ -753,6 +753,10 @@ void Unit::ApplyExperienceBonus(Unit* const killer)
 		}
 		if (flag)
 		{
+			Global* const gl = Global::GetInstance();
+			gl->m_triggeringUnit.make_handle(this->GetHandle());
+			if (EventManager::GetInstance()->EventLevelUpUnit())
+				return;
 			Engine* const engine = Engine::GetEngine();
 			const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
 			engine->PlaySound(L"levelup", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
@@ -1111,7 +1115,10 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 	}
 	else
 	{
-
+		Global* const gl = Global::GetInstance();
+		gl->m_triggeringUnit.make_handle(this->GetHandle());
+		if (EventManager::GetInstance()->EventStartCastingUnit())
+			return false;
 
 		DirectX::XMFLOAT3 position = GetPosition();
 		float rotation = atan2(target.y - position.y, target.x - position.x) * modern_ragtodeg;
@@ -1140,12 +1147,32 @@ void Unit::DoDamage(class Unit* const attacker)
 	}
 }
 
+void Unit::Damage(const float damage)
+{
+	m_stats.m_health -= damage;
+	if (m_stats.m_health > 0.f)
+	{
+
+	}
+	else
+	{
+		Die(nullptr);
+		m_stats.m_health = 0.f;
+	}
+}
+
 void Unit::Select(modern_Boolean selct)
 {
 	if (selct)
 		{
+		Global* const gl = Global::GetInstance();
+		gl->m_triggeringUnit.make_handle(this->GetHandle());
+		gl->m_lastSelectedUnit.make_handle(this->GetHandle());
+		if (EventManager::GetInstance()->EventSelectUnit())
+			return;
 			m_flags.m_selected = true;
-			GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
+			
+
 		}
 		else
 		{

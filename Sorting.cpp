@@ -5,6 +5,7 @@
 #include "modern/modern_guard.h"
 #include "modern/modern_shared_guard.h"
 #include "modern/modern_vector.h"
+#include "IAction.h"
 //#include "Math.h"
 #include "Tile.h"
 #include "game_math.h"
@@ -18,6 +19,7 @@ namespace
 
 {
 	modern_vector<SortPair> m_postPairs;
+	
 }
 
 namespace
@@ -740,14 +742,38 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 
 void sortPxVTP(class modern_array<class EObject*>& vector) noexcept
 {
-	_Sort_unchecked(vector.begin(), vector.end(),vector.size(), __sort__SortByX());
+	//try
+	//{
+		_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByX());
+	//}
 	//std::sort(vector.begin(), vector.end(), __sort__SortByX());
+	//catch (...)
+	//{
+	//	int64_t i;
+	//	for (auto obj : vector)
+	//	{
+	//		std::cout << i << " :" << obj << " -> " << typeid(obj).name() << std::endl;
+	//		i++;
+	//	}
+	//}
 }
 
 
 void sortPyVTP(class modern_array<class EObject*>& vector) noexcept
 {
-	_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByY());
+	//try
+	//{
+		_Sort_unchecked(vector.begin(), vector.end(), vector.size(), __sort__SortByY());
+	//}
+	//catch (...)
+	//{
+	//	int64_t i;
+	//	for (auto obj : vector)
+	//	{
+	//		std::cout << i << " :" << obj << " -> "<<typeid(obj).name() << std::endl;
+	//			i++;
+	//	}
+	//}
 	//std::sort(vector.begin(), vector.end(), __sort__SortByY());
 }
 

@@ -178,9 +178,7 @@ const RenderLayerType Doodads::GetLayerType() const noexcept
 
 void Doodads::Remove()
 {
-	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-	action->push(new ActionRemoveObject(this));
-	Timer::CreateInstantTimer(action);
+	safe_remove();
 }
 
 void Doodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept

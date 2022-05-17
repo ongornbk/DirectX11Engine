@@ -28,6 +28,7 @@ public:
 
 	void make_handle(const class modern_handle& diff);
 	void make_handle(volatile class modern_handle& diff) volatile;
+
 	~modern_handle();
 	volatile struct modern_class* operator->();
 	volatile struct modern_class* const get();

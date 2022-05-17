@@ -9,6 +9,8 @@ enum class ENUM_EVENT_TYPE
 	EVENT_TYPE_DO_NOTHING,//out!!!
 	EVENT_TYPE_DYING_UNIT,
 	EVENT_TYPE_START_CASTING_UNIT,
+	EVENT_TYPE_SELECT_UNIT,
+	EVENT_TYPE_LEVELUP_UNIT,
 	COUNT
 };
 
@@ -23,9 +25,14 @@ public:
 
 	void RegisterEvent(struct lua_State* const state);
 	void Discard() const noexcept;
+	//void PostSort();
 
 	const modern_Boolean EventDyingUnit();
-	const modern_Boolean StartCastingUnit();
+	const modern_Boolean EventStartCastingUnit();
+	const modern_Boolean EventSelectUnit();
+	const modern_Boolean EventLevelUpUnit();
+	const modern_Boolean EventRegionEntering();
+	const modern_Boolean EventRegionLeaving();
 
 	static EventManager* GetInstance();
 };

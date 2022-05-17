@@ -18,12 +18,12 @@ modern is a trademark of ongornbk@gmail.com.
 template <class T>
 class modern_unique
 {
-	T* m_pointer;
+	__unaligned T* m_pointer;
 
 public:
-	modern_unique() 
+	modern_unique() : m_pointer(nullptr)
 	{ 
-		m_pointer = nullptr;
+		
 	}
 	modern_unique(T* const pointer) : m_pointer(pointer) {};
 	modern_unique(class modern_unique&) = delete;
@@ -38,7 +38,7 @@ public:
 		m_pointer = pointer;
 	}
 
-	T& operator*() const noexcept { assert(m_pointer); return *m_pointer; }
-	T* operator->() const noexcept { assert(m_pointer); return m_pointer; }
+	T& operator*() const noexcept { /*assert(m_pointer)*/; return *m_pointer; }
+	T* operator->() const noexcept { /*assert(m_pointer)*/; return m_pointer; }
 };
 

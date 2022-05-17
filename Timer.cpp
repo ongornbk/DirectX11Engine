@@ -8,6 +8,7 @@ namespace
 {
 	static std::list<class ITimer*> m_stoppedTimers;
 	static std::list<class ITimer*> m_timers;
+	static std::list<class ITimer*> m_timersPostSort;
 	static std::list<class ITimer*> m_echoTimers;
 	static std::atomic<int64_t> m_stance = 0;
 }
@@ -16,9 +17,6 @@ namespace
 
 void Timer::Update(const float dt)
 {
-
-	class GarbageCollector* const gbc = GarbageCollector::GetInstance();
-
 	m_stance.store(1, std::memory_order::memory_order_seq_cst);
 
 		for (auto& element = m_timers.begin();element != m_timers.end();element++)
@@ -36,6 +34,21 @@ void Timer::Update(const float dt)
 		m_stance.store(0, std::memory_order::memory_order_seq_cst);
 
 		m_timers.merge(m_echoTimers);
+}
+
+void Timer::UpdatePostSort(const float dt)
+{
+	for (auto& element = m_timersPostSort.begin(); element != m_timersPostSort.end(); element++)
+	{
+		if ((*element)->update(dt))
+		{
+			//gbc->AsyncDelete(*element);
+			//std::cout << "fddff" << std::endl;
+			//delete(ITimer*)(* element);
+			delete* element;
+			m_timers.erase(element);
+		}
+	}
 }
 
 void Timer::Push(ITimer* const timer)
@@ -75,6 +88,13 @@ void Timer::CreateInstantTimer(IAction* const action)
 	if (m_stance.load() == 0)
 		m_timers.push_back(timer);
 	else m_echoTimers.push_back(timer);
+}
+
+void Timer::CreatePostSortInstantTimer(IAction* const action)
+{
+	class InstantTimer* const timer = new class InstantTimer();
+	timer->action = action;
+		m_timersPostSort.push_back(timer);
 }
 
 
