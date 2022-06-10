@@ -18,7 +18,7 @@ modern is a trademark of ongornbk@gmail.com.
 template <class T>
 class modern_unique
 {
-	__unaligned T* m_pointer;
+	T* m_pointer;
 
 public:
 	modern_unique() : m_pointer(nullptr)

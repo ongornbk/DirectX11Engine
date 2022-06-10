@@ -198,6 +198,8 @@
     <ClInclude Include="ActionAttack.h" />
     <ClInclude Include="ActionBehavior.h" />
     <ClInclude Include="ActionChangeLayer.h" />
+    <ClInclude Include="ActionErasePack2.h" />
+    <ClInclude Include="ActionErasePack4.h" />
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
     <ClInclude Include="ActionExecuteLuaFunction.h" />
@@ -373,6 +375,7 @@
     <ClInclude Include="modern\modern_memory.h" />
     <ClInclude Include="modern\modern_minheap.h" />
     <ClInclude Include="modern\modern_node256.h" />
+    <ClInclude Include="modern\modern_pack2.h" />
     <ClInclude Include="modern\modern_pack4.h" />
     <ClInclude Include="modern\modern_pair.h" />
     <ClInclude Include="modern\modern_queue.h" />
@@ -490,6 +493,8 @@
     <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionAttack.cpp" />
     <ClCompile Include="ActionChangeLayer.cpp" />
+    <ClCompile Include="ActionErasePack2.cpp" />
+    <ClCompile Include="ActionErasePack4.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
     <ClCompile Include="ActionExecuteLuaFunction.cpp" />

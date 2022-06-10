@@ -1,3 +1,4 @@
+#pragma once
 #include "modern_handle.h"
 #include "modern_unique.h"
 #include "modern_class.h"
@@ -9,46 +10,63 @@ struct modern_pack4
 	{
 		struct
 		{
-			class modern_unique<class modern_handle> first;
-			class modern_unique<class modern_handle> second;
-			class modern_unique<class modern_handle> third;
-			class modern_unique<class modern_handle> fourth;
+			class modern_handle* first;
+			class modern_handle* second;
+			class modern_handle* third;
+			class modern_handle* fourth;
 		};
-		class modern_unique<class modern_handle> m_data[4];
+		__m256 m_data;
 	};
 
 	modern_pack4(modern_class_view A, modern_class_view B, modern_class_view C, modern_class_view D)
 	{
-		first.make_unique(new modern_handle(A.GetHandle()));
-		second.make_unique(new modern_handle(B.GetHandle()));
-		third.make_unique(new modern_handle(C.GetHandle()));
-		fourth.make_unique(new modern_handle(D.GetHandle()));
+		first = new modern_handle(A.GetHandle());
+		second = new modern_handle(B.GetHandle());
+		third = new modern_handle(C.GetHandle());
+		fourth = new modern_handle(D.GetHandle());
 	}
 
 	modern_pack4(modern_class_view A, modern_class_view B)
 	{
-		first.make_unique(new modern_handle(A.GetHandle()));
-		second.make_unique(new modern_handle(B.GetHandle()));
-		third.make_unique(new modern_handle());
-		fourth.make_unique(new modern_handle());
+		first = new modern_handle(A.GetHandle());
+		second = new modern_handle(B.GetHandle());
+		third = new modern_handle();
+		fourth = new modern_handle();
 	}
 
 	modern_pack4(struct modern_pack4& other)
 	{
-		first.make_unique(new modern_handle(*other.first));
-		second.make_unique(new modern_handle(*other.second));
-		third.make_unique(new modern_handle(*other.third));
-		fourth.make_unique(new modern_handle(*other.fourth));
+		first = new modern_handle(*other.first);
+		second = new modern_handle(*other.second);
+		third = new modern_handle(*other.third);
+		fourth = new modern_handle(*other.fourth);
+	}
+
+	modern_pack4(const struct modern_pack4& other)
+	{
+		first = new modern_handle(*other.first);
+		second = new modern_handle(*other.second);
+		third = new modern_handle(*other.third);
+		fourth = new modern_handle(*other.fourth);
 	}
 
 	modern_pack4()
 	{
-
+		first = new modern_handle();
+		second = new modern_handle();
+		third = new modern_handle();
+		fourth = new modern_handle();
 	}
 
 	~modern_pack4()
 	{
-
+		if (first)
+		{
+			delete first;
+			delete second;
+			delete third;
+			delete fourth;
+		}
 	}
 
 	modern_Boolean operator<(const modern_pack4& lhs) const
@@ -59,5 +77,18 @@ struct modern_pack4
 	modern_Boolean operator ==(const modern_pack4& lhs) const
 	{
 		return ((*first).get() == (*lhs.first).get()) && ((*second).get() == (*lhs.second).get());
+	}
+
+	struct modern_pack4& operator= (const struct modern_pack4& other)
+	{
+		if (this == &other)
+			return *this;
+
+		first->make_handle(*other.first);
+		second->make_handle(*other.second);
+		third->make_handle(*other.third);
+		fourth->make_handle(*other.fourth);
+
+		return *this;
 	}
 };

@@ -96,19 +96,19 @@ void modern_handle::make_handle(
 			delete m_object;
 			m_num = nullptr;
 			m_object = 0;
-			//	std::cout << "delete handle" << std::endl;
 		}
 		else
 		{
 			m_num[0]--;
-			//	std::cout << (m_num[0])+1 << "::. " << m_num[0] << std::endl;
 		}
 	}
 	m_object = diff.m_object;
 	m_num = diff.m_num;
-	m_num[0]++;
 
-	//std::cout << m_num[0] - 1 << "::. " << m_num[0] << std::endl;
+	if (m_num)//case where diff is uninitialized
+	{
+		m_num[0]++;
+	}
 }
 
 void modern_handle::make_handle(volatile class modern_handle& diff) volatile

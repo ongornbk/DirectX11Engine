@@ -1062,6 +1062,15 @@
     <ClInclude Include="modern\modern_pack4.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_pack2.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionErasePack2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionErasePack4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1758,6 +1767,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderAgentParent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionErasePack2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionErasePack4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include "Doodads.h"
 #include "gdef.h"
 #include "modern/modern_handle.h"
+#include "modern/modern_pack2.h"
 #include "modern/modern_pack4.h"
 #include <stack>
 
@@ -34,7 +35,8 @@ public:
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
 
-	std::map<modern_pack4, int64> m_testMap;
+	//std::map<struct modern_pack2, int64> m_bmap2;
+	//std::map<struct modern_pack4, int64> m_bmap4;
 
 	void getS(std::string name) const;
 	void release();

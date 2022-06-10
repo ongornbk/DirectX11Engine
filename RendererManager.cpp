@@ -1119,7 +1119,7 @@ void RendererManager::SetFps(const int32 fps)
 	if (D)
 	{
 		modern_guard g(D);
-		D->SetText(modern_cstring("BMP ", GLOBAL m_testMap.size()).c_str());
+		//D->SetText(modern_cstring("BMP ", GLOBAL m_bmap4.size()).c_str());
 
 	}
 	class Text* const B = (class Text*)m_objectsText.get();

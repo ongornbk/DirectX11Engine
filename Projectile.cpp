@@ -1,6 +1,8 @@
 #include "Projectile.h"
 #include "ActionExecuteActionArray.h"
 #include "ActionRemoveObject.h"
+#include "ActionErasePack4.h"
+#include "ActionErasePack2.h"
 #include "Timer.h"
 
 Projectile::Projectile()
@@ -128,14 +130,15 @@ void Projectile::Intersect(EObject* const other)
                 const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
                 if (distance < (m_collision + target->GetCollisionRadius()))
                 {
-                    if (GLOBAL m_testMap[modern_pack4(this, target)] == 0)
+                    //struct modern_pack4* const pck4 = new struct modern_pack4(this, target);
+                    //if (GLOBAL m_bmap4.count(*pck4) == 0ull)
                     {
-                        GLOBAL m_testMap[modern_pack4(this, target)]++;
+                       // GLOBAL m_bmap4[*pck4]++;
                         target->GetHit(owner);
                         target->DoDamage(owner);
 
-                       // class IAction* const action = new ActionRemoveObject(this);
-                       // Timer::CreateInstantTimer(action);
+                        //class IAction* const action = new ActionErasePack4(pck4);
+                        //Timer::CreateExpiringTimer(action,1.f);
                        // m_flags.m_hide = true;
 
                         Engine* const engine = Engine::GetEngine();
