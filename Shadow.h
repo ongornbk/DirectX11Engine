@@ -36,9 +36,9 @@ public:
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 	void Intersect( class EObject* const other) override;
-	const enum class RenderLayerType GetLayerType() const noexcept override;
+	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 
 };
 

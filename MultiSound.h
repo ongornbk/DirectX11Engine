@@ -4,10 +4,10 @@ class MultiSound :
 	public ISound
 {
 public:
-	MultiSound(WCHAR* soundFileName);
+	MultiSound(const class modern_string& name);
 	~MultiSound(void);
-	bool Initialize(WCHAR* soundFileName) override;
-	bool IsInitialized() override;
+	modern_Boolean Initialize(const class modern_string& name) override;
+	modern_Boolean IsInitialized() override;
 	sf::SoundSource::Status GetStatus() override;
 	void Play() override;
 	void Play(const float volume) override;
@@ -20,13 +20,13 @@ public:
 
 	void Update(void) override;
 
-	std::string GetName() override;
+	const class modern_string_view& GetName() override;
 	sf::Sound* GetSound() override;
 private:
 	sf::Sound* m_sound;
 	sf::SoundBuffer m_soundBuffer;
 
-	std::string m_name;
+	class modern_string m_name;
 	bool m_initialized;
 	bool m_isLooping;
 	float m_volume;

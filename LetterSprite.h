@@ -29,9 +29,9 @@ public:
 
 	
 
-	const char GetLetter() const noexcept;
+	const char GetLetter() const modern_except_state;
 
-	static  void _vectorcall SetMatrixIdentity(const struct DirectX::XMMATRIX identity) noexcept;
+	static  void _vectorcall SetMatrixIdentity(const struct DirectX::XMMATRIX identity) modern_except_state;
 
 private:
 	ID3D11DeviceContext * m_deviceContext;
@@ -65,7 +65,7 @@ public:
 
 	void _vectorcall SetPosition(const struct DirectX::XMFLOAT3& position);
 
-	const char GetLetter() const noexcept;
+	const char GetLetter() const modern_except_state;
 private:
 	LetterSpriteStruct();
 	class LetterSprite* m_letter;

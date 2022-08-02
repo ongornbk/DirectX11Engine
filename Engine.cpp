@@ -16,6 +16,7 @@
 #include "LUAManager.h"
 #include "modern/modern_vector.h"
 #include "modern/modern_bpair.h"
+#include "compilation_header.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -89,7 +90,7 @@ Engine::~Engine(void)
 	lua::Close();
 }
 
-double Engine::GetDeltaTime() const noexcept
+double Engine::GetDeltaTime() const modern_except_state
 {
 	return m_deltaTime;
 }
@@ -166,11 +167,21 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	ipp::Console::Println("Engine::Lua Open and exec");
 
 #pragma region
-	LOADSHADER  L"x64/Release/bin/Shaders/texture.fx"                              END
-	LOADSHADER  L"x64/Release/bin/Shaders/tile.fx"                                 END
-	LOADSHADER  L"x64/Release/bin/Shaders/units.fx"                                END
-	LOADSHADER  L"x64/Release/bin/Shaders/shadow.fx"                               END
-	LOADSHADER  L"x64/Release/bin/Shaders/select.fx"                               END
+
+#ifdef VS_DEBUG_COMPILATION
+	LOADSHADER  L"x64/Release/bin/shaders/texture.fx"                              END
+	LOADSHADER  L"x64/Release/bin/shaders/tile.fx"                                 END
+	LOADSHADER  L"x64/Release/bin/shaders/units.fx"                                END
+	LOADSHADER  L"x64/Release/bin/shaders/shadow.fx"                               END
+	LOADSHADER  L"x64/Release/bin/shaders/select.fx"                               END
+#else
+	LOADSHADER  L"../shaders/texture.fx"                              END
+	LOADSHADER  L"../shaders/tile.fx"                                 END
+	LOADSHADER  L"../shaders/units.fx"                                END
+	LOADSHADER  L"../shaders/shadow.fx"                               END
+	LOADSHADER  L"../shaders/select.fx"                               END
+#endif //VS_DEBUG_COMPILATION
+
 	//LOADSHADER  L"x64/Release/bin/Shaders/interface.fx"                            END
 	TextureShader* uiShader         = GETSHADER "texture.fx"                END
 	TextureShader* unitsShader      = GETSHADER "units.fx"                  END
@@ -185,14 +196,22 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_input->Initialize(hInstance, hwnd,Settings::GetResolutionX(), Settings::GetResolutionY());
 	lua_callback::SetInput(m_input);
 
+	ResourceManager::GetInstance()->PrintOutSounds();
+	ResourceManager::GetInstance()->PrintOutTextures();
+
+	
+
 	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader,interfaceShader);
 	lua_callback::SetRendererManager(m_rendererManager);
+
+	
 	
 	m_cameraControl.SetCurrentCamera(m_camera);
 	m_graphics->Initialize();
 
 	lua_callback::InitializeGraphics();
 
+	
 
 	if(m_gameComponent!=NULL)
 	{
@@ -223,7 +242,7 @@ namespace
 
 	extern "C"
 	{
-		double clockToMilliseconds(clock_t ticks) noexcept {
+		double clockToMilliseconds(clock_t ticks) modern_except_state {
 			// units/(units/time) => time (seconds) * 1000 = milliseconds
 			return (ticks / (double)CLOCKS_PER_SEC)*1000.0;
 		}
@@ -404,7 +423,7 @@ void Engine::PlayMusic(WCHAR * music)
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 
 	class ISound* const __music = m_canals.__GetSound(tmp1);
-	assert(__music);
+	//assert(__music);
 	
 	
 	if (m_playingMusic)
@@ -449,7 +468,7 @@ void Engine::PlaySound(WCHAR * music)
 void Engine::PlaySound(modern_string& music)
 {
 	class ISound* const sound = m_canals.__GetSound(music);
-	assert(sound);
+	//assert(sound);
 if(sound)
 	sound->Play();
 }
@@ -459,11 +478,12 @@ void Engine::PlaySound(WCHAR* sound, const float volume)
 	wstring tmp0 = wstring(sound);
 	string  tmp1 = string(tmp0.begin(), tmp0.end());
 	class ISound* const __sound = m_canals.__GetSound(tmp1);
-	assert(__sound);
+	//assert(__sound);
+	if(__sound)
 	__sound->Play(volume);
 }
 
-CameraControl * Engine::GetCameraControl()
+class CameraControl* const Engine::GetCameraControl()
 {
 	return &m_cameraControl;
 }
@@ -590,7 +610,7 @@ void Engine::Render()
 		XMFLOAT4X4 interfaceOrtho = m_camera->GetInterfaceOrtho();
 
 		m_rendererManager->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix, interfaceOrtho);
-
+		
 		if (m_gameComponent != NULL)
 		{
 			m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);

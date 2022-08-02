@@ -9,11 +9,11 @@ constexpr char cs_number[10] = { '0','1','2','3','4','5','6','7','8','9' };
 
 modern_cstring::modern_cstring()
 {
-	m_string.make_shared(new modern_array<char>());
-	m_string->push_back('\0');
+	m_string.make_shared(new class modern_array<char>());
+	push_zero();
 }
 
-modern_cstring::modern_cstring(modern_cstring& string)
+modern_cstring::modern_cstring(class modern_cstring& string)
 {
 	m_string.make_shared(new modern_array<char>());
 	m_string->reserve(string.size() + 1);
@@ -35,7 +35,7 @@ modern_cstring::modern_cstring(const char* text_begin, const char* text_end)
 		push_back(*i);
 	}
 	if (*i != '\0')
-		push_back('\0');
+		push_zero();
 }
 
 modern_cstring::modern_cstring(const char* text)
@@ -156,24 +156,24 @@ modern_cstring::~modern_cstring()
 {
 }
 
-const wchar_t* modern_cstring::c_wstr() const noexcept
+const wchar_t* modern_cstring::c_wstr() const modern_except_state
 {
 	//return m_string->data();
 	return nullptr;
 }
 
-const char* modern_cstring::c_str() const noexcept
+const char* modern_cstring::c_str() const modern_except_state
 {
 	//return _bstr_t(m_string->data());
 	return m_string->data();
 }
 
-size_t modern_cstring::size() const noexcept
+size_t modern_cstring::size() const modern_except_state
 {
 	return m_string->size();
 }
 
-int32_t modern_cstring::to_int32() noexcept
+int32_t modern_cstring::to_int32() modern_except_state
 {
 	modern_array<int32_t> digits;
 	modern_shared<modern_array<char>> base;
@@ -200,7 +200,7 @@ int32_t modern_cstring::to_int32() noexcept
 	return value;
 }
 
-float modern_cstring::to_float() noexcept
+float modern_cstring::to_float() modern_except_state
 {
 	float result = 0.f;
 	float negative = 1.f;
@@ -222,7 +222,7 @@ float modern_cstring::to_float() noexcept
 	return 1.0f;
 }
 
-bool modern_cstring::to_bool() noexcept
+bool modern_cstring::to_bool() modern_except_state
 {
 	if (m_string->at(0) == 't' || m_string->at(0) == 'T' || m_string->at(0) == '1')
 	{
@@ -282,7 +282,8 @@ void modern_cstring::push_back(const char element)
 
 void modern_cstring::pop_front()
 {
-	m_string->remove(0);
+	if (size())
+		m_string->remove(0ull);
 }
 
 char*& modern_cstring::data()
@@ -298,19 +299,24 @@ void modern_cstring::resize(size_t size)
 void modern_cstring::load(const char* text)
 {
 	m_string.make_shared(new modern_array<char>());
-	m_string->reserve(strlen(text) + 1);
-	m_string->resize(strlen(text) + 1);
+	m_string->reserve(strlen(text) + 2ull);
+	m_string->resize(strlen(text) + 1ull);
 #pragma warning(disable : 4996)
 	//mbstowcs(m_string->data(), text, strlen(text));
 	strncpy(m_string->data(), text, strlen(text));
 }
 
-bool modern_isdigit(char ch) noexcept
+void modern_cstring::push_zero() const modern_except_state
+{
+	m_string->push_back('\0');
+}
+
+bool modern_isdigit(char ch) modern_except_state
 {
 	return (ch >= L'0' && ch <= L'9');
 }
 
-int32_t modern_todigit(char ch) noexcept
+int32_t modern_todigit(char ch) modern_except_state
 {
 	return ch - '0';
 }

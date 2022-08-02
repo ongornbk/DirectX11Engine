@@ -4,8 +4,10 @@ ActionIfThenElse::ActionIfThenElse(
 	class ICondition* const __condition,
 	class IAction* const __then,
 	class IAction* const __else)
-	: m_if(__condition), m_then(__then), m_else(__else)
 {
+	m_if = __condition;
+	m_then = __then;
+	m_else = __else;
 }
 
 ActionIfThenElse::~ActionIfThenElse()

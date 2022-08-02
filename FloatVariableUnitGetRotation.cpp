@@ -2,8 +2,9 @@
 #include "Unit.h"
 #include <cassert>
 
-FloatVariableUnitGetRotation::FloatVariableUnitGetRotation(Unit* const __unit) : unit(__unit)
+FloatVariableUnitGetRotation::FloatVariableUnitGetRotation(Unit* const __unit)
 {
+	unit = __unit;
 }
 
 const float FloatVariableUnitGetRotation::get()

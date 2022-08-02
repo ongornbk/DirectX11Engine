@@ -85,7 +85,7 @@ void LineOfCollisionAgent::Release()
     m_flags.m_hide = true;
 }
 
-int32 LineOfCollisionAgent::isReleased() const noexcept
+int32 LineOfCollisionAgent::isReleased() const modern_except_state
 {
     return m_flags.m_hide;
 }
@@ -118,7 +118,7 @@ void LineOfCollisionAgent::Intersect(EObject* const other)
     
 }
 
-const RenderLayerType LineOfCollisionAgent::GetLayerType() const noexcept
+const RenderLayerType LineOfCollisionAgent::GetLayerType() const modern_except_state
 {
     return RenderLayerType::ENUM_OBJECT_TYPE;
 }
@@ -130,12 +130,12 @@ void LineOfCollisionAgent::Remove()
     Timer::CreateInstantTimer(action);
 }
 
-void LineOfCollisionAgent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void LineOfCollisionAgent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
 }
 
-DirectX::XMFLOAT3 LineOfCollisionAgent::GetVector() noexcept
+DirectX::XMFLOAT3 LineOfCollisionAgent::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
 }

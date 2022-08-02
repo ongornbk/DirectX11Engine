@@ -24,7 +24,7 @@ public:
 	EventManager(struct lua_State* const lua);
 
 	void RegisterEvent(struct lua_State* const state);
-	void Discard() const noexcept;
+	void Discard() const modern_except_state;
 	//void PostSort();
 
 	const modern_Boolean EventDyingUnit();

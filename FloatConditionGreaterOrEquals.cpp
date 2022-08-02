@@ -6,7 +6,7 @@ FloatConditionGreaterOrEquals::FloatConditionGreaterOrEquals(IFloatVariable* con
 
 }
 
-bool FloatConditionGreaterOrEquals::CheckCondition()
+modern_Boolean FloatConditionGreaterOrEquals::CheckCondition()
 {
 	return (m_A->get() >= m_B->get());
 }

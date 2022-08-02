@@ -6,6 +6,9 @@
 
 #include "gdef.h"
 
+#include "modern/modern_string.h"
+#include "modern/modern_string_view.h"
+
 namespace ipp
 {
 
@@ -48,19 +51,19 @@ namespace ipp
 		void _fastcall clamp(int32 &value,const int32 min,const int32 max);
 		void _fastcall clamp(float &value,const float min,const float max);
 		int32 _fastcall range(int32 &value,const int32 min,const int32 max);
-		void SquashInt32Array(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
-		void SquashInt32Array(struct DirectX::XMINT2& int2, const int32 min, const int32 max) noexcept;
-		int32 SquashInt32ArrayWithCheck(int32* value,const int32 size,const int32 min,const int32 max) noexcept;
-		uint8 _cdecl RandomUint8(const uint8 min,const uint8 max) noexcept;
-		int32 _stdcall RandomInt32(const int32 min, const int32 max) noexcept;
+		void SquashInt32Array(int32* value,const int32 size,const int32 min,const int32 max) modern_except_state;
+		void SquashInt32Array(struct DirectX::XMINT2& int2, const int32 min, const int32 max) modern_except_state;
+		int32 SquashInt32ArrayWithCheck(int32* value,const int32 size,const int32 min,const int32 max) modern_except_state;
+		uint8 _cdecl RandomUint8(const uint8 min,const uint8 max) modern_except_state;
+		int32 _stdcall RandomInt32(const int32 min, const int32 max) modern_except_state;
 	}
 
 	namespace System
 	{
-		int _stdcall GetScreenWidth() noexcept;
-		int _stdcall GetScreenHeight() noexcept;
-		std::string _stdcall GetFileName(const std::string &s) noexcept;
-		void _stdcall Exit(const int32 return_value = 0) noexcept;
+		int _stdcall GetScreenWidth() modern_except_state;
+		int _stdcall GetScreenHeight() modern_except_state;
+		std::string _stdcall GetFileName(const std::string &s) modern_except_state;
+		void _stdcall Exit(const int32 return_value = 0) modern_except_state;
 	}
 
 	class __Console
@@ -76,6 +79,9 @@ namespace ipp
 		void __Print(const wchar_t* text);
 		void __Print(std::string text, TextColors color);
 		void __Print(std::string text, std::wstring wide, TextColors color);
+		void __Println(const class modern_string& str0, const class modern_string& str1, TextColors color);
+		void __Println(const class modern_string& str0, const class modern_string& str1);
+		void __Println(const class modern_string& str0, const class modern_string_view& str1);
 		void __Print(std::string text,const int32_t value);
 		void __Print(float number);
 		void __Print(int32_t number);
@@ -105,6 +111,9 @@ namespace ipp
 		static void Println(std::wstring text);
 		static void Println(std::string text, TextColors color);
 		static void Println(std::string text,std::wstring wide, TextColors color);
+		static void Println(const class modern_string& str0,const class modern_string& str1, TextColors color);
+		static void Println(const class modern_string& str0, const class modern_string& str1);
+		static void Println(const class modern_string& str0, const class modern_string_view& str1);
 		static void Println(std::string text, const int value);
 		static void Println(float number);
 		static void Println(uint32_t number);

@@ -182,7 +182,7 @@ void AnimatedDoodads::Release()
 	}
 }
 
-int32 AnimatedDoodads::isReleased() const noexcept
+int32 AnimatedDoodads::isReleased() const modern_except_state
 {
 	if (m_vertexBuffer)
 	{
@@ -199,7 +199,7 @@ void AnimatedDoodads::Intersect( class EObject* const other)
 
 }
 
-const RenderLayerType AnimatedDoodads::GetLayerType() const noexcept
+const RenderLayerType AnimatedDoodads::GetLayerType() const modern_except_state
 {
 	if (m_destroyed)
 		return RenderLayerType::ENUM_OBJECT_TYPE;
@@ -211,12 +211,12 @@ void AnimatedDoodads::Remove()
 	safe_remove();
 }
 
-void AnimatedDoodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void AnimatedDoodads::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 
 }
 
-DirectX::XMFLOAT3 AnimatedDoodads::GetVector() noexcept
+DirectX::XMFLOAT3 AnimatedDoodads::GetVector() modern_except_state
 {
 	return { 0.f,0.f,0.f };
 }

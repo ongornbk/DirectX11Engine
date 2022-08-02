@@ -25,12 +25,11 @@ public:
 
 	void LoadShaderResource(HWND hwnd, WCHAR* shaderFileName);
 	void LoadShaderResource(Shader* shader);
-	void LoadTextureResource( WCHAR* textureFileName);
-	void LoadTextureResource(modern_string& name);
-	void LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type);
-	void LoadSoundResource(class modern_string& soundFileName, const enum class SoundType type);
+	void LoadTextureResource(const class modern_string& name);
+	void LoadSoundResource(class modern_string& name, const enum class SoundType type);
 	void LoadUnitTemplateResource(modern_string& filename);
 	void PrintOutTextures();
+	void PrintOutSounds();
 	void Release();
 
 	class Shader* GetShaderByName(const char* shaderName);
@@ -47,8 +46,6 @@ private:
 	vector<class ResourceTexture*> m_textures;
 	vector<class ResourceShader*>  m_shaders;
 	vector<class ResourceSound*>   m_sounds;
-
-	mutex m_shaderMutex;
 
 	static class ResourceManager* m_instance;
 

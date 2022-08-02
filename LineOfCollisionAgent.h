@@ -39,11 +39,11 @@ public:
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 	void Intersect(class EObject* const other) override;
-	const enum class RenderLayerType GetLayerType() const noexcept override;
+	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 
-	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
-	DirectX::XMFLOAT3 GetVector() noexcept override;
+	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
+	DirectX::XMFLOAT3 GetVector() modern_except_state override;
 };

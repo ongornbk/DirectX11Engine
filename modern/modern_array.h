@@ -16,6 +16,13 @@ modern is a trademark of ongornbk@gmail.com.
 #include "modern_def.h"
 #include "modern_memory.h"
 
+//#define MODERN_ARRAY_DEBUG
+#ifdef MODERN_ARRAY_DEBUG
+#define modern_array_assert(condition) assert(condition)
+#else
+#define modern_array_assert(condition)
+#endif MODERN_ARRAY_DEBUG
+
 template <class T>
 class modern_array
 {
@@ -27,19 +34,19 @@ public:
 
 	explicit modern_array()
 		{
-		m_size = 0u;
-		m_capacity = 4u;
+		m_size = 0ull;
+		m_capacity = 4ull;
 		m_data = mmalloc<T>(m_capacity);
-		assert(m_data);
+		modern_array_assert(m_data);
 		}
 
 	modern_array(const size_t capacity)
 	{
-		assert(capacity);
-		m_size = 0u;
+		modern_array_assert(capacity);
+		m_size = 0ull;
 		m_capacity = capacity;
 		m_data = mmalloc<T>(m_capacity);
-		assert(m_data);
+		modern_array_assert(m_data);
 	}
 
 	modern_array(const size_t size,void* const)
@@ -52,59 +59,59 @@ public:
 		mfree(m_data);
 	}
 
-	T* begin() const noexcept
+	T* begin() const modern_except_state
 	{
 		return m_data;
 	}
-	T* end() const noexcept
+	T* end() const modern_except_state
 	{
 		return (m_data + m_size);
 	}
 
 	T& operator[](const size_t element) const
 	{
-		assert(element < m_size);
+		modern_array_assert(element < m_size);
 		return *(m_data + element);
 	}
 
 	T& at(const size_t element) const
 	{
-		assert(element < m_size);
+		modern_array_assert(element < m_size);
 		return *(m_data + element);
 	}
 
 	void resize(const size_t size = m_capacity)
 	{
-		assert(size > 0);
+		modern_array_assert(size > 0ull);
 		m_size = size;
 		if (m_size > m_capacity)
 		{
 			m_capacity = m_size;
 			m_data = mrealloc<T>(m_data,m_capacity);
-			assert(m_data);
+			modern_array_assert(m_data);
 		}
 	}
 
 	void expand_size(const size_t size)
 	{
-		assert(size);
+		modern_array_assert(size);
 		m_size += size;
 		if (m_size > m_capacity)
 		{
 			m_capacity = m_size;
 			m_data = mrealloc<T>(m_data, m_capacity);
-			assert(m_data);
+			modern_array_assert(m_data);
 		}
 	}
 
 	void reserve(const size_t capacity)
 	{
-		assert(capacity > 0);
+		modern_array_assert(capacity > 0ull);
 		if (capacity > m_capacity)
 		{
 			m_capacity = capacity;
 			m_data = mrealloc<T>(m_data, m_capacity);
-			assert(m_data);
+			modern_array_assert(m_data);
 		}
 	}
 
@@ -114,18 +121,18 @@ public:
 		m_size++;
 		if (m_size >= m_capacity)
 		{
-			m_capacity *= 2u;
+			m_capacity *= 2ull;
 			m_data = mrealloc<T>(m_data, m_capacity);
-			assert(m_data);	
+			modern_array_assert(m_data);
 		}
 		
 	}
 
 	void copy_back(T* collection,const size_t size)
 	{
-		assert(size);
-		assert(collection);
-		for (size_t i = 0u; i < size; i++)
+		modern_array_assert(size);
+		modern_array_assert(collection);
+		for (size_t i = 0ull; i < size; i++)
 		{
 			push_back(collection[i]);
 		}
@@ -156,40 +163,40 @@ public:
 
 	void clear()
 	{
-		m_size = 0;
+		m_size = 0ull;
 	}
 
 	void shrink()
 	{
-		if (m_capacity > m_size + 1)
+		if (m_capacity > m_size + 1ull)
 		{
-			m_capacity = m_size + 1;
+			m_capacity = m_size + 1ull;
 			m_data = mrealloc<T>(m_data,m_capacity);
 		}
 	}
 
 	void reverse()
 	{
-		for (int32_t i = 0; i < m_size / 2; i++)
-			std::swap(m_data[i], m_data[m_size - i - 1]);
+		for (size_t i = 0ull; i < m_size / 2ull; i++)
+			std::swap(m_data[i], m_data[m_size - i - 1ull]);
 	}
 
-	void remove(const int32_t index)
+	void remove(const size_t index)
 	{
-		assert(index >= 0 && index < m_size);
-		if (index > m_size || m_size < 1)
+		modern_array_assert(index >= 0ull && index < m_size);
+		if (index > m_size || m_size < 1ull)
 			return;
-		for (int32_t i = index; i < m_size; ++i)
-			m_data[i] = m_data[i + 1];
+		for (size_t i = index; i < m_size; ++i)
+			m_data[i] = m_data[i + 1ull];
 		m_size--;
 	}
 
 	void initialize(const size_t size,void* const)
 	{
-		assert(size);
+		modern_array_assert(size);
 		m_size = size;
-		m_capacity = size;
-		m_data = mcalloc<T>(size);
-		assert(m_data);
+		m_capacity = size + 1ull;
+		m_data = mcalloc<T>(m_capacity);
+		modern_array_assert(m_data);
 	}
 };

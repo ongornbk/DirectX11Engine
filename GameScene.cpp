@@ -55,22 +55,22 @@ bool GameScene::Initialize()
 extern "C"
 {
 
-//	double prd_vect(float x1, float x2, float y1, float y2) noexcept
+//	double prd_vect(float x1, float x2, float y1, float y2) modern_except_state
 //	{
 //		return x1 * y2 - y1 * x2;
 //	}
 //
-//	double angle_rad(float x1, float x2, float y1, float y2) noexcept
+//	double angle_rad(float x1, float x2, float y1, float y2) modern_except_state
 //	{
 //		return (prd_vect(x1, x2, y1, y2) < 0 ? -1 : 1) * acos((x1*x2 + y1 * y2) / (sqrt(x1*x1 + y1 * y1)*sqrt(x2*x2 + y2 * y2)));
 //	}
 //
-//	double angle_deg(float x1, float x2, float y1, float y2) noexcept
+//	double angle_deg(float x1, float x2, float y1, float y2) modern_except_state
 //	{
 //		return angle_rad(x1, x2, y1, y2) / 3.14f * 180;
 //	}
 //
-//	inline  float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) noexcept
+//	inline  float _vectorcall DistanceBetweenXMFLOAT3(XMFLOAT3 a, XMFLOAT3 b) modern_except_state
 //	{
 //		float xd = abs(a.x - b.x);
 //		float yd = abs(a.y - b.y);

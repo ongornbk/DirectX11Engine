@@ -48,6 +48,7 @@ void Global::release()
 	m_enteringObject.release();
 	m_leavingObject.release();
 	m_pickedObject.release();
+	m_matchingObject.release();
 	m_lastCreatedRenderContainer.release();
 	m_lastPickedUnit.release();
 }

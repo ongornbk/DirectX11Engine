@@ -54,7 +54,7 @@ void RegionAgent::Release()
     m_flags.m_hide = true;
 }
 
-int32 RegionAgent::isReleased() const noexcept
+int32 RegionAgent::isReleased() const modern_except_state
 {
     return m_flags.m_hide;
 }
@@ -92,7 +92,7 @@ void RegionAgent::Intersect(EObject* const other)
 
 }
 
-const RenderLayerType RegionAgent::GetLayerType() const noexcept
+const RenderLayerType RegionAgent::GetLayerType() const modern_except_state
 {
     return RenderLayerType::ENUM_OBJECT_TYPE;
 }
@@ -102,12 +102,12 @@ void RegionAgent::Remove()
     safe_remove();
 }
 
-void RegionAgent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void RegionAgent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
 }
 
-DirectX::XMFLOAT3 RegionAgent::GetVector() noexcept
+DirectX::XMFLOAT3 RegionAgent::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
 }

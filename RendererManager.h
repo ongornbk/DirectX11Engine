@@ -45,7 +45,7 @@ struct RenderContainerVector;
 _Use_decl_annotations_
 	const _Out_ int32 _stdcall validateRendering(
 		const struct XMFLOAT3& _In_ object
-	) noexcept;
+	) modern_except_state;
 
 	void _cdecl CleanupFrame();
 	void _cdecl EditFrame();
@@ -107,8 +107,8 @@ public:
 	class Interface* const GetHealthBarMini();
 	class Interface* const GetHealthBarMiniBorder();
 
-	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) noexcept;
-	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Agent* const agent, const float range) noexcept;
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) modern_except_state;
+	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Agent* const agent, const float range) modern_except_state;
 
 	static class RendererManager* GetInstance();
 	size_t GetNumberOfObjects();
@@ -128,7 +128,7 @@ private:
 
 	TileMap* m_map;
 	UserInterface* m_ui;
-	EObject* m_focus;
+	class modern_handle m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 	class TextFont* m_font;
 	class modern_handle m_fpsText;

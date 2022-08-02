@@ -15,52 +15,52 @@ namespace
 
 
 struct __sort__SortByY {
-	bool _cdecl operator()( class EObject* const a,  class EObject* const b) const noexcept;
+	bool _cdecl operator()( class EObject* const a,  class EObject* const b) const modern_except_state;
 };
 
 struct  __sort__SortByX
 {
-	bool _cdecl operator()( class EObject *const a, class EObject * const b) const noexcept;
+	bool _cdecl operator()( class EObject *const a, class EObject * const b) const modern_except_state;
 };
 
 struct __sort__StaticSortByY {
-	bool _cdecl operator()(class EObject* a, class EObject* b) const noexcept;
+	bool _cdecl operator()(class EObject* a, class EObject* b) const modern_except_state;
 };
 
 struct  __sort__StaticSortByX
 {
-	bool _cdecl operator()(class EObject* a, class EObject* b) const noexcept;
+	bool _cdecl operator()(class EObject* a, class EObject* b) const modern_except_state;
 };
 
 _Use_decl_annotations_
-void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state;
 
 _Use_decl_annotations_
-void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state;
 
 _Use_decl_annotations_
-void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state;
 
 _Use_decl_annotations_
-void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept;
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state;
 
 _Use_decl_annotations_
-void _cdecl PostSort() noexcept;
+void _cdecl PostSort() modern_except_state;
 
 _Use_decl_annotations_
-void _cdecl PushPair(class EObject* const a, class EObject* const b) noexcept;
+void _cdecl PushPair(class EObject* const a, class EObject* const b) modern_except_state;
 
 //_Use_decl_annotations_
-//void _vectorcall StaticSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+//void _vectorcall StaticSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) modern_except_state;
 //
 //_Use_decl_annotations_
-//void _vectorcall StaticQSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+//void _vectorcall StaticQSortByYV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) modern_except_state;
 //
 //_Use_decl_annotations_
-//void _vectorcall StaticSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+//void _vectorcall StaticSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) modern_except_state;
 //
 //_Use_decl_annotations_
-//void _vectorcall StaticQSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) noexcept;
+//void _vectorcall StaticQSortByXV(class Vector<class EObject*> _Inout_updates_all_(64) vec[2][32]) modern_except_state;
 
 	_Use_decl_annotations_
-void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexcept;
+void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) modern_except_state;

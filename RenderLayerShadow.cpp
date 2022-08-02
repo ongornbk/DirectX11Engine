@@ -8,7 +8,7 @@ RenderLayerShadow::~RenderLayerShadow()
 {
 }
 
-const RenderLayerType RenderLayerShadow::GetType() const noexcept
+const RenderLayerType RenderLayerShadow::GetType() const modern_except_state
 {
 	return RenderLayerType::ENUM_SHADOW_TYPE;
 }
@@ -63,7 +63,7 @@ void _stdcall RenderLayerShadow::StaticQSort()
 {
 }
 
-void _vectorcall RenderLayerShadow::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerShadow::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 	class modern_array<class modern_array<class EObject*>*> mvpp;
 
@@ -108,7 +108,7 @@ void _vectorcall RenderLayerShadow::Render(ID3D11DeviceContext* const deviceCont
 	}
 }
 
-void _vectorcall RenderLayerShadow::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerShadow::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 }
 
@@ -158,17 +158,17 @@ void RenderLayerShadow::Push(Interface* const inter)
 {
 }
 
-std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Unit* object, float range) modern_except_state
 {
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Agent* agent, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Agent* agent, float range) modern_except_state
 {
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(class EObject* const object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(class EObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

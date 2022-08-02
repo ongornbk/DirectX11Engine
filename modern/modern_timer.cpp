@@ -13,19 +13,19 @@ modern_timer::~modern_timer()
 
 void modern_timer::Restart()
 {
-	m_running = 1;
+	m_running = 1ll;
 	m_start = modern_timer::now();
 }
 
 modern_Boolean modern_timer::Stop()
 {
 	if (!m_running)
-		return 0;
+		return 0ll;
 	else
 	{
 		m_stop = modern_timer::now();
-		m_running = 0;
-		return 1;
+		m_running = 0ll;
+		return 1ll;
 	}
 }
 
@@ -33,13 +33,13 @@ modern_Boolean modern_timer::Start()
 {
 	if (m_running)
 	{
-		return 0;
+		return 0ll;
 	}
 	else
 	{
 		m_start = modern_timer::now();
-		m_running = 1;
-		return 0;
+		m_running = 1ll;
+		return 0ll;
 	}
 }
 
@@ -57,7 +57,7 @@ double modern_timer::GetDeltaTime()
 	}
 }
 
-modern_timepoint const& modern_timer::now()
+modern_timepoint const modern_timer::now()
 {
 	return std::chrono::high_resolution_clock::now();
 }

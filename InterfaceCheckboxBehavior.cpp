@@ -97,7 +97,7 @@ void InterfaceCheckboxBehavior::Bind(const modern_cstring& option)
 	}
 }
 
-const InterfaceBehaviorType InterfaceCheckboxBehavior::GetType() const noexcept
+const InterfaceBehaviorType InterfaceCheckboxBehavior::GetType() const modern_except_state
 {
 	return InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_CHECKBOX;
 }

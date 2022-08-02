@@ -25,7 +25,7 @@ extern "C"
 			//m_iddl = LoadLibrary(LUA_LOCATION);
 		}
 
-		lua_State* const Load(const char* const filename) noexcept
+		lua_State* const Load(const char* const filename) modern_except_state
 		{
 			int result;
 			struct lua_State* const state = luaL_newstate();
@@ -40,7 +40,7 @@ extern "C"
 
 
 
-		void Close() noexcept
+		void Close() modern_except_state
 		{
 			if (m_instance)
 			{
@@ -54,7 +54,7 @@ extern "C"
 			}
 		}
 
-		void PrintError() noexcept
+		void PrintError() modern_except_state
 		{
 			const char* message = lua_tostring(m_instance, -1);
 			if(message)
@@ -62,18 +62,18 @@ extern "C"
 			lua_pop(m_instance,1);
 		}
 
-		struct lua_State* const GetInstance() noexcept //UNSAFE
+		struct lua_State* const GetInstance() modern_except_state //UNSAFE
 		{
 			return m_instance;
 		}
 
-		void Open() noexcept
+		void Open() modern_except_state
 		{
 			m_instance = luaL_newstate();
 			luaL_openlibs(m_instance);
 		}
 
-		lua_State* GetInstance_s() noexcept //SAFE
+		lua_State* GetInstance_s() modern_except_state //SAFE
 		{
 			if (m_instance)
 			{
@@ -82,7 +82,9 @@ extern "C"
 			else
 			{
 				lua::Open();
+				
 			}
+			return m_instance;
 		}
 
 		void Execute(const char* const filename)

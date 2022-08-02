@@ -12,7 +12,7 @@ ColorFilter::ColorFilter(const DirectX::XMFLOAT4& color) :
 
 }
 
-void ColorFilter::SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept
+void ColorFilter::SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) modern_except_state
 {
 	if (redfilter >= 0.f)
 		m_colorFilter.x = redfilter;
@@ -24,7 +24,7 @@ void ColorFilter::SetColorFilter(const float redfilter, const float greenfilter,
 		m_colorFilter.w = alphafilter;
 }
 
-void ColorFilter::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
+void ColorFilter::SetColorFilter(const DirectX::XMFLOAT4& color) modern_except_state
 {
 	if (color.x >= 0.f)
 		m_colorFilter.x = color.x;
@@ -36,7 +36,7 @@ void ColorFilter::SetColorFilter(const DirectX::XMFLOAT4& color) noexcept
 		m_colorFilter.w = color.w;
 }
 
-void ColorFilter::SetColorFilter(const float filter) noexcept
+void ColorFilter::SetColorFilter(const float filter) modern_except_state
 {
 	m_colorFilter.w = filter;
 	m_colorFilter.x = filter;
@@ -44,7 +44,7 @@ void ColorFilter::SetColorFilter(const float filter) noexcept
 	m_colorFilter.z = filter;
 }
 
-void ColorFilter::AddAlpha(const float alpha) noexcept
+void ColorFilter::AddAlpha(const float alpha) modern_except_state
 {
 	m_colorFilter.w += alpha;
 }

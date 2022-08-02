@@ -7,7 +7,7 @@ RenderLayerInterface::~RenderLayerInterface()
 {
 }
 
-const RenderLayerType RenderLayerInterface::GetType() const noexcept
+const RenderLayerType RenderLayerInterface::GetType() const modern_except_state
 {
 	return RenderLayerType::ENUM_INTERFACE_TYPE;
 
@@ -15,7 +15,7 @@ const RenderLayerType RenderLayerInterface::GetType() const noexcept
 
 void RenderLayerInterface::Update(const float dt)
 {
-	m_size = 0u;
+	m_size = 0ull;
 				if (m_root)
 					m_root->Update(dt);
 //#pragma omp barrier
@@ -48,7 +48,7 @@ void _vectorcall RenderLayerInterface::Render(
 	const XMFLOAT4X4& viewMatrix,
 	const XMFLOAT4X4& projectionMatrix,
 	const ShaderPackage& shader)
-	noexcept
+	modern_except_state
 {
 	if (!m_root)
 		return;
@@ -74,7 +74,7 @@ void _vectorcall RenderLayerInterface::Render(
 
 }
 
-void _vectorcall RenderLayerInterface::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerInterface::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 }
 
@@ -118,17 +118,17 @@ void RenderLayerInterface::Push(Interface* const inter)
 		m_root = inter;
 }
 
-std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Unit* object, float range) modern_except_state
 {
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Agent* agent, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Agent* agent, float range) modern_except_state
 {
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerInterface::GetTreesBelow(class EObject* const object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerInterface::GetTreesBelow(class EObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

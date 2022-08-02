@@ -1,9 +1,11 @@
 #include "OrCondition.h"
 #include <cassert>
 
-OrCondition::OrCondition(ICondition* const __A, ICondition* const __B) : A(__A), B(__B)
+OrCondition::OrCondition(ICondition* const __A, ICondition* const __B)// : A(__A), B(__B)
 {
-	assert(A && B);
+	assert(__A && __B);
+	A = __A;
+	B = __B;
 }
 
 OrCondition::~OrCondition()
@@ -20,7 +22,7 @@ OrCondition::~OrCondition()
 	}
 }
 
-bool OrCondition::CheckCondition()
+modern_Boolean OrCondition::CheckCondition()
 {
-	return (A->CheckCondition() || B->CheckCondition());
+	return false;// (A->CheckCondition() || B->CheckCondition());
 }

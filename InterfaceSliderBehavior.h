@@ -19,7 +19,7 @@ public:
 
 	void Bind(const modern_cstring& option) override;
 
-	const enum class InterfaceBehaviorType GetType() const noexcept override;
+	const enum class InterfaceBehaviorType GetType() const modern_except_state override;
 
 private:
 	class Interface* m_owner;

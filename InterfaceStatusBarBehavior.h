@@ -16,7 +16,7 @@ public:
 	void SetStatusCutYAnchorBottom(const float status);
 	void SetStatusCutXAnchorLeft(const float status);
 
-	const enum class InterfaceBehaviorType GetType() const noexcept override;
+	const enum class InterfaceBehaviorType GetType() const modern_except_state override;
 
 private:
 	class Interface* m_owner;

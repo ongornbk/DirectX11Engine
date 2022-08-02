@@ -14,7 +14,7 @@
 //Do not lock owner of task
 	 
 
-	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation,const float rotations) noexcept
+	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed,const float rotation,const float rotations) modern_except_state
 	{
 		const float angle = (3.14f * 2.f) / rotations;
 		DirectX::XMFLOAT3 f3;
@@ -24,7 +24,7 @@
 		return f3;
 	}
 
-	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed, const float rotation) noexcept
+	 DirectX::XMFLOAT3 _vectorcall calculateVelocity(const float speed, const float rotation) modern_except_state
 	 {
 		 const float angle = 3.14f / 8.f;
 		 DirectX::XMFLOAT3 f3;

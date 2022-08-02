@@ -5,17 +5,17 @@
 #include <string>
 
 
-constexpr wchar_t cs_number[10] = { L'0',L'1',L'2',L'3',L'4',L'5',L'6',L'7',L'8',L'9' };
+constexpr wchar_t cs_number[10ll] = { L'0',L'1',L'2',L'3',L'4',L'5',L'6',L'7',L'8',L'9' };
 
 modern_string::modern_string()
 {
-	m_string.make_shared(new modern_array<wchar_t>());
-	m_string->push_back('\0');
+	m_string.make_shared(new class modern_array<wchar_t>());
+	push_zero();
 }
 
-modern_string::modern_string(modern_string& string)
+modern_string::modern_string(class modern_string& string)
 {
-	m_string.make_shared(new modern_array<wchar_t>());
+	m_string.make_shared(new class modern_array<wchar_t>());
 	m_string->reserve(string.size() + 1);
 	m_string->resize(string.size());
 #pragma warning(disable : 4996)
@@ -25,37 +25,37 @@ modern_string::modern_string(modern_string& string)
 modern_string::modern_string(const wchar_t* text)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
-	for (int64_t i = 0; i < 100; i++)
+	for (int64_t i = 0ll; i < 100ll; i++)
 	{
-		if (text[i] == '\0')
+		if (text[i] == L'\0')
 			goto END;
 		m_string->push_back(text[i]);
 
 	}
 END:
-	m_string->push_back(L'\0');
+	push_zero();
 }
 
 modern_string::modern_string(const wchar_t* text_begin, const wchar_t* text_end)
 {
 
 	m_string.make_shared(new class modern_array<wchar_t>());
-	m_string->reserve(text_end - text_begin + 1);
-	m_string->resize(text_end - text_begin + 1);
+	m_string->reserve(text_end - text_begin + 1ull);
+	m_string->resize(text_end - text_begin + 1ull);
 	auto i = text_begin;
 	for (i;i < text_end; i++)
 	{
 		push_back(*i);
 	}
 	if (*i != L'\0')
-		push_back(L'\0');
+		push_zero();
 }
 
 modern_string::modern_string(const char* text)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
-	//m_string->reserve(strlen(text) + 1);
-	for (int64_t i = 0; i < 100; i++)
+	m_string->reserve(strlen(text) + 1);
+	for (int64_t i = 0ll; i < 100ll; i++)
 	{
 		if (text[i] == '\0')
 			goto END;
@@ -65,7 +65,7 @@ modern_string::modern_string(const char* text)
 //#pragma warning(disable : 4996)
 	//mbstowcs(m_string->data(), text, m_string->size());
 	END:
-		m_string->push_back(L'\0');
+	push_zero();
 }
 
 modern_string::modern_string(const size_t number)
@@ -74,16 +74,16 @@ modern_string::modern_string(const size_t number)
 	
 	size_t temp = number;
 
-	if (number == 0)
-		m_string->push_back('0'); 
+	//if (number == 0ull)
+		//push_zero();
 
-	while (temp > 0)
+	while (temp > 0ull)
 	{
-		m_string->push_back(cs_number[temp % 10u]);
-		temp /= 10u;
+		m_string->push_back(cs_number[temp % 10ull]);
+		temp /= 10ull;
 	}
 	m_string->reverse();
-	m_string->push_back('\0');
+	push_zero();
 }
 
 modern_string::modern_string(const int32_t number)
@@ -92,24 +92,24 @@ modern_string::modern_string(const int32_t number)
 
 	bool flag = false;
 
-	if (number < 0)
+	if (number < 0ull)
 		flag = true;
 
-	if (number == 0)
-		m_string->push_back('0');
+	if (number == 0ull)
+		push_zero();
 
 	int32_t temp = modern_abs(number);
-	while (temp > 0)
+	while (temp > 0ull)
 	{
-		m_string->push_back(cs_number[temp % 10]);
-		temp /= 10;
+		m_string->push_back(cs_number[temp % 10ull]);
+		temp /= 10ull;
 	}
 
 	if (flag)
-		m_string->push_back('-');
+		m_string->push_back(L'-');
 
 	m_string->reverse();
-	m_string->push_back('\0');
+	push_zero();
 }
 
 modern_string::modern_string(const int32_t num1, wchar_t* text, int32_t num2)
@@ -147,7 +147,7 @@ END2:
 
 	}
 END3:
-	m_string->push_back(L'\0');
+	push_zero();
 }
 
 modern_string::modern_string(const uint32_t number)
@@ -168,7 +168,7 @@ modern_string::modern_string(const uint32_t number)
 
 
 	m_string->reverse();
-	m_string->push_back('\0');
+	push_zero();
 }
 
 modern_string::modern_string(const char character)
@@ -187,22 +187,22 @@ modern_string::~modern_string()
 {
 }
 
-wchar_t* const modern_string::c_wstr() const noexcept
+wchar_t* const modern_string::c_wstr() const modern_except_state
 {
 	return m_string->data();
 }
 
-char* const modern_string::c_str() const noexcept
+char* const modern_string::c_str() const modern_except_state
 {
 	return _bstr_t(m_string->data());
 }
 
-size_t modern_string::size() const noexcept
+size_t modern_string::size() const modern_except_state
 {
 	return m_string->size();
 }
 
-int32_t modern_string::to_int32() noexcept
+int32_t modern_string::to_int32() modern_except_state
 {
 	modern_array<int32_t> digits;
 	modern_shared<modern_array<wchar_t>> base;
@@ -229,7 +229,7 @@ int32_t modern_string::to_int32() noexcept
 	return value;
 }
 
-float modern_string::to_float() noexcept
+float modern_string::to_float() modern_except_state
 {
 	//float result = 0.f;
 	//float negative = 1.f;
@@ -253,7 +253,7 @@ float modern_string::to_float() noexcept
 	return std::stof(m_string->data());
 }
 
-bool modern_string::to_bool() noexcept
+bool modern_string::to_bool() modern_except_state
 {
 	if (m_string->at(0) == L't' || m_string->at(0) == L'T' || m_string->at(0) == L'1')
 	{
@@ -279,7 +279,7 @@ modern_pair<modern_string, modern_string>& modern_string::SplitString(const wcha
 }
 
 
-modern_string& modern_string::operator=(modern_string& string)
+class modern_string& modern_string::operator=(class modern_string& string)
 {
 		if (this == &string)
 			return *this;
@@ -289,18 +289,28 @@ modern_string& modern_string::operator=(modern_string& string)
 		return *this;
 }
 
+const class modern_string& modern_string::operator=(const class modern_string& string)
+{
+	if (this == &string)
+		return *this;
+
+	m_string.make_shared(string.m_string);
+
+	return *this;
+}
+
 modern_string& modern_string::operator=(const wchar_t* string)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
-	for (int64_t i = 0; i < 100; i++)
+	for (int64_t i = 0; i < 100ll; i++)
 	{
-		if (string[i] == '\0')
+		if (string[i] == L'\0')
 			goto END;
 		m_string->push_back(string[i]);
 
 	}
 END:
-	m_string->push_back(L'\0');
+	push_zero();
 
 	return *this;
 }
@@ -313,6 +323,16 @@ END:
 modern_string modern_string::operator+(modern_string& string)
 {
 	return *this;
+}
+
+const size_t modern_string::find_last_of(const wchar_t character) const modern_except_state
+{
+//	size_t n = 0ull;
+//	int32_t i = size();
+//	while (i)
+//	{
+//
+//	}
 }
 
 void modern_string::push_back(const wchar_t element)
@@ -342,6 +362,11 @@ void modern_string::resize(size_t size)
 	m_string->resize(size);
 }
 
+void modern_string::push_zero() const modern_except_state
+{
+	m_string->push_back(L'\0');
+}
+
 void modern_string::load(const char* text)
 {
 	m_string.make_shared(new modern_array<wchar_t>());
@@ -351,12 +376,12 @@ void modern_string::load(const char* text)
 	mbstowcs(m_string->data(), text, strlen(text));
 }
 
-bool modern_isdigit(wchar_t ch) noexcept
+bool modern_isdigit(wchar_t ch) modern_except_state
 {
 	return (ch >= L'0' && ch <= L'9');
 }
 
-int32_t modern_todigit(wchar_t ch) noexcept
+int32_t modern_todigit(wchar_t ch) modern_except_state
 {
 	return ch - L'0';
 }

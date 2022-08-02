@@ -105,7 +105,7 @@ namespace
 //DEPRECATED 24.05.2020 ongornbk
 /*
 _Use_decl_annotations_
- __forceinline constexpr int32 _Out_ _stdcall GetXCell(const _In_ float x) noexcept
+ __forceinline constexpr int32 _Out_ _stdcall GetXCell(const _In_ float x) modern_except_state
 {
 
 	if (x < 0.0f)
@@ -327,7 +327,7 @@ _Use_decl_annotations_
 }
 
 _Use_decl_annotations_
-__forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexcept
+__forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) modern_except_state
 {
 	if (y < 0.0f)
 	{
@@ -468,7 +468,7 @@ __forceinline constexpr int32 _Out_ _stdcall GetYCell(const _In_ float y) noexce
 
 _Use_decl_annotations_
 template <class T>//I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES X COLLISION.
-__forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index, const int32 xp) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Xrendering__(const T& _In_ index, const int32 xp) modern_except_state
 {
 
 const int32 t0 = xp - index;
@@ -485,7 +485,7 @@ return false;
 
 _Use_decl_annotations_
 template <class T> //I DONT KNOW MAYBE IT DOES NOTHING????? WELL IT ENABLES Y COLLISION.
-__forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index,const int32 yp) noexcept
+__forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _In_ index,const int32 yp) modern_except_state
 {
 
 	const int32 t0 = yp - index;
@@ -499,7 +499,7 @@ __forceinline constexpr int32 _Out_ _stdcall __validate_Yrendering__(const T& _I
 	}
 }
 
-__forceinline void _stdcall __intersect_test__(int32& xp,int32& yp) noexcept
+__forceinline void _stdcall __intersect_test__(int32& xp,int32& yp) modern_except_state
 {
 
 	float cameraPosition[4];
@@ -515,7 +515,7 @@ for ( int32 i = 0u; i < MAP_DIVISION; i++)
 }
 }
 
-bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const noexcept
+bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const modern_except_state
 {
 
 		const volatile class modern_guard AG(A);
@@ -620,7 +620,7 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 	return Ay > By;
 }
 
-bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const noexcept
+bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const modern_except_state
 {
 	const class modern_guard AG(A);
 	const class modern_guard BG(B);
@@ -718,17 +718,18 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 	return Ax > Bx;
 }
 
-bool _cdecl __sort__StaticSortByY::operator()(class EObject* const A, class EObject* const B) const noexcept
+bool _cdecl __sort__StaticSortByY::operator()(class EObject* const A, class EObject* const B) const modern_except_state
 {
 	if (A && B)
 	{
 		A->Intersect(B);
 		B->Intersect(A);
+		return (A->m_boundingSphere.Center.y) > (B->m_boundingSphere.Center.y);
 	}
-	else return false;
+	return false;
 }
 
-bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObject* const B) const noexcept
+bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObject* const B) const modern_except_state
 {
 	if (A && B)
 	{
@@ -736,11 +737,11 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 		B->Intersect(A);
 		return (A->m_boundingSphere.Center.x) > (B->m_boundingSphere.Center.x);
 	}
-	else return false;
+	return false;
 }
 
 
-void sortPxVTP(class modern_array<class EObject*>& vector) noexcept
+void sortPxVTP(class modern_array<class EObject*>& vector) modern_except_state
 {
 	//try
 	//{
@@ -759,7 +760,7 @@ void sortPxVTP(class modern_array<class EObject*>& vector) noexcept
 }
 
 
-void sortPyVTP(class modern_array<class EObject*>& vector) noexcept
+void sortPyVTP(class modern_array<class EObject*>& vector) modern_except_state
 {
 	//try
 	//{
@@ -777,17 +778,17 @@ void sortPyVTP(class modern_array<class EObject*>& vector) noexcept
 	//std::sort(vector.begin(), vector.end(), __sort__SortByY());
 }
 
-void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
+void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) modern_except_state
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByX());
 }
 
-void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject** _In_ const end) noexcept
+void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject** _In_ const end) modern_except_state
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByY());
 }
 
-void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
+void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 	//for (int32 i = 0; i < 32; ++i)
 	//	vec[1][i].clear();
@@ -836,7 +837,7 @@ void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION
 //	}
 }
 
-void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
+void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 
 //#pragma omp parallel
@@ -852,7 +853,7 @@ void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 //#pragma omp barrier
 }
 
-void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
+void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 //#pragma omp single
 	{
@@ -899,7 +900,7 @@ void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION
 
 }
 
-void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) noexcept
+void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 //#pragma omp parallel
 //#pragma omp for schedule(dynamic)
@@ -913,7 +914,7 @@ void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 //#pragma omp barrier
 }
 
-void _cdecl PostSort() noexcept
+void _cdecl PostSort() modern_except_state
 {
 	for (class SortPair& pair : m_postPairs)
 	{
@@ -925,14 +926,14 @@ void _cdecl PostSort() noexcept
 	m_postPairs.clear();
 }
 
-void _cdecl PushPair(EObject* const a, EObject* const b) noexcept
+void _cdecl PushPair(EObject* const a, EObject* const b) modern_except_state
 {
 	m_postPairs.push_back(SortPair(a, b));
 }
 
 //BUGGED
 /*
-void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) modern_except_state
 {
 	for (int32 i = 0; i < 32; ++i)
 		vec[1][i].clear();
@@ -948,7 +949,7 @@ void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) noexcep
 
 }
 
-void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) modern_except_state
 {
 	for (int32 i = 0; i < 32; ++i)
 	{
@@ -960,7 +961,7 @@ void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) noexcept
 	}
 }
 
-void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) modern_except_state
 {
 	__intersect_test__();
 
@@ -982,7 +983,7 @@ void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) noexcep
 
 }
 
-void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
+void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) modern_except_state
 {
 
 	for (int32 i = 0; i < 32; i++)
@@ -996,7 +997,7 @@ void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) noexcept
 }
 */
 
-void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) noexcept
+void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) modern_except_state
 {
 	class GarbageCollector* const collector = GarbageCollector::GetInstance();
 	for (int32 i = 0; i < MAP_DIVISION; ++i)

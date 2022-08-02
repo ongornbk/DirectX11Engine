@@ -76,7 +76,7 @@ void _vectorcall EObjectVector::Render(
 	const struct XMFLOAT4X4 & viewMatrix,
 	const struct XMFLOAT4X4 & projectionMatrix,
 	const struct ShaderPackage &shader
-) noexcept
+) modern_except_state
 {
 class modern_array<class modern_array<class EObject*>*> mvpp;
 
@@ -123,7 +123,7 @@ for (auto& vec : mvpp)
 
 }
 
-void _vectorcall EObjectVector::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall EObjectVector::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 }
 
@@ -182,7 +182,7 @@ Boolean _fastcall CheckDistance(
 	class EObject* const A,
 	class EObject* const B,
 	const float range
-) noexcept
+) modern_except_state
 {
 
 	const float distanceX = A->m_boundingSphere.Center.x - B->m_boundingSphere.Center.x;
@@ -200,7 +200,7 @@ Boolean _fastcall CheckDistance(
 	}
 }
 
-void _stdcall pPushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object,const float range) noexcept
+void _stdcall pPushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object,const float range) modern_except_state
 {
 	for (auto&& unit : vec)
 	{
@@ -223,7 +223,7 @@ ENDLOOP:
 }
 
 
-std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall EObjectVector::GetUnitsInRange(Unit* object, float range) modern_except_state
 {
 	class std::stack<class Unit*> unitsLeft;
 	class std::stack<class Unit*> unitsCenter;

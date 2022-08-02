@@ -18,7 +18,7 @@ public:
 	static GameChat* GetGameChat();
 	~UserInterfaceGame();
 
-	static void SetFPS(const int32 fps) noexcept;
+	static void SetFPS(const int32 fps) modern_except_state;
 
 private:
 	Sprite * m_cursor;

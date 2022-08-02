@@ -53,8 +53,8 @@ public:
 		return *shared;
 	}
 
-	T& operator*() const noexcept { assert(m_pointer); return *m_pointer; }
-	T* operator->() const noexcept { assert(m_pointer); return m_pointer; }
+	T& operator*() const modern_except_state { assert(m_pointer); return *m_pointer; }
+	T* operator->() const modern_except_state { assert(m_pointer); return m_pointer; }
 	T& operator= (const T& shared)
 	{
 		if (this == &shared)
@@ -67,14 +67,14 @@ public:
 		return *this;
 	}
 
-	const int32_t getNumberOfCopies() const noexcept
+	const int32_t getNumberOfCopies() const modern_except_state
 	{
 		if (m_numOfCopies)
 			return (*m_numOfCopies);
 		else return -1;
 	}
 
-	const bool isInitialized() const noexcept
+	const bool isInitialized() const modern_except_state
 	{
 		if (m_pointer) return true;
 		else return false;

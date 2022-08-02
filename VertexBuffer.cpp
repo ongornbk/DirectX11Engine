@@ -553,7 +553,7 @@ bool VertexBuffer::InitializePart(
 
 void _stdcall VertexBuffer::Render(
 	struct ID3D11DeviceContext * const deviceContext
-) noexcept
+) modern_except_state
 {
 	constexpr uint32 stride = sizeof(SpriteVertexType);
 	constexpr uint32 offset = 0u;
@@ -644,17 +644,17 @@ bool VertexBuffer::ResizeTexture(
 	return true;
 }
 
-void VertexBuffer::SetAnchor(const enum ObjectAnchorType type) noexcept
+void VertexBuffer::SetAnchor(const enum ObjectAnchorType type) modern_except_state
 {
 	m_anchorType = type;
 }
 
-void VertexBuffer::SetNumberOfElements(const int32 elements) noexcept
+void VertexBuffer::SetNumberOfElements(const int32 elements) modern_except_state
 {
 	m_numOfElements = elements;
 }
 
-const ObjectAnchorType VertexBuffer::GetAnchor() const noexcept
+const ObjectAnchorType VertexBuffer::GetAnchor() const modern_except_state
 {
 	return m_anchorType;
 }

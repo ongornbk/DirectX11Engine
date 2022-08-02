@@ -5,7 +5,7 @@ ObjectConditionEquals::ObjectConditionEquals(class IObjectVariable* const A,clas
 	assert(A && B);
 }
 
-bool ObjectConditionEquals::CheckCondition()
+modern_Boolean ObjectConditionEquals::CheckCondition()
 {
 	return (m_A->get() == m_B->get());
 }

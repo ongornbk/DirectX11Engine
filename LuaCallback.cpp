@@ -106,34 +106,34 @@ namespace lua_callback
 		m_input = input;
 	}
 
-	namespace Resources
-	{
-		static  int32 LoadTexture(
-			struct lua_State* const state
-		)
-		{
-			modern_string str(LUA_STRING(state, 1));
-			m_resources->LoadTextureResource(str);
-			return 0;
-		}
-
-		static  int32 LoadSound(
-			struct lua_State* const state
-		)
-		{
-			modern_string str(LUA_STRING(state, 1));
-			m_resources->LoadSoundResource(str,SoundType::SOUND_TYPE_MULTI);
-			return 0;
-		}
-
-		static  int32 LoadMusic(
-			struct lua_State* const state
-		)
-		{
-			modern_string str(LUA_STRING(state, 1));
-			m_resources->LoadSoundResource(str, SoundType::SOUND_TYPE_SINGLE);
-			return 0;
-		}
+	namespace Resources																					//^^
+	{																									//^^
+		static  int32 LoadTexture(																		//^^
+			struct lua_State* const state																//^^
+		)																								//^^
+		{																								//^^
+			class modern_string str(LUA_STRING(state, 1));													//^^
+			m_resources->LoadTextureResource(str);														//^^
+			return 0;																					//^^
+		}																								//^^
+																										//^^
+		static  int32 LoadSound(																		//^^
+			struct lua_State* const state																//^^
+		)																								//^^
+		{																								//^^
+			class modern_string str(LUA_STRING(state, 1));												//^^
+			m_resources->LoadSoundResource(str,SoundType::SOUND_TYPE_MULTI);							//^^
+			return 0;																					//^^
+		}																								//^^
+																										//^^
+		static  int32 LoadMusic(																		//^^
+			struct lua_State* const state																//^^
+		)																								//^^
+		{																								//^^
+			class modern_string str(LUA_STRING(state, 1));													//^^
+			m_resources->LoadSoundResource(str, SoundType::SOUND_TYPE_SINGLE);							//^^
+			return 0;																					//^^
+		}																								//^^
 
 		static  int32 AddModelPaths(
 			struct lua_State* const state
@@ -156,102 +156,114 @@ namespace lua_callback
 		//}
 	}
 
-	namespace Cameras
-	{
-		static  int32 InitializeProjectionMatrix(
-			struct lua_State* const state
-		)
-		{
-			m_camera->InitializeProjectionMatrix(
-				XM_PI / LUA_FLOAT(state, 1),
-				Settings::GetAspectRatio(),
-				1.0f / LUA_FLOAT(state, 2),
-				LUA_FLOAT(state, 3));
-			return 0;
-		}
-
-		static  int32 InitializeOrthoMatrix(lua_State* state)
-		{
-			m_camera->InitializeOrthoMatrix(
-				Settings::GetResolutionX(),
-				Settings::GetResolutionY(),
-				1.0f / LUA_FLOAT(state, 1),
-				LUA_FLOAT(state, 2)
-			);
-			return 0;
-		}
-
-		static  int32 SetCameraLookAt(
-			struct lua_State* const state
-		)
-		{
-			m_global->camera_lookat = XMVectorSet(
-				(float)lua_tointeger(state, 1),
-				(float)lua_tointeger(state, 2),
-				(float)lua_tointeger(state, 3),
-				(float)lua_tointeger(state, 4)
-			);
-			return 0;
-		}
-
-		static  int32 SetCameraUp(
-			struct lua_State* const state
-		)
-		{
-			m_global->camera_up = XMVectorSet(
-				(float)lua_tointeger(state, 1),
-				(float)lua_tointeger(state, 2),
-				(float)lua_tointeger(state, 3),
-				(float)lua_tointeger(state, 4)
-			);
-			return 0;
-		}
-
-		static  int32 SetCameraPosition(
-			struct lua_State* const state
-		)
-		{
-			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };
-			m_camera->SetPosition(position);
-			return 0;
-		}
-
-		static  int32 GetCameraPosition(
-			struct lua_State* const state
-		)
-		{
-			DirectX::XMVECTOR position = m_camera->GetPosition();
-			lua_pushnumber(state, position.m128_f32[0]);
-			lua_pushnumber(state, position.m128_f32[1]);
-			lua_pushnumber(state, position.m128_f32[2]);
-
-			return 3;
-		}
-
-		static  int32 TranslateCamera(
-			struct lua_State* const state
-		)
-		{
-			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };
-			m_camera->Translate(position);
-			return 0;
-		}
-
-		static  int32 LockCameraOnUnit(
-			struct lua_State* const state
-		) noexcept
-		{
-			//MSVC_VOLATILE class Unit* unit = m_global->m_lastPickedUnit;
-			class Unit* const A = (class Unit*)m_global->m_lastPickedUnit.get();
-			if (Unit::CheckIfValid(A))
-			{
-				m_engine->GetCameraControl()->LockCameraPositionOnUnit(A);
-			}
-			return 0;
-		}
-
-		
-	}
+	namespace Cameras																 //^^
+	{																				 //^^
+		static  int32 InitializeProjectionMatrix(									 //^^
+			struct lua_State* const state											 //^^
+		)																			 //^^
+		{																			 //^^
+			const float f0 = LUA_FLOAT(state, 1);									 //^^
+			const float f1 = LUA_FLOAT(state, 2);									 //^^
+			const float f2 = LUA_FLOAT(state, 3);									 //^^
+			if (f0 && f1)															 //^^
+			{																		 //^^
+				m_camera->InitializeProjectionMatrix(								 //^^
+					XM_PI / f0,														 //^^
+					Settings::GetAspectRatio(),										 //^^
+					1.0f / f1,														 //^^
+					f2);															 //^^
+			}																		 //^^
+			return 0;																 //^^
+		}																			 //^^
+																					 //^^
+		static  int32 InitializeOrthoMatrix(										 //^^
+			struct lua_State* const state											 //^^
+		)																			 //^^
+		{																			 //^^
+			const float f0 = LUA_FLOAT(state, 1);									 //^^
+			const float f1 = LUA_FLOAT(state, 2);									 //^^
+			if (f0)															 //^^	 //^^
+			{																		 //^^
+				m_camera->InitializeOrthoMatrix(									 //^^
+					Settings::GetResolutionX(),										 //^^
+					Settings::GetResolutionY(),										 //^^
+					1.0f / f0,														 //^^
+					f1																 //^^
+				);																	 //^^
+			}																		 //^^
+			return 0;																 //^^
+		}																			 //^^
+																					 //^^
+		static  int32 SetCameraLookAt(												 //^^
+			struct lua_State* const state											 //^^
+		)																			 //^^
+		{																			 //^^
+			m_global->camera_lookat = XMVectorSet(									 //^^
+				(float)lua_tointeger(state, 1),										 //^^
+				(float)lua_tointeger(state, 2),										 //^^
+				(float)lua_tointeger(state, 3),										 //^^
+				(float)lua_tointeger(state, 4)										 //^^
+			);																		 //^^
+			return 0;																 //^^
+		}																			 //^^
+																					 //^^
+		static  int32 SetCameraUp(													 //^^
+			struct lua_State* const state											 //^^
+		)																			 //^^
+		{																			 //^^
+			m_global->camera_up = XMVectorSet(										 //^^
+				(float)lua_tointeger(state, 1),										 //^^
+				(float)lua_tointeger(state, 2),										 //^^
+				(float)lua_tointeger(state, 3),										 //^^
+				(float)lua_tointeger(state, 4)										 //^^
+			);																		 //^^
+			return 0;																 //^^
+		}																									//^^
+																											//^^
+		static  int32 SetCameraPosition(																	//^^
+			struct lua_State* const state																	//^^
+		)																									//^^
+		{																									//^^
+			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };		//^^
+			m_camera->SetPosition(position);																//^^
+			return 0;																						//^^
+		}																									//^^
+																											//^^
+		static  int32 GetCameraPosition(																	//^^
+			struct lua_State* const state																	//^^
+		)																									//^^
+		{																									//^^
+			DirectX::XMVECTOR position = m_camera->GetPosition();											//^^
+			lua_pushnumber(state, position.m128_f32[0]);													//^^
+			lua_pushnumber(state, position.m128_f32[1]);													//^^
+			lua_pushnumber(state, position.m128_f32[2]);													//^^
+																											//^^
+			return 3;																						//^^
+		}																									//^^
+																											 //^^
+		static  int32 TranslateCamera(																		 //^^
+			struct lua_State* const state																	 //^^
+		)																									 //^^
+		{																									 //^^
+			DirectX::XMVECTOR position{ LUA_FLOAT(state, 1) ,LUA_FLOAT(state, 2),LUA_FLOAT(state, 3) };		 //^^
+			m_camera->Translate(position);																	 //^^
+			return 0;																						 //^^
+		}																									 //^^
+																											 //^^
+		static  int32 LockCameraOnUnit(																		 //^^
+			struct lua_State* const state																	 //^^
+		) modern_except_state																				 //^^
+		{																									 //^^
+			class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));								 //^^
+			if (Unit::CheckIfValid(unit))																		 //^^
+			{																								 //^^
+				m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);									 //^^
+			}																								 //^^
+			return 0;																						 //^^
+		}																									 //^^
+																											 //^^
+																											 //^^
+	}																										 //^^
 
 	namespace Music
 	{
@@ -283,7 +295,7 @@ namespace lua_callback
 
 		static  int32 StopMusic(
 			struct lua_State* const state
-		) noexcept
+		) modern_except_state
 		{
 			m_engine->StopMusic();
 			return 0;
@@ -309,7 +321,7 @@ namespace lua_callback
 
 	namespace _Network
 	{
-		static  int32 _StartServer(lua_State* state) noexcept
+		static  int32 _StartServer(lua_State* state) modern_except_state
 		{
 			//Network::StartServer((uint16)lua_tointeger(state, 1));
 			return 0;
@@ -320,7 +332,7 @@ namespace lua_callback
 	{
 		static  int32 __PostQuitMessage(
 			struct lua_State* const state
-		) noexcept
+		) modern_except_state
 		{
 			PostQuitMessage(( int32)lua_tointeger(state, 1));
 			return 0;
@@ -347,7 +359,7 @@ namespace lua_callback
 
 	static int32_t __IsKeyHit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		if (m_input->IsKeyHit((unsigned int)lua_tointeger(state,1)))
 		{
@@ -361,7 +373,7 @@ namespace lua_callback
 	}
 	static int32 __IsKeyPressed(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		if (m_input->IsKeyDown((uint32)lua_tointeger(state, 1)))
 		{
@@ -376,7 +388,7 @@ namespace lua_callback
 
 	static int32 __GetMouseState(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		if (m_input->GetMouseState((int32)lua_tointeger(state, 1)))
 		{
@@ -391,7 +403,7 @@ namespace lua_callback
 
 	static int32 __GetMousePressed(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		lua_pushboolean(state,m_input->GetMousePressed((int32)lua_tointeger(state,1)));
 		return 1;
@@ -399,7 +411,7 @@ namespace lua_callback
 
 	static int32 CreateUnit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = new class Unit();
 		//m_global->m_pickedObject.make_handle(unit->GetHandle());
@@ -410,7 +422,7 @@ namespace lua_callback
 
 	static int32 ApplyColorFilter(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
@@ -422,7 +434,7 @@ namespace lua_callback
 
 	static int32 DeleteObject(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -453,7 +465,7 @@ namespace lua_callback
 
 	static int32_t PickUnit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		//m_global->m_pickedObject = m_global->m_lastPickedUnit = (class Unit* const)(lua_tointeger(state, 1));//dynamic cast?
 			//(class Unit* const )LuaPointer((int32_t)lua_tointeger(state, 1), (int32_t)lua_tointeger(state, 2)).ptr;
@@ -469,7 +481,7 @@ namespace lua_callback
 
 	//static int32_t PickObject(
 	//	struct lua_State* const state
-	//) noexcept
+	//) modern_except_state
 	//{
 	//	m_global->m_pickedObject = (class EObject* const)lua_tointeger(state, 1);
 	//	return 0;
@@ -477,7 +489,7 @@ namespace lua_callback
 
 	static int32 IsSelected(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 
@@ -489,7 +501,7 @@ namespace lua_callback
 
 	static int32_t CreateDoodads(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Doodads* const doodads = new class Doodads();
 		m_global->m_lastCreatedRenderContainer.make_handle(doodads->GetHandle());
@@ -499,7 +511,7 @@ namespace lua_callback
 
 	static int32_t CreateAnimatedDoodads(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class AnimatedDoodads* const doodads = new class AnimatedDoodads();
 		m_global->m_lastCreatedRenderContainer.make_handle(doodads->GetHandle());
@@ -509,7 +521,7 @@ namespace lua_callback
 
 	static int32 CreateTree(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Tree* const tree = new class Tree();
 		m_global->m_lastCreatedRenderContainer.make_handle(tree->GetHandle());
@@ -519,7 +531,7 @@ namespace lua_callback
 
 	static int32 CreateInterface(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const parent = (class Interface* const)lua_tointeger(state, 1);
 		class Interface* const inter = new class Interface();
@@ -535,7 +547,7 @@ namespace lua_callback
 		return 1;
 	}
 
-	//static int32_t SetZ(lua_State* state) noexcept
+	//static int32_t SetZ(lua_State* state) modern_except_state
 	//{
 	//	
 	//	RenderContainer* rc = m_global->m_lastCreatedRenderContainer;
@@ -548,7 +560,7 @@ namespace lua_callback
 
 	static int32_t GetMousePosition(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		float xm, ym;
 		UserInterface::GetMousePosition(xm, ym);
@@ -560,7 +572,7 @@ namespace lua_callback
 
 	static int32_t GetLastSelectedUnit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_lastSelectedUnit.get();
 		lua_pushinteger(state, (lua_Integer)unit);
@@ -569,7 +581,7 @@ namespace lua_callback
 
 	static int32_t GetKillingUnit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_killingUnit.get();
 		lua_pushinteger(state, (lua_Integer)unit);
@@ -578,7 +590,7 @@ namespace lua_callback
 
 	static int32_t PickLastCreatedUnit(
 		struct lua_State* const
-	) noexcept
+	) modern_except_state
 	{
 		volatile class Unit* const unit = dynamic_cast<volatile class Unit* const>(m_global->m_lastCreatedRenderContainer.get());
 		if (unit)
@@ -590,7 +602,7 @@ namespace lua_callback
 
 	static int32 GiveTaskGotoPoint(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
@@ -607,7 +619,7 @@ namespace lua_callback
 
 	static int32 SetTaskGotoPoint(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
@@ -624,7 +636,7 @@ namespace lua_callback
 
 	static int32 SetTaskAttack(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const object = (class Unit* const)lua_tointeger(state, 1);
 		class Unit* const target = (class Unit* const)lua_tointeger(state, 2);
@@ -680,7 +692,7 @@ namespace lua_callback
 
 	static int32_t SetFootstepsSound(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
@@ -709,14 +721,14 @@ namespace lua_callback
 
 	static int32_t BeginRunning(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid(unit))
 		{
-			modern_guard guard(unit);
-			unit->BeginRunning();
+			//modern_guard guard(unit);
+			//unit->BeginRunning();
 		}
 		else
 		{
@@ -728,13 +740,13 @@ namespace lua_callback
 
 	static int32_t EndRunning(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid(unit))
 		{
-			modern_guard guard(unit);
-			unit->EndRunning();
+			//modern_guard guard(unit);
+			//unit->EndRunning();
 		}
 		else
 		{
@@ -746,7 +758,7 @@ namespace lua_callback
 
 	static int32 CleanTasks(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
@@ -758,7 +770,7 @@ namespace lua_callback
 
 	static int32 InitializeUnit(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
@@ -767,42 +779,38 @@ namespace lua_callback
 		std::string str = lua_tostring(state, 2);
 		const float p_z = (const float)lua_tointeger(state, 7);
 
-		wchar_t* wide_string = new wchar_t[str.length() + 1];
-		std::wstring ws = std::wstring(str.begin(), str.end()).c_str();
-		wcscpy(wide_string, ws.c_str());
-
 			unit->Initialize(
 				m_device,
 				m_deviceContext,
 				m_unitsShader,
-				wide_string,
+				str.c_str(),
 				(float)lua_tointeger(state, 3),
 				(float)lua_tointeger(state, 4),
 				struct DirectX::XMFLOAT3((float)lua_tointeger(state, 5),(float)lua_tointeger(state, 6),0.f),
 				lua_toboolean(state, 8)
 			);
 			m_renderer->PushUnit(unit);
-
-			delete[] wide_string;
 		}
 		return 0;
 		
 	}
-
-	static int32 FocusOnUnit(
-		struct lua_State* const state
-	) noexcept
-	{
-		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
-			m_renderer->SetFocus(unit);
-		return 0;
-
-	}
-
+																																	 //^^
+	static int32 FocusOnUnit(																										 //^^
+		struct lua_State* const state																								 //^^
+	) modern_except_state																											 //^^
+	{																																 //^^
+		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);														 //^^
+		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));					 //^^
+			if(unit)
+				m_renderer->SetFocus(unit);			
+			//^^
+		return 0;																													 //^^
+																																	 //^^
+	}																																 //^^
+																																	 //^^
 	static int32 InitializeDoodads(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Doodads* const doodads = (class Doodads* const)lua_tointeger(state, 1);
 		if (doodads)
@@ -837,7 +845,7 @@ namespace lua_callback
 
 	static int32 InitializeAnimatedDoodads(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class AnimatedDoodads* const doodads = (class AnimatedDoodads* const)lua_tointeger(state, 1);
 		if (doodads)
@@ -872,7 +880,7 @@ namespace lua_callback
 
 	static int32 InitializeTree(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Tree* const tree = (class Tree* const)lua_tointeger(state, 1);
 		if (tree)
@@ -907,7 +915,7 @@ namespace lua_callback
 
 	static int32 InitializeInterface(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if (inter)
@@ -952,7 +960,7 @@ namespace lua_callback
 
 	static int32 SetInterfaceButtonBehavior(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if(inter)
@@ -971,7 +979,7 @@ namespace lua_callback
 
 	static int32 SetInterfaceCheckboxBehavior(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if (inter)
@@ -990,7 +998,7 @@ namespace lua_callback
 
 	static int32 SetInterfaceSliderBehavior(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if (inter)
@@ -1009,7 +1017,7 @@ namespace lua_callback
 
 	static int32 BindBindableBehavior(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if (inter)
@@ -1035,7 +1043,7 @@ namespace lua_callback
 
 	static int32 SetInterfaceText(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
 		if (inter)
@@ -1048,7 +1056,7 @@ namespace lua_callback
 	
 	static int32 SetButtonOnClick(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class InterfaceButtonBehavior* const behavior = (class InterfaceButtonBehavior* const)lua_tointeger(state, 1);
 		if (behavior)
@@ -1062,7 +1070,7 @@ namespace lua_callback
 
 	static int32 SetRenderingFlag(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -1074,7 +1082,7 @@ namespace lua_callback
 
 	static int32 SetShadowFlag(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -1086,7 +1094,7 @@ namespace lua_callback
 
 	static int32 SetPushableFlag(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -1099,7 +1107,7 @@ namespace lua_callback
 
 	static int32 SetSelectableFlag(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -1111,7 +1119,7 @@ namespace lua_callback
 
 	static int32 SetCollisionPriority(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		if (object)
@@ -1123,7 +1131,7 @@ namespace lua_callback
 
 	static int32_t GetRenderContainerFlag(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		//class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
 		//if (object)
@@ -1136,7 +1144,7 @@ namespace lua_callback
 
 	static int32_t SetNumberOfFrames(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class AnimatedDoodads* const animatedDoodad = (AnimatedDoodads*)lua_tointeger(state, 1);
 		if (animatedDoodad)
@@ -1148,7 +1156,7 @@ namespace lua_callback
 
 	static int32 SetWalkingStance(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (!Unit::CheckIfValid(unit))
@@ -1173,7 +1181,7 @@ namespace lua_callback
 	{
 		static int32 ChangeWalkingStance(
 			struct lua_State* const state
-		) noexcept
+		) modern_except_state
 		{
 			class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 			if(unit)
@@ -1185,7 +1193,7 @@ namespace lua_callback
 
 	static int32 SetUnitSpeed(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		if (unit)
@@ -1297,7 +1305,7 @@ namespace lua_callback
 
 	static int32_t SetTilesMultiplier(
 		struct lua_State* const state
-	) noexcept
+	) modern_except_state
 	{
 		SetCellMultiplier(LUA_FLOAT(state, 1));
 		return 0;
@@ -1577,8 +1585,10 @@ namespace lua_callback
 	{
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		class Unit* const unit1 = (class Unit* const)lua_tointeger(state, 2);
-		if (unit0 && unit0->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT)
-		unit0->Die(unit1);
+		if (Unit::CheckIfValid(unit0))
+		{
+			unit0->Die(unit1);
+		}
 
 		return 0;
 	}
@@ -1793,7 +1803,7 @@ namespace lua_callback
 	)
 	{
 		//tempcode warning
-		auto const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_enteringObject.get());
+		class EObject* const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_enteringObject.get());
 		if (obj)
 		{
 			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_enteringObject.get());
@@ -1810,7 +1820,7 @@ namespace lua_callback
 	)
 	{
 		//tempcode warning
-		auto const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_leavingObject.get());
+		class EObject* const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_leavingObject.get());
 		if (obj)
 		{
 			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_leavingObject.get());
@@ -1972,3 +1982,5 @@ namespace lua_callback
 }
 
 }
+
+

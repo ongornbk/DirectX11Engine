@@ -4,8 +4,9 @@
 #include "modern/modern_xmath.h"
 #include <cassert>
 
-FloatVariableUnitDistanceFromCamera::FloatVariableUnitDistanceFromCamera(Unit* const __unit) : unit(__unit)
+FloatVariableUnitDistanceFromCamera::FloatVariableUnitDistanceFromCamera(Unit* const __unit)
 {
+	unit = __unit;
 }
 
 const float FloatVariableUnitDistanceFromCamera::get()

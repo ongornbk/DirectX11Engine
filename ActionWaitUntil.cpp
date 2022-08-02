@@ -1,9 +1,10 @@
 #include "ActionWaitUntil.h"
 #include <cassert>
 
-ActionWaitUntil::ActionWaitUntil(class ICondition* const condition) : m_condition(condition)
+ActionWaitUntil::ActionWaitUntil(class ICondition* const condition)
 {
-	assert(condition);
+	m_condition = condition;
+	//assert(condition);
 }
 
 ActionWaitUntil::~ActionWaitUntil()

@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <stdio.h>
 #include <sal.h>
+#include "modern/modern_def.h"
 
 typedef uint64_t uint64;
 typedef int64_t  int64;

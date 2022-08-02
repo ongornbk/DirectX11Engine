@@ -9,12 +9,15 @@
 #include <deque>
 #pragma comment(lib,"sfml-audio.lib")
 
+#include "modern/modern_string.h"
+#include "modern/modern_string_view.h"
+
 class ISound
 {
 public:
 
-	virtual bool Initialize(WCHAR* soundFileName) = 0;
-	virtual bool IsInitialized() = 0;
+	virtual modern_Boolean Initialize(const class modern_string& name) = 0;
+	virtual modern_Boolean IsInitialized() = 0;
 	virtual sf::SoundSource::Status GetStatus() = 0;
 	virtual void Play() = 0;
 	virtual void Play(const float volume) = 0;
@@ -27,7 +30,7 @@ public:
 
 	virtual void Update(void) = 0;
 
-	virtual std::string GetName() = 0;
+	virtual const modern_string_view& GetName() = 0;
 	virtual sf::Sound* GetSound() = 0;
 };
 

@@ -20,7 +20,7 @@ NorCondition::~NorCondition()
 	}
 }
 
-bool NorCondition::CheckCondition()
+modern_Boolean NorCondition::CheckCondition()
 {
 	return !(A->CheckCondition() || B->CheckCondition());
 }

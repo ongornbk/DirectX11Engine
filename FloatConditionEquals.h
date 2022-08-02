@@ -10,5 +10,5 @@ class FloatConditionEquals :
 
 public:
 	FloatConditionEquals(class IFloatVariable* const A, class IFloatVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };

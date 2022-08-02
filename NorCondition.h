@@ -10,7 +10,7 @@ public:
 	NorCondition() = delete;
 	NorCondition(class ICondition* const __A, class ICondition* const __B);
 	~NorCondition();
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 
 

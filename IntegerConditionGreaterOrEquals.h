@@ -10,5 +10,5 @@ class IntegerConditionGreaterOrEquals :
 
 public:
 	IntegerConditionGreaterOrEquals(class IIntegerVariable* const A, class IIntegerVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };

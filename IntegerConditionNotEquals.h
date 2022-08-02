@@ -10,7 +10,7 @@ class IntegerConditionNotEquals :
 
 public:
 	IntegerConditionNotEquals(class IIntegerVariable* const A, class IIntegerVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 
 

@@ -10,15 +10,17 @@ namespace
 {
 	static ipp::Console* m_instance = nullptr;
 	static std::mutex m_consoleMutex;
+	static std::ofstream m_cstream;
 }
 
 ipp::Console::~Console(void)
 {
+	//m_cstream.close();
 }
 
 ipp::Console::Console(void) : __Console()
 {
-
+//	m_cstream.open("debug.txt");// DOESNT WORK ANYWAY BTW ITS TRASH IDEA TO USE IT
 }
 
 ipp::Console* ipp::Console::GetInstance()
@@ -58,6 +60,22 @@ void ipp::Console::Println(std::string text, TextColors color)
 void ipp::Console::Println(std::string text, std::wstring wide, TextColors color)
 {
 	GetInstance()->__Print(text, wide, color);
+	GetInstance()->__Print('\n');
+}
+
+void ipp::Console::Println(const modern_string& str0, const modern_string& str1, TextColors color)
+{
+	GetInstance()->__Println(str0, str1, color);
+}
+
+void ipp::Console::Println(const modern_string& str0, const modern_string& str1)
+{
+	GetInstance()->__Println(str0, str1);
+}
+
+void ipp::Console::Println(const modern_string& str0, const modern_string_view& str1)
+{
+	GetInstance()->__Println(str0, str1);
 }
 
 void ipp::Console::Println(std::string text, const int value)
@@ -159,69 +177,102 @@ ipp::__Console::~__Console(void)
 
 void ipp::__Console::__Println(float number)
 {
+	m_cstream << number;
 	printf("%f\n",number);
 }
 
 void ipp::__Console::__Println(uint32_t number)
 {
+	//m_cstream << number;
 	printf("%u\n", number);
 }
 
 void ipp::__Console::__Print(std::string text)
 {
+	//m_cstream << text;
 	printf("%s", text.c_str());
 }
 
 void ipp::__Console::__Print(const char * text)
 {
+	//m_cstream << text;
 	printf("%s", text);
 }
 
 void ipp::__Console::__Print(const wchar_t* text)
 {
+	//m_cstream << text;
 	wprintf(L"%s", text);
 }
 
 void ipp::__Console::__Print(std::string text, TextColors color)
 {
+	//m_cstream << text;
 	SetConsoleTextAttribute(m_outputHandle, color);
 	printf("%s", text.c_str());
 }
 
 void ipp::__Console::__Print(std::string text, std::wstring wide, TextColors color)
 {
+	//m_cstream << text;
 	SetConsoleTextAttribute(m_outputHandle, color);
 	printf("%s", text.c_str());
 	wprintf(L"%s", wide.c_str());
 }
 
+void ipp::__Console::__Println(const modern_string& str0, const modern_string& str1, TextColors color)
+{
+	SetConsoleTextAttribute(m_outputHandle, color);
+	wprintf(L"%s", str0.c_wstr());
+	wprintf(L"%s\n", str1.c_wstr());
+}
+
+void ipp::__Console::__Println(const modern_string& str0, const modern_string& str1)
+{
+	wprintf(L"%s", str0.c_wstr());
+	wprintf(L"%s\n", str1.c_wstr());
+}
+
+void ipp::__Console::__Println(const modern_string& str0, const modern_string_view& str1)
+{
+	wprintf(L"%s", str0.c_wstr());
+	wprintf(L"%s\n", str1.c_wstr());
+}
+
 void ipp::__Console::__Print(std::string text, const int32_t value)
 {
+	//m_cstream << text;
+	//m_cstream << value;
 	printf("%s%d", text.c_str(),value);
 }
 
 void ipp::__Console::__Print(float number)
 {
+//	m_cstream << number;
 	printf("%f", number);
 }
 
 void ipp::__Console::__Print(int32_t number)
 {
+	//m_cstream << number;
 	printf("%d", number);
 }
 
 void ipp::__Console::__Print(char ch)
 {
+	//m_cstream << ch;
 	printf("%c", ch);
 }
 
 void ipp::__Console::__Println(uint64_t number)
 {
+	//m_cstream << number;
 	printf("%" PRIu64, number);
 }
 
 void ipp::__Console::__Print(void * address)
 {
+	//m_cstream << address;
 	printf("%p", address);
 }
 
@@ -315,7 +366,7 @@ int32 _fastcall ipp::math::range(int32 &value,const int32 min,const int32 max)
 		return 1;
 }
 
-void  ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
+void  ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min,const int32 max) modern_except_state
 {
 		for (int32 i = 0; i < size; ++i)
 		{
@@ -325,7 +376,7 @@ void  ipp::math::SquashInt32Array(int32 * value,const int32 size,const int32 min
 		return;
 }
 
-void ipp::math::SquashInt32Array(DirectX::XMINT2& int2, const int32 min, const int32 max) noexcept
+void ipp::math::SquashInt32Array(DirectX::XMINT2& int2, const int32 min, const int32 max) modern_except_state
 {
 	if (int2.x > max) int2.x = max;
 	else if (int2.x < min) int2.x = min;
@@ -333,7 +384,7 @@ void ipp::math::SquashInt32Array(DirectX::XMINT2& int2, const int32 min, const i
 	else if (int2.y < min) int2.y = min;
 }
 
-int32 ipp::math::SquashInt32ArrayWithCheck(int32 * value,const int32 size,const int32 min,const int32 max) noexcept
+int32 ipp::math::SquashInt32ArrayWithCheck(int32 * value,const int32 size,const int32 min,const int32 max) modern_except_state
 {
 	int32 out = 0;
 	for (int32 i = 0; i < size; ++i)
@@ -352,27 +403,27 @@ int32 ipp::math::SquashInt32ArrayWithCheck(int32 * value,const int32 size,const 
 	return out;
 }
 
-uint8 _cdecl ipp::math::RandomUint8(const uint8 min,const uint8 max) noexcept
+uint8 _cdecl ipp::math::RandomUint8(const uint8 min,const uint8 max) modern_except_state
 {
 	return min + (rand() % int32(max - min + 1));
 }
 
-int32 _stdcall ipp::math::RandomInt32(const int32 min, const int32 max) noexcept
+int32 _stdcall ipp::math::RandomInt32(const int32 min, const int32 max) modern_except_state
 {
 	return min + (rand() % int32(max - min + 1));
 }
 
-int32 ipp::System::GetScreenWidth() noexcept
+int32 ipp::System::GetScreenWidth() modern_except_state
 {
 	return GetSystemMetrics(SM_CXSCREEN);
 }
 
-int32 ipp::System::GetScreenHeight() noexcept
+int32 ipp::System::GetScreenHeight() modern_except_state
 {
 	return GetSystemMetrics(SM_CYSCREEN);
 }
 
-std::string ipp::System::GetFileName(const std::string & s) noexcept
+std::string ipp::System::GetFileName(const std::string & s) modern_except_state
 {
 	char sep = '/';
 
@@ -390,7 +441,7 @@ std::string ipp::System::GetFileName(const std::string & s) noexcept
 }
 
 
-void _stdcall ipp::System::Exit(const int32 return_value) noexcept
+void _stdcall ipp::System::Exit(const int32 return_value) modern_except_state
 {
 	if (return_value)
 		ipp::Console::Println("System::Exit Code : ",return_value);

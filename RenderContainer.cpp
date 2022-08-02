@@ -14,7 +14,7 @@ volatile modern_handle& EObject::GetHandle() volatile
     return m_object;
 }
 
-void EObject::safe_remove() noexcept
+void EObject::safe_remove() modern_except_state
 {
     class ActionExecuteActionArray* const def_actions_array = new class ActionExecuteActionArray();
     def_actions_array->push(new class ActionRemoveObject(this));

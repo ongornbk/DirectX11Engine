@@ -21,17 +21,17 @@ void UnitGroup::Remove(Unit* const unit)
 	m_units.remove(unit);
 }
 
-bool UnitGroup::empty() const noexcept
+bool UnitGroup::empty() const modern_except_state
 {
 	return m_units.empty();
 }
 
-size_t UnitGroup::size() const noexcept
+size_t UnitGroup::size() const modern_except_state
 {
 	return m_units.size();
 }
 
-void UnitGroup::clear() noexcept
+void UnitGroup::clear() modern_except_state
 {
 	m_units.clear();
 }

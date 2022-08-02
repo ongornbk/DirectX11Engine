@@ -14,7 +14,7 @@ public:
 
 	double GetDeltaTime();
 
-	__forceinline static modern_timepoint const& now();
+	__forceinline static modern_timepoint const now();
 private:
 	modern_Boolean   m_running = false;
 	modern_timepoint m_start;

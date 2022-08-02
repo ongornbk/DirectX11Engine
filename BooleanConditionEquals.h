@@ -11,6 +11,6 @@ class BooleanConditionEquals :
 
 public:
 	BooleanConditionEquals(class IBooleanVariable* const A, class IBooleanVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 

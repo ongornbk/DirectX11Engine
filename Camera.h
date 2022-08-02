@@ -4,6 +4,7 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
+#include "modern/modern_def.h"
 
 using namespace DirectX;
 
@@ -49,19 +50,19 @@ public:
 
 	static class Camera* GetCurrentCamera();
 
-	const DirectX::XMVECTOR   GetPosition() const noexcept;
-	const DirectX::XMVECTOR   GetRotation() const noexcept;
-	const struct DirectX::XMFLOAT4X4& GetView() noexcept;
-	const struct DirectX::XMFLOAT4X4& GetProjection() noexcept;
-	const struct DirectX::XMFLOAT4X4&  GetOrtho() noexcept;
-	const struct DirectX::XMFLOAT4X4& GetInterfaceOrtho() noexcept;
+	const DirectX::XMVECTOR   GetPosition() const modern_except_state;
+	const DirectX::XMVECTOR   GetRotation() const modern_except_state;
+	const struct DirectX::XMFLOAT4X4& GetView() modern_except_state;
+	const struct DirectX::XMFLOAT4X4& GetProjection() modern_except_state;
+	const struct DirectX::XMFLOAT4X4&  GetOrtho() modern_except_state;
+	const struct DirectX::XMFLOAT4X4& GetInterfaceOrtho() modern_except_state;
 
 	void Update();
 
-	void ZoomIn() const noexcept;
-	void ZoomOut() const noexcept;
+	void ZoomIn() const modern_except_state;
+	void ZoomOut() const modern_except_state;
 
-	const int64_t GetZoom() const noexcept;
+	const int64_t GetZoom() const modern_except_state;
 
 private:
 

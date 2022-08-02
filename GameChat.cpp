@@ -31,12 +31,12 @@ GameChat::~GameChat()
 	m_texts.clear();
 }
 
-void GameChat::SetTextsLimit(const int32 limit) noexcept
+void GameChat::SetTextsLimit(const int32 limit) modern_except_state
 {
 	m_textsLimit = limit;
 }
 
-void GameChat::PushText(std::string text) noexcept
+void GameChat::PushText(std::string text) modern_except_state
 {
 //	m_texts.push_back(CreateTextFromString(text));
 	//m_size++;
@@ -45,25 +45,25 @@ void GameChat::PushText(std::string text) noexcept
 
 
 
-void  GameChat::PushTextFront(std::string text) noexcept
+void  GameChat::PushTextFront(std::string text) modern_except_state
 {
 //	m_texts.push_front(CreateTextFromString(text));
 //	m_size++;
 	//CheckSize();
 }
 
-void  GameChat::SetFont(class TextFont* font) noexcept
+void  GameChat::SetFont(class TextFont* font) modern_except_state
 {
 	m_font = font;
 }
 
-void GameChat::ClearQueue() noexcept
+void GameChat::ClearQueue() modern_except_state
 {
 	m_texts.clear();
 	m_size = 0u;
 }
 
-void GameChat::Update() noexcept
+void GameChat::Update() modern_except_state
 {
 	constexpr float offsetY = 30.0f;
 	float coY = 0.0f;
@@ -80,7 +80,7 @@ void GameChat::Render(
 	DirectX::XMFLOAT4X4& viewMatrix,
 	DirectX::XMFLOAT4X4& projectionMatrix,
 	class Shader* const shader
-) noexcept
+) modern_except_state
 {
 	for (auto&& text : m_texts)
 	{
@@ -88,14 +88,14 @@ void GameChat::Render(
 	}
 }
 
-void  GameChat::SetTextPosition(DirectX::XMFLOAT3 pos) noexcept
+void  GameChat::SetTextPosition(DirectX::XMFLOAT3 pos) modern_except_state
 {
 	m_pos.x = pos.x;
 	m_pos.y = pos.y;
 	m_pos.z = pos.z;
 }
 
-void GameChat::SetGlobals(ID3D11Device * device, ID3D11DeviceContext * context, Shader * shader) noexcept
+void GameChat::SetGlobals(ID3D11Device * device, ID3D11DeviceContext * context, Shader * shader) modern_except_state
 {
 	m_device = device;
 	m_context = context;
@@ -104,17 +104,17 @@ void GameChat::SetGlobals(ID3D11Device * device, ID3D11DeviceContext * context, 
 
 
 
-auto  GameChat::begin() noexcept
+auto  GameChat::begin() modern_except_state
 {
 	return m_texts.begin();
 }
 
-auto _cdecl GameChat::end() noexcept
+auto _cdecl GameChat::end() modern_except_state
 {
 	return m_texts.end();
 }
 
-Text* GameChat::CreateTextFromString(std::string text) noexcept
+Text* GameChat::CreateTextFromString(std::string text) modern_except_state
 {
 	Text* __text = new Text();
 	__text->Initialize(m_device, m_context, m_shader, m_font,20.f);
@@ -122,7 +122,7 @@ Text* GameChat::CreateTextFromString(std::string text) noexcept
 	return __text;
 }
 
-void GameChat::CheckSize() noexcept
+void GameChat::CheckSize() modern_except_state
 {
 	if (m_size > m_textsLimit)
 	{

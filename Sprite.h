@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "TextureShader.h"
 #include "ColorFilter.h"
+#include "modern/modern_def.h"
 
 class Sprite : public ColorFilter
 {
@@ -18,7 +19,7 @@ public:
 	virtual void Render(ID3D11DeviceContext * deviceContext, XMFLOAT4X4 worldMatrix, XMFLOAT4X4 viewMatrix, XMFLOAT4X4 projectionMatrix, Shader* shader);
 	virtual bool ResizeTexture(ID3D11Device * device, float size, bool writeable = false);
 	virtual void SetAnimationSpeed(float speed = 1.0f);
-	virtual const struct DirectX::XMFLOAT2 GetSize() const noexcept;
+	virtual const struct DirectX::XMFLOAT2 GetSize() const modern_except_state;
 protected:
 	VertexBuffer* m_vertexBuffer;
 	Texture* m_texture;

@@ -196,12 +196,12 @@ void Region::GiveName(std::string name)
 	}
 }
 
-const DirectX::XMFLOAT3& Region::GetPosition() const noexcept
+const DirectX::XMFLOAT3& Region::GetPosition() const modern_except_state
 {
 	return m_rect.Center;
 }
 
-const RenderLayerType Region::GetRenderLayer() const noexcept
+const RenderLayerType Region::GetRenderLayer() const modern_except_state
 {
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }

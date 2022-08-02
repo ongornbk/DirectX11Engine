@@ -1,11 +1,12 @@
 #include "MultiSound.h"
+#include <iostream>
 
-MultiSound::MultiSound(WCHAR* soundFileName)
+MultiSound::MultiSound(const class modern_string& name)
 {
-	m_sound = NULL;
+	m_sound = nullptr;
 	m_volume = 100.0f;
 	m_isLooping = false;
-	m_initialized = Initialize(soundFileName);
+	m_initialized = Initialize(name);
 }
 
 
@@ -16,36 +17,36 @@ MultiSound::~MultiSound()
 		delete m_sound;
 		m_sound = NULL;
 	}
-	m_name.clear();
 }
 
-bool MultiSound::Initialize(WCHAR* soundFileName)
+modern_Boolean MultiSound::Initialize(const class modern_string& name)
 {
-	std::wstring tmp0 = std::wstring(soundFileName);
+	std::wstring tmp0 = std::wstring(name.c_wstr());
 	std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-	int32_t pos = (int32_t)tmp1.find_last_of("/");
-	if (pos >= 0)
+	size_t pos = (size_t)tmp0.find_last_of(L"/");
+	if (pos >= 0ull)
 	{
-		m_name = tmp1.substr(pos + 1, tmp1.length());
+		tmp0 = tmp0.substr(pos + 1ull, tmp0.length());
 	}
-	m_name = m_name.substr(0, m_name.find("."));
+	m_name = tmp0.substr(0ull, tmp0.find(L".")).c_str();
 
 
 	if (!m_soundBuffer.loadFromFile(tmp1))
 	{
-
-		return false;
+		return modern_false;
 	}
 
-	m_sound = new sf::Sound();
-	m_sound->setBuffer(m_soundBuffer);
-	return true;
+	{
+		m_sound = new sf::Sound();
+		m_sound->setBuffer(m_soundBuffer);
+	}
+
+	return modern_true;
 }
 
-bool MultiSound::IsInitialized()
+modern_Boolean MultiSound::IsInitialized()
 {
-
-	return m_initialized;
+	return modern_Boolean(m_initialized);
 }
 
 sf::SoundSource::Status MultiSound::GetStatus()
@@ -126,10 +127,9 @@ void MultiSound::Update(void)
 	}
 }
 
-std::string MultiSound::GetName()
+const class modern_string_view& MultiSound::GetName()
 {
-
-	return m_name;
+	return *(new modern_string_view(&m_name));
 }
 
 sf::Sound* MultiSound::GetSound()

@@ -19,7 +19,7 @@ public:
 
 	virtual void            Update(const float dt = 0.f) = 0;
 	virtual void            Release() = 0;
-	virtual bool           isReleased() const noexcept = 0;
+	virtual bool           isReleased() const modern_except_state = 0;
 
 	virtual void _cdecl Intersect(class Handle* const other) = 0;
 

@@ -55,7 +55,7 @@ void InterfaceButtonBehavior::OnClick()
 	}
 }
 
-const InterfaceBehaviorType InterfaceButtonBehavior::GetType() const noexcept
+const InterfaceBehaviorType InterfaceButtonBehavior::GetType() const modern_except_state
 {
 	return InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_BUTTON;
 }

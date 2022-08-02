@@ -50,7 +50,7 @@ void RenderAgent::Release()
 {
 }
 
-int32 RenderAgent::isReleased() const noexcept
+int32 RenderAgent::isReleased() const modern_except_state
 {
     return int32();
 }
@@ -59,7 +59,7 @@ void RenderAgent::Intersect(EObject* const other)
 {
 }
 
-const RenderLayerType RenderAgent::GetLayerType() const noexcept
+const RenderLayerType RenderAgent::GetLayerType() const modern_except_state
 {
     //return RenderLayerType::ENUM_OBJECT_TYPE;
     interface RenderAgentParent* const collline = (interface RenderAgentParent* const)m_parent.get();
@@ -71,12 +71,12 @@ void RenderAgent::Remove()
     safe_remove();
 }
 
-void RenderAgent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void RenderAgent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
 }
 
-DirectX::XMFLOAT3 RenderAgent::GetVector() noexcept
+DirectX::XMFLOAT3 RenderAgent::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
 }

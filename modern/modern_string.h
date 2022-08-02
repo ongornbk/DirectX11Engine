@@ -21,12 +21,13 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_exception;
 
-[[nodiscard]] bool modern_isdigit(wchar_t ch) noexcept;
-[[nodiscard]] int32_t modern_todigit(wchar_t ch) noexcept;
+[[nodiscard]] bool modern_isdigit(wchar_t ch) modern_except_state;
+[[nodiscard]] int32_t modern_todigit(wchar_t ch) modern_except_state;
 
 class modern_string
 {
-	modern_shared<modern_array<wchar_t>> m_string;
+	friend class modern_string_view;
+	mutable modern_shared<class modern_array<wchar_t>> m_string;
 public:
 	modern_string();
 	modern_string(modern_string& string);
@@ -41,20 +42,23 @@ public:
 	modern_string(modern_exception& exception);
 	~modern_string();
 
-	[[nodiscard]] wchar_t* const c_wstr() const noexcept;
-	[[nodiscard]] char* const c_str() const noexcept;
+	[[nodiscard]] wchar_t* const c_wstr() const modern_except_state;
+	[[nodiscard]] char* const c_str() const modern_except_state;
 	[[nodiscard]] 
-	[[nodiscard]] size_t size() const noexcept;
-	[[nodiscard]] int32_t to_int32() noexcept;
-	[[nodiscard]] float to_float() noexcept;
-	[[nodiscard]] bool to_bool() noexcept;
+	[[nodiscard]] size_t size() const modern_except_state;
+	[[nodiscard]] int32_t to_int32() modern_except_state;
+	[[nodiscard]] float to_float() modern_except_state;
+	[[nodiscard]] bool to_bool() modern_except_state;
 
 	[[nodiscard]] static modern_pair<modern_string, modern_string>& SplitString(const wchar_t* string, wchar_t token);
 
-	modern_string& operator= (modern_string& string);
+	      class modern_string& operator= (      class modern_string& string);
+	const class modern_string& operator= (const class modern_string& string);
 	modern_string& operator= (const wchar_t* string);
 
 	modern_string operator+ (modern_string& string);
+
+	[[nodiscard]] const size_t find_last_of(const wchar_t character) const modern_except_state;
 
 	void push_back(const wchar_t element);
 	void push_back(const char element);
@@ -63,5 +67,10 @@ public:
 	void resize(size_t size);
 	void load(const char* text);
 
+private:
+
+	void push_zero() const modern_except_state;
+
 };
+
 

@@ -27,10 +27,10 @@ public:
 
 	modern_shared_guard() = delete;
 	modern_shared_guard(class modern_shared_guard& guard) = delete;
-	_stdcall modern_shared_guard(struct modern_class* const object) noexcept;
-	_stdcall modern_shared_guard(volatile struct modern_class* const object) noexcept;
-	_stdcall modern_shared_guard(const struct modern_class* const object) noexcept;
-	_stdcall modern_shared_guard(std::atomic<int64_t>& lock) noexcept;
-	_stdcall ~modern_shared_guard() noexcept;
+	_stdcall modern_shared_guard(struct modern_class* const object) modern_except_state;
+	_stdcall modern_shared_guard(volatile struct modern_class* const object) modern_except_state;
+	_stdcall modern_shared_guard(const struct modern_class* const object) modern_except_state;
+	_stdcall modern_shared_guard(std::atomic<int64_t>& lock) modern_except_state;
+	_stdcall ~modern_shared_guard() modern_except_state;
 };
 

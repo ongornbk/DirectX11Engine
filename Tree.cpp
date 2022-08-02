@@ -66,6 +66,20 @@ void Tree::Initialize(
 	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
+	m_fadeRegion.make_handle((new class Region(
+		m_boundingSphere.Center.x - (m_size / 2.f),
+		m_boundingSphere.Center.y + m_size,
+		m_boundingSphere.Center.x + (m_size / 2.f),
+		m_boundingSphere.Center.y
+	))->GetHandle());
+
+	class Region* const mfr = (class Region* const)(m_fadeRegion.get());
+	if (mfr)
+	{
+		modern_guard g(mfr);
+		mfr->GiveName("tree");
+	}
+
 	m_type = EObject::EObjectType::OBJECT_TYPE_TREE;
 }
 
@@ -144,7 +158,7 @@ void Tree::Release()
 	}
 }
 
-int32 Tree::isReleased() const noexcept
+int32 Tree::isReleased() const modern_except_state
 {
 	if (m_vertexBuffer)
 	{
@@ -161,7 +175,7 @@ void Tree::Intersect( class EObject* const other)
 
 }
 
-const RenderLayerType Tree::GetLayerType() const noexcept
+const RenderLayerType Tree::GetLayerType() const modern_except_state
 {
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }
@@ -178,27 +192,27 @@ void Tree::CastShadow(const bool shadow)
 	m_flags.m_cast_shadow = shadow;
 }
 
-void Tree::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Tree::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 
 }
 
-DirectX::XMFLOAT3 Tree::GetVector() noexcept
+DirectX::XMFLOAT3 Tree::GetVector() modern_except_state
 {
 	return { 0.f,0.f,0.f };
 }
 
-void Tree::SetStance(const modern_Boolean stance) noexcept
+void Tree::SetStance(const modern_Boolean stance) modern_except_state
 {
 	m_stance = stance;
 }
 
-const modern_Boolean Tree::GetStance() const noexcept
+const modern_Boolean Tree::GetStance() const modern_except_state
 {
 	return m_stance;
 }
 
-void Tree::SetGlobal(class Global * const global) noexcept
+void Tree::SetGlobal(class Global * const global) modern_except_state
 {
 	m_global = global;
 }

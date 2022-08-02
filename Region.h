@@ -47,8 +47,8 @@ public:
 	void Unbind();
 	void GiveName(std::string name);
 
-	const DirectX::XMFLOAT3& GetPosition()const noexcept;
-	const enum class RenderLayerType GetRenderLayer() const noexcept override;
+	const DirectX::XMFLOAT3& GetPosition()const modern_except_state;
+	const enum class RenderLayerType GetRenderLayer() const modern_except_state override;
 private:
 	void Enters(const modern_handle& object);
 	void Leaves(const modern_handle& object);

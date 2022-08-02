@@ -76,7 +76,6 @@ RendererManager::RendererManager(
 	m_shadowShader(shadow),
 	m_selectShader(select),
 	m_interfaceShader(inter),
-	m_focus(nullptr),
 	m_collision(false),
 	//m_fpsText(nullptr),
 	//m_objectsText(nullptr),
@@ -87,7 +86,7 @@ RendererManager::RendererManager(
 	new Options();
 	m_activeOptions.make_handle(Options::GetInstance());
 
-
+	
 	
 	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
@@ -103,6 +102,8 @@ RendererManager::RendererManager(
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_SHADOW_TYPE)]    = new class RenderLayerShadow();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_ITEM_TYPE)]      = new class RenderLayerItem();
 	m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_INTERFACE_TYPE)] = new class RenderLayerInterface();
+
+	
 
 	LetterSprite::SetMatrixIdentity(DirectX::XMMatrixIdentity());
 
@@ -450,7 +451,7 @@ void RendererManager::PushInterface(Interface* const object)
 
 
 
-	const _Out_ int32 _stdcall validateRendering(const struct DirectX::XMFLOAT3& _In_ object) noexcept
+	const _Out_ int32 _stdcall validateRendering(const struct DirectX::XMFLOAT3& _In_ object) modern_except_state
 	{
 		const float x = abs((object.x) - (m_cameraPosition.m128_f32[0]));
 		const float y = abs((object.y) - (m_cameraPosition.m128_f32[1]));
@@ -544,7 +545,7 @@ void RendererManager::Render(
 
 	m_ui->Render(deviceContext, viewMatrix, interfaceMatrix);
 
-	if (((Options*)m_activeOptions.get())->option_ShowFPS)
+	if (modern_Boolean_check ((Options*)m_activeOptions.get())->option_ShowFPS)
 	{
 		class Text* const A = (class Text*)m_fpsText.get();
 		if (A)
@@ -691,7 +692,7 @@ void RendererManager::Render(
 					modern_guard g(A);
 					A->SetPosition(m_cameraPosition);
 					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus;
+					class Unit* const unit = (class Unit* const)m_focus.get();
 					if (Unit::CheckIfValid(unit))
 					{
 						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
@@ -713,7 +714,7 @@ void RendererManager::Render(
 					modern_guard g(A);
 					A->SetPosition(m_cameraPosition);
 					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus;
+					class Unit* const unit = (class Unit* const)m_focus.get();
 					if (Unit::CheckIfValid(unit))
 					{
 						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
@@ -735,7 +736,7 @@ void RendererManager::Render(
 					modern_guard g(A);
 					A->SetPosition(m_cameraPosition);
 					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus;
+					class Unit* const unit = (class Unit* const)m_focus.get();
 					if (Unit::CheckIfValid(unit))
 					{
 						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
@@ -754,7 +755,7 @@ void RendererManager::Render(
 		}
 		}
 
-		if (((Options*)m_activeOptions.get())->option_ShowFPS)
+		if (modern_Boolean_check ((class Options* const)m_activeOptions.get())->option_ShowFPS)
 		{
 			class Text* const A = (class Text*)m_fpsText.get();
 			if (A)
@@ -889,7 +890,7 @@ void RendererManager::Render(
 			//EventManager::GetInstance()->PostSort();
 
 //#pragma omp critical
-			Focus(m_focus, ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
+			Focus((class EObject* const)m_focus.get(), ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 
 			
 
@@ -915,7 +916,7 @@ void RendererManager::Render(
 				class Unit* unith = nullptr;
 				while (gr.size())
 				{
-					if (gr.top() != m_focus&& gr.top()->m_flags.m_selectable == true)
+					if (gr.top() != m_focus.get()&& gr.top()->m_flags.m_selectable == true)
 					{
 						//gr.top()->Select();
 						modern_shared_guard g(gr.top());
@@ -1011,7 +1012,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 	if (object)
 	{
 		constexpr float fadedistance = 250.f;
-		std::stack<class Tree*> stack = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
+		std::stack<class Tree*> stack;// = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
 		while (stack.size())
 		{
 			Tree* tree = stack.top();
@@ -1035,12 +1036,16 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 				tree->SetStance(1);
 			}
 
+
 			switch (type)
 			{
 			case ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL:
 			{
 				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
+				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(
+					new FloatVariableDistanceBetweenObjects(object, tree),
+					new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
+				//action->push(new ActionWaitUntil(nullptr));
 				action->push(new ActionSetShadowCast(tree, true));
 				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
 				action->push(new ActionTreeSetStance(tree, 0));
@@ -1054,6 +1059,7 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 					ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER),
 					ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(object), new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
 				)));
+				action->push(new ActionWaitUntil(nullptr));
 				action->push(new ActionSetShadowCast(tree, true));
 				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
 				action->push(new ActionTreeSetStance(tree, 0));
@@ -1119,8 +1125,11 @@ void RendererManager::SetFps(const int32 fps)
 	if (D)
 	{
 		modern_guard g(D);
-		//D->SetText(modern_cstring("BMP ", GLOBAL m_bmap4.size()).c_str());
-
+		D->SetText(modern_cstring("BMP ", GLOBAL m_bmap4.size() + GLOBAL m_bmap2.size()).c_str());
+		//for(auto & obj : GLOBAL m_bmap2)
+		//{
+		//	std::cout << obj.first << " : " << obj.second << std::endl;
+		//}
 	}
 	class Text* const B = (class Text*)m_objectsText.get();
 	if (B)
@@ -1142,7 +1151,7 @@ void RendererManager::SetFps(const int32 fps)
 
 void RendererManager::SetFocus(Unit* const unit)
 {
-	m_focus = unit;
+	m_focus.make_handle(unit->GetHandle());
 }
 
 
@@ -1188,13 +1197,13 @@ Interface* const RendererManager::GetHealthBarMiniBorder()
 std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(
 	class Unit * const object,
 	const float range)
-	noexcept
+	modern_except_state
 {
 	//return std::stack<Unit*>();// m_objects.GetUnitsInRange(object, range);
 	return m_layers[enum_cast<int32_t>(object->GetLayerType())]->GetUnitsInRange(object, range);
 }
 
-std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(Agent* const agent, const float range) noexcept
+std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(Agent* const agent, const float range) modern_except_state
 {
 	return m_layers[enum_cast<int32_t>(agent->GetLayerType())]->GetUnitsInRange(agent, range);
 }
@@ -1206,7 +1215,7 @@ RendererManager * RendererManager::GetInstance()
 
 size_t RendererManager::GetNumberOfObjects()
 {
-	size_t size = 0u;
+	size_t size = 0ull;
 	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 	{
 		if (m_layers[i])

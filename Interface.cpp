@@ -273,7 +273,7 @@ void Interface::Release()
 	}
 }
 
-int32 Interface::isReleased() const noexcept
+int32 Interface::isReleased() const modern_except_state
 {
 	if (m_vertexBuffer)
 	{
@@ -289,7 +289,7 @@ void Interface::Intersect( EObject* const other)
 {
 }
 
-const RenderLayerType Interface::GetLayerType() const noexcept
+const RenderLayerType Interface::GetLayerType() const modern_except_state
 {
 	return RenderLayerType::ENUM_INTERFACE_TYPE;
 }
@@ -387,16 +387,16 @@ void Interface::SetText(modern_string& text)
 	m_text->SetPosition(m_boundingSphere.Center);
 }
 
-Interface* const Interface::GetParent() const noexcept
+Interface* const Interface::GetParent() const modern_except_state
 {
 	return m_parent;
 }
 
-void Interface::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Interface::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 }
 
-DirectX::XMFLOAT3 Interface::GetVector() noexcept
+DirectX::XMFLOAT3 Interface::GetVector() modern_except_state
 {
 	return { 0.f,0.f,0.f };
 }

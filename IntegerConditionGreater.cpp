@@ -4,7 +4,7 @@ IntegerConditionGreater::IntegerConditionGreater(IIntegerVariable* const A, IInt
 {
 }
 
-bool IntegerConditionGreater::CheckCondition()
+modern_Boolean IntegerConditionGreater::CheckCondition()
 {
 	return (m_A->get() > m_B->get());
 }

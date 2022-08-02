@@ -1,6 +1,6 @@
 #include "game_math.h"
 
-int32_t GetXCell(const float x) noexcept
+int32_t GetXCell(const float x) modern_except_state
 
 {
 	int32_t i = (int32_t)x / MAP_X_CHUNK;
@@ -17,7 +17,7 @@ int32_t GetXCell(const float x) noexcept
 	return i;
 }
 
-int32_t GetYCell(const float y) noexcept
+int32_t GetYCell(const float y) modern_except_state
 {
 	int32_t i = (int32_t)y / MAP_Y_CHUNK;
 	i += HALF_NUM_OF_DIVIDES_Y;

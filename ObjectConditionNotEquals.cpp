@@ -5,7 +5,7 @@ ObjectConditionNotEquals::ObjectConditionNotEquals(class IObjectVariable* const 
 	assert(A && B);
 }
 
-bool ObjectConditionNotEquals::CheckCondition()
+modern_Boolean ObjectConditionNotEquals::CheckCondition()
 {
 	return (m_A->get() != m_B->get());
 }

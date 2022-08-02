@@ -107,7 +107,7 @@ void Projectile::Release()
     m_flags.m_hide = true;
 }
 
-int32 Projectile::isReleased() const noexcept
+int32 Projectile::isReleased() const modern_except_state
 {
     return m_flags.m_hide;
 }
@@ -130,19 +130,25 @@ void Projectile::Intersect(EObject* const other)
                 const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
                 if (distance < (m_collision + target->GetCollisionRadius()))
                 {
-                    //struct modern_pack4* const pck4 = new struct modern_pack4(this, target);
-                    //if (GLOBAL m_bmap4.count(*pck4) == 0ull)
+                    struct modern_pack2* const pck2 = new struct modern_pack2(this, target);
+                    if ((GLOBAL m_bmap2.insert(*pck2)).second)
                     {
-                       // GLOBAL m_bmap4[*pck4]++;
+                        class IAction* const action = new ActionErasePack2(pck2);
+                        Timer::CreateExpiringTimer(action, 0.1f);
                         target->GetHit(owner);
                         target->DoDamage(owner);
 
-                        //class IAction* const action = new ActionErasePack4(pck4);
-                        //Timer::CreateExpiringTimer(action,1.f);
-                       // m_flags.m_hide = true;
+
+                        //m_flags.m_hide = true;
 
                         Engine* const engine = Engine::GetEngine();
                         engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+
+                        //constexpr size_t g =sizeof(modern_pack2);
+                    }
+                    else
+                    {
+                        
                     }
                 }
             }
@@ -151,7 +157,7 @@ void Projectile::Intersect(EObject* const other)
     }
 }
 
-const RenderLayerType Projectile::GetLayerType() const noexcept
+const RenderLayerType Projectile::GetLayerType() const modern_except_state
 {
     return RenderLayerType::ENUM_OBJECT_TYPE;
 }
@@ -163,12 +169,12 @@ void Projectile::Remove()
     Timer::CreateInstantTimer(action);
 }
 
-void Projectile::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Projectile::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
 }
 
-DirectX::XMFLOAT3 Projectile::GetVector() noexcept
+DirectX::XMFLOAT3 Projectile::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
 }

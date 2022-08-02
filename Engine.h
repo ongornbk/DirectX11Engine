@@ -61,7 +61,7 @@ public:
 	void PlaySound(class modern_string& music);
 	void PlaySound(WCHAR* sound, const float volume);
 
-	CameraControl* GetCameraControl();
+	class CameraControl* const GetCameraControl();
 	FrameWork* GetFrameWork();
 	bool       GetGameStance();
 
@@ -74,7 +74,7 @@ private:
 	modern_shared<modern_timer> m_timer;
 	double                      m_deltaTime;
 
-	double GetDeltaTime() const noexcept;
+	double GetDeltaTime() const modern_except_state;
 
 	Engine(void);
 
@@ -101,7 +101,7 @@ private:
 	GameComponent*   m_gameComponent;
 	Canals           m_canals;
 	CameraControl    m_cameraControl;
-	ThreadPool       m_threadPool;
+	//ThreadPool       m_threadPool;
 
 	lua_State*       m_lua;
 

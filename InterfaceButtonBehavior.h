@@ -11,7 +11,7 @@ public:
 
 	void OnHover() override;
 	void OnClick() override;
-	const enum class InterfaceBehaviorType GetType() const noexcept override;
+	const enum class InterfaceBehaviorType GetType() const modern_except_state override;
 
 	void SetOnClick(std::string click);
 private:

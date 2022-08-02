@@ -86,19 +86,19 @@ void _vectorcall LetterSpriteStruct::SetPosition(const DirectX::XMFLOAT3& positi
 	m_position = position;
 }
 
-const char LetterSpriteStruct::GetLetter() const noexcept
+const char LetterSpriteStruct::GetLetter() const modern_except_state
 {
 	if(m_letter)
 	return m_letter->GetLetter();
 	return ' ';
 }
 
-const char LetterSprite::GetLetter() const noexcept
+const char LetterSprite::GetLetter() const modern_except_state
 {
 	return m_char;
 }
 
-void _vectorcall LetterSprite::SetMatrixIdentity(const DirectX::XMMATRIX identity) noexcept
+void _vectorcall LetterSprite::SetMatrixIdentity(const DirectX::XMMATRIX identity) modern_except_state
 {
 	XMStoreFloat4x4(&s_world, identity);
 }

@@ -154,7 +154,7 @@ inline void modern_seed_malloc(uint32_t& seed)
 	modern_seed(seed);
 }
 
-inline const modern_Boolean modern_checkFloat32(const float f32) noexcept
+inline const modern_Boolean modern_checkFloat32(const float f32) modern_except_state
 {
 	return  !(isnormal(f32) || isnan(f32));
 }

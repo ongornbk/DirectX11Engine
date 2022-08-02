@@ -274,7 +274,7 @@ string Text::GetText()
 	return m_text;
 }
 
-float Text::GetSize() const noexcept
+float Text::GetSize() const modern_except_state
 {
 	return m_size;
 }

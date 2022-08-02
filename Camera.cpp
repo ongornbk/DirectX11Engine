@@ -90,28 +90,28 @@ void Camera::SetRotation(
 {
 	m_rotation = _mm_set_ps(x*(float)XM_PI/180.f, y*(float)XM_PI / 180.f, z*XM_PI / 180.f, 0.f);
 }
-const DirectX::XMVECTOR Camera::GetPosition() const noexcept
+const DirectX::XMVECTOR Camera::GetPosition() const modern_except_state
 {
 	return m_position;
 }
-const DirectX::XMVECTOR Camera::GetRotation()const noexcept
+const DirectX::XMVECTOR Camera::GetRotation()const modern_except_state
 {
 	return m_rotation;
 }
-const struct DirectX::XMFLOAT4X4& Camera::GetView() noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetView() modern_except_state
 {
 	return m_view;
 }
-const struct DirectX::XMFLOAT4X4& Camera::GetProjection() noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetProjection() modern_except_state
 {
 	return m_projection;
 }
-const struct DirectX::XMFLOAT4X4& Camera::GetOrtho() noexcept
+const struct DirectX::XMFLOAT4X4& Camera::GetOrtho() modern_except_state
 {
 	return m_ortho;
 }
 
-const DirectX::XMFLOAT4X4& Camera::GetInterfaceOrtho() noexcept
+const DirectX::XMFLOAT4X4& Camera::GetInterfaceOrtho() modern_except_state
 {
 	return m_interfaceOrtho;
 }
@@ -133,19 +133,19 @@ lookat += m_position;
 DirectX::XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
 }
 
-void Camera::ZoomIn() const noexcept
+void Camera::ZoomIn() const modern_except_state
 {
 	if (m_currentZoom > 0)
 		m_currentZoom -= 1;
 }
 
-void Camera::ZoomOut() const noexcept
+void Camera::ZoomOut() const modern_except_state
 {
 	if (m_currentZoom < 9)
 		m_currentZoom += 1;
 }
 
-const int64_t Camera::GetZoom() const noexcept
+const int64_t Camera::GetZoom() const modern_except_state
 {
 	return m_currentZoom;
 }

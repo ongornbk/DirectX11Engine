@@ -1,5 +1,7 @@
 #pragma once
 #include "IParameter.h"
+#include "modern/modern_def.h"
+
 class BasicParameter :
 	public IParameter
 {
@@ -41,6 +43,6 @@ public:
 	~BasicParameter();
 
 	const union BasicParameterValue get();
-	const enum class ParameterType get_type() const noexcept override;
+	const enum class ParameterType get_type() const modern_except_state override;
 };
 

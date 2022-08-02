@@ -79,11 +79,11 @@ public:
 		return m_data[element];
 	}
 
-	T* begin() const noexcept
+	T* begin() const modern_except_state
 	{
 		return m_data;
 	}
-	T* end() const noexcept
+	T* end() const modern_except_state
 	{
 		return m_data + m_size;
 	}

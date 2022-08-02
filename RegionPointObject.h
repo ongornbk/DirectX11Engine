@@ -7,7 +7,7 @@ class RegionPointObject :
 
 public:
 
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 
 	_Use_decl_annotations_
 		void _fastcall Render(

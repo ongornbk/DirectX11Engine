@@ -29,7 +29,7 @@ struct RenderZMap
 		const struct XMFLOAT4X4& viewMatrix,
 		const struct XMFLOAT4X4& projectionMatrix,
 		struct ShaderPackage &shader
-	) noexcept;
+	) modern_except_state;
 	void Clear();
 	void Push(class Unit* unit,const int64 z);
 	void Push(class Doodads* doodads,const int64 z);

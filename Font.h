@@ -40,7 +40,7 @@ float GetLeftOfLetter(char letter);
 float GetWidthOfLetter(char letter);
 
 class LetterSprite* const GetSprite(class Text* const text,const char ch);
-class Shader* const GetShader() noexcept;
+class Shader* const GetShader() modern_except_state;
 
 void InitializeCoordinates(class modern_vector<float>& coords);
 

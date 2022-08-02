@@ -29,9 +29,9 @@ void ActionExecuteActionArray::push(class IAction* const action)
 
 void ActionExecuteActionArray::execute()
 {
-	for (int32_t i = 0; i < m_actions.size(); i++)
+	for (size_t i = 0ull; i < m_actions.size(); i++)
 	{
-		IAction* currentAction = m_actions[i];
+		class IAction* volatile currentAction = m_actions[i];
 		REPEAT_SWITCH:
 		switch (currentAction->execute_in_array())
 		{
@@ -46,7 +46,7 @@ void ActionExecuteActionArray::execute()
 
 
 				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				for (int32_t j = i+1; j < m_actions.size(); j++)
+				for (int32_t j = i+1ull; j < m_actions.size(); j++)
 				{
 					action->push(m_actions[j]);
 				}
@@ -58,15 +58,20 @@ void ActionExecuteActionArray::execute()
 			break;
 			case ActionType::ACTION_TYPE_CONDITION:
 			{
-				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				for (int32_t j = i + 1; j < m_actions.size(); j++)
-				{
-					action->push(m_actions[j]);
-				}
-				class IActionCondition* const condition = dynamic_cast<class IActionCondition*>(currentAction);
-				Timer::CreateConditionTimer(action, condition->GetCondition());
 
-				m_actions.resize(++i);
+				class IActionCondition* const condition = dynamic_cast<class IActionCondition*>(currentAction);
+				if (condition)
+				{
+					class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+					for (int32_t j = i + 1ull; j < m_actions.size(); j++)
+					{
+						action->push(m_actions[j]);
+					}
+
+					Timer::CreateConditionTimer(action, condition->GetCondition());
+
+					m_actions.resize(++i);
+				}
 			}
 			break;
 			case ActionType::ACTION_TYPE_IF_THEN_ELSE:

@@ -22,7 +22,7 @@ public:
 
 	void Update();
 
-	static GarbageCollector* GetInstance() noexcept;
+	static GarbageCollector* GetInstance() modern_except_state;
 };
 
 #include "GarbageCollector.inl"

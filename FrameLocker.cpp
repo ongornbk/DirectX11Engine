@@ -14,7 +14,7 @@ FrameLocker::~FrameLocker()
 {
 }
 
-bool FrameLocker::Run() noexcept
+bool FrameLocker::Run() modern_except_state
 {
 	if (m_time >= m_lock)
 	{
@@ -28,17 +28,17 @@ bool FrameLocker::Run() noexcept
 	return false;
 }
 
-bool FrameLocker::State() const noexcept
+bool FrameLocker::State() const modern_except_state
 {
 	return m_state;
 }
 
-void FrameLocker::Update(const float dt) noexcept
+void FrameLocker::Update(const float dt) modern_except_state
 {
 	m_time += dt;
 }
 
-const float FrameLocker::GetDeltaTime() noexcept
+const float FrameLocker::GetDeltaTime() modern_except_state
 {
 	return m_deltaTime;
 }

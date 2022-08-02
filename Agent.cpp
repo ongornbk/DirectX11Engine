@@ -46,7 +46,7 @@ void Agent::Release()
     m_flags.m_hide = true;
 }
 
-int32 Agent::isReleased() const noexcept
+int32 Agent::isReleased() const modern_except_state
 {
     return m_flags.m_hide;
 }
@@ -83,7 +83,7 @@ void Agent::Intersect(EObject* const other)
     }
 }
 
-const RenderLayerType Agent::GetLayerType() const noexcept
+const RenderLayerType Agent::GetLayerType() const modern_except_state
 {
     return RenderLayerType::ENUM_OBJECT_TYPE;
 }
@@ -93,12 +93,12 @@ void Agent::Remove()
     safe_remove();
 }
 
-void Agent::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Agent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
 }
 
-DirectX::XMFLOAT3 Agent::GetVector() noexcept
+DirectX::XMFLOAT3 Agent::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
 }

@@ -90,7 +90,7 @@ void Sprite::SetAnimationSpeed(float speed)
 {
 }
 
-const DirectX::XMFLOAT2 Sprite::GetSize() const noexcept
+const DirectX::XMFLOAT2 Sprite::GetSize() const modern_except_state
 {
 	return m_size;
 }

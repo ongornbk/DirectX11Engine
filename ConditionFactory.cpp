@@ -1,7 +1,7 @@
 #include "ConditionFactory.h"
 #include <cassert>
 
-ICondition* const ConditionFactory::CreateBooleanCondition(IBooleanVariable* const A, IBooleanVariable* const B, const BooleanOperatorType operator_type) noexcept
+ICondition* const ConditionFactory::CreateBooleanCondition(IBooleanVariable* const A, IBooleanVariable* const B, const BooleanOperatorType operator_type) modern_except_state
 {
 	if (operator_type == BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
 	{
@@ -13,8 +13,9 @@ ICondition* const ConditionFactory::CreateBooleanCondition(IBooleanVariable* con
 	}
 }
 
-ICondition* const ConditionFactory::CreateFloatCondition(IFloatVariable* const A, IFloatVariable* const B, const FloatOperatorType operator_type) noexcept
+ICondition* const ConditionFactory::CreateFloatCondition(IFloatVariable* const A, IFloatVariable* const B, const FloatOperatorType operator_type) modern_except_state
 {
+	//return new ErrorCondition();
 	switch (operator_type)
 	{
 	case FloatOperatorType::FLOAT_OPERATOR_TYPE_EQUALS:
@@ -49,11 +50,11 @@ ICondition* const ConditionFactory::CreateFloatCondition(IFloatVariable* const A
 	break;
 	}
 
-	assert(0);
-	return nullptr;
+	//assert(0);
+	return new ErrorCondition();
 }
 
-ICondition* const ConditionFactory::CreateIntegerCondition(IIntegerVariable* const A, IIntegerVariable* const B, const IntegerOperatorType operator_type) noexcept
+ICondition* const ConditionFactory::CreateIntegerCondition(IIntegerVariable* const A, IIntegerVariable* const B, const IntegerOperatorType operator_type) modern_except_state
 {
 	switch (operator_type)
 	{
@@ -89,11 +90,11 @@ ICondition* const ConditionFactory::CreateIntegerCondition(IIntegerVariable* con
 	break;
 	}
 
-	assert(0);
-	return nullptr;
+	//assert(0);
+	return new ErrorCondition();
 }
 
-class ICondition* const ConditionFactory::CreateObjectCondition(IObjectVariable* const A, IObjectVariable* const B, const ObjectOperatorType operator_type) noexcept
+class ICondition* const ConditionFactory::CreateObjectCondition(IObjectVariable* const A, IObjectVariable* const B, const ObjectOperatorType operator_type) modern_except_state
 {
 	if (operator_type == ObjectOperatorType::OBJECT_OPERATOR_TYPE_EQUALS)
 	{
@@ -105,17 +106,29 @@ class ICondition* const ConditionFactory::CreateObjectCondition(IObjectVariable*
 	}
 }
 
-ICondition* const ConditionFactory::CreateAndCondition(ICondition* const A, ICondition* const B) noexcept
+ICondition* const ConditionFactory::CreateAndCondition(ICondition* const A, ICondition* const B) modern_except_state
 {
+	if(A && B)
 	return new AndCondition(A, B);
+	else return new ErrorCondition();
 }
 
-ICondition* const ConditionFactory::CreateOrCondition(ICondition* const A, ICondition* const B) noexcept
+ICondition* const ConditionFactory::CreateOrCondition(ICondition* const A, ICondition* const B) modern_except_state
 {
-	return new OrCondition(A, B);
+	//return new ErrorCondition();
+	if (A && B)
+		return new OrCondition(A, B);
+	else return new ErrorCondition();
 }
 
-ICondition* const ConditionFactory::CreateNorCondition(ICondition* const A, ICondition* const B) noexcept
+ICondition* const ConditionFactory::CreateNorCondition(ICondition* const A, ICondition* const B) modern_except_state
 {
+	if(A && B)
 	return new NorCondition(A, B);
+	else return new ErrorCondition();
+}
+
+ICondition* const ConditionFactory::CreateErrorCondition() modern_except_state
+{
+	return new ErrorCondition();
 }

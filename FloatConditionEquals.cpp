@@ -6,7 +6,7 @@ FloatConditionEquals::FloatConditionEquals(IFloatVariable* const A, IFloatVariab
 
 }
 
-bool FloatConditionEquals::CheckCondition()
+modern_Boolean FloatConditionEquals::CheckCondition()
 {
 	return (m_A->get() == m_B->get());
 }

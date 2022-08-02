@@ -3,15 +3,17 @@
 #include "SingleSound.h"
 #include "SoundType.h"
 
+#include "modern/modern_string.h"
+
 class ResourceSound
 {
 public:
 	ResourceSound();
 	~ResourceSound();
 
-	bool Load(WCHAR* soundFileName,const enum class SoundType type);
+	modern_Boolean Load(const class modern_string& name,const enum class SoundType type);
 	ISound* GetSound();
-	std::string GetName();
+	const modern_string_view& GetName();
 private:
 	ISound* m_sound;
 };

@@ -10,7 +10,7 @@ class FloatConditionLess :
 
 public:
 	FloatConditionLess(class IFloatVariable* const A, class IFloatVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 
 

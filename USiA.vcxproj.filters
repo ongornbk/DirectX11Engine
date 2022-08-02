@@ -175,6 +175,15 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Conditions\Error">
+      <UniqueIdentifier>{5e26cd8f-db35-4333-b37e-21f97e9cb1ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Tree">
+      <UniqueIdentifier>{ece40f98-a588-47d0-b676-e5d1d7667a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actions">
+      <UniqueIdentifier>{4734f1ac-050d-4828-b826-38a23dc66e3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -327,9 +336,6 @@
     <ClInclude Include="RenderContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderZMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -464,9 +470,6 @@
     </ClInclude>
     <ClInclude Include="WidgetFlags.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitStats.h">
       <Filter>Header Files</Filter>
@@ -1071,6 +1074,24 @@
     <ClInclude Include="ActionErasePack4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_barray.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorCondition.h">
+      <Filter>Header Files\Conditions\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files\Object\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compilation_header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_string_view.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1301,9 +1322,6 @@
     <ClCompile Include="PeriodicTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionApplyColorFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IParameter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1358,16 +1376,7 @@
     <ClCompile Include="WidgetFlags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionAttack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UnitStats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionExecuteAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionExecuteActionArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnitTemplate.cpp">
@@ -1389,9 +1398,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderLayerObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionChangeLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionPushObject.cpp">
@@ -1509,9 +1515,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionSkipRemainingActions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionIfThenElse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FloatVariableUnitDistanceFromCamera.cpp">
@@ -1676,9 +1679,6 @@
     <ClCompile Include="ActionInitializeInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionAddAlpha.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ActionPushTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1718,9 +1718,6 @@
     <ClCompile Include="LineOfCollisionAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionGoBack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RectOfCollisionAgentFirst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1751,12 +1748,6 @@
     <ClCompile Include="RegionAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionExecuteLuaFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionGlobalSetLeavingObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RegionAgentMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1769,11 +1760,47 @@
     <ClCompile Include="RenderAgentParent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionErasePack2.cpp">
+    <ClCompile Include="ErrorCondition.cpp">
+      <Filter>Header Files\Conditions\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_string_view.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionAddAlpha.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionApplyColorFilter.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionAttack.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionChangeLayer.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionErasePack2.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
     <ClCompile Include="ActionErasePack4.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteAction.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteActionArray.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteLuaFunction.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGlobalSetLeavingObject.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGoBack.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionIfThenElse.cpp">
+      <Filter>Source Files\Actions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1927,6 +1954,9 @@
   <ItemGroup>
     <Image Include="x64\Release\content\Textures\gui\button.png">
       <Filter>Files\gfx</Filter>
+    </Image>
+    <Image Include="x64\Release\content\Textures\system\favicon.ico">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

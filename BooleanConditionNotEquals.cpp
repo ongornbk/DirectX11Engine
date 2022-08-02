@@ -6,7 +6,7 @@ BooleanConditionNotEquals::BooleanConditionNotEquals(IBooleanVariable* const A, 
 	assert(A && B);
 }
 
-bool BooleanConditionNotEquals::CheckCondition()
+modern_Boolean BooleanConditionNotEquals::CheckCondition()
 {
 	return (m_A->get() != m_B->get());
 }

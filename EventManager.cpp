@@ -11,13 +11,15 @@ namespace
 	static EventManager* m_instance;
 	static modern_vector<std::string>  m_eventsNames;
 	static modern_vector<std::string>   m_foosNames;
+	//static std::vector<std::string>  m_eventsNames;
+	//static std::vector<std::string>  m_foosNames;
 	static modern_array<lua_CFunction> m_foos;
 	//static modern_array<IAction*> m_postSort;
 	static int32_t    m_event = 0;
 	static modern_Boolean m_discard;
 }
 
-EventManager::EventManager(lua_State* const lua) : m_lua(lua)
+EventManager::EventManager(struct lua_State* const lua) : m_lua(lua)
 {
 	m_instance = this;
 
@@ -57,7 +59,7 @@ void EventManager::RegisterEvent(lua_State* const state)
 	}
 }
 
-void EventManager::Discard() const noexcept
+void EventManager::Discard() const modern_except_state
 {
 	m_discard++;
 }

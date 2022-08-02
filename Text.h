@@ -44,7 +44,7 @@ public:
 	void SetAlignment(const enum class TextAlignment alignment);
 	//void SetText(const _bstr_t text);
 	string GetText();
-	float GetSize() const noexcept;
+	float GetSize() const modern_except_state;
 	class Shader* const GetShader();
 
 private:

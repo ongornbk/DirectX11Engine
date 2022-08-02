@@ -29,7 +29,7 @@ void Shadow::Release()
 {
 }
 
-int32 Shadow::isReleased() const noexcept
+int32 Shadow::isReleased() const modern_except_state
 {
 	if (m_managementType == ObjectManagementType::OBJECT_MANAGEMENT_DELETE)
 		return true;
@@ -43,7 +43,7 @@ void  Shadow::Intersect(
 
 }
 
-const RenderLayerType Shadow::GetLayerType() const noexcept
+const RenderLayerType Shadow::GetLayerType() const modern_except_state
 {
 	return RenderLayerType::ENUM_SHADOW_TYPE;
 }

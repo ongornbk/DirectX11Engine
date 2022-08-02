@@ -5,7 +5,7 @@
 class ActionErasePack4 :
 	public IAction
 {
-	struct modern_pack4& m_pack;
+	struct modern_pack4* m_pack;
 
 	ActionErasePack4() = delete;
 

@@ -8,10 +8,10 @@
 
 #define TILE_MAP_RANGE TILE_MAP_SIZE -1
 
-	extern void SetCellMultiplier(const float multiplier = 1.0f) noexcept;
+	extern void SetCellMultiplier(const float multiplier = 1.0f) modern_except_state;
 	extern void LoadTilesResourceFromFile(std::string filename);
-	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(const struct XMFLOAT2 & floats) noexcept;
-	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(const struct XMFLOAT3 & floats) noexcept;
+	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(const struct XMFLOAT2 & floats) modern_except_state;
+	extern struct DirectX::XMINT2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(const struct XMFLOAT3 & floats) modern_except_state;
 
 class RendererManager;
 

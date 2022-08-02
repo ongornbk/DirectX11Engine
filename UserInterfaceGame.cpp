@@ -167,7 +167,7 @@ UserInterfaceGame::~UserInterfaceGame()
 
 }
 
-void UserInterfaceGame::SetFPS(const int32 fps) noexcept
+void UserInterfaceGame::SetFPS(const int32 fps) modern_except_state
 {
 	m_fps = fps;
 }

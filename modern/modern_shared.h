@@ -35,10 +35,12 @@ public:
 		m_numOfCopies = nullptr; 
 	}
 
-	explicit constexpr modern_shared(T* const pointer) : m_pointer(pointer),m_numOfCopies(new int32_t())
+	explicit constexpr modern_shared(T* const pointer)
 	{
+		m_pointer = pointer;
+		m_numOfCopies = new int32_t;
 		(*m_numOfCopies) = 1;
-		std::cout << "fdfdfdfdf";
+		//std::cout << "fdfdfdfdf";
 	}
 
 	~modern_shared() 
@@ -63,16 +65,18 @@ public:
 	void make_shared(T* const pointer)
 	{ 
 		if (m_numOfCopies)
-			switch (*m_numOfCopies)
+			if (*m_numOfCopies == 1)
 			{
-			case 1:
+
 				delete m_numOfCopies;
 				m_numOfCopies = nullptr;
 				delete m_pointer;
 				m_pointer = nullptr;
-				break;
-			default:
+			}
+			else
+			{
 				(*m_numOfCopies)--;
+				assert(*m_numOfCopies >= 0);
 			}
 		m_pointer = pointer;
 		m_numOfCopies = new int32_t();
@@ -87,17 +91,20 @@ public:
 			return;
 
 		if(m_numOfCopies)
-		switch (*m_numOfCopies)
-		{
-		case 1:
-			delete m_numOfCopies;
-			m_numOfCopies = nullptr;
-			delete m_pointer;
-			m_pointer = nullptr;
-			break;
-		default:
-			(*m_numOfCopies)--;
-		}
+			if (m_numOfCopies)
+				if (*m_numOfCopies == 1)
+				{
+
+					delete m_numOfCopies;
+					m_numOfCopies = nullptr;
+					delete m_pointer;
+					m_pointer = nullptr;
+				}
+				else
+				{
+					(*m_numOfCopies)--;
+					assert(*m_numOfCopies >= 0);
+				}
 		assert(shared.m_numOfCopies);
 		assert(shared.m_pointer);
 		m_pointer = shared.m_pointer;
@@ -117,8 +124,8 @@ public:
 		return *this;
 	}
 
-	T& operator*() const noexcept {  assert(m_pointer); return *m_pointer; }
-	T* operator->() const noexcept { assert(m_pointer); return m_pointer; }
+	T& operator*() const modern_except_state {  assert(m_pointer); return *m_pointer; }
+	T* operator->() const modern_except_state { assert(m_pointer); return m_pointer; }
 	T& operator= (const T& shared)
 	{
 		if (this == &shared)
@@ -132,14 +139,14 @@ public:
 		return *this;
 	}
 
-	const int32_t getNumberOfCopies() const noexcept
+	const int32_t getNumberOfCopies() const modern_except_state
 	{ 
 		if (m_numOfCopies)
 			return (*m_numOfCopies);
 		else return -1;
 	}
 
-	const bool isInitialized() const noexcept
+	const bool isInitialized() const modern_except_state
 	{
 		if (m_pointer) return true;
 		else return false;

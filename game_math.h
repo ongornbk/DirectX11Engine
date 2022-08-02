@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "modern/modern_def.h"
 
 #define TILE_MAP_SIZE 256
 #define RENDER_CELLS_RANGE 1
@@ -12,5 +13,5 @@
 #define MAP_Y_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_Y
 #define MAP_X_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_X
 
-int32_t GetXCell(const float x) noexcept;
-int32_t GetYCell(const float y) noexcept;
+int32_t GetXCell(const float x) modern_except_state;
+int32_t GetYCell(const float y) modern_except_state;

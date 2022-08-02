@@ -4,7 +4,7 @@ IntegerConditionLessOrEquals::IntegerConditionLessOrEquals(IIntegerVariable* con
 {
 }
 
-bool IntegerConditionLessOrEquals::CheckCondition()
+modern_Boolean IntegerConditionLessOrEquals::CheckCondition()
 {
 	return (m_A->get() <= m_B->get());
 }

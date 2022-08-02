@@ -7,7 +7,7 @@
 class npc : public EObject, public ColorFilter
 {
 public:
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 
 	npc();
 
@@ -30,7 +30,7 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	void Intersect( class EObject* const other) override;
-	const enum class RenderLayerType GetLayerType() const noexcept override;
+	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 
 private:
 

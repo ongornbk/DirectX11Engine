@@ -1,5 +1,6 @@
 #pragma once
 #include "gdef.h"
+#include "modern/modern_def.h"
 
 class Allocator
 {
@@ -11,10 +12,10 @@ public:
 
     virtual void* allocate(size_t size, uint8 alignment = 4) = 0;
     virtual void deallocate(void* p) = 0;
-    void* start() const noexcept;
-    size_t size() const noexcept;
-    size_t usedMemory() const noexcept;
-    size_t numAllocations() const noexcept;
+    void* start() const modern_except_state;
+    size_t size() const modern_except_state;
+    size_t usedMemory() const modern_except_state;
+    size_t numAllocations() const modern_except_state;
 
 protected:
 

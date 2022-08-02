@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include "modern/modern_def.h"
 
 class ColorFilter
 {
@@ -8,10 +9,10 @@ protected:
 	ColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter);
 	ColorFilter(const struct DirectX::XMFLOAT4& color);
 public:
-	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) noexcept;
-	void SetColorFilter(const struct DirectX::XMFLOAT4& color) noexcept;
-	void SetColorFilter(const float filter) noexcept;
+	void SetColorFilter(const float redfilter, const float greenfilter, const float bluefilter, const float alphafilter) modern_except_state;
+	void SetColorFilter(const struct DirectX::XMFLOAT4& color) modern_except_state;
+	void SetColorFilter(const float filter) modern_except_state;
 
-	void AddAlpha(const float alpha) noexcept;
+	void AddAlpha(const float alpha) modern_except_state;
 };
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "modern/modern_def.h"
 
 class FrameLocker
 {
@@ -10,9 +11,9 @@ public:
 	FrameLocker(const float lock);
 	~FrameLocker();
 
-	bool Run() noexcept;
-	bool State() const noexcept;
-	void Update(const float dt) noexcept;
-	const float GetDeltaTime() noexcept;
+	bool Run() modern_except_state;
+	bool State() const modern_except_state;
+	void Update(const float dt) modern_except_state;
+	const float GetDeltaTime() modern_except_state;
 };
 

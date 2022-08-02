@@ -35,11 +35,11 @@ public:
 		m_end = array.end();
 	}
 
-	T* begin() const noexcept
+	T* begin() const modern_except_state
 	{
 		return m_begin;
 	}
-	T* end() const noexcept
+	T* end() const modern_except_state
 	{
 		return m_end;
 	}

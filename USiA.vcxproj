@@ -53,6 +53,7 @@
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -77,6 +78,7 @@
     <IncludePath>D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\LIBRARY\LIB;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
+    <TargetName>Legion</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>D:\STORAGE\Diabbb\DirectX11Engine\SDK\SFML-2.4.2\include;$(IncludePath)</IncludePath>
@@ -157,7 +159,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -172,10 +174,14 @@
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FloatingPointExceptions>false</FloatingPointExceptions>
-      <IntelJCCErratum>true</IntelJCCErratum>
+      <IntelJCCErratum>false</IntelJCCErratum>
       <CallingConvention>Cdecl</CallingConvention>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput>NoListing</AssemblerOutput>
       <LanguageStandard>Default</LanguageStandard>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -252,6 +258,7 @@
     <ClInclude Include="Canals.h" />
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="compilation_header.h" />
     <ClInclude Include="ConditionFactory.h" />
     <ClInclude Include="ConditionTimer.h" />
     <ClInclude Include="ConstBooleanVariable.h" />
@@ -272,6 +279,7 @@
     <ClInclude Include="Doodads.h" />
     <ClInclude Include="DXManager.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="ErrorCondition.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="ExpiringTimer.h" />
     <ClInclude Include="FloatConditionEquals.h" />
@@ -359,6 +367,7 @@
     <ClInclude Include="modern\modern.h" />
     <ClInclude Include="modern\modern_array.h" />
     <ClInclude Include="modern\modern_array_iterator.h" />
+    <ClInclude Include="modern\modern_barray.h" />
     <ClInclude Include="modern\modern_bpair.h" />
     <ClInclude Include="modern\modern_class.h" />
     <ClInclude Include="modern\modern_class_view.h" />
@@ -384,6 +393,7 @@
     <ClInclude Include="modern\modern_string.h" />
     <ClInclude Include="modern\modern_string_cast.h" />
     <ClInclude Include="modern\modern_string_casting_type.h" />
+    <ClInclude Include="modern\modern_string_view.h" />
     <ClInclude Include="modern\modern_timer.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_vector.h" />
@@ -553,6 +563,7 @@
     <ClCompile Include="DeleteTrash.cpp" />
     <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="Doodads.cpp" />
+    <ClCompile Include="ErrorCondition.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="ExpiringTimer.cpp" />
     <ClCompile Include="FloatConditionEquals.cpp" />
@@ -643,6 +654,7 @@
     <ClCompile Include="modern\modern_queue.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
+    <ClCompile Include="modern\modern_string_view.cpp" />
     <ClCompile Include="modern\modern_timer.cpp" />
     <ClCompile Include="modern\modern_vector.cpp" />
     <ClCompile Include="MultiSound.cpp" />
@@ -794,6 +806,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="x64\Release\content\Textures\gui\button.png" />
+    <Image Include="x64\Release\content\Textures\system\favicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

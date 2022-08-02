@@ -108,8 +108,6 @@ void Unit::Initialize(
 	const struct DirectX::XMFLOAT3& position,
 	const bool wander)
 {
-	//modern_pair<modern_string, modern_string>& sp = modern_string::SplitString(paths, L'.');
-	//m_name = sp.first;
 	m_name = L"Barbarian";
 	std::wstring tmp0 = std::wstring(paths);
 	std::string  tmp1 = std::string(tmp0.begin(), tmp0.end());
@@ -123,6 +121,47 @@ void Unit::Initialize(
 
 	m_size = modelsize;
 	m_lastSize = modelsize;
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
+	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+
+	InitializeModel(device, deviceContext, shader, ptr);
+	m_wanderingFlag = wander;
+
+	switch (ptr->m_leaveCorpse)
+	{
+	case true:
+		m_decayType = UnitDecay::ENUM_LEAVE_CORPSE;
+		break;
+	case false:
+		m_decayType = UnitDecay::ENUM_DECAY;
+		break;
+	}
+}
+
+void Unit::Initialize(
+	struct ID3D11Device* const device,
+	struct ID3D11DeviceContext* const deviceContext,
+	class Shader* const shader,
+	const char* const paths,
+	const float size,
+	const float collision,
+	const DirectX::XMFLOAT3& position,
+	const bool wander
+)
+{
+	m_name = L"Barbarian";
+	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(paths);
+
+
+	m_rotations = (float)ptr->m_rotations;
+	assert(m_rotations >= 1.f);
+	if (m_rotations < 1.f)
+		m_rotations = 1.f;
+
+	m_size = size;
+	m_lastSize = size;
 	m_boundingSphere.Radius = collision;
 	m_boundingSphere.Center = position;
 	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
@@ -538,7 +577,7 @@ void Unit::Intersect(class EObject* const other)
 		
 }
 
-const RenderLayerType Unit::GetLayerType() const noexcept
+const RenderLayerType Unit::GetLayerType() const modern_except_state
 {
 	if (m_dead)
 		return RenderLayerType::ENUM_CORPSE_TYPE;
@@ -552,43 +591,43 @@ void Unit::Remove()
 	Timer::CreateInstantTimer(action);
 }
 
-void Unit::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Unit::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 	m_floats[0] = vec;
 }
 
-DirectX::XMFLOAT3 Unit::GetVector() noexcept
+DirectX::XMFLOAT3 Unit::GetVector() modern_except_state
 {
 	return m_floats[0];
 }
 
-float Unit::GetCollisionRadius() const noexcept
+float Unit::GetCollisionRadius() const modern_except_state
 {
 	return m_boundingSphere.Radius;
 }
 
 
-XMFLOAT3 Unit::GetPosition() const noexcept
+XMFLOAT3 Unit::GetPosition() const modern_except_state
 {
 	return m_boundingSphere.Center;
 }
 
-float Unit::GetSpeed() const noexcept
+float Unit::GetSpeed() const modern_except_state
 {
 	return m_speed[0];
 }
 
-float Unit::GetZ() const noexcept
+float Unit::GetZ() const modern_except_state
 {
 	return m_boundingSphere.Center.z;
 }
 
-float Unit::GetNumberOfRotations() const noexcept
+float Unit::GetNumberOfRotations() const modern_except_state
 {
 	return m_rotations;
 }
 
-float Unit::GetRotation() const noexcept
+float Unit::GetRotation() const modern_except_state
 {
 	return m_rotation[0];
 }
@@ -599,7 +638,7 @@ void Unit::SetSpeed(const float speed)
 	m_speed[1] = speed;
 }
 
-enum WalkingStance Unit::GetWalkingStance() const noexcept
+enum WalkingStance Unit::GetWalkingStance() const modern_except_state
 {
 	return m_walkingStance;
 }
@@ -678,7 +717,7 @@ void Unit::Die(Unit* const killer)
 
 	gl->m_dyingUnit.make_handle(this->GetHandle());
 	gl->m_triggeringUnit.make_handle(this->GetHandle());
-	if (killer)
+	if (CheckIfValid(killer))
 	{
 		gl->m_killingUnit.make_handle(killer->GetHandle());
 	}
@@ -716,7 +755,7 @@ void Unit::Die(Unit* const killer)
 	case UnitDecay::ENUM_LEAVE_CORPSE:
 	{
 		class FuzzyExpiringTimer* const fuzz = new FuzzyExpiringTimer();
-		fuzz->Initialize(new ActionAddAlpha(this, -0.01), new ActionRemoveObject(this), 1.f);
+		fuzz->Initialize(new ActionAddAlpha(this, -0.01f), new ActionRemoveObject(this), 1.f);
 		action->push(new ActionChangeLayer(this, RenderLayerType::ENUM_CORPSE_TYPE));
 		action->push(new ActionWait(10.f));
 		action->push(new ActionPushTimer(fuzz));
@@ -765,12 +804,12 @@ void Unit::ApplyExperienceBonus(Unit* const killer)
 	}
 }
 
-void Unit::SetAttackType(const enum class AttackType type) noexcept
+void Unit::SetAttackType(const enum class AttackType type) modern_except_state
 {
 	m_attack.m_atype = type;
 }
 
-void Unit::SetAttackRange(const float range) noexcept
+void Unit::SetAttackRange(const float range) modern_except_state
 {
 	m_attack.range = range;
 }
@@ -787,34 +826,34 @@ Attack& Unit::GetAttack()
 	return m_attack;
 }
 
-Task::Type Unit::GetTaskType() const noexcept
+Task::Type Unit::GetTaskType() const modern_except_state
 {
 	return m_tasks.GetActiveType();
 }
 
-Task* Unit::GetTask()const noexcept
+Task* Unit::GetTask()const modern_except_state
 {
 	if (m_tasks.GetActiveType() != Task::Type::NONE)
 		return m_tasks.GetActiveTask();
 	else return nullptr;
 }
 
-bool Unit::IsAttacking() const noexcept
+bool Unit::IsAttacking() const modern_except_state
 {
 	return m_attack.active;
 }
 
-bool Unit::IsDead() const noexcept
+bool Unit::IsDead() const modern_except_state
 {
 	return m_dead;
 }
 
-bool Unit::IsAlive() const noexcept
+bool Unit::IsAlive() const modern_except_state
 {
 	return !m_dead;
 }
 
-bool Unit::IsWandering() const noexcept
+bool Unit::IsWandering() const modern_except_state
 {
 	return m_wanderingFlag;
 }
@@ -1045,7 +1084,7 @@ bool Unit::Attack(class Unit* const target)
 		break;
 	}
 	}
-
+	return false;
 }
 
 bool Unit::GetAttacked(class Unit* const attacker)
@@ -1181,47 +1220,47 @@ void Unit::Select(modern_Boolean selct)
 		}
 }
 
-const float Unit::GetHealth() const noexcept
+const float Unit::GetHealth() const modern_except_state
 {
 	return m_stats.m_health;
 }
 
-const float Unit::GetMaxHealth() const noexcept
+const float Unit::GetMaxHealth() const modern_except_state
 {
 	return m_stats.m_maxHealth;
 }
 
-const float Unit::GetHealthPercentage() const noexcept
+const float Unit::GetHealthPercentage() const modern_except_state
 {
 	return (m_stats.m_health / m_stats.m_maxHealth) * 100.f;
 }
 
-const float Unit::GetMana() const noexcept
+const float Unit::GetMana() const modern_except_state
 {
 	return m_stats.m_mana;
 }
 
-const float Unit::GetMaxMana() const noexcept
+const float Unit::GetMaxMana() const modern_except_state
 {
 	return m_stats.m_maxMana;
 }
 
-const float Unit::GetManaPercentage() const noexcept
+const float Unit::GetManaPercentage() const modern_except_state
 {
 	return (m_stats.m_mana / m_stats.m_maxMana) * 100.f;
 }
 
-const float Unit::GetExperience() const noexcept
+const float Unit::GetExperience() const modern_except_state
 {
 	return m_stats.m_exp;
 }
 
-const float Unit::GetMaxExperience() const noexcept
+const float Unit::GetMaxExperience() const modern_except_state
 {
 	return m_stats.m_maxExp;
 }
 
-const float Unit::GetExperiencePercentage() const noexcept
+const float Unit::GetExperiencePercentage() const modern_except_state
 {
 	return (m_stats.m_exp / m_stats.m_maxExp) * 100.f;
 }
@@ -1284,12 +1323,12 @@ void Unit::LoadSounds(std::string* path)
 {
 }
 
-class ISound * Unit::GetFootstepsSound() const noexcept
+class ISound * Unit::GetFootstepsSound() const modern_except_state
 {
 	return m_footstepsSound;
 }
 
-modern_string const& Unit::GetName() noexcept
+modern_string const& Unit::GetName() modern_except_state
 {
 	return m_name;
 }
@@ -1364,7 +1403,7 @@ void Unit::SetAnimationSpeed(
 	m_animationSpeed = speed;
 }
 
-int32 Unit::isReleased() const noexcept
+int32 Unit::isReleased() const modern_except_state
 {
 	if (m_vertexBuffer)
 	{
@@ -1376,12 +1415,12 @@ int32 Unit::isReleased() const noexcept
 	}
 }
 
-bool Unit::CheckIfValid(Unit* const pointer)
+const modern_Boolean Unit::CheckIfValid(Unit* const pointer)
 {
 	if (pointer)
 		if (pointer->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT)
-			return true;
-	return false;
+			return modern_true;
+	return modern_false;
 }
 
 void Unit::InitializeModel(

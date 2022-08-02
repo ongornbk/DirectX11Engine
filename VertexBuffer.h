@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "Vertex.h"
 #include "ObjectAnchorType.h"
+#include "modern/modern_def.h"
 
 class VertexBuffer
 {
@@ -18,12 +19,12 @@ public:
 	bool InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader, float size[2], bool writeable = false);
 	bool InitializeAnchorTopLeft(ID3D11Device* device, Shader* shader, DirectX::XMFLOAT2 size, bool writeable = false);
 	bool InitializePart(ID3D11Device* device, Shader* shader, float size[2],float coords[6], bool writeable = false);
-	void _stdcall Render(struct ID3D11DeviceContext* const deviceContext) noexcept;
+	void _stdcall Render(struct ID3D11DeviceContext* const deviceContext) modern_except_state;
 	bool ResizeTexture(ID3D11Device * device, float size, bool writeable = false);
-	void SetAnchor(const enum ObjectAnchorType type) noexcept;
-	void SetNumberOfElements(const int32 elements = 1) noexcept;
+	void SetAnchor(const enum ObjectAnchorType type) modern_except_state;
+	void SetNumberOfElements(const int32 elements = 1) modern_except_state;
 
-	const enum ObjectAnchorType GetAnchor() const noexcept;
+	const enum ObjectAnchorType GetAnchor() const modern_except_state;
 
 	SpriteVertexType* GetVertices();
 	ID3D11Buffer* GetVertexBuffer();

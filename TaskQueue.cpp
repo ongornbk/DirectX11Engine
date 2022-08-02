@@ -6,7 +6,7 @@
 
 using::GlobalUtilities::random;
 
-struct DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) noexcept
+struct DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) modern_except_state
 {
 	float xx = object.x;
 	float yy = object.y;
@@ -124,7 +124,7 @@ void TaskQueue::SetOwner(Unit * object)
 	m_owner = object;
 }
 
-Task::Type TaskQueue::GetActiveType() const noexcept
+Task::Type TaskQueue::GetActiveType() const modern_except_state
 {
 	if (m_tasks.size())
 		return ((Task*)m_tasks.front())->m_type;
@@ -132,7 +132,7 @@ Task::Type TaskQueue::GetActiveType() const noexcept
 		return Task::Type::NONE;
 }
 
-Task* const TaskQueue::GetActiveTask() const noexcept
+Task* const TaskQueue::GetActiveTask() const modern_except_state
 {
 	if (m_tasks.size())
 		return ((Task*)m_tasks.front());

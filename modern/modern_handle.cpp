@@ -62,7 +62,7 @@ modern_handle::modern_handle()
 
 modern_handle::modern_handle(const modern_handle& diff)
 {
-	if (diff.m_object)
+	if ((&diff) && diff.m_object)
 	{
 		m_object = diff.m_object;
 		m_num = diff.m_num;
@@ -95,7 +95,7 @@ void modern_handle::make_handle(
 			delete m_num;
 			delete m_object;
 			m_num = nullptr;
-			m_object = 0;
+			m_object = nullptr;
 		}
 		else
 		{
@@ -122,7 +122,7 @@ void modern_handle::make_handle(volatile class modern_handle& diff) volatile
 			delete m_num;
 			delete m_object;
 			m_num = nullptr;
-			m_object = 0;
+			m_object = nullptr;
 			//	std::cout << "delete handle" << std::endl;
 		}
 		else
@@ -133,7 +133,11 @@ void modern_handle::make_handle(volatile class modern_handle& diff) volatile
 	}
 	m_object = diff.m_object;
 	m_num = diff.m_num;
-	m_num[0]++;
+
+	if (m_num)//case where diff is uninitialized
+	{
+		m_num[0]++;
+	}
 
 	//std::cout << m_num[0] - 1 << "::. " << m_num[0] << std::endl;
 }
@@ -149,34 +153,34 @@ modern_handle::~modern_handle()
 	//std::cout << "~modern_handle()" << std::endl;
 	if (m_object==nullptr)
 		return;
-	if (m_num[0] <= 1)
+	if (m_num[0ll] <= 1ll)
 	{
-		if (m_object[0])
+		if (m_object[0ll])
 			delete[] m_object;
 		m_object[0] = nullptr;
-		m_num[0] = 0;
+		m_num[0ll] = 0ll;
 		delete m_num;
 		delete m_object;
 		m_num = nullptr;
-		m_object = 0;
+		m_object = nullptr;
 	//	std::cout << "delete handle" << std::endl;
 	}
 	else
 	{
-		m_num[0]--;
+		m_num[0ll]--;
 	//	std::cout << (m_num[0])+1 << "::. " << m_num[0] << std::endl;
 	}
 }
 
 volatile modern_class* modern_handle::operator->()
 {
-	return m_object[0];
+	return m_object[0ll];
 }
 
 volatile struct modern_class* const modern_handle::get()
 {
 	if (m_object)
-		return m_object[0];
+		return m_object[0ll];
 	else return nullptr;
 }
 
@@ -184,12 +188,12 @@ void modern_handle::release()
 {
 	if (m_object == nullptr)
 		return;
-	if (m_num[0] <= 1)
+	if (m_num[0ll] <= 1ll)
 	{
-		if (m_object[0])
+		if (m_object[0ll])
 			delete[] m_object;
 		m_object[0] = nullptr;
-		m_num[0] = 0;
+		m_num[0ll] = 0ll;
 		delete m_num;
 		delete m_object;
 	}
@@ -201,7 +205,7 @@ void modern_handle::release()
 	m_object = nullptr;
 }
 
-bool operator<(const modern_handle& lhs, const modern_handle& rhs)
+bool operator<(const class modern_handle& lhs, const class modern_handle& rhs)
 {
 	return lhs.m_object[0] < rhs.m_object[0];
 }

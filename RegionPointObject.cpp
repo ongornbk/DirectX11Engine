@@ -1,6 +1,6 @@
 #include "RegionPointObject.h"
 
-int32 RegionPointObject::isReleased() const noexcept
+int32 RegionPointObject::isReleased() const modern_except_state
 {
 	return 0;
 }

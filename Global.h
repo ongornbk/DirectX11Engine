@@ -7,6 +7,7 @@
 #include "modern/modern_pack2.h"
 #include "modern/modern_pack4.h"
 #include <stack>
+#include <unordered_set>
 
 class Global
 {
@@ -24,6 +25,7 @@ public:
 	modern_handle                      m_triggeringRegion;
 	modern_handle                      m_leavingObject;
 	modern_handle                      m_enteringObject;
+	modern_handle                      m_matchingObject;
 	MSVC_VOLATILE ObjectFlags          m_lastFlags{};
 	MSVC_VOLATILE Task*                m_lastTask;
 	static Global*       GetInstance();
@@ -35,8 +37,8 @@ public:
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
 
-	//std::map<struct modern_pack2, int64> m_bmap2;
-	//std::map<struct modern_pack4, int64> m_bmap4;
+	std::set<modern_pack2> m_bmap2;
+	std::map<struct modern_pack4, int64> m_bmap4;
 
 	void getS(std::string name) const;
 	void release();

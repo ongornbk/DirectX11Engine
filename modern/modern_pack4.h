@@ -30,8 +30,8 @@ struct modern_pack4
 	{
 		first = new modern_handle(A.GetHandle());
 		second = new modern_handle(B.GetHandle());
-		third = new modern_handle();
-		fourth = new modern_handle();
+		third = nullptr;
+		fourth = nullptr;
 	}
 
 	modern_pack4(struct modern_pack4& other)
@@ -52,10 +52,10 @@ struct modern_pack4
 
 	modern_pack4()
 	{
-		first = new modern_handle();
-		second = new modern_handle();
-		third = new modern_handle();
-		fourth = new modern_handle();
+		first =  nullptr;
+		second = nullptr;
+		third =  nullptr;
+		fourth = nullptr;
 	}
 
 	~modern_pack4()
@@ -69,12 +69,28 @@ struct modern_pack4
 		}
 	}
 
-	modern_Boolean operator<(const modern_pack4& lhs) const
+	modern_Boolean operator<(const struct modern_pack4& lhs) const
 	{
-		return ((*first).get() < (*lhs.first).get()) || ((*second).get() < (*lhs.second).get());
+		//return ((*first).get() < (*lhs.first).get()) || ((*second).get() < (*lhs.second).get() || ((*third).get() < (*lhs.third).get() || ((*fourth).get() < (*lhs.fourth).get());
+		if (first->get() < lhs.first->get())
+		{
+			return modern_false;
+		}
+		if (first->get() > lhs.first->get())
+		{
+			return modern_true;
+		}
+		if (second->get() < lhs.second->get())
+		{
+			return modern_false;
+		}
+		if (second->get() > lhs.second->get())
+		{
+			return modern_true;
+		}
 	}
 
-	modern_Boolean operator ==(const modern_pack4& lhs) const
+	modern_Boolean operator ==(const struct modern_pack4& lhs) const
 	{
 		return ((*first).get() == (*lhs.first).get()) && ((*second).get() == (*lhs.second).get());
 	}

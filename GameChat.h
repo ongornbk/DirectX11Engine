@@ -16,27 +16,27 @@ public:
 		GODOWN
 	};
 
-	void SetTextsLimit(const int32 limit) noexcept;
+	void SetTextsLimit(const int32 limit) modern_except_state;
 
-	void PushText(std::string  text) noexcept;
+	void PushText(std::string  text) modern_except_state;
 
-	void PushTextFront(std::string  text) noexcept;
+	void PushTextFront(std::string  text) modern_except_state;
 
-	void SetFont(class TextFont* font) noexcept;
+	void SetFont(class TextFont* font) modern_except_state;
 
-	void ClearQueue() noexcept;
+	void ClearQueue() modern_except_state;
 
-	void Update() noexcept;
+	void Update() modern_except_state;
 
-	void  Render(struct ID3D11DeviceContext* const deviceContext,DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix,class Shader* const shader) noexcept;
+	void  Render(struct ID3D11DeviceContext* const deviceContext,DirectX::XMFLOAT4X4& viewMatrix, DirectX::XMFLOAT4X4& projectionMatrix,class Shader* const shader) modern_except_state;
 
-	void  SetTextPosition(DirectX::XMFLOAT3 pos) noexcept;
+	void  SetTextPosition(DirectX::XMFLOAT3 pos) modern_except_state;
 
-	void  SetGlobals(ID3D11Device*  device, ID3D11DeviceContext*  context, Shader* shader) noexcept;
+	void  SetGlobals(ID3D11Device*  device, ID3D11DeviceContext*  context, Shader* shader) modern_except_state;
 
-	auto  begin() noexcept;
+	auto  begin() modern_except_state;
 
-	auto  end() noexcept;
+	auto  end() modern_except_state;
 
 protected:
 
@@ -51,9 +51,9 @@ protected:
 
 private:
 
-	Text* CreateTextFromString(std::string  text) noexcept;
-	//Text* CreateTextFromString(const _bstr_t text) noexcept;
+	Text* CreateTextFromString(std::string  text) modern_except_state;
+	//Text* CreateTextFromString(const _bstr_t text) modern_except_state;
 
-	void CheckSize() noexcept;
+	void CheckSize() modern_except_state;
 };
 

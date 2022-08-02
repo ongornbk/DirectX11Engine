@@ -21,36 +21,30 @@ Texture::~Texture()
 		(void)m_texture->Release();
 		m_texture = NULL;
 	}
-	m_name.clear();
 }
 
-bool Texture::Initialize(
-	struct ID3D11Device * const device,
-	WCHAR* fileName
-)
+const modern_Boolean Texture::Initialize(struct ID3D11Device* const device, const class modern_string& name)
 {
 	HRESULT result;
-	std::wstring tmp0 = std::wstring(fileName);
-	std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-	m_name = tmp1;
-
-	const int32 pos = (int32)m_name.find_last_of("/");
-	if (pos >= 0)
+	//m_name = name;
+	std::wstring str(name.c_wstr());
+	const size_t pos = (size_t)str.find_last_of(L"/");
+	if (pos >= 0l)
 	{
-		m_name = m_name.substr(pos + 1, m_name.length());
+		str = str.substr(pos + 1ull, str.length());
 	}
-	m_name = m_name.substr(0, m_name.find("."));
+	m_name = str.substr(0ull, str.find(L".")).c_str();
 
 
-	result = CreateWICTextureFromFile(device, fileName, NULL, &m_texture, NULL);
+	result = CreateWICTextureFromFile(device, name.c_wstr(), NULL, &m_texture, NULL);
 	if (FAILED(result))
 	{
-		return false;
+		return modern_false;
 	}
 
-	struct ID3D11Resource* resource = 0;
+	struct ID3D11Resource* resource = nullptr;
 	m_texture->GetResource(&resource);
-	struct ID3D11Texture2D* texture2D = 0;
+	struct ID3D11Texture2D* texture2D = nullptr;
 	result = resource->QueryInterface(&texture2D);
 	if (SUCCEEDED(result))
 	{
@@ -63,19 +57,18 @@ bool Texture::Initialize(
 	if (texture2D)
 	{
 		(void)texture2D->Release();
-		texture2D = NULL;
+		texture2D = nullptr;
 	}
 	if (resource)
 	{
 		(void)resource->Release();
-		resource = NULL;
+		resource = nullptr;
 	}
 
 
 
-	return true;
+	return modern_true;
 }
-
 
 
 struct ID3D11ShaderResourceView * Texture::GetTexture()
@@ -83,9 +76,9 @@ struct ID3D11ShaderResourceView * Texture::GetTexture()
 	return m_texture;
 }
 
-std::string Texture::GetName()
+const class modern_string_view& Texture::GetName()
 {
-	return m_name;
+	return *(new modern_string_view(&m_name));
 }
 
 int Texture::GetWidth()

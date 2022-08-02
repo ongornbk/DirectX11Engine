@@ -21,8 +21,8 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_exception;
 
-[[nodiscard]] bool modern_isdigit(char ch) noexcept;
-[[nodiscard]] int32_t modern_todigit(char ch) noexcept;
+[[nodiscard]] bool modern_isdigit(char ch) modern_except_state;
+[[nodiscard]] int32_t modern_todigit(char ch) modern_except_state;
 
 class modern_cstring
 {
@@ -40,13 +40,13 @@ public:
 	modern_cstring(modern_exception& exception);
 	~modern_cstring();
 
-	[[nodiscard]] const wchar_t* c_wstr() const noexcept;
-	[[nodiscard]] const char* c_str() const noexcept;
+	[[nodiscard]] const wchar_t* c_wstr() const modern_except_state;
+	[[nodiscard]] const char* c_str() const modern_except_state;
 	[[nodiscard]]
-	[[nodiscard]] size_t size() const noexcept;
-	[[nodiscard]] int32_t to_int32() noexcept;
-	[[nodiscard]] float to_float() noexcept;
-	[[nodiscard]] bool to_bool() noexcept;
+	[[nodiscard]] size_t size() const modern_except_state;
+	[[nodiscard]] int32_t to_int32() modern_except_state;
+	[[nodiscard]] float to_float() modern_except_state;
+	[[nodiscard]] bool to_bool() modern_except_state;
 
 	[[nodiscard]] static modern_pair<modern_cstring, modern_cstring>& SplitString(const char* string, char token);
 
@@ -61,5 +61,9 @@ public:
 	char*& data();
 	void resize(size_t size);
 	void load(const char* text);
+
+private:
+
+	void push_zero() const modern_except_state;
 
 };

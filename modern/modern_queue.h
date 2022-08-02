@@ -25,12 +25,12 @@ public:
 	constexpr modern_queue() : first(nullptr),last(nullptr)
 	{
 
-		first = last = nullptr;
+		//first = last = nullptr;
 	}
 
 	~modern_queue()
 	{
-		modern_element* next;
+		struct modern_element* next;
 		while (first) {
 			next = first->next;
 			delete first;
@@ -40,7 +40,7 @@ public:
 		last = nullptr;
 	}
 
-	void* front() const noexcept
+	void* front() const modern_except_state
 	{
 		if (first)
 			return first->data;
@@ -51,8 +51,8 @@ public:
 	{
 		if (first)
 		{
-			void* dr = first->data;
-			modern_element* temp = first;
+			void* const dr = first->data;
+			struct modern_element* const temp = first;
 			if (first == last) first = last = nullptr;
 			else first = first->next;
 			delete(temp);
@@ -61,9 +61,9 @@ public:
 		return nullptr;
 	}
 
-	void push(void* element)
+	void push(void* const element)
 	{
-		modern_element* n = new modern_element(nullptr,element);
+		struct modern_element* const n = new struct modern_element(nullptr,element);
 		if (last == nullptr)
 		{
 			last = first = n;

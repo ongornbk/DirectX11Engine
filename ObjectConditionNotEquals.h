@@ -10,6 +10,6 @@ class ObjectConditionNotEquals :
 
 public:
 	ObjectConditionNotEquals(class IObjectVariable* const A, class IObjectVariable* const B);
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 

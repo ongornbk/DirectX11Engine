@@ -4,7 +4,7 @@ IntegerConditionGreaterOrEquals::IntegerConditionGreaterOrEquals(IIntegerVariabl
 {
 }
 
-bool IntegerConditionGreaterOrEquals::CheckCondition()
+modern_Boolean IntegerConditionGreaterOrEquals::CheckCondition()
 {
 	return (m_A->get() >= m_B->get());
 }

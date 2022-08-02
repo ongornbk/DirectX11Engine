@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "RenderHandle.h"
 #include "ColorFilter.h"
+#include "Region.h"
 
 class Tree : public EObject, public ColorFilter
 {
@@ -39,23 +40,25 @@ public:
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 	void Intersect(class EObject* const other) override;
-	const enum class RenderLayerType GetLayerType() const noexcept override;
+	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void CastShadow(const bool shadow = true);
 
-	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
-	DirectX::XMFLOAT3 GetVector() noexcept override;
+	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
+	DirectX::XMFLOAT3 GetVector() modern_except_state override;
 
-	void SetStance(const modern_Boolean stance) noexcept;
-	const modern_Boolean GetStance() const noexcept;
+	void SetStance(const modern_Boolean stance) modern_except_state;
+	const modern_Boolean GetStance() const modern_except_state;
 
-	static void SetGlobal(class Global* global) noexcept;
+	static void SetGlobal(class Global* global) modern_except_state;
 
 	RenderHandle GetRenderHandle();
 
 private:
+
+	modern_handle m_fadeRegion;
 
 	ID3D11DeviceContext* m_deviceContext;
 

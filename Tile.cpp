@@ -67,7 +67,7 @@ static int32_t tilesub[32] ={
 
 	}
 
-	void SetCellMultiplier(const float multiplier) noexcept
+	void SetCellMultiplier(const float multiplier) modern_except_state
 	{
 		if(modern_checkFloat32(multiplier))
 		m_cellMultiplier = multiplier/100.0f;
@@ -82,7 +82,7 @@ static int32_t tilesub[32] ={
 
 	struct DirectX::XMINT2 _vectorcall TransformXMFLOAT2ToTileMapINDEX2(
 		const struct DirectX::XMFLOAT2& floats
-	) noexcept
+	) modern_except_state
 	{
 		struct DirectX::XMINT2 _indexes = { 
 			(INT32)(TILE_MAP_HALF_SIZE_FLOAT - (floats.x / tile::CELL_WIDTH) - (floats.y / tile::CELL_HEIGHT)),
@@ -96,7 +96,7 @@ static int32_t tilesub[32] ={
 
 	struct DirectX::XMINT2 _vectorcall TransformXMFLOAT3ToTileMapINDEX2(
 		const struct DirectX::XMFLOAT3& floats
-	) noexcept
+	) modern_except_state
 	{
 		struct DirectX::XMINT2 _indexes = {
 		TILE_MAP_HALF_SIZE_INT32 - (int32)(floats.x / tile::CELL_WIDTH) - (int32)(floats.y / tile::CELL_HEIGHT),
@@ -109,7 +109,7 @@ static int32_t tilesub[32] ={
 	int32 _vectorcall TransformXMFLOAT3ToTileMapINDEX2WithCheck(
 		const struct XMFLOAT3 floats,
 		class array< int32, 2>& index
-	) noexcept
+	) modern_except_state
 	{
 		index = { TILE_MAP_HALF_SIZE_INT32,TILE_MAP_HALF_SIZE_INT32 };
 		index[0] -= (int32)(floats.x / tile::CELL_WIDTH);
@@ -199,7 +199,13 @@ void Tile::SetGlobals(
 	using std::istreambuf_iterator;
 	using std::istringstream;
 #pragma endregion
+#ifdef VS_DEBUG_COMPILATION
 	ifstream stream("x64/Release/bin/settings/tile.file");
+#else
+	ifstream stream("../settings/tile.file");
+#endif // 
+
+	
 	if (!stream.good())
 	{
 

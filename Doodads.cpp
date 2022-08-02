@@ -153,7 +153,7 @@ void Doodads::Release()
 	}
 }
 
-int32 Doodads::isReleased() const noexcept
+int32 Doodads::isReleased() const modern_except_state
 {
 	if (m_vertexBuffer)
 	{
@@ -169,7 +169,7 @@ void Doodads::Intersect( class EObject* const other)
 {
 }
 
-const RenderLayerType Doodads::GetLayerType() const noexcept
+const RenderLayerType Doodads::GetLayerType() const modern_except_state
 {
 	if (m_destroyed)
 		return RenderLayerType::ENUM_OBJECT_TYPE;
@@ -181,11 +181,11 @@ void Doodads::Remove()
 	safe_remove();
 }
 
-void Doodads::SetVector(const DirectX::XMFLOAT3& vec) noexcept
+void Doodads::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 }
 
-DirectX::XMFLOAT3 Doodads::GetVector() noexcept
+DirectX::XMFLOAT3 Doodads::GetVector() modern_except_state
 {
 	return { 0.f,0.f,0.f };
 }

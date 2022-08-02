@@ -113,7 +113,7 @@ void InterfaceStatusBarBehavior::SetStatusCutXAnchorLeft(const float status)
 	}
 }
 
-const InterfaceBehaviorType InterfaceStatusBarBehavior::GetType() const noexcept
+const InterfaceBehaviorType InterfaceStatusBarBehavior::GetType() const modern_except_state
 {
 	return InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_STATUSBAR;
 }

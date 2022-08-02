@@ -4,7 +4,7 @@ IntegerConditionEquals::IntegerConditionEquals(IIntegerVariable* const A, IInteg
 {
 }
 
-bool IntegerConditionEquals::CheckCondition()
+modern_Boolean IntegerConditionEquals::CheckCondition()
 {
 	return (m_A->get() == m_B->get());
 }

@@ -94,7 +94,7 @@ void InterfaceSliderBehavior::Bind(const modern_cstring& option)
 	}
 }
 
-const InterfaceBehaviorType InterfaceSliderBehavior::GetType() const noexcept
+const InterfaceBehaviorType InterfaceSliderBehavior::GetType() const modern_except_state
 {
 	return InterfaceBehaviorType::INTERFACE_BEHAVIOR_TYPE_SLIDER;
 }

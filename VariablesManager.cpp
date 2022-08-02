@@ -289,7 +289,7 @@ XMFLOAT3 VariablePoint::GetPoint(std::string name)
 	{
 		return m_points[name];
 	}
-	else XMFLOAT3(0.0f, 0.0f, 0.0f);
+	return XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 
 bool VariablePoint::PushPoint(std::string name, XMFLOAT3 i)

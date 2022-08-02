@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include "ModelStance.h"
+#include "modern/modern_def.h"
 
 struct ModelVariant
 {
@@ -8,17 +9,17 @@ struct ModelVariant
 
 	ID3D11ShaderResourceView* GetTexture() const;
 
-	int32_t GetVariant() const noexcept;
+	int32_t GetVariant() const modern_except_state;
 
-	float GetMaxFrames() const noexcept;
+	float GetMaxFrames() const modern_except_state;
 
-	float GetSize() const noexcept;
+	float GetSize() const modern_except_state;
 
-	void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const noexcept;
+	void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const modern_except_state;
 
 	void SetVariant(const int32_t variant) const;
 
-	bool Check() const noexcept;
+	bool Check() const modern_except_state;
 
 	class Texture* m_textures[15];
 	float                m_maxFrames[15];

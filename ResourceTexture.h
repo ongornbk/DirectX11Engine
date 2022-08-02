@@ -1,16 +1,19 @@
 #pragma once
 #include "Texture.h"
 
+#include "modern/modern_string.h"
+#include "modern/modern_string_view.h"
+
 class ResourceTexture
 {
 public:
 	ResourceTexture(void);
 	~ResourceTexture(void);
 
-	bool Load(ID3D11Device* device, WCHAR* textureFileName);
+	const modern_Boolean Load(struct ID3D11Device* const device, const class modern_string& name);
 
 	Texture* GetTexture();
-	string GetName();
+	const class modern_string_view& GetName() const modern_except_state;
 private:
 	Texture* m_texture;
 };

@@ -10,8 +10,8 @@ public:
 	modern_framelock(const double lock);
 	~modern_framelock();
 
-	const modern_Boolean Run()                         noexcept;
-	const modern_Boolean State()                 const noexcept;
-	void                 Update(const double dt)       noexcept;
-	const double         GetDeltaTime()                noexcept;
+	const modern_Boolean Run()                         modern_except_state;
+	const modern_Boolean State()                 const modern_except_state;
+	void                 Update(const double dt)       modern_except_state;
+	const double         GetDeltaTime()                modern_except_state;
 };

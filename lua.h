@@ -102,7 +102,7 @@ typedef LUA_KCONTEXT lua_KContext;
 /*
 ** Type for C functions registered with Lua
 */
-typedef int (*lua_CFunction) (lua_State *L);
+typedef int (__stdcall *lua_CFunction) (lua_State *L);
 
 /*
 ** Type for continuation functions

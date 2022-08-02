@@ -109,7 +109,7 @@ if(current)
 current = nullptr;
 }
 
-Shader* const ShaderPackage::GetShader() const noexcept
+Shader* const ShaderPackage::GetShader() const modern_except_state
 {
 	return current;
 }

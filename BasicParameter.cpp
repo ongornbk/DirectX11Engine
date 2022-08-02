@@ -5,7 +5,7 @@ const BasicParameter::BasicParameterValue BasicParameter::get()
 	return m_value;
 }
 
-const enum class ParameterType BasicParameter::get_type() const noexcept
+const enum class ParameterType BasicParameter::get_type() const modern_except_state
 {
 	return ParameterType::BASIC;
 }

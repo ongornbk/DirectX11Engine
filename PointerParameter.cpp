@@ -15,7 +15,7 @@ void* const PointerParameter::get()
 	return m_object;
 }
 
-const enum class ParameterType PointerParameter::get_type() const noexcept
+const enum class ParameterType PointerParameter::get_type() const modern_except_state
 {
 	return ParameterType::POINTER;
 }

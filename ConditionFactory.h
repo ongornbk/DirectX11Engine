@@ -46,14 +46,18 @@
 #include "OrCondition.h"
 #include "NorCondition.h"
 #pragma endregion
+#pragma region Error
+#include "ErrorCondition.h"
+#pragma endregion
 
 namespace ConditionFactory
 {
-	class ICondition* const CreateBooleanCondition(class IBooleanVariable* const A, class IBooleanVariable* const B, const enum class BooleanOperatorType operator_type) noexcept;
-	class ICondition* const CreateFloatCondition(class IFloatVariable* const A, class IFloatVariable* const B, const enum class FloatOperatorType operator_type) noexcept;
-	class ICondition* const CreateIntegerCondition(class IIntegerVariable* const A, class IIntegerVariable* const B, const enum class IntegerOperatorType operator_type) noexcept;
-	class ICondition* const CreateObjectCondition(class IObjectVariable* const A, class IObjectVariable* const B, const enum class ObjectOperatorType operator_type) noexcept;
-	class ICondition* const CreateAndCondition(class ICondition* const A, class ICondition* const B) noexcept;
-	class ICondition* const CreateOrCondition(class ICondition* const A, class ICondition* const B) noexcept;
-	class ICondition* const CreateNorCondition(class ICondition* const A, class ICondition* const B) noexcept;
+	class ICondition* const CreateBooleanCondition(class IBooleanVariable* const A, class IBooleanVariable* const B, const enum class BooleanOperatorType operator_type) modern_except_state;
+	class ICondition* const CreateFloatCondition(class IFloatVariable* const A, class IFloatVariable* const B, const enum class FloatOperatorType operator_type) modern_except_state;
+	class ICondition* const CreateIntegerCondition(class IIntegerVariable* const A, class IIntegerVariable* const B, const enum class IntegerOperatorType operator_type) modern_except_state;
+	class ICondition* const CreateObjectCondition(class IObjectVariable* const A, class IObjectVariable* const B, const enum class ObjectOperatorType operator_type) modern_except_state;
+	class ICondition* const CreateAndCondition(class ICondition* const A, class ICondition* const B) modern_except_state;
+	class ICondition* const CreateOrCondition(class ICondition* const A, class ICondition* const B) modern_except_state;
+	class ICondition* const CreateNorCondition(class ICondition* const A, class ICondition* const B) modern_except_state;
+	class ICondition* const CreateErrorCondition() modern_except_state;
 }

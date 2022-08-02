@@ -162,9 +162,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 			return;
 		//}
 	}
-	m_shaderMutex.lock();
 	m_shaders.push_back(resourceShader);
-	m_shaderMutex.unlock();
 }
 
 
@@ -182,81 +180,43 @@ void ResourceManager::LoadShaderResource(Shader * shader)
 	m_shaders.push_back(resourceShader);
 }
 
-void ResourceManager::LoadTextureResource(WCHAR* textureFileName)
+
+
+void ResourceManager::LoadTextureResource(const class modern_string& name)
 {
-	using std::cout;
-	ResourceTexture* resourceTexture = new ResourceTexture();
-	if (!resourceTexture->Load(m_device, textureFileName))
+	class ResourceTexture* const resourceTexture = new class ResourceTexture();
+	if (resourceTexture->Load(m_device, name))
 	{
-		wstring ws(textureFileName);
-		string str(ws.begin(), ws.end());
-		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str],str)))
-		{
-			
-			if (!resourceTexture->Load(m_device, textureFileName))
-			{
-				delete resourceTexture;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
-				return;
-			}
-			else
-			{
-				m_textures.push_back(resourceTexture);
-				return;
-			}
-		}
-		else
-		{
-			delete resourceTexture;
-			wstring wsac = L"Load Failed : " + std::wstring(textureFileName);
-			string strwsc(wsac.begin(), wsac.end());
-            Console::Println((strwsc), ipp::RED);
-			return;
-		}
+		Console::Println("Load Succesfull : ", name, ipp::LIGHTGREEN);
+		m_textures.push_back(resourceTexture);
+		return;
+
 	}
-	m_textures.push_back(resourceTexture);
-}
-
-void ResourceManager::LoadTextureResource(modern_string& name)
-{
-	LoadTextureResource(name.c_wstr());
-}
-
-void ResourceManager::LoadSoundResource(WCHAR* soundFileName,const enum class SoundType type)
-{
-	ResourceSound* resourceSound = new ResourceSound();
-	if (!resourceSound->Load(soundFileName,type))
+	else
 	{
-		wstring ws(soundFileName);
-		string str(ws.begin(), ws.end());
-		if (SUCCEEDED(GetItemByUrl(m_resourcesURLS[str], str)))
-		{
-
-			if (!resourceSound->Load(soundFileName,type))
-			{
-				delete resourceSound;
-				Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
-				return;
-			}
-			else
-			{
-				m_sounds.push_back(resourceSound);
-				return;
-			}
-		}
-		else
-		{
-			delete resourceSound;
-			Console::Println("Load Failed : ", wstring(soundFileName), ipp::RED);
-			return;
-		}
+		delete resourceTexture;
+		Console::Println("Load Failed : ", name, ipp::RED);
+		return;
 	}
-	m_sounds.push_back(resourceSound);
+
 }
 
-void ResourceManager::LoadSoundResource(class modern_string& soundFileName, const SoundType type)
+void ResourceManager::LoadSoundResource(class modern_string& name, const enum class SoundType type)
 {
-	LoadSoundResource(soundFileName.c_wstr(),type);
+
+	class ResourceSound* const resourceSound = new class ResourceSound();
+	if (resourceSound->Load(name, type))
+	{
+		Console::Println(L"Load Succesfull : ", name, ipp::LIGHTGREEN);
+		m_sounds.push_back(resourceSound);
+		return;
+	}
+	else
+	{
+		delete resourceSound;
+		Console::Println(L"Load Failed : ", name, ipp::RED);
+		return;
+	}
 }
 
 void ResourceManager::LoadUnitTemplateResource(modern_string& filename)
@@ -273,7 +233,21 @@ void ResourceManager::PrintOutTextures()
 	for (int i = 0; i < (int)m_textures.size(); i++)
 	{
 		Console::Print((void*)m_textures[i]);
-		Console::Println(" : " + m_textures[i]->GetName());
+		Console::Println(L" : ", m_textures[i]->GetName());
+	}
+}
+
+void ResourceManager::PrintOutSounds()
+{
+
+	Console::SetTextColor(ipp::GOLDEN);
+	Console::Print((int)m_sounds.size());
+	Console::Println(" Textures found ...");
+
+	for (int i = 0; i < (int)m_sounds.size(); i++)
+	{
+		Console::Print((void*)m_sounds[i]);
+		Console::Println(L" : ",m_sounds[i]->GetName());
 	}
 }
 
@@ -303,8 +277,9 @@ class Texture * ResourceManager::GetTextureByName(const char* textureName)
 {
 	for (int i = 0; i < (int)m_textures.size(); i++)
 	{
-		ResourceTexture* resourceTexture = m_textures[i];
-		string resourceTextureName = resourceTexture->GetName();
+		class ResourceTexture* const resourceTexture = m_textures[i];
+		std::wstring resourceTextureNameW = resourceTexture->GetName().c_wstr();
+		std::string resourceTextureName = std::string(resourceTextureNameW.begin(), resourceTextureNameW.end());
 		if (!strcmp(textureName, resourceTextureName.c_str()))
 		{
 			return resourceTexture->GetTexture();
@@ -313,8 +288,9 @@ class Texture * ResourceManager::GetTextureByName(const char* textureName)
 	}
 	for (int i = 0; i < (int)m_textures.size(); i++)
 	{
-		ResourceTexture* resourceTexture = m_textures[i];
-		string resourceTextureName = resourceTexture->GetName();
+		class ResourceTexture* const resourceTexture = m_textures[i];
+		std::wstring resourceTextureNameW = resourceTexture->GetName().c_wstr();
+		std::string resourceTextureName = std::string(resourceTextureNameW.begin(), resourceTextureNameW.end());
 		if (!strcmp("sys", resourceTextureName.c_str()))
 		{
 			return resourceTexture->GetTexture();
@@ -327,8 +303,10 @@ class ISound  * ResourceManager::GetSoundByName(const char* soundName)
 {
 	for (int i = 0; i < (int)m_sounds.size(); ++i)
 	{
-		ResourceSound* resourceSound = m_sounds[i];
-		string resourceSoundName = resourceSound->GetName();
+		class ResourceSound* const resourceSound = m_sounds[i];
+		std::wstring resourceSoundNameW = resourceSound->GetName().c_wstr();
+		std::string resourceSoundName = std::string(resourceSoundNameW.begin(), resourceSoundNameW.end());
+		//string resourceSoundName = resourceSound->GetName();
 		if (!strcmp(soundName, resourceSoundName.c_str()))
 		{
 			return resourceSound->GetSound();

@@ -6,7 +6,7 @@
 
 class ActionWaitUntil : public IAction, public IActionSplitArrayBehavior, public IActionCondition
 {
-	class ICondition* m_condition;
+	class ICondition* m_condition{};
 
 	ActionWaitUntil() = delete;
 

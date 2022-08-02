@@ -27,11 +27,11 @@ public:
 
 	modern_guard() = delete;
 	modern_guard(class modern_guard& guard) = delete;
-	_stdcall modern_guard(struct modern_class* const object) noexcept;
-	_stdcall modern_guard(volatile struct modern_class* const object) noexcept;
-	_stdcall modern_guard(const struct modern_class* const object) noexcept;
-	_stdcall modern_guard(std::atomic<int64_t>& lock) noexcept;
-	_stdcall ~modern_guard() noexcept;
+	_stdcall modern_guard(struct modern_class* const object) modern_except_state;
+	_stdcall modern_guard(volatile struct modern_class* const object) modern_except_state;
+	_stdcall modern_guard(const struct modern_class* const object) modern_except_state;
+	_stdcall modern_guard(std::atomic<int64_t>& lock) modern_except_state;
+	_stdcall ~modern_guard() modern_except_state;
 };
 
-volatile class modern_guard& modern_guard_anonymous(struct modern_class* const object) noexcept;
+volatile class modern_guard& modern_guard_anonymous(struct modern_class* const object) modern_except_state;

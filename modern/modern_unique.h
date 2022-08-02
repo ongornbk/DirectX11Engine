@@ -38,7 +38,7 @@ public:
 		m_pointer = pointer;
 	}
 
-	T& operator*() const noexcept { /*assert(m_pointer)*/; return *m_pointer; }
-	T* operator->() const noexcept { /*assert(m_pointer)*/; return m_pointer; }
+	T& operator*() const modern_except_state { /*assert(m_pointer)*/; return *m_pointer; }
+	T* operator->() const modern_except_state { /*assert(m_pointer)*/; return m_pointer; }
 };
 

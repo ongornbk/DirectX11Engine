@@ -8,14 +8,14 @@ RenderLayerCorpse::~RenderLayerCorpse()
 {
 }
 
-const RenderLayerType RenderLayerCorpse::GetType() const noexcept
+const RenderLayerType RenderLayerCorpse::GetType() const modern_except_state
 {
 	return RenderLayerType::ENUM_CORPSE_TYPE;
 }
 
 void RenderLayerCorpse::Update(const float dt)
 {
-	m_size = 0u;
+	m_size = 0ull;
 	for (int32_t i = 0; i < MAP_DIVISION; ++i)
 	{
 		m_size += m_objects[1][i].size();
@@ -50,7 +50,7 @@ void _stdcall RenderLayerCorpse::StaticQSort()
 {
 }
 
-void _vectorcall RenderLayerCorpse::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerCorpse::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 	class modern_array<class modern_array<class EObject*>*> mvpp;
 
@@ -94,7 +94,7 @@ void _vectorcall RenderLayerCorpse::Render(ID3D11DeviceContext* const deviceCont
 	}
 }
 
-void _vectorcall RenderLayerCorpse::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) noexcept
+void _vectorcall RenderLayerCorpse::PreRender(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
 }
 
@@ -153,7 +153,7 @@ static int64_t _fastcall CheckDistance(
 	class EObject* const A,
 	class EObject* const B,
 	const float range
-) noexcept
+) modern_except_state
 {
 
 	const float distanceX = A->m_boundingSphere.Center.x - B->m_boundingSphere.Center.x;
@@ -171,7 +171,7 @@ static int64_t _fastcall CheckDistance(
 	}
 }
 
-static void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object, const float range) noexcept
+static void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object, const float range) modern_except_state
 {
 
 	for (auto&& unit : vec)
@@ -196,7 +196,7 @@ ENDLOOP:
 }
 
 
-std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, float range) noexcept
+std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, float range) modern_except_state
 {
 
 	class std::stack<class Unit*> unitsLeft;
@@ -354,12 +354,12 @@ std::stack<Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Unit* object, f
 	return unitsCenter;
 }
 
-std::stack<class Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Agent* agent, float range) noexcept
+std::stack<class Unit*> _vectorcall RenderLayerCorpse::GetUnitsInRange(Agent* agent, float range) modern_except_state
 {
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerCorpse::GetTreesBelow(class EObject* const object, float range) noexcept
+std::stack<class Tree*> _vectorcall RenderLayerCorpse::GetTreesBelow(class EObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

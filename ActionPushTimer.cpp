@@ -1,7 +1,8 @@
 #include "ActionPushTimer.h"
 
-ActionPushTimer::ActionPushTimer(class ITimer* const timer) : m_timer(timer)
+ActionPushTimer::ActionPushTimer(class ITimer* const timer)
 {
+	m_timer = timer;
 }
 
 ActionPushTimer::~ActionPushTimer()

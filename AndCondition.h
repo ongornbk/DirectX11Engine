@@ -9,6 +9,6 @@ public:
 	AndCondition() = delete;
 	AndCondition(class ICondition* const __A, class ICondition* const __B);
 	~AndCondition();
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 

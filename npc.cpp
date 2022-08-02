@@ -1,6 +1,6 @@
 #include "npc.h"
 
-int32 npc::isReleased() const noexcept
+int32 npc::isReleased() const modern_except_state
 {
 	if (m_managementType == ObjectManagementType::OBJECT_MANAGEMENT_DELETE)
 		return true;
@@ -46,7 +46,7 @@ void npc::Intersect( EObject* const other)
 
 }
 
-const RenderLayerType npc::GetLayerType() const noexcept
+const RenderLayerType npc::GetLayerType() const modern_except_state
 {
 	return RenderLayerType::ENUM_OBJECT_TYPE;
 }

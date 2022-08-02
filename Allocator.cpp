@@ -15,22 +15,22 @@ Allocator::~Allocator()
     _size = 0;
 }
 
-void* Allocator::start() const noexcept
+void* Allocator::start() const modern_except_state
 {
     return _start;
 }
 
-size_t Allocator::size() const noexcept
+size_t Allocator::size() const modern_except_state
 {
     return _size;
 }
 
-size_t Allocator::usedMemory() const noexcept
+size_t Allocator::usedMemory() const modern_except_state
 {
     return _used_memory;
 }
 
-size_t Allocator::numAllocations() const noexcept
+size_t Allocator::numAllocations() const modern_except_state
 {
     return _num_allocations;
 }

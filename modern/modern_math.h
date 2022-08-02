@@ -111,7 +111,7 @@ template <class T> inline T modern_clamp(T value, T min, T max);
 template <class T> inline T modern_clamp_div(T value, T min, T max);
 template <class T> inline T modern_clamp_reverse_div(T value, T min, T max);
 
-inline const modern_Boolean modern_checkFloat32(const float f32) noexcept;
+inline const modern_Boolean modern_checkFloat32(const float f32) modern_except_state;
 
 inline float modern_sin(float a);
 inline float modern_cos(float a);

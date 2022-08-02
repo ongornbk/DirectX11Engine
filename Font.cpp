@@ -288,7 +288,7 @@ LetterSprite* const TextFont::GetSprite(class Text* const text,const char ch)
 	return m_letters[ch];
 }
 
-Shader* const TextFont::GetShader() noexcept
+Shader* const TextFont::GetShader() modern_except_state
 {
 	return m_shader;
 }

@@ -4,7 +4,7 @@ IntegerConditionLess::IntegerConditionLess(IIntegerVariable* const A, IIntegerVa
 {
 }
 
-bool IntegerConditionLess::CheckCondition()
+modern_Boolean IntegerConditionLess::CheckCondition()
 {
 	return (m_A->get() < m_B->get());
 }

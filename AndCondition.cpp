@@ -1,9 +1,11 @@
 #include "AndCondition.h"
 #include <cassert>
 
-AndCondition::AndCondition(ICondition* const __A, ICondition* const __B) : A(__A), B(__B)
+AndCondition::AndCondition(ICondition* const __A, ICondition* const __B)
 {
 	assert(A && B);
+	A = __A;
+	B = __B;
 }
 
 AndCondition::~AndCondition()
@@ -20,7 +22,7 @@ AndCondition::~AndCondition()
 	}
 }
 
-bool AndCondition::CheckCondition()
+modern_Boolean AndCondition::CheckCondition()
 {
 	return (A->CheckCondition() && B->CheckCondition());
 }

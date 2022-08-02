@@ -10,7 +10,7 @@ public:
 	OrCondition() = delete;
 	OrCondition(class ICondition* const __A, class ICondition* const __B);
 	~OrCondition();
-	bool CheckCondition() override;
+	modern_Boolean CheckCondition() override;
 };
 
 

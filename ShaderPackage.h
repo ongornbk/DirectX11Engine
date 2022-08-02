@@ -68,7 +68,7 @@ public:
 
 	void End() const;
 
-	class Shader* const GetShader() const noexcept;
+	class Shader* const GetShader() const modern_except_state;
 
 private:
 

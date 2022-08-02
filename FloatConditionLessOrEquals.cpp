@@ -6,7 +6,7 @@ FloatConditionLessOrEquals::FloatConditionLessOrEquals(IFloatVariable* const A, 
 
 }
 
-bool FloatConditionLessOrEquals::CheckCondition()
+modern_Boolean FloatConditionLessOrEquals::CheckCondition()
 {
 	return (m_A->get() <= m_B->get());
 }

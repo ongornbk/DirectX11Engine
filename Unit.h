@@ -25,6 +25,7 @@ public:
 	explicit Unit(class Unit* const other);
 	~Unit();
 
+	[[DEPRECATED]]
 	void Initialize(
 		struct ID3D11Device* const device,
 		struct ID3D11DeviceContext* const deviceContext,
@@ -36,6 +37,17 @@ public:
 		const bool wander = true
 	);
 
+	void Initialize(
+		struct ID3D11Device* const device,
+		struct ID3D11DeviceContext* const deviceContext,
+		class Shader* const shader,
+		const char* const paths,
+		const float size,
+		const float collision,
+		const struct DirectX::XMFLOAT3& position,
+		const bool wander = true
+	);
+
 	void Initialize(class Unit* const other);
 
 	void Resize(struct ID3D11Device * const device,class Shader * const shader,const float resize);
@@ -43,7 +55,7 @@ public:
 	void SetAnimation(const enum ModelStance animation);
 	void ForceAnimation(const enum ModelStance animation);
 	void SetAnimationSpeed(float speed);
-	int32 isReleased() const noexcept override;
+	int32 isReleased() const modern_except_state override;
 	
 	_Use_decl_annotations_
 	void _fastcall Render(
@@ -64,23 +76,23 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	void Intersect(class EObject* const other) override;
-	const enum class RenderLayerType GetLayerType() const noexcept override;
+	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
-	void SetVector(const DirectX::XMFLOAT3& vec) noexcept override;
-	DirectX::XMFLOAT3 GetVector() noexcept override;
+	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
+	DirectX::XMFLOAT3 GetVector() modern_except_state override;
 
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);
 
-	float    GetCollisionRadius() const noexcept;
+	float    GetCollisionRadius() const modern_except_state;
 
-	DirectX::XMFLOAT3 GetPosition() const noexcept;
-	float    GetSpeed() const noexcept;
-	float GetZ() const noexcept;
-	float GetNumberOfRotations() const noexcept;
-	float GetRotation() const noexcept;
+	DirectX::XMFLOAT3 GetPosition() const modern_except_state;
+	float    GetSpeed() const modern_except_state;
+	float GetZ() const modern_except_state;
+	float GetNumberOfRotations() const modern_except_state;
+	float GetRotation() const modern_except_state;
 	void SetSpeed(const float speed = 0.0f);
-	WalkingStance GetWalkingStance() const noexcept;
+	WalkingStance GetWalkingStance() const modern_except_state;
 	void SetWalkingStance(const enum WalkingStance stance = WalkingStance::WALKING_STANCE_RUN);
 	void ChangeWalkingStance();
 	void SetRotations(const int32 rotations);
@@ -92,20 +104,20 @@ public:
 	void GoBack();
 	void Die(class Unit* const killer);
 	void ApplyExperienceBonus(class Unit* const killer);
-	void SetAttackType(const enum class AttackType type) noexcept;
-	void SetAttackRange(const float range) noexcept;
+	void SetAttackType(const enum class AttackType type) modern_except_state;
+	void SetAttackRange(const float range) modern_except_state;
 
 	const UnitStats& GetStats();
 
 	Attack& GetAttack();
 
-	enum Task::Type GetTaskType() const noexcept;
-	class Task* GetTask() const noexcept;
+	enum Task::Type GetTaskType() const modern_except_state;
+	class Task* GetTask() const modern_except_state;
 
-	bool IsAttacking() const noexcept;
-	bool IsDead() const noexcept;
-	bool IsAlive() const noexcept;
-	bool IsWandering() const noexcept;
+	bool IsAttacking() const modern_except_state;
+	bool IsDead() const modern_except_state;
+	bool IsAlive() const modern_except_state;
+	bool IsWandering() const modern_except_state;
 
 	bool BeginAttack(class Unit* const target);
 	bool Attack(class Unit* const target);
@@ -116,17 +128,17 @@ public:
 	void Damage(const float damage);
 	void Select(modern_Boolean selct = 1);
 
-	const float GetHealth() const noexcept;
-	const float GetMaxHealth() const noexcept;
-	const float GetHealthPercentage() const noexcept;
+	const float GetHealth() const modern_except_state;
+	const float GetMaxHealth() const modern_except_state;
+	const float GetHealthPercentage() const modern_except_state;
 
-	const float GetMana() const noexcept;
-	const float GetMaxMana() const noexcept;
-	const float GetManaPercentage() const noexcept;
+	const float GetMana() const modern_except_state;
+	const float GetMaxMana() const modern_except_state;
+	const float GetManaPercentage() const modern_except_state;
 
-	const float GetExperience() const noexcept;
-	const float GetMaxExperience() const noexcept;
-	const float GetExperiencePercentage() const noexcept;
+	const float GetExperience() const modern_except_state;
+	const float GetMaxExperience() const modern_except_state;
+	const float GetExperiencePercentage() const modern_except_state;
 
 	void SetFootstepsSound(class ISound* sound);
 
@@ -138,8 +150,8 @@ public:
 	void LoadSounds(WCHAR* path);
 	void LoadSounds(std::string* path);
 
-	class ISound* GetFootstepsSound() const noexcept;
-	[[nodiscard]] class modern_string const& GetName() noexcept;
+	class ISound* GetFootstepsSound() const modern_except_state;
+	[[nodiscard]] class modern_string const& GetName() modern_except_state;
 
 	friend class Task;
 	friend class TaskGotoPoint;
@@ -151,7 +163,7 @@ public:
 	friend struct SortByY;
 	friend struct UnitsVector;
 
-	[[nodiscard]] static bool CheckIfValid(class Unit* const pointer);
+	[[nodiscard]] static const modern_Boolean CheckIfValid(class Unit* const pointer);
 
 private:
 

@@ -7,6 +7,13 @@ namespace
 
 Options::Options()
 {
+    class Options* const A = (class Options* const)m_activeOptions.get();
+    if (A)
+    {
+        this->option_null = A->option_null;
+        this->option_ShowFPS = A->option_ShowFPS;
+        this->option_Sound = A->option_Sound;
+    }
     m_activeOptions.make_handle(this->m_object);
 }
 

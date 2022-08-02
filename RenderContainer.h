@@ -35,12 +35,12 @@ public:
 	virtual void               SetZ(const float z = 0.f)                              = 0;
 	virtual void               Update(const float dt = 0.f)                           = 0;
 	virtual void               Release()                                              = 0;
-	virtual int32              isReleased()                            const noexcept = 0;
-	virtual DirectX::XMFLOAT3  GetVector()                             noexcept       = 0;
-	virtual void               SetVector(const DirectX::XMFLOAT3& vec) noexcept       = 0;
+	virtual int32              isReleased()                            const modern_except_state = 0;
+	virtual DirectX::XMFLOAT3  GetVector()                             modern_except_state = 0;
+	virtual void               SetVector(const DirectX::XMFLOAT3& vec) modern_except_state = 0;
 
 	virtual void Intersect(class EObject* const other) = 0;
-	virtual const enum class RenderLayerType GetLayerType() const noexcept = 0;
+	virtual const enum class RenderLayerType GetLayerType() const modern_except_state = 0;
 
 public:
 	uint32           m_index;
@@ -80,6 +80,6 @@ public:
 	volatile modern_handle& GetHandle() volatile;
 
 protected:
-	void safe_remove() noexcept;
+	void safe_remove() modern_except_state;
 };
 

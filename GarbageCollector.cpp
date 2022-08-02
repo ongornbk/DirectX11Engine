@@ -32,7 +32,7 @@ void GarbageCollector::Update()
 	//m_handles.clear();
 }
 
-GarbageCollector* GarbageCollector::GetInstance() noexcept
+GarbageCollector* GarbageCollector::GetInstance() modern_except_state
 {
 	if (m_collector)
 		return m_collector;
