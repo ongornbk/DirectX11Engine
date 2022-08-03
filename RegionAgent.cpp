@@ -102,6 +102,11 @@ void RegionAgent::Remove()
     safe_remove();
 }
 
+void RegionAgent::RemoveNow()
+{
+    m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void RegionAgent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;

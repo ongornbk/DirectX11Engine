@@ -6,11 +6,10 @@ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include "Engine.h"
-#include "WindowHandle.h"
 #include "Menu.h"
 
 
-class FrameWork : WindowHandle
+class FrameWork
 {
 public:
 	FrameWork(void);
@@ -25,6 +24,7 @@ private:
 	bool CreateDXWindow(char* windowTitle, int x, int y, int width, int height);
 	char* m_applicationName;
 
+	HWND      m_hwnd;
 	Menu*     m_menu;
 	HINSTANCE m_hInstance;
 	HDC       m_hDC;

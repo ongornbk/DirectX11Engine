@@ -75,7 +75,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\LIBRARY\boost_1_76_0;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\LIBRARY\LIB;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
     <TargetName>Legion</TargetName>
@@ -268,6 +268,7 @@
     <ClInclude Include="ConstIntegerVariable.h" />
     <ClInclude Include="ConstObjectVariable.h" />
     <ClInclude Include="CPU.h" />
+    <ClInclude Include="DDSTextureLoader11.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
     <ClInclude Include="DeleteArrayTrash.h" />
@@ -493,10 +494,6 @@
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="WalkingStance.h" />
     <ClInclude Include="WICTextureLoader.h" />
-    <ClInclude Include="Widget.h" />
-    <ClInclude Include="WidgetAnchor.h" />
-    <ClInclude Include="WidgetFlags.h" />
-    <ClInclude Include="WindowHandle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionAddAlpha.cpp" />
@@ -556,6 +553,7 @@
     <ClCompile Include="ConstIntegerVariable.cpp" />
     <ClCompile Include="ConstObjectVariable.cpp" />
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="DDSTextureLoader11.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
     <ClCompile Include="DeleteArrayTrash.cpp" />
     <ClCompile Include="DeleteHandleTrash.cpp" />
@@ -732,9 +730,6 @@
     <ClCompile Include="VariablesManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
-    <ClCompile Include="Widget.cpp" />
-    <ClCompile Include="WidgetFlags.cpp" />
-    <ClCompile Include="WindowHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DeleteArrayTrash.inl" />
@@ -752,6 +747,7 @@
     <None Include="x64\Release\bin\x64\lua\core\Game.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Handle.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Interface.lua" />
+    <None Include="x64\Release\bin\x64\lua\core\Model.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Music.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Object.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Tree.lua" />

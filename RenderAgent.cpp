@@ -71,6 +71,11 @@ void RenderAgent::Remove()
     safe_remove();
 }
 
+void RenderAgent::RemoveNow()
+{
+    m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void RenderAgent::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;

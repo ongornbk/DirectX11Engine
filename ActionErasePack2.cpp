@@ -17,14 +17,14 @@ ActionErasePack2::~ActionErasePack2()
 
 void ActionErasePack2::execute()
 {
-	auto& mpb = *&Global::GetInstance()->m_bmap2;
+	//auto& mpb = *&Global::GetInstance()->m_binaryMapPack2;
 	//auto& mpc = mpb.find(m_pack->m_bits);
 	//if (mpc == mpb.end())
 	//	return;
 	//(*mpc).second.second--;
 	//if ((*mpc).second.second <= 0ll)
 	{
-		mpb.erase(*m_pack);
+	//	mpb[m_pack->first].erase(m_pack->second);
 	}
 }
 

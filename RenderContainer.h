@@ -31,6 +31,7 @@ public:
 	) = 0;
 
 	virtual void Remove() = 0;
+	virtual void RemoveNow() = 0;
 
 	virtual void               SetZ(const float z = 0.f)                              = 0;
 	virtual void               Update(const float dt = 0.f)                           = 0;
@@ -77,6 +78,8 @@ public:
 	}m_type;
 
 	const modern_handle& GetHandle();
+	modern_handle* const GetHandlePtr();
+	modern_handle* const GetNewHandlePtr();
 	volatile modern_handle& GetHandle() volatile;
 
 protected:

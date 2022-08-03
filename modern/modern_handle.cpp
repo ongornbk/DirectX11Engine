@@ -209,3 +209,90 @@ bool operator<(const class modern_handle& lhs, const class modern_handle& rhs)
 {
 	return lhs.m_object[0] < rhs.m_object[0];
 }
+
+modern_weak_handle::modern_weak_handle()
+{
+	m_num = nullptr;
+	m_object = nullptr;
+}
+
+modern_weak_handle::~modern_weak_handle()
+{
+}
+
+modern_weak_handle::modern_weak_handle(const modern_handle& diff)
+{
+	if ((&diff) && diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
+}
+
+volatile modern_class* const modern_weak_handle::get()
+{
+	if (m_object)
+		return m_object[0ll];
+	else return nullptr;
+}
+
+void modern_weak_handle::make_weak_handle(const modern_handle& diff)
+{
+	if ((&diff) && diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
+}
+
+void modern_weak_handle::make_weak_handle(volatile modern_handle& diff) volatile
+{
+	if ((&diff) && diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
+}
+
+void modern_weak_handle::make_weak_handle(const modern_weak_handle& diff)
+{
+	if ((&diff) && diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
+}
+
+void modern_weak_handle::make_weak_handle(volatile modern_weak_handle& diff) volatile
+{
+	if ((&diff) && diff.m_object)
+	{
+		m_object = diff.m_object;
+		m_num = diff.m_num;
+	}
+	else
+	{
+		m_num = nullptr;
+		m_object = nullptr;
+	}
+}

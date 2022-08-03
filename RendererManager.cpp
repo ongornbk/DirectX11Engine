@@ -1125,7 +1125,7 @@ void RendererManager::SetFps(const int32 fps)
 	if (D)
 	{
 		modern_guard g(D);
-		D->SetText(modern_cstring("BMP ", GLOBAL m_bmap4.size() + GLOBAL m_bmap2.size()).c_str());
+		D->SetText(modern_cstring("BMP ", GLOBAL m_mp2.size()).c_str());
 		//for(auto & obj : GLOBAL m_bmap2)
 		//{
 		//	std::cout << obj.first << " : " << obj.second << std::endl;

@@ -2,6 +2,7 @@
 #include <d3d11_1.h>
 #include <string>
 #include "WICTextureLoader.h"
+#include "DDSTextureLoader11.h"
 #include "modern/modern_string.h"
 #include "modern/modern_string_view.h"
 

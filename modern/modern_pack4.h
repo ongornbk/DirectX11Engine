@@ -88,6 +88,8 @@ struct modern_pack4
 		{
 			return modern_true;
 		}
+
+		return false;
 	}
 
 	modern_Boolean operator ==(const struct modern_pack4& lhs) const

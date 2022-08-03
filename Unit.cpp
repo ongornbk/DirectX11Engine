@@ -591,6 +591,11 @@ void Unit::Remove()
 	Timer::CreateInstantTimer(action);
 }
 
+void Unit::RemoveNow()
+{
+	m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void Unit::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 	m_floats[0] = vec;

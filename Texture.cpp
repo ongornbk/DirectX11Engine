@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "GlobalUtilities.h"
 #include "gdef.h"
+#include "IPP.h"
 
 using namespace DirectX;
 
@@ -34,11 +35,19 @@ const modern_Boolean Texture::Initialize(struct ID3D11Device* const device, cons
 		str = str.substr(pos + 1ull, str.length());
 	}
 	m_name = str.substr(0ull, str.find(L".")).c_str();
+	str = str.substr(str.find(L".")+1);
 
-
-	result = CreateWICTextureFromFile(device, name.c_wstr(), NULL, &m_texture, NULL);
+	
+	//if(str[0]==L'p')
+	//	result = CreateWICTextureFromFile(device, name.c_wstr(), NULL, &m_texture, NULL);
+	//else
+	result =   CreateDDSTextureFromFile(device, name.c_wstr(), NULL, &m_texture, NULL);
 	if (FAILED(result))
 	{
+		ipp::Console::Println(name.c_wstr());
+		ipp::Console::Println(m_name.c_wstr());
+		ipp::Console::Println(modern_string(result).c_wstr());
+		//ipp::Console::GetInput();
 		return modern_false;
 	}
 

@@ -29,6 +29,20 @@ Projectile::~Projectile()
         delete m_vertexBuffer;
         m_vertexBuffer = nullptr;
     }
+
+    auto ite = GLOBAL m_mp2.find(&m_object);
+    if (ite != GLOBAL m_mp2.end())
+    {
+        auto& ss = (*ite).second;
+        for (auto ele = ss->begin();ele != ss->end();ele++)
+        {
+            delete* ele;
+       }
+        ss->clear();
+        delete ss;
+        GLOBAL m_mp2.erase(ite);
+    }
+    
 }
 
 void Projectile::Initialize(
@@ -130,26 +144,40 @@ void Projectile::Intersect(EObject* const other)
                 const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
                 if (distance < (m_collision + target->GetCollisionRadius()))
                 {
-                    struct modern_pack2* const pck2 = new struct modern_pack2(this, target);
-                    if ((GLOBAL m_bmap2.insert(*pck2)).second)
+                   // struct modern_pack2* const pck2 = new struct modern_pack2(this, target);
+
+                    auto ite = GLOBAL m_mp2.find(&m_object);
+                    if (ite == GLOBAL m_mp2.end())
                     {
-                        class IAction* const action = new ActionErasePack2(pck2);
-                        Timer::CreateExpiringTimer(action, 0.1f);
-                        target->GetHit(owner);
-                        target->DoDamage(owner);
-
-
-                        //m_flags.m_hide = true;
-
-                        Engine* const engine = Engine::GetEngine();
-                        engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
-
-                        //constexpr size_t g =sizeof(modern_pack2);
+                        std::set<class modern_handle*, modern_handle_less>* mss = (new std::set<class modern_handle*, modern_handle_less>);
+                        mss->insert(target->GetNewHandlePtr());
+                        GLOBAL m_mp2[&m_object] = mss;
                     }
                     else
                     {
-                        
+                        auto ddddd = (*ite).second->insert(target->GetNewHandlePtr());
+                        if (ddddd.second)
+                        {
+                           // class IAction* const action = new ActionErasePack2(pck2);
+                           // Timer::CreateExpiringTimer(action, 1.0f);
+                           // target->GetHit(owner);
+                           // target->DoDamage(owner);
+                           // Engine* const engine = Engine::GetEngine();
+                           // engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
+
+                    {
+                        target->GetHit(owner);
+                        target->DoDamage(owner);
+                        Engine* const engine = Engine::GetEngine();
+                        engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+                    }
+
                 }
             }
 
@@ -167,6 +195,11 @@ void Projectile::Remove()
     class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
     action->push(new ActionRemoveObject(this));
     Timer::CreateInstantTimer(action);
+}
+
+void Projectile::RemoveNow()
+{
+    m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
 }
 
 void Projectile::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state

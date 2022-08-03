@@ -37,6 +37,7 @@ public:
 	void Intersect(class EObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
+	void RemoveNow() override;
 
 	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
 	DirectX::XMFLOAT3 GetVector() modern_except_state override;

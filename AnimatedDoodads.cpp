@@ -211,6 +211,11 @@ void AnimatedDoodads::Remove()
 	safe_remove();
 }
 
+void AnimatedDoodads::RemoveNow()
+{
+	m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void AnimatedDoodads::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 

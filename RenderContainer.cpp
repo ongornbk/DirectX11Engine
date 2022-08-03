@@ -9,6 +9,16 @@ const modern_handle& EObject::GetHandle()
     return m_object;
 }
 
+modern_handle* const EObject::GetHandlePtr()
+{
+    return &m_object;
+}
+
+modern_handle* const EObject::GetNewHandlePtr()
+{
+    return new modern_handle(m_object);
+}
+
 volatile modern_handle& EObject::GetHandle() volatile
 {
     return m_object;

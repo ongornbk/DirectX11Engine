@@ -327,9 +327,6 @@
     <ClInclude Include="2D\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindowHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IPP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -456,19 +453,10 @@
     <ClInclude Include="Handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HandleIntersetionInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HandleType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WidgetAnchor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WidgetFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitStats.h">
@@ -1092,6 +1080,9 @@
     <ClInclude Include="modern\modern_string_view.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="DDSTextureLoader11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1220,9 +1211,6 @@
     <ClCompile Include="LuaCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindowHandle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IPP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1304,9 +1292,6 @@
     <ClCompile Include="ActionMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionRemoveObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ITimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1329,9 +1314,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicParameter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionMessageFront.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ITrigger.cpp">
@@ -1367,13 +1349,7 @@
     <ClCompile Include="Handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HandleIntersetionInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WidgetFlags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnitStats.cpp">
@@ -1401,9 +1377,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ActionPushObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionKillUnit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
@@ -1619,9 +1592,6 @@
     <ClCompile Include="modern\modern_cstring.cpp">
       <Filter>Header Files\modern</Filter>
     </ClCompile>
-    <ClCompile Include="ActionInitializeText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PTaskGCClear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1676,9 +1646,6 @@
     <ClCompile Include="InterfaceStatusBarBehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionInitializeInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ActionPushTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1707,9 +1674,6 @@
       <Filter>Header Files\modern</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionInitializeProjectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LineOfCollision.cpp">
@@ -1800,6 +1764,27 @@
       <Filter>Source Files\Actions</Filter>
     </ClCompile>
     <ClCompile Include="ActionIfThenElse.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInitializeInterface.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInitializeProjectile.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInitializeText.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionKillUnit.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionMessageFront.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionRemoveObject.cpp">
       <Filter>Source Files\Actions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1944,6 +1929,9 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\Triggers_Initialization.lua">
       <Filter>Lua</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\Model.lua">
+      <Filter>Lua\core</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

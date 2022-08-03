@@ -8,6 +8,8 @@
 #include "modern/modern_pack4.h"
 #include <stack>
 #include <unordered_set>
+#include <set>
+//#include <boost/bimap/bimap.hpp>
 
 class Global
 {
@@ -37,8 +39,15 @@ public:
 	XMVECTOR camera_up;
 	XMVECTOR camera_lookat;
 
-	std::set<modern_pack2> m_bmap2;
-	std::map<struct modern_pack4, int64> m_bmap4;
+	//std::map<class modern_handle*, std::set<modern_handle*, modern_handle_less>, modern_handle_less> m_binaryMapPack2;
+	//std::map<class modern_weak_handle,std::set<modern_weak_handle, modern_weak_handle_less>,modern_weak_handle_less> m_bmap2weak;
+	//std::map<struct modern_pack4, int64> m_bmap4;
+	//boost::bimap<class modern_handle*, class modern_handle*, modern_handle_less> m_bimap2;
+	//boost::bimaps::bimap<class modern_handle*, class modern_handle*> m_bimap2;
+	std::map<class modern_handle*, std::set<class modern_handle*, modern_handle_less>*,modern_handle_less> m_mp2;
+
+
+
 
 	void getS(std::string name) const;
 	void release();

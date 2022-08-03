@@ -202,6 +202,11 @@ void Interface::Remove()
 	safe_remove();
 }
 
+void Interface::RemoveNow()
+{
+	m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void Interface::Update(float dt)
 {
 	

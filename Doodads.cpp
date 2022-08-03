@@ -181,6 +181,11 @@ void Doodads::Remove()
 	safe_remove();
 }
 
+void Doodads::RemoveNow()
+{
+	m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void Doodads::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
 }

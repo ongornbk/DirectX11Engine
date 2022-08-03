@@ -187,6 +187,11 @@ void Tree::Remove()
 	Timer::CreateInstantTimer(action);
 }
 
+void Tree::RemoveNow()
+{
+	m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void Tree::CastShadow(const bool shadow)
 {
 	m_flags.m_cast_shadow = shadow;

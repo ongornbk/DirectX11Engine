@@ -17,11 +17,11 @@ ActionErasePack4::~ActionErasePack4()
 
 void ActionErasePack4::execute()
 {
-    auto& mpb = *&Global::GetInstance()->m_bmap4;
+    //auto& mpb = *&Global::GetInstance()->m_bmap4;
     //mpb[*m_pack]--;
    // if (mpb[*m_pack]==0ll)
    // {
-        mpb.erase(*m_pack);
+   //     mpb.erase(*m_pack);
    // }
 }
 

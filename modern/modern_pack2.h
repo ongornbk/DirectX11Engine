@@ -50,36 +50,6 @@ struct modern_pack2
 		}
 	}
 
-	bool operator<(const struct modern_pack2& lhs) const
-	{
-		//return ((*first).get() < (*lhs.first).get()) || ((*second).get() < (*lhs.second).get());
-		if (first->get() < lhs.first->get())
-		{
-			return true;
-		}
-		if (first->get() > lhs.first->get())
-		{
-			return false;
-		}
-		//if (second->get() < lhs.second->get())
-		//{
-		//	return modern_true;
-		//}
-		//if (second->get() > lhs.second->get())
-		//{
-		//	return modern_false;
-		//}
-
-		//return second->get() < lhs.second->get();
-
-		return false;
-	}
-
-	modern_Boolean operator ==(const struct modern_pack2& lhs) const
-	{
-		return ((*first).get() == (*lhs.first).get()) && ((*second).get() == (*lhs.second).get());
-	}
-
 	struct modern_pack2& operator= (const struct modern_pack2& other)
 	{
 		if (this == &other)
@@ -89,5 +59,19 @@ struct modern_pack2
 		second->make_handle(*other.second);
 
 		return *this;
+	}
+};
+
+//struct modern_pack2_less_first : public std::binary_function<struct modern_pack2,struct  modern_pack2, bool> {
+//	bool operator()(const modern_pack2& lhs, const modern_pack2& rhs) const
+//	{
+//		return lhs.first->get() < rhs.first->get();
+//	}
+//};
+
+struct modern_pack2_less_second : public std::binary_function<struct modern_pack2, struct  modern_pack2, bool> {
+	bool operator()(const modern_pack2& lhs, const modern_pack2& rhs) const
+	{
+		return lhs.second->get() < rhs.second->get();
 	}
 };

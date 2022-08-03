@@ -44,6 +44,7 @@ public:
 		) override;
 
 	void Remove() override;
+	void RemoveNow() override;
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;

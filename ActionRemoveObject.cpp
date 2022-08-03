@@ -17,6 +17,7 @@ void ActionRemoveObject::execute()
 	{
 		modern_guard guard(A);
 		A->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+		//A->RemoveNow();
 		//m_object->Release();
 		CleanupFrame();
 

@@ -126,6 +126,11 @@ void RectOfCollisionAgentFirst::Remove()
     Timer::CreateInstantTimer(action);
 }
 
+void RectOfCollisionAgentFirst::RemoveNow()
+{
+    m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
+}
+
 void RectOfCollisionAgentFirst::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 {
     m_boundingSphere.Center = vec;
