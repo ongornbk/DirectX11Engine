@@ -47,4 +47,6 @@ void ColorFilter::SetColorFilter(const float filter) modern_except_state
 void ColorFilter::AddAlpha(const float alpha) modern_except_state
 {
 	m_colorFilter.w += alpha;
+	if (m_colorFilter.w > 1.f)
+		m_colorFilter.w = 1.f;
 }

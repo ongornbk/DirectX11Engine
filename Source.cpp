@@ -9,10 +9,12 @@
 #include <sstream>
 #include <streambuf>
 #include "modern/modern_vector.h"
+#include "modern/modern_file.h"
 
 #pragma region
 #define SETTINGS Settings::get()->
 #define SETTINGS_LOCATION "../settings/settings.file"
+#define SETTINGS_LOCATION_WIDE L"../settings/settings.file"
 #define SETTINGS_LOCATION2 "X64/Release/bin/settings/settings.file"
 #define SETTINGS_NUMBER_OF_ARGUMENTS 4U
 #pragma endregion
@@ -26,7 +28,9 @@ extern "C" {
 void main(const int argc,char** const argv)
 {
 	{
+
 		std::ifstream stream(SETTINGS_LOCATION);
+		
 		if (!stream.good())
 		{
 			ipp::Console::SetTextColor(ipp::RED);

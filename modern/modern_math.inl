@@ -137,6 +137,7 @@ inline uint32_t modern_seed_malloc()
 {
 #pragma warning(disable : 4311)
 #pragma warning(disable : 4302)
+#pragma message("MODERN_WARNING_WILL_CAUSE_DESYNC")
 	void* addr = malloc(4);
 	uint32_t seed = (uint32_t)(addr);
 	free(addr);
@@ -148,6 +149,7 @@ inline void modern_seed_malloc(uint32_t& seed)
 {
 #pragma warning(disable : 4311)
 #pragma warning(disable : 4302)
+#pragma message("MODERN_WARNING_WILL_CAUSE_DESYNC")
 	void* addr = malloc(4);
 	seed = (uint32_t)(addr);
 	free(addr);

@@ -5,6 +5,7 @@
 #include "ConstBooleanVariable.h"
 #include "ConstBooleanVariableFalse.h"
 #include "ConstBooleanVariableTrue.h"
+#include "BooleanVariableObjectIntersectsWithRegion.h"
 #include "BooleanVariableUnitIsDead.h"
 #include "BooleanVariableUnitIsAlive.h"
 #include "BooleanVariableUnitIsAttacking.h"

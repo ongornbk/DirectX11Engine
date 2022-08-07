@@ -33,7 +33,7 @@ PixelInputType VSMain(VertexInputType input)
 {
 PixelInputType output;
 
-input.position.w = 1.0f;
+input.position.w = 1.f;
 
 output.position = mul(input.position, worldMatrix);
 output.position = mul(output.position,viewMatrix);
@@ -54,11 +54,11 @@ float xd;
 float yd;
 //xd = (960.0f - abs(input.position[0]-960.0f))/960.0f;
 //yd = (590.0f - abs(input.position[1]-590.0f))/590.0f;
-xd = (1500.0f - abs(input.position[0]-1200.0f))/1200.0f;
-yd = (1200.0f - abs(input.position[1]-800.0f))/800.0f;
+xd = (960.f - abs(input.position[0]-960.f))/380.f;
+yd = (590.f - abs(input.position[1]-590.f))/320.f;
 float distance = mul(yd,xd);
 //textureColor = mul(textureColor,0.5f);
-distance = clamp(distance,0.25f,1.5);
+distance = clamp(distance,0.65f,1.75f);
 textureColor = mul(distance,textureColor);
 textureColor[3] = alpha;
 return textureColor;

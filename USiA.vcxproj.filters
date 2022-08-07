@@ -184,6 +184,21 @@
     <Filter Include="Source Files\Actions">
       <UniqueIdentifier>{4734f1ac-050d-4828-b826-38a23dc66e3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Actions\Interface">
+      <UniqueIdentifier>{789eeba2-5df1-443a-9535-2bf137575281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\ColorFilter">
+      <UniqueIdentifier>{bc0c15b6-4e57-404e-9a28-69273929b014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Unit">
+      <UniqueIdentifier>{345f375c-cb89-40ee-9be4-31d9c34f65cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Action">
+      <UniqueIdentifier>{e0c37124-530c-4ef7-9568-d79cbbfdb83c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Object">
+      <UniqueIdentifier>{f5a04e8a-2a4e-417d-b71f-ea57c3846d46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -639,27 +654,6 @@
     <ClInclude Include="DeleteHandleTrash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionApplyColorFilter.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionAttack.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionBehavior.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionChangeLayer.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionExecuteAction.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionExecuteActionArray.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionIfThenElse.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="ActionInitializeText.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
@@ -690,19 +684,7 @@
     <ClInclude Include="ActionSkipRemainingActions.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="ActionStance.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="ActionTranslateText.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionType.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionWait.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionWaitUntil.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableUnitIsSelected.h">
@@ -807,9 +789,6 @@
     <ClInclude Include="ITimer.h">
       <Filter>Header Files\Timers</Filter>
     </ClInclude>
-    <ClInclude Include="IAction.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="InterfaceCheckboxBehavior.h">
       <Filter>Header Files\Interface</Filter>
     </ClInclude>
@@ -912,20 +891,11 @@
     <ClInclude Include="InterfaceStatusBarBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionAddAlpha.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_string_casting_type.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_string_cast.h">
       <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionInitializeInterface.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSetInterfaceOffset.h">
-      <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
@@ -1082,6 +1052,84 @@
     </ClInclude>
     <ClInclude Include="DDSTextureLoader11.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CScripts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableObjectIntersectsWithRegion.h">
+      <Filter>Header Files\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionLua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IAttackOwner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionResetAttackDelay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PermanentFuzzyTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_file.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_file_permits.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionAddAlpha.h">
+      <Filter>Header Files\Actions\ColorFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionApplyColorFilter.h">
+      <Filter>Header Files\Actions\ColorFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionAttack.h">
+      <Filter>Header Files\Actions\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionBehavior.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionChangeLayer.h">
+      <Filter>Header Files\Actions\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteAction.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteActionArray.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionIfThenElse.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeInterface.h">
+      <Filter>Header Files\Actions\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceOffset.h">
+      <Filter>Header Files\Actions\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionType.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionWait.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionWaitUntil.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="IAction.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionStance.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionShowInterface.h">
+      <Filter>Header Files\Actions\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1787,6 +1835,30 @@
     <ClCompile Include="ActionRemoveObject.cpp">
       <Filter>Source Files\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="CScripts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanVariableObjectIntersectsWithRegion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionLua.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionResetAttackDelay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PermanentFuzzyTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_file.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionShowInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -1932,6 +2004,12 @@
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Model.lua">
       <Filter>Lua\core</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\blendtile.fx">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="x64\Release\bin\shaders\text.fx">
+      <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

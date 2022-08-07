@@ -18,8 +18,14 @@ public:
 
     }
 
-    explicit modern_exception(wchar_t const* const message) modern_except_state : m_data(message)
+    explicit modern_exception(wchar_t const* const message) modern_except_state
     {
+        m_data = message;
+    }
+
+    explicit modern_exception(const class modern_string& message) modern_except_state
+    {
+        m_data = message;
     }
 
     modern_exception(modern_exception& other) modern_except_state

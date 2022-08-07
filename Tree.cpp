@@ -5,6 +5,7 @@
 #include "ActionRemoveObject.h"
 #include "Timer.h"
 #include "IPP.h"
+#include "CScripts.h"
 
 namespace
 {
@@ -66,12 +67,19 @@ void Tree::Initialize(
 	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
-	m_fadeRegion.make_handle((new class Region(
+	m_fadeRegion.make_handle((new class RegionC(
 		m_boundingSphere.Center.x - (m_size / 2.f),
 		m_boundingSphere.Center.y + m_size,
 		m_boundingSphere.Center.x + (m_size / 2.f),
-		m_boundingSphere.Center.y
+		m_boundingSphere.Center.y,
+		c_script_tree_fade_enter,
+		c_script_tree_fade_leave
 	))->GetHandle());
+
+	{
+		class RegionC* const loc_reg = (class RegionC* const)m_fadeRegion.get();
+		loc_reg->SetParent(this_handle);
+	}
 
 	class Region* const mfr = (class Region* const)(m_fadeRegion.get());
 	if (mfr)

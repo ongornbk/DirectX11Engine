@@ -27,7 +27,7 @@ class Tile
 public:
 
 
-	static void SetGlobals(struct ID3D11Device* const device, class Shader* const shader, class RendererManager* const renderer);
+	static void SetGlobals(struct ID3D11Device* const device, class Shader* const tile_shader, class Shader* const blend_tile_shader, class RendererManager* const renderer);
 	static void SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix, const struct DirectX::XMFLOAT4X4& projectionMatrix);
 	static void SetDeviceContext(struct ID3D11DeviceContext* const context);
 
@@ -35,6 +35,7 @@ public:
 	virtual void Render() = 0;
 
 	bool m_collision;
+	bool m_blendType;
 
 	TileInfo m_info;
 
@@ -67,6 +68,8 @@ struct TileMap
 
 private:
 
+	
+
 	int32  renderInts[6];
 
 	float m_currentFrame;
@@ -91,8 +94,35 @@ class _Tile //To do
 	XMFLOAT2      m_position;
 };
 
+class SimpleBlendTile : public Tile
+{
+public:
+	SimpleBlendTile(const float x, const float y, const int32 ix, const int32 iy);
+	SimpleBlendTile(const struct DirectX::XMFLOAT2& position, int32* const index);
+	explicit SimpleBlendTile(struct TileInfo& info);
+	~SimpleBlendTile();
 
-class SimpleTile : public Tile
+	void SetTexture(class Texture* const texture);
+	void Update(const float dt) override;
+	void Render() override;
+
+
+	friend class AnimatedTile;
+	friend class SimpleTile;
+
+
+private:
+	void LoadTexture() override;
+
+};
+
+class INoBlendTile
+{
+public:
+	virtual void SecondRender() = 0;
+};
+
+class SimpleTile : public Tile, public INoBlendTile
 {
 public:
 	SimpleTile(const float x,const float y,const int32 ix,const int32 iy);
@@ -103,6 +133,7 @@ public:
 	void SetTexture(class Texture* const texture);
 	void Update(const float dt) override;
 	void Render() override;
+	void SecondRender() override;
 
 
 	friend class AnimatedTile;
@@ -121,7 +152,7 @@ private:
 
 };
 
-class AnimatedTile : public Tile
+class AnimatedTile : public Tile, public INoBlendTile
 {
 public:
 	AnimatedTile(const float x,const float y,const int32 ix,const int32 iy,class Texture* texture);
@@ -131,7 +162,7 @@ public:
 	void SetTexture(class Texture* texture);
 	void Update(const float dt) override;
 	void Render() override;
-
+	void SecondRender() override;
 	
 
 	friend class SimpleTile;

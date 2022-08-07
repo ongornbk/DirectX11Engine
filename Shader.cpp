@@ -376,6 +376,7 @@ bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd,WCHAR* shaderFileN
 	D3D11_BUFFER_DESC colorBufferDesc;
 	D3D11_BUFFER_DESC tempBufferDesc;
 
+
 	result = D3DCompileFromFile(shaderFileName, NULL,NULL,"VSMain", "vs_4_0",D3DCOMPILE_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{

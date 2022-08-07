@@ -21,6 +21,7 @@
 #define  modern_false 0ll
 #define  modern_true modern_int64max
 #define  modern_Boolean_check modern_false <
+#define  return_new_reference return * new
 
 #define MODERN_DEBUG_ENABLE_EXCEPTIONS
 #ifdef MODERN_DEBUG_ENABLE_EXCEPTIONS

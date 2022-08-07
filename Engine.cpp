@@ -174,12 +174,14 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADSHADER  L"x64/Release/bin/shaders/units.fx"                                END
 	LOADSHADER  L"x64/Release/bin/shaders/shadow.fx"                               END
 	LOADSHADER  L"x64/Release/bin/shaders/select.fx"                               END
+	LOADSHADER  L"x64/Release/bin/shaders/blendtile.fx"                            END
 #else
 	LOADSHADER  L"../shaders/texture.fx"                              END
 	LOADSHADER  L"../shaders/tile.fx"                                 END
 	LOADSHADER  L"../shaders/units.fx"                                END
 	LOADSHADER  L"../shaders/shadow.fx"                               END
 	LOADSHADER  L"../shaders/select.fx"                               END
+	LOADSHADER  L"x64/Release/bin/shaders/blendtile.fx"                            END
 #endif //VS_DEBUG_COMPILATION
 
 	//LOADSHADER  L"x64/Release/bin/Shaders/interface.fx"                            END

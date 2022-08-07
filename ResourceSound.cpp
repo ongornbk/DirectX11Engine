@@ -51,5 +51,5 @@ const modern_string_view& ResourceSound::GetName()
 	{
 		return m_sound->GetName();
 	}
-	return modern_string_view(L"UNINITIALIZED RESOURCE SOUND");
+	return_new_reference modern_string_view(L"UNINITIALIZED RESOURCE SOUND");
 }

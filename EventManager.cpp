@@ -1,6 +1,6 @@
 #include "EventManager.h"
 #include "Global.h"
-#include "Region.h"
+#include "RegionLua.h"
 #include "ActionExecuteActionArray.h"
 #include "ActionExecuteLuaFunction.h"
 #include "ActionGlobalSetLeavingObject.h"
@@ -113,7 +113,7 @@ const modern_Boolean EventManager::EventLevelUpUnit()
 
 const modern_Boolean EventManager::EventRegionEntering()
 {
-	class Region* const region = (class Region* const)Global::GetInstance()->m_triggeringRegion.get();
+	class RegionLua* const region = (class RegionLua* const)Global::GetInstance()->m_triggeringRegion.get();
 	m_discard = modern_false;
 	//if (region->m_eventEntersBindStatus)
 	//{
@@ -132,7 +132,7 @@ const modern_Boolean EventManager::EventRegionEntering()
 
 const modern_Boolean EventManager::EventRegionLeaving()
 {
-	class Region* const region = (class Region* const)Global::GetInstance()->m_triggeringRegion.get();
+	class RegionLua* const region = (class RegionLua* const)Global::GetInstance()->m_triggeringRegion.get();
 	m_discard = modern_false;
 	//if (region->m_eventLeavesBindStatus)
 	//{

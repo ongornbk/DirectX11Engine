@@ -38,5 +38,5 @@ const class modern_string_view& ResourceTexture::GetName() const modern_except_s
 	{
 		return m_texture->GetName();
 	}
-	return modern_string_view(L"UNINITIALIZED RESOURCE TEXTURE");
+	return_new_reference modern_string_view(L"UNINITIALIZED RESOURCE TEXTURE");
 }

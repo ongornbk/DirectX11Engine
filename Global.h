@@ -22,6 +22,8 @@ public:
 	modern_handle                      m_killingUnit;
 	modern_handle                      m_triggeringUnit;
 	modern_handle                      m_lastSelectedUnit;
+	modern_handle                      m_castingUnit;
+	modern_handle                      m_levelingUnit;
 	modern_handle                      m_lastCreatedRenderContainer;
 	modern_handle                      m_pickedObject;
 	modern_handle                      m_triggeringRegion;

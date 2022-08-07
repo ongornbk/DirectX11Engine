@@ -18,6 +18,7 @@
 #include "RectOfCollision.h"
 #include "Region.h"
 #include "UserInterfaceState.h"
+#include "FuzzyTimer.h"
 #include <stack>
 #include <map>
 #include <list>
@@ -62,6 +63,8 @@ public:
 	~RendererManager();
 
 
+
+
 	void PushUnit(class Unit* unit);
 	void PushAgent(class Agent* const agent);
 	void PushProjectile(class Projectile* const proj);
@@ -101,11 +104,14 @@ public:
 	void SetFps(const int32 fps);
 	void SetFocus(class Unit* const unit);
 	void EnableCollision(const bool collision = true);
+	void SetState(const int64_t state) modern_except_state;
 	void Clear();
 	class TextFont* const GetFont();
 
 	class Interface* const GetHealthBarMini();
 	class Interface* const GetHealthBarMiniBorder();
+	class modern_handle& GetCursorAgentHandle();
+	class modern_handle& GetFocusAgentHandle();
 
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Unit* const object,const float range) modern_except_state;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(class Agent* const agent, const float range) modern_except_state;
@@ -118,6 +124,7 @@ public:
 private:
 
 	bool m_collision;
+	int64_t m_state{};
 
 	Engine* m_engine;
 	Shader* m_shader;
@@ -145,6 +152,7 @@ private:
 	class modern_handle m_exp;
 	class modern_handle m_healthBar;
 	class modern_handle m_healthBarBorder;
+	class modern_handle m_damage;
 
 	std::list<modern_handle> m_selectGroup;
 

@@ -62,8 +62,8 @@ void RenderAgent::Intersect(EObject* const other)
 const RenderLayerType RenderAgent::GetLayerType() const modern_except_state
 {
     //return RenderLayerType::ENUM_OBJECT_TYPE;
-    interface RenderAgentParent* const collline = (interface RenderAgentParent* const)m_parent.get();
-        return collline->GetRenderLayer();
+    interface RenderAgentParent* const parent = (interface RenderAgentParent* const)m_parent.get();
+        return parent->GetRenderLayer();
 }
 
 void RenderAgent::Remove()

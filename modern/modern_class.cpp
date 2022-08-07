@@ -3,13 +3,11 @@
 
 modern_class::modern_class()
 {
-	m_object.make_handle(this);
+	this_handle.make_handle(this);
 	m_lock = {};
-	//std::cout << "Tired";
 }
 
 modern_class::~modern_class()
 {
-	m_object.Release();
-	//std::cout << "Tired";
+	this_handle.Release();
 }

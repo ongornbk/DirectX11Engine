@@ -7,17 +7,20 @@
 #include "Text.h"
 #include "RenderAgent.h"
 #include "RenderAgentParent.h"
+#include "Global.h"		  //To be removed
+#include "EventManager.h" //To be removed
 #include <set>
 
 class IRegionAgent;
 
 class Region : public modern_class, public ColorFilter, public RenderAgentParent
 {
+protected:
+	friend class RegionAgent;
+
 	modern_handle pointA;
 	modern_handle pointB;
 	modern_handle m_renderAgent;
-protected:
-	friend class RegionAgent;
 	std::set<modern_handle> m_objects;
 	BoundingBox              m_rect;
 
@@ -31,7 +34,7 @@ public:
 
 	Region(const struct DirectX::XMFLOAT2 pA, const struct DirectX::XMFLOAT2 pB);
 	Region(const float x1,const float y1,const float x2,const float y2);
-	~Region();
+	virtual ~Region();
 
 	void _fastcall Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader);
 	void Update(float dt);
@@ -41,26 +44,25 @@ public:
 	const modern_handle& GetHandle();
 	volatile modern_handle& GetHandle() volatile;
 
-	void Bind(std::string enters, std::string leaves);
-	void BindEnters(std::string enters);
-	void BindLeaves(std::string leaves);
-	void Unbind();
 	void GiveName(std::string name);
 
 	const DirectX::XMFLOAT3& GetPosition()const modern_except_state;
 	const enum class RenderLayerType GetRenderLayer() const modern_except_state override;
+
+	const enum DirectX::ContainmentType Contains(class EObject* const object) const;
+	const bool Intersects(class EObject* const object) const;
 private:
 	void Enters(const modern_handle& object);
 	void Leaves(const modern_handle& object);
 
-	friend class EventManager;
+	virtual void OnEnter(const class modern_handle& enteringObject) = 0;		 
+	virtual void OnLeave(const class modern_handle& leavingObject) = 0;			 
+
 	friend class RegionAgent;
 	friend class RegionAgentMaster;
 
-	modern_Boolean m_eventEntersBindStatus = modern_false;
-	modern_Boolean m_eventLeavesBindStatus = modern_false;
 
-	std::string m_eventEnters;
-	std::string m_eventLeaves;
 };
+
+
 

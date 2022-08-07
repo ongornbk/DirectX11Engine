@@ -68,25 +68,20 @@ void RegionAgent::Intersect(EObject* const other)
     if (other->m_boundingSphere.Radius == 0.f)
         return;
 
-    class Region* const collline = (class Region* const)m_parent.get();
+    class Region* const region = (class Region* const)m_parent.get();
    
-    if (collline->m_rect.Intersects(other->m_boundingSphere))
+    if (region->m_rect.Contains(other->m_boundingSphere)==DirectX::ContainmentType::DISJOINT)
     {
-   
-        if (collline->m_objects.insert(other->GetHandle()).second && collline->m_eventEntersBindStatus)
+        if (region->m_objects.erase(other->GetHandle()))
         {
-            Global::GetInstance()->m_triggeringRegion.make_handle(collline->GetHandle());
-            Global::GetInstance()->m_enteringObject.make_handle(other->GetHandle());
-            EventManager::GetInstance()->EventRegionEntering();
+            region->OnLeave(other->GetHandle());
         }
     }
     else
     {
-        if (collline->m_objects.erase(other->GetHandle()) && collline->m_eventLeavesBindStatus)
+        if (region->m_objects.insert(other->GetHandle()).second)
         {
-            Global::GetInstance()->m_triggeringRegion.make_handle(collline->GetHandle());
-            Global::GetInstance()->m_leavingObject.make_handle(other->GetHandle());
-            EventManager::GetInstance()->EventRegionLeaving();
+            region->OnEnter(other->GetHandle());
         }
     }
 

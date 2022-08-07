@@ -15,6 +15,7 @@
 #include "ActionApplyColorFilter.h"
 #include "ActionPushObject.h"
 #include "ActionPushTimer.h"
+#include "ActionResetAttackDelay.h"
 #include "ActionAddAlpha.h"
 #include "ConditionFactory.h"
 #include "modern/modern.h"
@@ -485,7 +486,7 @@ void Unit::Update(const float dt)
 	//		if (select.Contains(point))
 	//		{
 	//			m_flags.m_selected = true;
-	//			GLOBAL m_lastSelectedUnit.make_handle(this->GetHandle());
+	//			GLOBAL m_lastSelectedUnit.make_handle(this_handle);
 	//			GLOBAL m_selectStatus = true;
 	//		}
 	//		else
@@ -506,7 +507,7 @@ void Unit::SetZ(const float z)
 
 void Unit::SetTask(class Task* const task)
 {
-	if(!m_attack.active)
+	//if(!m_attack.active)
 	m_tasks.SetTask(task);
 }
 
@@ -547,18 +548,18 @@ void Unit::Intersect(class EObject* const other)
 					}
 					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
 					{
-					//	if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
-					//	{
-					//
-					//	}
-					//	else
-					//	{
-					//		TaskAttack* task = new TaskAttack();
-					//		task->object.make_handle(this->GetHandle());
-					//		task->target.make_handle(other->GetHandle());
-					//		task->Initialize();
-					//		m_tasks.SetTask(task);
-					//	}
+						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
+						{
+					
+						}
+						else
+						{
+							TaskAttack* task = new TaskAttack();
+							task->object.make_handle(this_handle);
+							task->target.make_handle(other->GetHandle());
+							task->Initialize();
+							m_tasks.SetTask(task);
+						}
 					}
 					else
 					{
@@ -718,10 +719,13 @@ void Unit::GoBack()
 
 void Unit::Die(Unit* const killer)
 {
+	if (m_dead)
+		return;
+
 	Global* const gl = Global::GetInstance();
 
-	gl->m_dyingUnit.make_handle(this->GetHandle());
-	gl->m_triggeringUnit.make_handle(this->GetHandle());
+	gl->m_dyingUnit.make_handle(this_handle);
+	gl->m_triggeringUnit.make_handle(this_handle);
 	if (CheckIfValid(killer))
 	{
 		gl->m_killingUnit.make_handle(killer->GetHandle());
@@ -733,8 +737,7 @@ void Unit::Die(Unit* const killer)
 	if (EventManager::GetInstance()->EventDyingUnit())
 		return;
 	//killer == nullptr is correct
-	if (m_dead)
-		return;
+
 
 	m_tasks.Discard();
 	m_flags.m_selectable = false;
@@ -792,13 +795,14 @@ void Unit::ApplyExperienceBonus(Unit* const killer)
 				killer->m_stats.m_attackDamage += 1.f;
 				killer->m_stats.m_maxHealth += 10.f;
 				killer->m_stats.m_healthRegeneration += 0.1f;
-				killer->m_stats.m_health = killer->m_stats.m_maxHealth;
+				killer->RefreshHealthAndMana();
 			}
 		}
 		if (flag)
 		{
 			Global* const gl = Global::GetInstance();
-			gl->m_triggeringUnit.make_handle(this->GetHandle());
+			gl->m_triggeringUnit.make_handle(this_handle);
+			gl->m_levelingUnit.make_handle(this_handle);
 			if (EventManager::GetInstance()->EventLevelUpUnit())
 				return;
 			Engine* const engine = Engine::GetEngine();
@@ -921,19 +925,29 @@ bool Unit::BeginAttack(class Unit* const target)
 
 bool Unit::Attack(class Unit* const target)
 {
-	if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_GETHIT)
+	if (m_modelVariant.GetVariant() == ModelStance::MODEL_STANCE_GETHIT || m_attack.delay)
 		return false;
+
+	m_attack.active = false;
+	m_attack.delay = true;
+
+	{
+		class IAction* const action = new ActionResetAttackDelay(this_handle);
+		Timer::CreateExpiringTimer(action, m_attack.m_attackDelay);
+	}
+
+
 	switch (m_attack.m_atype)
 	{
 	case AttackType::ENUM_ATTACK_TYPE_MELEE:
 	{
-		m_attack.active = false;
+
 		return ((class Unit* const)target)->GetAttacked(this);
 		break;
 	}
 	case AttackType::ENUM_ATTACK_TYPE_RANGED_PROJECTILE:
 	{
-		m_attack.active = false;
+
 
 		Engine* const engine = Engine::GetEngine();
 			const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
@@ -1157,10 +1171,33 @@ bool Unit::StartCasting(const DirectX::XMFLOAT2 target)
 	{
 		return false;
 	}
-	else
+	if (m_stats.m_mana < 30.f)
 	{
+		{
+			Engine* const engine = Engine::GetEngine();
+			const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
+			int32_t i = modern_random(0, 2);
+			switch (i)
+			{
+			case 0:
+				engine->PlaySound(L"ama_moremana", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+				break;
+			case 1:
+				engine->PlaySound(L"ama_needmana", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+				break;
+			case 2:
+				engine->PlaySound(L"ama_notenoughmana", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+				break;
+			}
+
+			return false;
+		}
+	}
+	{
+		m_stats.m_mana -= 30.f;
 		Global* const gl = Global::GetInstance();
-		gl->m_triggeringUnit.make_handle(this->GetHandle());
+		gl->m_triggeringUnit.make_handle(this_handle);
+		gl->m_castingUnit.make_handle(this_handle);
 		if (EventManager::GetInstance()->EventStartCastingUnit())
 			return false;
 
@@ -1210,8 +1247,8 @@ void Unit::Select(modern_Boolean selct)
 	if (selct)
 		{
 		Global* const gl = Global::GetInstance();
-		gl->m_triggeringUnit.make_handle(this->GetHandle());
-		gl->m_lastSelectedUnit.make_handle(this->GetHandle());
+		gl->m_triggeringUnit.make_handle(this_handle);
+		gl->m_lastSelectedUnit.make_handle(this_handle);
 		if (EventManager::GetInstance()->EventSelectUnit())
 			return;
 			m_flags.m_selected = true;
@@ -1224,6 +1261,23 @@ void Unit::Select(modern_Boolean selct)
 			m_flags.m_selected = false;
 		}
 }
+
+void Unit::RefreshHealth() modern_except_state
+{
+	m_stats.m_health = m_stats.m_maxHealth;
+}
+
+void Unit::RefreshMana() modern_except_state
+{
+	m_stats.m_mana = m_stats.m_maxMana;
+}
+
+void Unit::RefreshHealthAndMana() modern_except_state
+{
+	RefreshHealth();
+	RefreshMana();
+}
+
 
 const float Unit::GetHealth() const modern_except_state
 {
@@ -1283,7 +1337,7 @@ void Unit::NotifyBlock(EObject* const other)
 		//m_flags.m_collided = false;
 		//TaskGotoPoint* tp = new TaskGotoPoint();
 		//tp->destination = modern_xpolar_projection2(this->m_boundingSphere.Center, 300.f,modern_xangle2_between_points3(m_boundingSphere.Center,other->GetVector())+120.f);
-		//tp->object.make_handle(this->GetHandle());
+		//tp->object.make_handle(this_handle);
 		//m_tasks.QueueFrontTask(tp);
 		//DiscardTasks();
 		//m_boundingSphere.Radius = 0.f;

@@ -5,6 +5,7 @@
 #include "Sound.h"
 #include "Attack.h"
 #include "UnitStats.h"
+#include "IAttackOwner.h"
 
 #include "WalkingStance.h"
 #include "ModelStance.h"
@@ -17,7 +18,7 @@
 
 class UnitTemplate;
 
-class Unit : public EObject, public ColorFilter
+class Unit : public EObject, public ColorFilter, public IAttackOwner
 {
 public:
 
@@ -82,6 +83,8 @@ public:
 	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
 	DirectX::XMFLOAT3 GetVector() modern_except_state override;
 
+	struct Attack& GetAttack() override;
+
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);
 
@@ -110,7 +113,7 @@ public:
 
 	const UnitStats& GetStats();
 
-	Attack& GetAttack();
+	//Attack& GetAttack();
 
 	enum Task::Type GetTaskType() const modern_except_state;
 	class Task* GetTask() const modern_except_state;
@@ -128,6 +131,10 @@ public:
 	void DoDamage(class Unit* const attacker);
 	void Damage(const float damage);
 	void Select(modern_Boolean selct = 1);
+
+	void RefreshHealth() modern_except_state;
+	void RefreshMana() modern_except_state;
+	void RefreshHealthAndMana() modern_except_state;
 
 	const float GetHealth() const modern_except_state;
 	const float GetMaxHealth() const modern_except_state;

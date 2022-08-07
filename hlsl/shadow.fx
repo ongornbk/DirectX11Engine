@@ -54,6 +54,6 @@ float alpha = textureColor[3];
 textureColor[0] = 0.f;
 textureColor[1] = 0.f;
 textureColor[2] = 0.f;
-textureColor[3] = mul(textureColor[3],0.5f);
+textureColor.a = mul(textureColor.a,0.5f);
 return textureColor;
 }

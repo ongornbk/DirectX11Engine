@@ -10,6 +10,7 @@
 #include "LuaPointer.h"
 #include "Sorting.h"
 #include "UnitGroup.h"
+#include "RegionLua.h"
 #include "ActionRemoveObject.h"
 #include "ActionSetInterfaceText.h"
 #include "InterfaceButtonBehavior.h"
@@ -424,10 +425,10 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
-		if (unit)
+		class ColorFilter* const filter = (class ColorFilter* const)lua_tointeger(state, 1);
+		if (filter)
 		{
-			unit->SetColorFilter(LUA_FLOAT(state, 2), LUA_FLOAT(state, 3), LUA_FLOAT(state, 4), LUA_FLOAT(state, 5));
+			filter->SetColorFilter(LUA_FLOAT(state, 2), LUA_FLOAT(state, 3), LUA_FLOAT(state, 4), LUA_FLOAT(state, 5));
 		}
 		return 0;
 	}
@@ -585,6 +586,24 @@ namespace lua_callback
 	{
 		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_killingUnit.get();
 		lua_pushinteger(state, (lua_Integer)unit);
+		return 1;
+	}
+
+	static int32_t GetDyingUnit(
+		struct lua_State* const state
+	) modern_except_state
+	{
+		MSVC_VOLATILE class Unit* const unit = (class Unit*)m_global->m_dyingUnit.get();
+		lua_pushinteger(state, (lua_Integer)unit);
+		return 1;
+	}
+
+	static int32_t GetMatchingObject(
+		struct lua_State* const state
+	) modern_except_state
+	{
+		MSVC_VOLATILE class EObject* const object = (class EObject*)m_global->m_matchingObject.get();
+		lua_pushinteger(state, (lua_Integer)object);
 		return 1;
 	}
 
@@ -1691,6 +1710,7 @@ namespace lua_callback
 		if (!strcmp(path.c_str(), "mainmenu"))
 		{
 			Engine::GetEngine()->SetGameComponent(new class MainMenu());
+			m_renderer->SetState(0ll);
 		}
 
 		else
@@ -1698,6 +1718,7 @@ namespace lua_callback
 		if (!strcmp(path.c_str(), "loc1"))
 		{
 			Engine::GetEngine()->SetGameComponent(new class GameScene());
+			m_renderer->SetState(1ll);
 		}
 
 		return 0;
@@ -1723,7 +1744,7 @@ namespace lua_callback
 		struct lua_State* const state
 	)
 	{
-		class Region* const region = (class Region* const)lua_tointeger(state, 1);
+		class RegionLua* const region = (class RegionLua* const)lua_tointeger(state, 1);
 		lua_Integer bindc = lua_tointeger(state, 2);
 		switch (bindc)
 		{
@@ -1792,7 +1813,7 @@ namespace lua_callback
 		const float region1_x = LUA_FLOAT(state, 3);
 		const float region1_y = LUA_FLOAT(state, 4);
 
-		class Region* const region = new class Region(region0_x, region0_y, region1_x, region1_y);
+		class Region* const region = new class RegionLua(region0_x, region0_y, region1_x, region1_y);
 		lua_pushinteger(state, (lua_Integer)new modern_handle(region->GetHandle()));
 
 		return 1;
@@ -1910,6 +1931,8 @@ namespace lua_callback
 		lua_register(m_lua, "PickLastCreatedUnit", lua_callback::PickLastCreatedUnit);
 		lua_register(m_lua, "GetLastSelectedUnit", lua_callback::GetLastSelectedUnit);
 		lua_register(m_lua, "GetKillingUnit", lua_callback::GetKillingUnit);
+		lua_register(m_lua, "GetDyingUnit", lua_callback::GetDyingUnit);
+		lua_register(m_lua, "GetMatchingObject", lua_callback::GetMatchingObject);
 		lua_register(m_lua,"GiveTaskGotoPoint", lua_callback::GiveTaskGotoPoint);//@@
 		lua_register(m_lua,"SetTaskGotoPoint", lua_callback::SetTaskGotoPoint);//@@
 		lua_register(m_lua, "SetTaskAttack", lua_callback::SetTaskAttack);//@@

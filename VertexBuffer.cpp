@@ -487,7 +487,7 @@ bool VertexBuffer::InitializePart(
 	memcpy(indices, t_indices6, sizeof(uint32_t) * 6ull);
 
 	float halfSizex = size[0] / 2.0f;
-	float halfSizey = size[1] / 1.0f;
+	float halfSizey = size[1] / 2.0f;
 
 	float width = coords[0];
 	float height = coords[1];

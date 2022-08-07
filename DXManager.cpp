@@ -1,5 +1,6 @@
 #include "DXManager.h"
 #include "gdef.h"
+#include "IPP.h"
 
 
 DXManager::DXManager(void)
@@ -113,7 +114,7 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 			return false;
 	}
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 		if (FAILED(result))
 		{
 			return false;
@@ -121,7 +122,7 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 		//if (numModes > (sizeof(unsigned int) * 56))numModes = (sizeof(unsigned int) * 56);
 		displayModeList = new DXGI_MODE_DESC[numModes];
 
-		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,displayModeList);
 		if (FAILED(result))
 		{
 			return true;
@@ -154,6 +155,9 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 		m_videoCardMemory = ( int32)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 		error = wcstombs_s(&stringLength,m_videoCardDescription ,128,adapterDesc.Description, 128);
 
+		ipp::Console::Println(L"Video Card : ", m_videoCardDescription);
+		ipp::Console::Println(L"Video Card Memory : ", m_videoCardMemory);
+
 		if (error != 0)
 		{
 			return false;
@@ -182,7 +186,6 @@ bool DXManager::Initialize( int32 screenWidth,  int32 screenHeight,bool fullscre
 			(void)factory->Release();
 			factory = NULL;
 		}
-
 
 		if (!InitializeSwapChain(hwnd, fullscreen, screenWidth, screenHeight, numerator, denominator))
 		{
@@ -328,7 +331,7 @@ bool DXManager::InitializeSwapChain(HWND hwnd, bool fullscreen,  int32 screenWid
 	swapChainDesc.BufferDesc.Width = screenWidth;
 	swapChainDesc.BufferDesc.Height = screenHeight;
 
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 
 	if (vsync_enabled)
 	{
@@ -407,7 +410,7 @@ bool DXManager::InitializeStencilView()
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 	result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
@@ -461,14 +464,14 @@ bool DXManager::InitializeRasterizerState()
 	struct D3D11_RASTERIZER_DESC rasterDesc;
 	HRESULT result;
 
-	rasterDesc.AntialiasedLineEnable = false;
+	rasterDesc.AntialiasedLineEnable = true;
 	rasterDesc.CullMode = D3D11_CULL_BACK;
 	rasterDesc.DepthBias = 0;
 	rasterDesc.DepthBiasClamp = 0.0f;
 	rasterDesc.DepthClipEnable = false;
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
 	rasterDesc.FrontCounterClockwise = false;
-	rasterDesc.MultisampleEnable = false;
+	rasterDesc.MultisampleEnable = true;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 

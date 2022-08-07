@@ -4,7 +4,7 @@ modern_framelock::modern_framelock(const double lock) :
 m_lock(1.0 / lock),
 m_time(0.0),
 m_deltaTime(0.0),
-m_state(0ll)
+m_state(modern_false)
 {
 }
 
@@ -19,12 +19,12 @@ const modern_Boolean modern_framelock::Run() modern_except_state
 	{
 		m_deltaTime = m_time;
 		m_time = 0.0;
-		m_state = 1ll;
-		return 1ll;
+		m_state = modern_true;
+		return modern_true;
 	}
 	m_deltaTime = 0.0;
-	m_state = 0ll;
-	return 0ll;
+	m_state = modern_false;
+	return modern_false;
 }
 
 const modern_Boolean modern_framelock::State() const modern_except_state

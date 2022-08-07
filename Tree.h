@@ -4,7 +4,7 @@
 #include "Global.h"
 #include "RenderHandle.h"
 #include "ColorFilter.h"
-#include "Region.h"
+#include "RegionC.h"
 
 class Tree : public EObject, public ColorFilter
 {

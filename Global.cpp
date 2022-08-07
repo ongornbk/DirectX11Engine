@@ -51,5 +51,7 @@ void Global::release()
 	m_matchingObject.release();
 	m_lastCreatedRenderContainer.release();
 	m_lastPickedUnit.release();
+	m_castingUnit.release();
+	m_levelingUnit.release();
 }
 

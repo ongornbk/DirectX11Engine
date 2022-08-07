@@ -129,35 +129,6 @@ volatile modern_handle& Region::GetHandle() volatile
 	return m_object;
 }
 
-void Region::Bind(std::string enters, std::string leaves)
-{
-	m_eventEntersBindStatus++;
-	m_eventLeavesBindStatus++;
-	m_eventEnters = enters;
-	m_eventLeaves = leaves;
-	//GiveName("reg 0");
-}
-
-void Region::BindEnters(std::string enters)
-{
-	m_eventEntersBindStatus++;
-	m_eventEnters = enters;
-}
-
-void Region::BindLeaves(std::string leaves)
-{
-	m_eventLeavesBindStatus++;
-	m_eventLeaves = leaves;
-}
-
-void Region::Unbind()
-{
-	m_eventEntersBindStatus = modern_false;
-	m_eventLeavesBindStatus = modern_false;
-	m_eventEnters.clear();
-	m_eventLeaves.clear();
-}
-
 void Region::GiveName(std::string name)
 {
 
@@ -196,6 +167,16 @@ void Region::GiveName(std::string name)
 	}
 }
 
+const enum DirectX::ContainmentType Region::Contains(EObject* const object) const
+{
+	return m_rect.Contains(object->m_boundingSphere);
+}
+
+const bool Region::Intersects(EObject* const object) const
+{
+	return m_rect.Intersects(object->m_boundingSphere);
+}
+
 const DirectX::XMFLOAT3& Region::GetPosition() const modern_except_state
 {
 	return m_rect.Center;
@@ -204,12 +185,4 @@ const DirectX::XMFLOAT3& Region::GetPosition() const modern_except_state
 const RenderLayerType Region::GetRenderLayer() const modern_except_state
 {
 	return RenderLayerType::ENUM_OBJECT_TYPE;
-}
-
-void Region::Enters(const modern_handle& object)
-{
-}
-
-void Region::Leaves(const modern_handle& object)
-{
 }

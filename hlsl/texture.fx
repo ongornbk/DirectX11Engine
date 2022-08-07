@@ -12,7 +12,7 @@ matrix projectionMatrix;
 
 cbuffer ColorBuffer : register(b1)
 {
-float4 color;
+float4 colorVector;
 };
 
 
@@ -48,5 +48,9 @@ float4 PSMain(PixelInputType input) : SV_TARGET
 float4 textureColor;
 textureColor = shaderTexture.Sample(SampleType,input.tex);
 
-return mul(0.85f,textureColor);
+textureColor[0] *= colorVector[0];
+textureColor[1] *= colorVector[1];
+textureColor[2] *= colorVector[2];
+
+return textureColor;
 }

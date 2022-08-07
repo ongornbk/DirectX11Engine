@@ -1,11 +1,5 @@
-#pragma once
-#include "modern_def.h"
-#include "modern_array.h"
-#include "modern_string.h"
-#include "modern_handle.h"
-
 /*
-Copyright(C) < 02.06.2020 > ongornbk@gmail.com
+Copyright(C) < 08.02.2022 > ongornbk@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this softwareand associated documentation files(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and /or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions :
 
@@ -18,21 +12,24 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
-struct modern_class
+#pragma once
+#include "modern_def.h"
+#include "modern_memory.h"
+#include "modern_exception.h"
+#include "modern_string.h"
+#include "modern_file_permits.h"
+
+//#define MODERN_FILE_DEBUG
+#ifdef MODERN_FILE_DEBUG
+#define modern_file_assert(condition) assert(condition)
+#else
+#define modern_file_assert(condition)
+#endif MODERN_FILE_DEBUG
+
+class modern_file
 {
-	mutable std::atomic<int64_t> m_lock;
-
-	virtual ~modern_class();
-
-	friend class modern_class_view;
-protected:
-	modern_handle m_object;
-
-	modern_class();
-	modern_class(struct modern_class& modern) = delete;
-
-#define this_handle m_object
-
+	FILE*   m_data;
+public:
+	modern_file(class modern_string& name, const enum class modern_file_permits permits = modern_file_permits::MODERN_FILE_PERMITS_READ);
+	~modern_file();
 };
-
-typedef struct modern_class* const modern_classp;

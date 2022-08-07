@@ -9,6 +9,7 @@ struct Attack
 
 	float range;
 	mutable bool active;
+	mutable bool delay;
 	float m_attackDelay;
 
 	enum class AttackType m_atype;

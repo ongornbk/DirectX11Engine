@@ -405,3 +405,8 @@ DirectX::XMFLOAT3 Interface::GetVector() modern_except_state
 {
 	return { 0.f,0.f,0.f };
 }
+
+void Interface::Show(const modern_Boolean value) modern_except_state
+{
+	m_flags.m_rendering = (bool)(value);
+}

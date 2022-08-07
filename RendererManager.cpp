@@ -19,6 +19,7 @@
 #include "ActionWaitUntil.h"
 #include "ActionInitializeText.h"
 #include "ActionTranslateText.h"
+#include "ActionShowInterface.h"
 #include "ConditionFactory.h"
 #include "modern/modern_cstring.h"
 #include "Options.h"
@@ -62,6 +63,7 @@ void _cdecl EditFrame()
 	m_editMode.store(1, std::memory_order::memory_order_seq_cst);
 }
 
+//EXECUTED AFTER LUA::ENGINE_INITIALIZATION
 RendererManager::RendererManager(
 	class Engine* const engine,
 	class Shader* const units,
@@ -88,10 +90,11 @@ RendererManager::RendererManager(
 
 	
 	
-	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE,this);
+	
 	m_map = new TileMap(1.0f,1.0f,0.2f,true);
 	m_map->Initialize();
 	TileMap::SetCurrentTileMap(m_map);
+	Tile::SetGlobals(Engine::GetEngine()->GetGraphics()->GetDevice(), GETSHADER "tile.fx" CLOSE, GETSHADER "blendtile.fx" CLOSE, this);
 	Tile::SetDeviceContext(Engine::GetEngine()->GetGraphics()->GetDeviceContext());
 	m_ui = new UserInterface();
 	m_rangeX = ((float)(Settings::GetResolutionX()) / 2.0f) + 300.0f;
@@ -116,6 +119,16 @@ RendererManager::RendererManager(
 
 
 	class ActionExecuteActionArray* const marray = new ActionExecuteActionArray();
+
+	marray->push(new ActionInitializeInterface(
+		m_damage, engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_interfaceShader,
+		class  modern_string(L"damage"),
+		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
+		struct DirectX::XMFLOAT2(1920.f, 1080.f),
+		ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER
+	));
 
 	marray->push(new ActionInitializeText(
 		m_fpsText,
@@ -217,6 +230,11 @@ RendererManager::RendererManager(
 		new InterfaceStatusBarBehavior((class Interface* const)m_healthGlobe.get())
 	));
 
+	marray->push(new ActionShowInterface(
+		m_healthGlobe,
+		modern_false
+	));
+
 	marray->push(new ActionInitializeInterface(
 		m_manaGlobe, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
@@ -237,6 +255,11 @@ RendererManager::RendererManager(
 		new InterfaceStatusBarBehavior((class Interface* const)m_manaGlobe.get())
 	));
 
+	marray->push(new ActionShowInterface(
+		m_manaGlobe,
+		modern_false
+	));
+
 	marray->push(new ActionInitializeInterface(
 		m_exp, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
@@ -255,6 +278,11 @@ RendererManager::RendererManager(
 	marray->push(new ActionSetInterfaceBehavior(
 		m_exp,
 		new InterfaceStatusBarBehavior((class Interface* const)m_exp.get())
+	));
+
+	marray->push(new ActionShowInterface(
+		m_exp,
+		modern_false
 	));
 
 	marray->push(new ActionInitializeInterface(
@@ -320,6 +348,11 @@ RendererManager::RendererManager(
 	marray->push(new ActionSetInterfaceOffset(
 		m_gameUI,
 		struct DirectX::XMFLOAT3(0.f, -460.f, 0.f)
+	));
+
+	marray->push(new ActionShowInterface(
+		m_gameUI,
+		modern_false
 	));
 	
 
@@ -505,6 +538,14 @@ void RendererManager::Render(
 	case UserInterfaceState::ENUM_USERINTERFACE_GAME:
 	{
 		{
+			class Interface* const A = (class Interface*)m_damage.get();
+			if (A)
+			{
+				modern_guard g(A);
+			//	A->Render(deviceContext, viewMatrix, interfaceMatrix, pck);
+			}
+		}
+		{
 			class Interface* const A = (class Interface*)m_exp.get();
 			if (A)
 			{
@@ -678,6 +719,15 @@ void RendererManager::Render(
 		{
 			{
 				class Interface* const A = (class Interface*)m_gameUI.get();
+				if (A)
+				{
+					modern_guard g(A);
+					A->SetPosition(m_cameraPosition);
+					A->Update(dt);
+				}
+			}
+			{
+				class Interface* const A = (class Interface*)m_damage.get();
 				if (A)
 				{
 					modern_guard g(A);
@@ -890,7 +940,7 @@ void RendererManager::Render(
 			//EventManager::GetInstance()->PostSort();
 
 //#pragma omp critical
-			Focus((class EObject* const)m_focus.get(), ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
+			//Focus((class EObject* const)m_focus.get(), ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 
 			
 
@@ -934,7 +984,7 @@ void RendererManager::Render(
 				{
 					modern_guard g(unith);
 					unith->Select();
-					Focus(unith, ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
+					//Focus(unith, ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT);
 					m_selectGroup.push_back(modern_handle(unith->GetHandle()));
 				}
 			}
@@ -1059,7 +1109,6 @@ void RendererManager::Focus(EObject* const object,const enum class ObjectFocusTy
 					ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER),
 					ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(object), new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
 				)));
-				action->push(new ActionWaitUntil(nullptr));
 				action->push(new ActionSetShadowCast(tree, true));
 				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
 				action->push(new ActionTreeSetStance(tree, 0));
@@ -1161,6 +1210,75 @@ void RendererManager::EnableCollision(const bool collision)
 	m_collision = collision;
 }
 
+void RendererManager::SetState(const int64_t state) modern_except_state
+{
+	if (m_state == state) return;
+
+	class ActionExecuteActionArray* const marray = new ActionExecuteActionArray();
+
+	switch (state)
+	{
+	case 0:
+	{
+		switch (m_state)
+		{
+		case 1:
+		{
+			marray->push(new ActionShowInterface(
+				m_gameUI,
+				modern_false
+			));
+			marray->push(new ActionShowInterface(
+				m_exp,
+				modern_false
+			));
+			marray->push(new ActionShowInterface(
+				m_healthGlobe,
+				modern_false
+			));
+			marray->push(new ActionShowInterface(
+				m_manaGlobe,
+				modern_false
+			));
+			break;
+		}
+		}
+		break;
+	}
+	case 1:
+	{
+		switch (m_state)
+		{
+		case 0:
+		{
+			marray->push(new ActionShowInterface(
+				m_gameUI,
+				modern_true
+			));
+			marray->push(new ActionShowInterface(
+				m_exp,
+				modern_true
+			));
+			marray->push(new ActionShowInterface(
+				m_healthGlobe,
+				modern_true
+			));
+			marray->push(new ActionShowInterface(
+				m_manaGlobe,
+				modern_true
+			));
+			break;
+		}
+		}
+		break;
+	}
+	}
+
+
+	m_state = state;
+	Timer::CreateInstantTimer(marray);
+}
+
 void RendererManager::Clear()
 {
 	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
@@ -1192,6 +1310,16 @@ Interface* const RendererManager::GetHealthBarMini()
 Interface* const RendererManager::GetHealthBarMiniBorder()
 {
 	return (class Interface* const)m_healthBarBorder.get();
+}
+
+modern_handle& RendererManager::GetCursorAgentHandle()
+{
+	return m_cursorAgent;
+}
+
+modern_handle& RendererManager::GetFocusAgentHandle()
+{
+	return m_focus;
 }
 
 std::stack<class Unit*> _vectorcall RendererManager::GetUnitsInRange(

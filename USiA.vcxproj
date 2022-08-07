@@ -222,12 +222,14 @@
     <ClInclude Include="ActionPushObject.h" />
     <ClInclude Include="ActionPushTimer.h" />
     <ClInclude Include="ActionRemoveObject.h" />
+    <ClInclude Include="ActionResetAttackDelay.h" />
     <ClInclude Include="ActionSetCellMultiplier.h" />
     <ClInclude Include="ActionSetInterfaceBehavior.h" />
     <ClInclude Include="ActionSetInterfaceOffset.h" />
     <ClInclude Include="ActionSetInterfaceText.h" />
     <ClInclude Include="ActionSetShadowCast.h" />
     <ClInclude Include="ActionSetTextAlignment.h" />
+    <ClInclude Include="ActionShowInterface.h" />
     <ClInclude Include="ActionSkipRemainingActions.h" />
     <ClInclude Include="ActionStance.h" />
     <ClInclude Include="ActionTranslateText.h" />
@@ -248,6 +250,7 @@
     <ClInclude Include="BooleanConditionNotEquals.h" />
     <ClInclude Include="BooleanOperatorType.h" />
     <ClInclude Include="BooleanVariableIsKeyDown.h" />
+    <ClInclude Include="BooleanVariableObjectIntersectsWithRegion.h" />
     <ClInclude Include="BooleanVariableObjectIsSelected.h" />
     <ClInclude Include="BooleanVariableUnitIsAlive.h" />
     <ClInclude Include="BooleanVariableUnitIsAttacking.h" />
@@ -268,6 +271,7 @@
     <ClInclude Include="ConstIntegerVariable.h" />
     <ClInclude Include="ConstObjectVariable.h" />
     <ClInclude Include="CPU.h" />
+    <ClInclude Include="CScripts.h" />
     <ClInclude Include="DDSTextureLoader11.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteAction.h" />
@@ -317,6 +321,7 @@
     <ClInclude Include="IActionCondition.h" />
     <ClInclude Include="IActionSplitArrayBehavior.h" />
     <ClInclude Include="IActionTimer.h" />
+    <ClInclude Include="IAttackOwner.h" />
     <ClInclude Include="IBidirectionalElement.h" />
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="IBindableBehavior.h" />
@@ -376,6 +381,8 @@
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_element.h" />
     <ClInclude Include="modern\modern_exception.h" />
+    <ClInclude Include="modern\modern_file.h" />
+    <ClInclude Include="modern\modern_file_permits.h" />
     <ClInclude Include="modern\modern_framelock.h" />
     <ClInclude Include="modern\modern_guard.h" />
     <ClInclude Include="modern\modern_guard_status.h" />
@@ -417,6 +424,7 @@
     <ClInclude Include="OrCondition.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PeriodicTimer.h" />
+    <ClInclude Include="PermanentFuzzyTimer.h" />
     <ClInclude Include="PlatformHelper.h" />
     <ClInclude Include="PointerParameter.h" />
     <ClInclude Include="PositionC.h" />
@@ -429,7 +437,10 @@
     <ClInclude Include="Region.h" />
     <ClInclude Include="RegionAgent.h" />
     <ClInclude Include="RegionAgentMaster.h" />
+    <ClInclude Include="RegionC.h" />
+    <ClInclude Include="RegionLua.h" />
     <ClInclude Include="RegionPointObject.h" />
+    <ClInclude Include="RegionType.h" />
     <ClInclude Include="RenderAgent.h" />
     <ClInclude Include="RenderAgentParent.h" />
     <ClInclude Include="RenderContainer.h" />
@@ -518,12 +529,14 @@
     <ClCompile Include="ActionPushObject.cpp" />
     <ClCompile Include="ActionPushTimer.cpp" />
     <ClCompile Include="ActionRemoveObject.cpp" />
+    <ClCompile Include="ActionResetAttackDelay.cpp" />
     <ClCompile Include="ActionSetCellMultiplier.cpp" />
     <ClCompile Include="ActionSetInterfaceBehavior.cpp" />
     <ClCompile Include="ActionSetInterfaceOffset.cpp" />
     <ClCompile Include="ActionSetInterfaceText.cpp" />
     <ClCompile Include="ActionSetShadowCast.cpp" />
     <ClCompile Include="ActionSetTextAlignment.cpp" />
+    <ClCompile Include="ActionShowInterface.cpp" />
     <ClCompile Include="ActionSkipRemainingActions.cpp" />
     <ClCompile Include="ActionTranslateText.cpp" />
     <ClCompile Include="ActionTreeSetStance.cpp" />
@@ -539,6 +552,7 @@
     <ClCompile Include="BooleanConditionEquals.cpp" />
     <ClCompile Include="BooleanConditionNotEquals.cpp" />
     <ClCompile Include="BooleanVariableIsKeyDown.cpp" />
+    <ClCompile Include="BooleanVariableObjectIntersectsWithRegion.cpp" />
     <ClCompile Include="BooleanVariableObjectIsSelected.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAlive.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAttacking.cpp" />
@@ -553,6 +567,7 @@
     <ClCompile Include="ConstIntegerVariable.cpp" />
     <ClCompile Include="ConstObjectVariable.cpp" />
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="CScripts.cpp" />
     <ClCompile Include="DDSTextureLoader11.cpp" />
     <ClCompile Include="DeleteAction.cpp" />
     <ClCompile Include="DeleteArrayTrash.cpp" />
@@ -646,6 +661,7 @@
     <ClCompile Include="modern\modern_class.cpp" />
     <ClCompile Include="modern\modern_class_view.cpp" />
     <ClCompile Include="modern\modern_cstring.cpp" />
+    <ClCompile Include="modern\modern_file.cpp" />
     <ClCompile Include="modern\modern_framelock.cpp" />
     <ClCompile Include="modern\modern_guard.cpp" />
     <ClCompile Include="modern\modern_handle.cpp" />
@@ -663,6 +679,7 @@
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="OrCondition.cpp" />
     <ClCompile Include="PeriodicTimer.cpp" />
+    <ClCompile Include="PermanentFuzzyTimer.cpp" />
     <ClCompile Include="PointerParameter.cpp" />
     <ClCompile Include="PositionC.cpp" />
     <ClCompile Include="Projectile.cpp" />
@@ -674,6 +691,8 @@
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RegionAgent.cpp" />
     <ClCompile Include="RegionAgentMaster.cpp" />
+    <ClCompile Include="RegionC.cpp" />
+    <ClCompile Include="RegionLua.cpp" />
     <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderAgent.cpp" />
     <ClCompile Include="RenderAgentParent.cpp" />
@@ -803,6 +822,17 @@
   <ItemGroup>
     <Image Include="x64\Release\content\Textures\gui\button.png" />
     <Image Include="x64\Release\content\Textures\system\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Release\bin\shaders\blendtile.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VSMain</EntryPointName>
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Release\bin\shaders\text.fx">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

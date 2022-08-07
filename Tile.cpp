@@ -42,16 +42,17 @@ struct TileType
 
 	namespace
 	{
-		static float        m_cellMultiplier = 1.f;
+		static float                             m_cellMultiplier = 1.f;
+		static modern_array<class INoBlendTile*> m_noblends;
 	}
 
 	namespace tile
 	{
 
 static float CELL_WIDTH           = 160.0f;
-static float CELL_HALF_WIDTH      = 80.0f;
+static float CELL_HALF_WIDTH      = CELL_WIDTH / 2.f;
 static float CELL_HEIGHT          = 80.0f;
-static float CELL_HALF_HEIGHT     = 40.0f;
+static float CELL_HALF_HEIGHT     = CELL_HEIGHT / 2.f;
 static int   CAMERA_TILE_VIEW     = 14;
 static int   CAMERA_RENDER_CUT    = 1;
 static int   CAMERA_TILE_CUT      = CAMERA_TILE_VIEW - CAMERA_RENDER_CUT;
@@ -62,7 +63,17 @@ static int32_t tilesub[32] ={
 	3,//ROCK
 	3,//LEAVES
 	3,//PAVING
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	28,//BARRACKS
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+static bool tileblendstate[32] = {
+	true,//GRASS
+	true,//DIRT
+	true,//ROCK
+	true,//LEAVES
+	true,//PAVING
+	false,//BARRACKS
+	false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 };
 
 	}
@@ -99,8 +110,8 @@ static int32_t tilesub[32] ={
 	) modern_except_state
 	{
 		struct DirectX::XMINT2 _indexes = {
-		TILE_MAP_HALF_SIZE_INT32 - (int32)(floats.x / tile::CELL_WIDTH) - (int32)(floats.y / tile::CELL_HEIGHT),
-			TILE_MAP_HALF_SIZE_INT32 + (int32)(floats.x / tile::CELL_WIDTH) - (int32)(floats.y / tile::CELL_HEIGHT)
+		(INT32)(TILE_MAP_HALF_SIZE_FLOAT - (floats.x / tile::CELL_WIDTH) - (floats.y / tile::CELL_HEIGHT)),
+		(INT32)(TILE_MAP_HALF_SIZE_FLOAT + (floats.x / tile::CELL_WIDTH) - (floats.y / tile::CELL_HEIGHT))
 		};
 		ipp::math::SquashInt32Array(_indexes,0, TILE_MAP_RANGE);
 		return _indexes;
@@ -124,6 +135,7 @@ namespace
 {
 	static struct ID3D11Device*        m_device;
 	static class Shader*               m_tileShader;
+	static class Shader*               m_blendTileShader;
 	static class modern_array<VertexBuffer*> m_vertexBuffer[32];
 	static class VertexBuffer*         m_animatedVertexBuffer;
 	static class Texture*              m_texture[32];
@@ -150,6 +162,7 @@ SimpleTile::SimpleTile(
 	m_info.m_index.y = iy;
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(x,y, CELL_ZERO_Z));
 m_collision = false;
+m_blendType = false;
 }
 
 SimpleTile::SimpleTile(
@@ -162,7 +175,8 @@ SimpleTile::SimpleTile(
 	m_info.m_index.x = index[0];
 	m_info.m_index.y = index[1];
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
-	m_collision = false;
+	m_collision = false; 
+	m_blendType = false;
 }
 
 SimpleTile::SimpleTile(
@@ -173,6 +187,7 @@ SimpleTile::SimpleTile(
 	m_info.m_index = info.m_index;
 	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(m_info.m_position.x, m_info.m_position.y, CELL_ZERO_Z));
 	m_collision = false;
+	m_blendType = false;
 }
 
 
@@ -183,7 +198,8 @@ SimpleTile::~SimpleTile()
 
 void Tile::SetGlobals(
 	struct ID3D11Device* const device,
-	class Shader * const shader,
+	class Shader* const tile_shader,
+	class Shader* const blend_tile_shader,
 	class RendererManager* const renderer
 )
 {
@@ -236,7 +252,8 @@ void Tile::SetGlobals(
 	//	{
 		//	m_tile[i][j].tile_type = 0u;
 	//	}
-	m_tileShader = shader;
+	m_tileShader = tile_shader;
+	m_blendTileShader = blend_tile_shader;
 	m_device = device;
 	
 	for (int32 i = 0; i < 32; i++)
@@ -245,16 +262,25 @@ void Tile::SetGlobals(
 		const int32 indexr = indexl + 1;
 		for (int32 j = 0; j < indexr; j++)
 		{
-			
-			VertexBuffer* const buffer = new VertexBuffer();
-			float coords[6] = { indexr * m_size[0],m_size[1],j * m_size[0],0,(j + 1) * m_size[0],m_size[1] };
-			buffer->InitializePart(device, shader, m_size,coords, true);
-			m_vertexBuffer[i].push_back(buffer);
+			if (m_noblends[i])
+			{
+				VertexBuffer* const buffer = new VertexBuffer();
+				float coords[6] = { indexr * m_size[0],m_size[1],j * m_size[0],0,(j + 1) * m_size[0],m_size[1] };
+				buffer->InitializePart(device, tile_shader, m_size, coords, true);
+				m_vertexBuffer[i].push_back(buffer);
+			}
+			else
+			{
+				VertexBuffer* const buffer = new VertexBuffer();
+				float coords[6] = { indexr * m_size[0],m_size[1],j * m_size[0],0,(j + 1) * m_size[0],m_size[1] };
+				buffer->InitializePart(device, blend_tile_shader, m_size, coords, true);
+				m_vertexBuffer[i].push_back(buffer);
+			}
 		}
 	}
 	
 	m_animatedVertexBuffer = new class VertexBuffer();
-	(void)m_animatedVertexBuffer->Initialize(device, shader, m_size, true);
+	(void)m_animatedVertexBuffer->Initialize(device, blend_tile_shader, m_size, true);
 
 	m_texture[0] = ResourceManager::GetInstance()->GetTextureByName("grass");
 	m_texture[1] = ResourceManager::GetInstance()->GetTextureByName("dirt");
@@ -271,7 +297,7 @@ void Tile::SetGlobals(
 
 	
 	m_texture[4] = ResourceManager::GetInstance()->GetTextureByName("paving");
-	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("paving2");
+	m_texture[5] = ResourceManager::GetInstance()->GetTextureByName("barracks");
 	//m_texture[6][0] = ResourceManager::GetInstance()->GetTextureByName("dust");
 	//m_texture[7][0] = ResourceManager::GetInstance()->GetTextureByName("water");
 	//m_texture[8][0] = ResourceManager::GetInstance()->GetTextureByName("sand0");
@@ -289,6 +315,7 @@ void Tile::SetVolatileGlobals(const struct DirectX::XMFLOAT4X4& viewMatrix,const
 	m_projectionMatrix = projectionMatrix;
 	current.tile_type = 0u;
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
+	m_blendTileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
 }
 
 
@@ -306,6 +333,17 @@ void SimpleTile::Update(const float dt)
 void SimpleTile::Render()
 {
 
+	//const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
+	//if (current != type)
+	//{
+	//	LoadTexture();
+	//}
+	//m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
+	//m_vertexBuffer[type.tile_type][type.tile_sub]->Render(m_deviceContext);
+   
+}
+void SimpleTile::SecondRender()
+{
 	const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
 	if (current != type)
 	{
@@ -313,7 +351,6 @@ void SimpleTile::Render()
 	}
 	m_tileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
 	m_vertexBuffer[type.tile_type][type.tile_sub]->Render(m_deviceContext);
-
 }
 TileMap::~TileMap()
 {
@@ -353,7 +390,16 @@ void TileMap::Initialize()
 	{
 		for (int32 j = 0; j < TILE_MAP_SIZE; ++j)
 		{
-			map[i][j] = new SimpleTile(offsetx + (tile::CELL_HALF_WIDTH*j), offsety - (tile::CELL_HALF_HEIGHT*j), i, j);
+			if (tile::tileblendstate[m_tile[i][j].tile_type])
+			{
+				map[i][j] = new SimpleBlendTile(offsetx + (tile::CELL_HALF_WIDTH * j), offsety - (tile::CELL_HALF_HEIGHT * j), i, j);
+			}
+			else
+			{
+				class SimpleTile* const tile = new SimpleTile(offsetx + (tile::CELL_HALF_WIDTH * j), offsety - (tile::CELL_HALF_HEIGHT * j), i, j);
+				map[i][j] = tile;
+				m_noblends.push_back(tile);
+			}
 			//map[i][j]->m_type = Tile::Type::TILE;
 
 			//if (m_tile[i][j])
@@ -396,7 +442,7 @@ void _vectorcall TileMap::Render(
 	if (m_rendering)
 	{
 
-		m_tileShader->Begin(deviceContext);
+		m_blendTileShader->Begin(deviceContext);
 
 		//GRAPHICS EnableAlphaBlending(true);
 		struct DirectX::XMFLOAT2 _f = {
@@ -427,6 +473,16 @@ void _vectorcall TileMap::Render(
 
 			}
 		}
+		m_blendTileShader->End(deviceContext);
+		m_tileShader->Begin(deviceContext);
+		//GRAPHICS EnableAlphaBlending(true);
+		for (size_t i = 0ull; i < m_noblends.size(); ++i)
+		{
+			m_noblends[i]->SecondRender();
+		}
+
+
+
 		//GRAPHICS EnableAlphaBlending(false);
 		m_tileShader->End(deviceContext);
 	}
@@ -723,6 +779,11 @@ void AnimatedTile::Update(
 
 void AnimatedTile::Render()
 {
+
+}
+
+void AnimatedTile::SecondRender()
+{
 	if (current.tile_type != m_tile[m_info.m_index.x][m_info.m_index.y].tile_type)
 	{
 		LoadTexture();
@@ -735,4 +796,76 @@ void AnimatedTile::LoadTexture()
 {
 	current = m_tile[m_info.m_index.x][m_info.m_index.y];
 	m_tileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
+}
+
+SimpleBlendTile::SimpleBlendTile(
+	const float x,
+	const float y,
+	const int32 ix,
+	const int32 iy
+)
+{
+	m_info.m_position.x = x;
+	m_info.m_position.y = y;
+	m_info.m_index.x = ix;
+	m_info.m_index.y = iy;
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(x, y, CELL_ZERO_Z));
+	m_collision = false;
+	m_blendType = true;
+}
+
+SimpleBlendTile::SimpleBlendTile(
+	const struct DirectX::XMFLOAT2& position,
+	int32* const index
+)
+{
+	m_info.m_position.x = position.x;
+	m_info.m_position.y = position.y;
+	m_info.m_index.x = index[0];
+	m_info.m_index.y = index[1];
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(position.x, position.y, CELL_ZERO_Z));
+	m_collision = false;
+	m_blendType = true;
+}
+
+SimpleBlendTile::SimpleBlendTile(
+	struct TileInfo& info
+)
+{
+	m_info.m_position = info.m_position;
+	m_info.m_index = info.m_index;
+	DirectX::XMStoreFloat4x4(&m_info.m_world, DirectX::XMMatrixTranslation(m_info.m_position.x, m_info.m_position.y, CELL_ZERO_Z));
+	m_collision = false;
+	m_blendType = true;
+}
+
+SimpleBlendTile::~SimpleBlendTile()
+{
+}
+
+void SimpleBlendTile::SetTexture(Texture* const texture)
+{
+}
+
+void SimpleBlendTile::LoadTexture()
+{
+	current = m_tile[m_info.m_index.x][m_info.m_index.y];
+	m_blendTileShader->SetShaderParameters(m_deviceContext, m_texture[current.tile_type]->GetTexture());
+}
+
+void SimpleBlendTile::Update(const float dt)
+{
+}
+
+void SimpleBlendTile::Render()
+{
+
+	const struct TileType type = m_tile[m_info.m_index.x][m_info.m_index.y];
+	if (current != type)
+	{
+		LoadTexture();
+	}
+	m_blendTileShader->SetShaderParameters(m_deviceContext, m_info.m_world, m_viewMatrix, m_projectionMatrix);
+	m_vertexBuffer[type.tile_type][type.tile_sub]->Render(m_deviceContext);
+
 }
