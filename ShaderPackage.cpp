@@ -3,17 +3,19 @@
 
 
 ShaderPackage::ShaderPackage(
-	ID3D11DeviceContext* const __context,
-	Shader* const __standard,
-	Shader* const __shadow,
-	Shader* const __select,
-	Shader* const __inter
+	struct ID3D11DeviceContext* const __context,
+	class  Shader* const __standard,
+	class  Shader* const __shadow,
+	class  Shader* const __select,
+	class  Shader* const __inter,
+	class  Shader* const __text
 ) :
 	m_context(__context),
 	standard(__standard),
 	shadow(__shadow),
 	select(__select),
-	inter(__inter)
+	inter(__inter),
+	text(__text)
 {
 	//assert(__context && __standard && __shadow && __select && __inter);
 }
@@ -67,7 +69,23 @@ Shader* const ShaderPackage::BeginInterface() const
 	return current;
 }
 
-bool ShaderPackage::SetShaderParameters(ID3D11DeviceContext* const deviceContext, ID3D11ShaderResourceView* const texture, const uint32 index) const
+Shader* const ShaderPackage::BeginText() const
+{
+	if (current)
+		if (current != text)
+			current->End(m_context);
+		else
+			return current;
+	text->Begin(m_context);
+	current = text;
+	return current;
+}
+
+bool ShaderPackage::SetShaderParameters(
+	struct ID3D11DeviceContext* const deviceContext,
+	struct ID3D11ShaderResourceView* const texture,
+	const uint32 index
+) const
 {
 	return current->SetShaderParameters(deviceContext,texture,index);
 }

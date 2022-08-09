@@ -175,6 +175,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADSHADER  L"x64/Release/bin/shaders/shadow.fx"                               END
 	LOADSHADER  L"x64/Release/bin/shaders/select.fx"                               END
 	LOADSHADER  L"x64/Release/bin/shaders/blendtile.fx"                            END
+	LOADSHADER  L"x64/Release/bin/shaders/text.fx"                                 END
 #else
 	LOADSHADER  L"../shaders/texture.fx"                              END
 	LOADSHADER  L"../shaders/tile.fx"                                 END
@@ -189,7 +190,8 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	TextureShader* unitsShader      = GETSHADER "units.fx"                  END
 	TextureShader* shadowsShader    = GETSHADER "shadow.fx"                 END
 	TextureShader* selectShader     = GETSHADER "select.fx"                 END
-	TextureShader* interfaceShader  = GETSHADER "texture.fx"              END
+	TextureShader* interfaceShader  = GETSHADER "texture.fx"                END
+	TextureShader* textShader       = GETSHADER "text.fx"                END
 #pragma endregion
 
 
@@ -203,7 +205,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	
 
-	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader,interfaceShader);
+	m_rendererManager = new RendererManager(this, unitsShader,uiShader,shadowsShader,selectShader,interfaceShader,textShader);
 	lua_callback::SetRendererManager(m_rendererManager);
 
 	

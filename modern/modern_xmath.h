@@ -48,6 +48,13 @@ inline void XM_CALLCONV modern_xfloat3_rotate_deg(
 	const float deg
 );
 
+inline struct DirectX::XMMATRIX XM_CALLCONV modern_xmatrix_translation_and_size(
+	const float OffsetX,
+	const float OffsetY,
+	const float OffsetZ,
+	const float sizeW
+);
+
 inline DirectX::XMFLOAT3 XM_CALLCONV modern_xpolar_projection2(DirectX::XMFLOAT3& source,const float distance,const float angle);
 
 #include "modern_xmath.inl"

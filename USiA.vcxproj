@@ -208,6 +208,7 @@
     <ClInclude Include="ActionErasePack4.h" />
     <ClInclude Include="ActionExecuteAction.h" />
     <ClInclude Include="ActionExecuteActionArray.h" />
+    <ClInclude Include="ActionExecuteCFunction.h" />
     <ClInclude Include="ActionExecuteLuaFunction.h" />
     <ClInclude Include="ActionGlobalSetLeavingObject.h" />
     <ClInclude Include="ActionGoBack.h" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
+    <ClInclude Include="CFunctionVoid.h" />
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="compilation_header.h" />
@@ -326,6 +328,7 @@
     <ClInclude Include="IBidirectionalStruct.h" />
     <ClInclude Include="IBindableBehavior.h" />
     <ClInclude Include="IBooleanVariable.h" />
+    <ClInclude Include="ICFunction.h" />
     <ClInclude Include="ICondition.h" />
     <ClInclude Include="IFloatVariable.h" />
     <ClInclude Include="IIntegerVariable.h" />
@@ -353,6 +356,7 @@
     <ClInclude Include="IScript.h" />
     <ClInclude Include="ISound.h" />
     <ClInclude Include="ITimer.h" />
+    <ClInclude Include="ITimeTimer.h" />
     <ClInclude Include="ITrash.h" />
     <ClInclude Include="ITrigger.h" />
     <ClInclude Include="LetterSprite.h" />
@@ -515,6 +519,7 @@
     <ClCompile Include="ActionErasePack4.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
     <ClCompile Include="ActionExecuteActionArray.cpp" />
+    <ClCompile Include="ActionExecuteCFunction.cpp" />
     <ClCompile Include="ActionExecuteLuaFunction.cpp" />
     <ClCompile Include="ActionGlobalSetLeavingObject.cpp" />
     <ClCompile Include="ActionGoBack.cpp" />
@@ -558,6 +563,7 @@
     <ClCompile Include="BooleanVariableUnitIsAttacking.cpp" />
     <ClCompile Include="BooleanVariableUnitIsDead.cpp" />
     <ClCompile Include="BooleanVariableUnitIsSelected.cpp" />
+    <ClCompile Include="CFunctionVoid.cpp" />
     <ClCompile Include="ConditionFactory.cpp" />
     <ClCompile Include="ConditionTimer.cpp" />
     <ClCompile Include="ConstBooleanVariable.cpp" />
@@ -629,6 +635,7 @@
     <ClCompile Include="IScript.cpp" />
     <ClCompile Include="ISound.cpp" />
     <ClCompile Include="ITimer.cpp" />
+    <ClCompile Include="ITimeTimer.cpp" />
     <ClCompile Include="ITrash.cpp" />
     <ClCompile Include="ITrigger.cpp" />
     <ClCompile Include="LineOfCollision.cpp" />

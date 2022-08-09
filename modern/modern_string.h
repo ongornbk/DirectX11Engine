@@ -57,6 +57,7 @@ public:
 	modern_string& operator= (const wchar_t* string);
 
 	modern_string operator+ (modern_string& string);
+	modern_string& operator<< (modern_string& string);
 
 	[[nodiscard]] const size_t find_last_of(const wchar_t character) const modern_except_state;
 
@@ -66,6 +67,8 @@ public:
 	wchar_t*& data();
 	void resize(size_t size);
 	void load(const char* text);
+
+	const wchar_t at(const size_t index) const modern_except_state;
 
 private:
 

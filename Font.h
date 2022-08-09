@@ -28,7 +28,7 @@ public:
 
 ~TextFont();
 
-void Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Shader* shader);
+void Initialize(struct ID3D11Device* const device,struct ID3D11DeviceContext* const context,class Shader* const shader);
 
 static void LoadFontFromFile(std::string name,float width,float height);
 static TextFont* GetFontByName(std::string name);

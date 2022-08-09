@@ -17,7 +17,8 @@ public:
 	void Initialize(
 		ID3D11Device* device,
 		ID3D11DeviceContext* deviceContext,
-		class Shader* shader,
+		class Shader* const interfaceShader,
+		class Shader* const textShader,
 		WCHAR* paths,
 		const XMFLOAT3 position,
 		const float xsize,
@@ -58,8 +59,8 @@ public:
 	void _vectorcall SetPosition(DirectX::FXMVECTOR& position);
 	class IInterfaceBehavior* const GetBehavior();
 	void PushChild(class EObject* const child);
-	void SetText(std::string text);
-	void SetText(class modern_string& text);
+	void SetText(std::string text, const float size);
+	void SetText(class modern_string& text, const float size);
 	class Interface* const GetParent() const modern_except_state;
 
 	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;

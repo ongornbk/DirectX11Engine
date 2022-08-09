@@ -28,8 +28,8 @@ void c_script_tree_fade_enter(void)
 		//{
 		//	return;
 		//}
-		tree->SetColorFilter(1.f, 1.f, 1.f, 0.15f);
-		//tree->CastShadow(false);
+		tree->SetColorFilter(1.f, 1.f, 1.f, 0.30f);
+		tree->CastShadow(false);
 		//tree->SetStance(1);
 	}
 	//else if(Global::GetInstance()->m_enteringObject.get() == Global::GetInstance()->m_lastSelectedUnit.get())
@@ -63,6 +63,6 @@ void c_script_tree_fade_leave(void)
 	
 		//tree->SetStance(0);
 		tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
-		//tree->CastShadow();
+		tree->CastShadow();
 	}
 }

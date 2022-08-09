@@ -3,15 +3,17 @@
 ActionInitializeInterface::ActionInitializeInterface(
     modern_handle& inter, ID3D11Device* const device,
     ID3D11DeviceContext* const deviceContext,
-    Shader* const shader,
-    modern_string& paths,
+    class Shader* const interface_shader,
+    class Shader* const text_shader,
+    class modern_string& paths,
     const DirectX::XMFLOAT3& position,
     const DirectX::XMFLOAT2& size,
     const enum class ObjectAnchorType anchor
 ) : 
     m_device(device),
     m_deviceContext(deviceContext),
-    m_shader(shader),
+    m_interfaceShader(interface_shader),
+    m_textShader(text_shader),
     m_position(position),
     m_size(size),
     m_paths(paths),
@@ -27,7 +29,7 @@ ActionInitializeInterface::~ActionInitializeInterface()
 
 void ActionInitializeInterface::execute()
 {
-    if (m_device && m_deviceContext && m_shader)
+    if (m_device && m_deviceContext && m_interfaceShader && m_textShader)
     {
         //m_text.make_handle(new Text());
 
@@ -35,7 +37,7 @@ void ActionInitializeInterface::execute()
         if (A)
         {
             modern_guard g(A);
-            A->Initialize(m_device, m_deviceContext, m_shader, m_paths.c_wstr(),m_position, m_size.x,m_size.y,m_anchor);
+            A->Initialize(m_device, m_deviceContext, m_interfaceShader,m_textShader, m_paths.c_wstr(),m_position, m_size.x,m_size.y,m_anchor);//TO BE CONTINUED
             A->m_flags.m_rendering = true;
             //A->SetPosition(DirectX::XMFLOAT3{ 0.f,0.f,0.f });
 

@@ -1,7 +1,10 @@
 #pragma once
-#include "ITimer.h"
+//#include "ITimer.h"
+#include "ITimeTimer.h"
+
 class ExpiringTimer :
-	public ITimer
+	public ITimer,
+	public ITimeTimer
 {
 	friend class Timer;
 
@@ -11,6 +14,10 @@ class ExpiringTimer :
 
 
 	bool update(const float dt) override;
+
+	[[nodiscard]] const float GetRemainingTime() override;
+	[[nodiscard]] const float UpdateRemainingTime(const float dt) override;
+	[[nodiscard]] class ITimer* const GetTimer() override;
 
 public:
 

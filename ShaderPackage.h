@@ -11,6 +11,7 @@ protected:
 			class Shader* shadow;
 			class Shader* select;
 			class Shader* inter;
+			class Shader* text;
 		};
 
 public:
@@ -20,7 +21,8 @@ public:
 		class Shader* const __standard,
 		class Shader* const __shadow,
 		class Shader* const __select,
-		class Shader* const __inter);
+		class Shader* const __inter,
+		class Shader* const __text);
 
 	struct ID3D11DeviceContext* m_context;
 	
@@ -28,6 +30,7 @@ public:
 	class Shader* const BeginStandard() const;
 	class Shader* const BeginSelect() const;
 	class Shader* const BeginInterface() const;
+	class Shader* const BeginText() const;
 
 	bool SetShaderParameters(
 		struct ID3D11DeviceContext* const deviceContext,

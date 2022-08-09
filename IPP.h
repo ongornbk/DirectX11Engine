@@ -82,6 +82,7 @@ namespace ipp
 		void __Println(const class modern_string& str0, const class modern_string& str1, TextColors color);
 		void __Println(const class modern_string& str0, const class modern_string& str1);
 		void __Println(const class modern_string& str0, const class modern_string_view& str1);
+		void __Println(void* const address);
 		void __Print(std::string text,const int32_t value);
 		void __Print(float number);
 		void __Print(int32_t number);
@@ -116,6 +117,7 @@ namespace ipp
 		static void Println(const class modern_string& str0, const class modern_string_view& str1);
 		static void Println(std::string text, const int value);
 		static void Println(float number);
+		static void Println(void* const address);
 		static void Println(uint32_t number);
 		static void Println(uint64_t number);
 		static void Print(std::string text);

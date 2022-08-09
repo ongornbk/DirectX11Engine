@@ -88,6 +88,11 @@ void ipp::Console::Println(float number)
 	GetInstance()->__Println(number);
 }
 
+void ipp::Console::Println(void* const address)
+{
+	GetInstance()->__Println(address);
+}
+
 void ipp::Console::Println(uint32_t number)
 {
 	GetInstance()->__Println(number);
@@ -237,6 +242,11 @@ void ipp::__Console::__Println(const modern_string& str0, const modern_string_vi
 {
 	wprintf(L"%s", str0.c_wstr());
 	wprintf(L"%s\n", str1.c_wstr());
+}
+
+void ipp::__Console::__Println(void* const address)
+{
+	printf("%p\n", address);
 }
 
 void ipp::__Console::__Print(std::string text, const int32_t value)

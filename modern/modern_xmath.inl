@@ -84,3 +84,48 @@ inline DirectX::XMFLOAT3 XM_CALLCONV modern_xpolar_projection2(DirectX::XMFLOAT3
 	float y = source.y + (distance * sinf(angle * modern_degtorad));
 	return DirectX::XMFLOAT3(x, y,source.z);
 }
+
+inline struct DirectX::XMMATRIX XM_CALLCONV modern_xmatrix_translation_and_size
+(
+	const float OffsetX,
+	const float OffsetY,
+	const float OffsetZ,
+	const float sizeW
+)
+{
+#if defined(_XM_NO_INTRINSICS_)
+
+	XMMATRIX M;
+	M.m[0][0] = 1.0f;
+	M.m[0][1] = 0.0f;
+	M.m[0][2] = 0.0f;
+	M.m[0][3] = 0.0f;
+
+	M.m[1][0] = 0.0f;
+	M.m[1][1] = 1.0f;
+	M.m[1][2] = 0.0f;
+	M.m[1][3] = 0.0f;
+
+	M.m[2][0] = 0.0f;
+	M.m[2][1] = 0.0f;
+	M.m[2][2] = 1.0f;
+	M.m[2][3] = 0.0f;
+
+	M.m[3][0] = OffsetX;
+	M.m[3][1] = OffsetY;
+	M.m[3][2] = OffsetZ;
+	M.m[3][3] = sizeW;
+	return M;
+
+#elif defined(_XM_SSE_INTRINSICS_) || defined(_XM_ARM_NEON_INTRINSICS_)
+	{
+		struct DirectX::XMMATRIX M;
+		M.r[0] = DirectX::g_XMIdentityR0.v;
+		M.r[1] = DirectX::g_XMIdentityR1.v;
+		M.r[2] = DirectX::g_XMIdentityR2.v;
+		M.r[3] = DirectX::XMVectorSet(OffsetX * sizeW, OffsetY * sizeW, OffsetZ * sizeW, sizeW);
+		return M;
+	}
+	
+#endif
+}

@@ -21,7 +21,7 @@ protected:
 	modern_handle pointA;
 	modern_handle pointB;
 	modern_handle m_renderAgent;
-	std::set<modern_handle> m_objects;
+	std::set<modern_handle*,modern_handle_less> m_objects;
 	BoundingBox              m_rect;
 
 	Text* m_text = nullptr;

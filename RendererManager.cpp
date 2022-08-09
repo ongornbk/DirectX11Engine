@@ -70,7 +70,8 @@ RendererManager::RendererManager(
 	class Shader* const ui,
 	class Shader* const shadow,
 	class Shader* const select,
-	class Shader* const inter
+	class Shader* const inter,
+	class Shader* const text
 ) :
 	m_engine(engine),
 	m_unitsShader(units),
@@ -78,6 +79,7 @@ RendererManager::RendererManager(
 	m_shadowShader(shadow),
 	m_selectShader(select),
 	m_interfaceShader(inter),
+	m_textShader(text),
 	m_collision(false),
 	//m_fpsText(nullptr),
 	//m_objectsText(nullptr),
@@ -87,6 +89,8 @@ RendererManager::RendererManager(
 	m_instance = this;
 	new Options();
 	m_activeOptions.make_handle(Options::GetInstance());
+
+	Timer::Initialize();
 
 	
 	
@@ -111,7 +115,7 @@ RendererManager::RendererManager(
 	LetterSprite::SetMatrixIdentity(DirectX::XMMatrixIdentity());
 
 	m_font = TextFont::GetFontByName("ExocetLight");
-	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_interfaceShader);
+	m_font->Initialize(engine->GetGraphics()->GetDevice(), engine->GetGraphics()->GetDeviceContext(),m_textShader);
 
 	class Agent* const agent_cursor = new class Agent();
 	agent_cursor->Initialize(struct DirectX::XMFLOAT3(0.f, 0.f, 0.f));
@@ -124,6 +128,7 @@ RendererManager::RendererManager(
 		m_damage, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"damage"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(1920.f, 1080.f),
@@ -134,8 +139,8 @@ RendererManager::RendererManager(
 		m_fpsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
-		m_interfaceShader,
-		m_font, 20.f
+		m_textShader,
+		m_font, 24.f
 	));
 
 	marray->push(new ActionSetTextAlignment(m_fpsText,TextAlignment::TEXT_ALIGN_LEFT));
@@ -149,8 +154,8 @@ RendererManager::RendererManager(
 		m_bmapText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
-		m_interfaceShader,
-		m_font, 20.f
+		m_textShader,
+		m_font, 24.f
 	));
 
 	marray->push(new ActionSetTextAlignment(m_bmapText, TextAlignment::TEXT_ALIGN_LEFT));
@@ -164,8 +169,8 @@ RendererManager::RendererManager(
 		m_objectsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
-		m_interfaceShader,
-		m_font, 20.f
+		m_textShader,
+		m_font, 24.f
 	));
 
 	marray->push(new ActionSetTextAlignment(m_objectsText, TextAlignment::TEXT_ALIGN_LEFT));
@@ -179,8 +184,8 @@ RendererManager::RendererManager(
 		m_timersText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
-		m_interfaceShader,
-		m_font, 20.f
+		m_textShader,
+		m_font, 24.f
 	));
 
 	marray->push(new ActionSetTextAlignment(m_timersText, TextAlignment::TEXT_ALIGN_LEFT));
@@ -194,6 +199,7 @@ RendererManager::RendererManager(
 		m_selectStatus, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"health_bar"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(200.f, 60.f),
@@ -214,6 +220,7 @@ RendererManager::RendererManager(
 		m_healthGlobe, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"health_globe"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(142.f, 142.f),
@@ -239,6 +246,7 @@ RendererManager::RendererManager(
 		m_manaGlobe, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"mana_globe"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(138.f, 138.f),
@@ -264,6 +272,7 @@ RendererManager::RendererManager(
 		m_exp, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"ui_exp"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(644.f, 8.f),
@@ -289,6 +298,7 @@ RendererManager::RendererManager(
 		m_healthBar, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"health_bar_mini"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(80.f, 10.f),
@@ -309,6 +319,7 @@ RendererManager::RendererManager(
 		m_healthBarBorder, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"health_bar_mini_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(80.f, 10.f),
@@ -324,6 +335,7 @@ RendererManager::RendererManager(
 		m_selectStatusBorder, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"health_bar_border"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(200.f, 60.f),
@@ -339,6 +351,7 @@ RendererManager::RendererManager(
 		m_gameUI, engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
 		m_interfaceShader,
+		m_textShader,
 		class  modern_string(L"ui_game"),
 		struct DirectX::XMFLOAT3(0.f, 0.f, 0.f),
 		struct DirectX::XMFLOAT2(1920.f, 175.f),
@@ -515,7 +528,7 @@ void RendererManager::Render(
 )
 {
 	struct ID3D11Device* const device = Engine::GetEngine()->GetGraphics()->GetDevice();
-	struct ShaderPackage pck(deviceContext, m_unitsShader, m_shadowShader, m_selectShader, m_interfaceShader);
+	struct ShaderPackage pck(deviceContext, m_unitsShader, m_shadowShader, m_selectShader, m_interfaceShader,m_textShader);
 
 	GRAPHICS EnableAlphaBlending(true);
 
@@ -1011,7 +1024,7 @@ void RendererManager::Render(
 							modern_shared_guard g(unit);
 							const float che = modern_ceil(unit->GetHealth());
 							const float mhe = unit->GetMaxHealth();
-							A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
+							A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe),30.f);
 							A->PostInitializeText();
 							if (behaviorA)
 							{
@@ -1059,68 +1072,68 @@ void RendererManager::Render(
 
 void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
 {
-	if (object)
-	{
-		constexpr float fadedistance = 250.f;
-		std::stack<class Tree*> stack;// = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
-		while (stack.size())
-		{
-			Tree* tree = stack.top();
-			stack.pop();
-			if (tree->m_boundingSphere.Center.y > object->m_boundingSphere.Center.y)
-			{
-				//NON-TRANSPARENT
-				tree->SetStance(0);
-				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
-				tree->CastShadow();
-				continue;
-			}
-			else
-			{
-				//TRANSPARENT
-				
-				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
-				tree->CastShadow(false);
-				if (tree->GetStance())
-					continue;
-				tree->SetStance(1);
-			}
-
-
-			switch (type)
-			{
-			case ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL:
-			{
-				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(
-					new FloatVariableDistanceBetweenObjects(object, tree),
-					new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
-				//action->push(new ActionWaitUntil(nullptr));
-				action->push(new ActionSetShadowCast(tree, true));
-				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
-				action->push(new ActionTreeSetStance(tree, 0));
-				Timer::CreateInstantTimer(action);
-			}
-				break;
-			case ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT:
-			{
-				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-				action->push(new ActionWaitUntil(ConditionFactory::CreateOrCondition(
-					ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER),
-					ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(object), new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
-				)));
-				action->push(new ActionSetShadowCast(tree, true));
-				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
-				action->push(new ActionTreeSetStance(tree, 0));
-				Timer::CreateInstantTimer(action);
-			}
-				break;
-			}
-		}
-		
-
-
-	}
+//	if (object)
+//	{
+//		constexpr float fadedistance = 250.f;
+//		std::stack<class Tree*> stack;// = m_layers[enum_cast<int32_t>(RenderLayerType::ENUM_OBJECT_TYPE)]->GetTreesBelow(object, fadedistance);
+//		while (stack.size())
+//		{
+//			Tree* tree = stack.top();
+//			stack.pop();
+//			if (tree->m_boundingSphere.Center.y > object->m_boundingSphere.Center.y)
+//			{
+//				//NON-TRANSPARENT
+//				tree->SetStance(0);
+//				tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
+//				tree->CastShadow();
+//				continue;
+//			}
+//			else
+//			{
+//				//TRANSPARENT
+//				
+//				tree->SetColorFilter(1.1f, 1.1f, 1.1f, 0.65f);
+//				tree->CastShadow(false);
+//				if (tree->GetStance())
+//					continue;
+//				tree->SetStance(1);
+//			}
+//
+//
+//			switch (type)
+//			{
+//			case ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL:
+//			{
+//				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+//				action->push(new ActionWaitUntil(ConditionFactory::CreateFloatCondition(
+//					new FloatVariableDistanceBetweenObjects(object, tree),
+//					new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER)));
+//				//action->push(new ActionWaitUntil(nullptr));
+//				action->push(new ActionSetShadowCast(tree, true));
+//				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+//				action->push(new ActionTreeSetStance(tree, 0));
+//				Timer::CreateInstantTimer(action);
+//			}
+//				break;
+//			case ObjectFocusType::OBJECT_FOCUS_TYPE_SELECT:
+//			{
+//				class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+//				action->push(new ActionWaitUntil(ConditionFactory::CreateOrCondition(
+//					ConditionFactory::CreateFloatCondition(new FloatVariableDistanceBetweenObjects(object, tree), new ConstFloatVariable(fadedistance), FloatOperatorType::FLOAT_OPERATOR_TYPE_GREATER),
+//					ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(object), new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS)
+//				)));
+//				action->push(new ActionSetShadowCast(tree, true));
+//				action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+//				action->push(new ActionTreeSetStance(tree, 0));
+//				Timer::CreateInstantTimer(action);
+//			}
+//				break;
+//			}
+//		}
+//		
+//
+//
+//	}
 }
 
 
@@ -1190,7 +1203,8 @@ void RendererManager::SetFps(const int32 fps)
 	if (C)
 	{
 		modern_guard g(C);
-		C->SetText(modern_cstring("TIM ", Timer::CountTimers()).c_str());
+		class modern_string tim(L"TIM ");
+		C->SetText(modern_string(L"TIM ") << modern_string(Timer::CountSleepingTimers()) << modern_string(L"...") << modern_string(Timer::CountTimers()));
 	}
 	//if(m_fpsText)
 	//m_fpsText->SetText(modern_cstring(fps).c_str());

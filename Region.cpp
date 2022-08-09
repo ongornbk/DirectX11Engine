@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "ActionRemoveObject.h"
 #include "RegionAgent.h"
+#include "IPP.h"
 
 Region::Region(const DirectX::XMFLOAT2 pA, const DirectX::XMFLOAT2 pB) : ColorFilter(1.f, 1.f, 1.f, 1.f), m_scale(1.f, 1.f)
 {
@@ -49,6 +50,9 @@ Region::Region(const float x1, const float y1, const float x2, const float y2) :
 	RendererManager::GetInstance()->PushRegionAgent(B);
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+
+	//ipp::Console::Println(m_rect.Extents.y);
+	//ipp::Console::Println(y2);
 }
 
 Region::~Region()
@@ -158,12 +162,12 @@ void Region::GiveName(std::string name)
 		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
 
 		m_texture = ResourceManager::GetInstance()->GetTextureByName("region");
-		{
-			class RenderAgent* renderAgent = new RenderAgent();
-			m_renderAgent.make_handle(renderAgent->GetHandle());
-			renderAgent->Initialize(this);
-			RendererManager::GetInstance()->PushRenderAgent(renderAgent);
-		}
+		//{
+		//	class RenderAgent* renderAgent = new RenderAgent();
+		//	m_renderAgent.make_handle(renderAgent->GetHandle());
+		//	renderAgent->Initialize(this);
+		//	RendererManager::GetInstance()->PushRenderAgent(renderAgent);
+		//}
 	}
 }
 

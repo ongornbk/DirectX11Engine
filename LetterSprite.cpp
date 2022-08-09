@@ -113,11 +113,16 @@ LetterSpriteStruct::LetterSpriteStruct(class LetterSprite* const letter)
 		m_letter = letter;
 }
 
-void LetterSpriteStruct::Render(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, Shader* const shader)
+void LetterSpriteStruct::Render(
+	struct ID3D11DeviceContext* const deviceContext,
+	const struct DirectX::XMFLOAT4X4& viewMatrix,
+	const struct DirectX::XMFLOAT4X4& projectionMatrix,
+	class Shader* const shader,
+	const float size)
 {
 	if (m_letter)
 	{
-		DirectX::XMStoreFloat4x4(&s_world, XMMatrixTranslation(m_position.x, m_position.y, m_position.z));
+		DirectX::XMStoreFloat4x4(&s_world, modern_xmatrix_translation_and_size(m_position.x, m_position.y, m_position.z,size));
 		m_letter->Render(deviceContext, s_world,viewMatrix,projectionMatrix,shader);
 	}
 }

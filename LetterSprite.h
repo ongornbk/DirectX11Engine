@@ -51,7 +51,8 @@ public:
 		struct ID3D11DeviceContext* const deviceContext,
 		const struct DirectX::XMFLOAT4X4& viewMatrix,
 		const struct DirectX::XMFLOAT4X4& projectionMatrix,
-		class Shader* const shader
+		class Shader* const shader,
+		const float size = 1.f
 	);
 
 	void PreRender(

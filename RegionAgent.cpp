@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "EventManager.h"
 #include "Global.h"
+#include "IPP.h"
 
 RegionAgent::RegionAgent()
 {
@@ -72,14 +73,18 @@ void RegionAgent::Intersect(EObject* const other)
    
     if (region->m_rect.Contains(other->m_boundingSphere)==DirectX::ContainmentType::DISJOINT)
     {
-        if (region->m_objects.erase(other->GetHandle()))
+        if (region->m_objects.erase(other->GetHandlePtr()))
         {
             region->OnLeave(other->GetHandle());
+        }
+        else
+        {
+           // ipp::Console::Println(other);
         }
     }
     else
     {
-        if (region->m_objects.insert(other->GetHandle()).second)
+        if (region->m_objects.insert(other->GetNewHandlePtr()).second)
         {
             region->OnEnter(other->GetHandle());
         }

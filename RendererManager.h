@@ -59,7 +59,15 @@ public:
 
 
 
-	RendererManager(Engine* engine,Shader* units,Shader* ui,Shader* shadow,Shader* select,Shader* inter);
+	RendererManager(
+		class Engine* const engine,
+		class Shader* const units,
+		class Shader* const ui,
+		class Shader* const shadow,
+		class Shader* const select,
+		class Shader* const inter,
+		class Shader* const text
+	);
 	~RendererManager();
 
 
@@ -126,15 +134,16 @@ private:
 	bool m_collision;
 	int64_t m_state{};
 
-	Engine* m_engine;
-	Shader* m_shader;
-	Shader* m_unitsShader;
-	Shader* m_shadowShader;
-	Shader* m_selectShader;
-	Shader* m_interfaceShader;
+	class Engine* m_engine;
+	class Shader* m_shader;
+	class Shader* m_unitsShader;
+	class Shader* m_shadowShader;
+	class Shader* m_selectShader;
+	class Shader* m_interfaceShader;
+	class Shader* m_textShader;
 
-	TileMap* m_map;
-	UserInterface* m_ui;
+	struct TileMap* m_map;
+	class UserInterface* m_ui;
 	class modern_handle m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 	class TextFont* m_font;

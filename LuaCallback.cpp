@@ -57,6 +57,7 @@ namespace lua_callback
 		static struct ID3D11DeviceContext* m_deviceContext;
 		static class TextureShader*        m_unitsShader;
 		static class TextureShader*        m_interfaceShader;
+		static class TextureShader*        m_textShader;
 		static class RendererManager*      m_renderer;
 		static class ActionMap*            m_actionMap;
 
@@ -89,6 +90,7 @@ namespace lua_callback
 		m_deviceContext = m_engine->GetGraphics()->GetDeviceContext();
 		m_unitsShader = (class TextureShader*)m_resources->GetShaderByName("units.fx");
 		m_interfaceShader = (class TextureShader*)m_resources->GetShaderByName("interface.fx");
+		m_textShader = (class TextureShader*)m_resources->GetShaderByName("text.fx");
 	}
 
 	static void Initialize(
@@ -956,6 +958,7 @@ namespace lua_callback
 				m_device,
 				m_deviceContext,
 				m_interfaceShader,
+				m_textShader,
 				wide_string,
 				struct DirectX::XMFLOAT3(p_x, p_y, p_z),
 				x_size,
@@ -1065,9 +1068,10 @@ namespace lua_callback
 	) modern_except_state
 	{
 		class Interface* const inter = (class Interface* const)lua_tointeger(state, 1);
+		//class float size = LUA_FLOAT(state, 2);
 		if (inter)
 		{
-			Timer::CreateInstantTimer(new ActionSetInterfaceText(inter, lua_tostring(state, 2)));
+			Timer::CreateInstantTimer(new ActionSetInterfaceText(inter, lua_tostring(state, 2), LUA_FLOAT(state, 3)));
 		}
 		return 0;
 

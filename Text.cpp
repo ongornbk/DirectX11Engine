@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "game_math.h"
 
 namespace
 {
@@ -85,7 +86,7 @@ void Text::Render(
 {
 	for (auto&& letter : m_letters)
 	{
-		letter->Render(deviceContext, viewMatrix, projectionMatrix,shader);
+		letter->Render(deviceContext, viewMatrix, projectionMatrix,shader, TEXT_DEFAULT_FONT / m_size);
 	}
 }
 
@@ -307,9 +308,9 @@ void Text::UpdatePosition()
 		{
 			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
 			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
+				sumup.x += m_spaceWidth * 0.48f * (m_size / TEXT_DEFAULT_FONT);
 			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f * (m_size / TEXT_DEFAULT_FONT));
 		}
 		m_width = sumup.x;
 		break;
@@ -318,7 +319,7 @@ void Text::UpdatePosition()
 	{
 		for (auto&& letter : m_letters)
 		{
-			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f * (m_size / TEXT_DEFAULT_FONT));
 		}
 		m_width = sumup.x;
 		sumup.x = (m_width / -2.f);
@@ -326,9 +327,9 @@ void Text::UpdatePosition()
 		{
 			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
 			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
+				sumup.x += m_spaceWidth * 0.48f * (m_size / TEXT_DEFAULT_FONT);
 			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f * (m_size / TEXT_DEFAULT_FONT));
 		}
 		break;
 	}
@@ -336,7 +337,7 @@ void Text::UpdatePosition()
 	{
 		for (auto&& letter : m_letters)
 		{
-			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+			sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f * (m_size / TEXT_DEFAULT_FONT));
 		}
 		m_width = sumup.x;
 		sumup.x = (m_width * -1.f);
@@ -344,9 +345,9 @@ void Text::UpdatePosition()
 		{
 			letter->SetPosition(modern_xfloat3_sum(pos, sumup));
 			if (letter->GetLetter() == ' ')
-				sumup.x += m_spaceWidth * 0.48f;
+				sumup.x += m_spaceWidth * 0.48f * (m_size / TEXT_DEFAULT_FONT);
 			else
-				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f);
+				sumup.x += ((m_font->GetWidthOfLetter(letter->GetLetter())) * 0.48f * (m_size / TEXT_DEFAULT_FONT));
 		}
 		break;
 	}

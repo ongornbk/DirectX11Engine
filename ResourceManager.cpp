@@ -242,7 +242,7 @@ void ResourceManager::PrintOutSounds()
 
 	Console::SetTextColor(ipp::GOLDEN);
 	Console::Print((int)m_sounds.size());
-	Console::Println(" Textures found ...");
+	Console::Println(" Sounds found ...");
 
 	for (int i = 0; i < (int)m_sounds.size(); i++)
 	{

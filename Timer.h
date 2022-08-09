@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <deque>
 
 #include "IAction.h"
@@ -13,7 +13,10 @@
 class Timer : public ITimer
 {
 public:
+	static void Initialize();
 	static void Update(const float dt);
+	static void Update2μs(const float dt);
+	static void Update1s(const float dt);
 	static void UpdatePostSort(const float dt);
 	static void Push(class ITimer* const timer);
 	static void CreateExpiringTimer(class IAction* const action, const float time);
@@ -25,6 +28,7 @@ public:
 	static void CreateConditionTimer(class IAction* const action,class ICondition* const condition);
 
 	static size_t CountTimers();
+	static size_t CountSleepingTimers();
 };
 
 

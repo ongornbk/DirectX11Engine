@@ -71,6 +71,12 @@ modern_string::modern_string(const char* text)
 modern_string::modern_string(const size_t number)
 {
 	m_string.make_shared(new class modern_array<wchar_t>());
+
+	if (number == 0ull)
+	{
+		m_string->push_back(L'0');
+		goto END;
+	}
 	
 	size_t temp = number;
 
@@ -83,6 +89,9 @@ modern_string::modern_string(const size_t number)
 		temp /= 10ull;
 	}
 	m_string->reverse();
+
+END:
+
 	push_zero();
 }
 
@@ -325,6 +334,19 @@ modern_string modern_string::operator+(modern_string& string)
 	return *this;
 }
 
+modern_string& modern_string::operator<<(modern_string& string)
+{
+	const size_t newsize = size() + string.size();
+	m_string->reserve(newsize);
+	m_string->resize(modern_max(m_string->size(), 1ull) - 1ull);
+	for (size_t i = 0ull; i < string.size(); ++i)
+	{
+		m_string->push_back(string.at(i));
+	}
+
+	return *this;
+}
+
 const size_t modern_string::find_last_of(const wchar_t character) const modern_except_state
 {
 //	size_t n = 0ull;
@@ -374,6 +396,13 @@ void modern_string::load(const char* text)
 	m_string->resize(strlen(text) + 1);
 #pragma warning(disable : 4996)
 	mbstowcs(m_string->data(), text, strlen(text));
+}
+
+const wchar_t modern_string::at(const size_t index) const modern_except_state
+{
+	if (index < m_string->size())
+		return (*m_string)[index];
+	return L'\0';
 }
 
 bool modern_isdigit(wchar_t ch) modern_except_state

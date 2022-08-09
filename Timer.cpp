@@ -1,5 +1,6 @@
-#include "Timer.h"
+﻿#include "Timer.h"
 #include "GarbageCollector.h"
+#include "ActionExecuteCFunction.h"
 #include <list>
 #include <atomic>
 #include <iostream>
@@ -10,15 +11,43 @@ namespace
 	//static std::list<class ITimer*> m_stoppedTimers;
 	//static std::<class ITimer*> m_timers;
 	static modern_array<class ITimer*> m_timers;
+	static modern_array<class ITimeTimer*> m_microsecondTimers;
+	static modern_array<class ITimeTimer*> m_secondTimers;
 	//static std::list<class ITimer*> m_timersPostSort;
 	static modern_array<class ITimer*> m_echoTimers;
 	static std::atomic<int64_t> m_stance = 0ll;
+
+	static volatile float m_dt;
+	static volatile float m_ddt2;
+	static volatile float m_ddt100;
+}
+
+extern "C"
+{
+	static void TimerUpdate2(void)
+	{
+		Timer::Update1s(m_ddt100);
+		m_ddt100 = 0.f;
+		Timer::Update2μs(m_ddt2);
+		m_ddt2 = 0.f;
+	}
 }
 
 
 
+void Timer::Initialize()
+{
+	class PeriodicTimer* const timer2 = new PeriodicTimer();
+	timer2->action = new ActionExecuteCFunction(TimerUpdate2);
+	m_timers.push_back(timer2);
+}
+
 void Timer::Update(const float dt)
 {
+	m_dt = dt;
+	m_ddt2 += dt;
+	m_ddt100 += dt;
+
 	m_stance.store(1ll, std::memory_order::memory_order_seq_cst);
 
 		//for (auto&& element = m_timers.begin();element != m_timers.end();element++)
@@ -63,6 +92,62 @@ void Timer::Update(const float dt)
 		m_stance.store(0ll, std::memory_order::memory_order_seq_cst);
 }
 
+void Timer::Update2μs(const float dt)
+{
+	for (size_t i = 0ull; i < m_microsecondTimers.size(); ++i)
+	{
+
+		if (m_microsecondTimers[i])
+		{
+			const float remainingTime = m_microsecondTimers[i]->UpdateRemainingTime(dt);
+			if (remainingTime > 0.f)
+			{
+				if (remainingTime > dt)
+				{
+					m_timers.push_back(m_microsecondTimers[i]->GetTimer());
+					m_microsecondTimers[i] = nullptr;
+					m_microsecondTimers.remove(i);
+				}
+				//i--;
+			}
+			else
+			{
+				delete m_microsecondTimers[i];
+				m_microsecondTimers[i] = nullptr;
+				m_microsecondTimers.remove(i);
+			}
+		}
+	}
+}
+
+void Timer::Update1s(const float dt)
+{
+	for (size_t i = 0ull; i < m_secondTimers.size(); ++i)
+	{
+
+		if (m_secondTimers[i])
+		{
+			const float remainingTime = m_secondTimers[i]->UpdateRemainingTime(dt);
+			if (remainingTime > 0.f)
+			{
+				if (remainingTime > dt)
+				{
+					m_microsecondTimers.push_back(m_secondTimers[i]);
+					m_secondTimers[i] = nullptr;
+					m_secondTimers.remove(i);
+				}
+				//i--;
+			}
+			else
+			{
+				delete m_secondTimers[i];
+				m_secondTimers[i] = nullptr;
+				m_secondTimers.remove(i);
+			}
+		}
+	}
+}
+
 void Timer::UpdatePostSort(const float dt)
 {
 	//for (auto& element = m_timersPostSort.begin(); element != m_timersPostSort.end(); element++)
@@ -93,9 +178,21 @@ void Timer::CreateExpiringTimer(class IAction* const action, const float time)
 	class ExpiringTimer* const timer = new ExpiringTimer();
 	timer->action = action;
 	timer->time = time;
-	if (m_stance.load() == 0ll)
-		m_timers.push_back(timer);
-	else m_echoTimers.push_back(timer);
+	if (time > 1.f)
+	{
+		m_secondTimers.push_back(timer);
+	}
+	else 
+	if (time > 0.02f)
+	{
+		m_microsecondTimers.push_back(timer);
+	}
+	else
+	{
+		if (m_stance.load() == 0ll)
+			m_timers.push_back(timer);
+		else m_echoTimers.push_back(timer);
+	}
 }
 
 void Timer::CreatePeriodicTimer(IAction* const action, const float time,const float period)
@@ -168,4 +265,9 @@ void Timer::CreateConditionTimer(IAction* const action, ICondition* const condit
 size_t Timer::CountTimers()
 {
 	return m_timers.size();
+}
+
+size_t Timer::CountSleepingTimers()
+{
+	return m_secondTimers.size() + m_microsecondTimers.size();
 }

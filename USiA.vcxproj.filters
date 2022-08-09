@@ -199,6 +199,9 @@
     <Filter Include="Header Files\Actions\Object">
       <UniqueIdentifier>{f5a04e8a-2a4e-417d-b71f-ea57c3846d46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Actions\C">
+      <UniqueIdentifier>{69f71c29-98ad-4748-95ee-0723b8088fd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -1131,6 +1134,18 @@
     <ClInclude Include="ActionShowInterface.h">
       <Filter>Header Files\Actions\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="ITimeTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteCFunction.h">
+      <Filter>Header Files\Actions\C</Filter>
+    </ClInclude>
+    <ClInclude Include="ICFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CFunctionVoid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1857,6 +1872,15 @@
       <Filter>Header Files\modern</Filter>
     </ClCompile>
     <ClCompile Include="ActionShowInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITimeTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExecuteCFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CFunctionVoid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

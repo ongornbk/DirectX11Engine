@@ -3,6 +3,7 @@
 #include "IPP.h"
 #include "Vector.h"
 #include "Text.h"
+#include "game_math.h"
 #include <fstream>
 #include <sstream>
 #include <streambuf>
@@ -40,56 +41,60 @@ TextFont::TextFont(float width, float height, std::string filename, bool upper) 
 
 }
 
-void TextFont::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, Shader* shader)
+void TextFont::Initialize(
+	struct ID3D11Device* const device,
+	struct ID3D11DeviceContext* const context,
+	class Shader* const shader
+)
 {
 
 	if (m_initialized) return;
 
 	m_shader = shader;
 
-	m_letters[' '] = new LetterSprite(this, ' ', 20.f);
-	m_letters['a'] = new LetterSprite(this, 'a', 20.f);
-	m_letters['b'] = new LetterSprite(this, 'b', 20.f);
-	m_letters['c'] = new LetterSprite(this, 'c', 20.f);
-	m_letters['d'] = new LetterSprite(this, 'd', 20.f);
-	m_letters['e'] = new LetterSprite(this, 'e', 20.f);
-	m_letters['f'] = new LetterSprite(this, 'f', 20.f);
-	m_letters['g'] = new LetterSprite(this, 'g', 20.f);
-	m_letters['h'] = new LetterSprite(this, 'h', 20.f);
-	m_letters['i'] = new LetterSprite(this, 'i', 20.f);
-	m_letters['j'] = new LetterSprite(this, 'j', 20.f);
-	m_letters['k'] = new LetterSprite(this, 'k', 20.f);
-	m_letters['l'] = new LetterSprite(this, 'l', 20.f);
-	m_letters['m'] = new LetterSprite(this, 'm', 20.f);
-	m_letters['n'] = new LetterSprite(this, 'n', 20.f);
-	m_letters['o'] = new LetterSprite(this, 'o', 20.f);
-	m_letters['p'] = new LetterSprite(this, 'p', 20.f);
-	m_letters['q'] = new LetterSprite(this, 'q', 20.f);
-	m_letters['r'] = new LetterSprite(this, 'r', 20.f);
-	m_letters['s'] = new LetterSprite(this, 's', 20.f);
-	m_letters['t'] = new LetterSprite(this, 't', 20.f);
-	m_letters['u'] = new LetterSprite(this, 'u', 20.f);
-	m_letters['v'] = new LetterSprite(this, 'v', 20.f);
-	m_letters['w'] = new LetterSprite(this, 'w', 20.f);
-	m_letters['x'] = new LetterSprite(this, 'x', 20.f);
-	m_letters['y'] = new LetterSprite(this, 'y', 20.f);
-	m_letters['z'] = new LetterSprite(this, 'z', 20.f);
+	m_letters[' '] = new LetterSprite(this, ' ', TEXT_DEFAULT_FONT);
+	m_letters['a'] = new LetterSprite(this, 'a', TEXT_DEFAULT_FONT);
+	m_letters['b'] = new LetterSprite(this, 'b', TEXT_DEFAULT_FONT);
+	m_letters['c'] = new LetterSprite(this, 'c', TEXT_DEFAULT_FONT);
+	m_letters['d'] = new LetterSprite(this, 'd', TEXT_DEFAULT_FONT);
+	m_letters['e'] = new LetterSprite(this, 'e', TEXT_DEFAULT_FONT);
+	m_letters['f'] = new LetterSprite(this, 'f', TEXT_DEFAULT_FONT);
+	m_letters['g'] = new LetterSprite(this, 'g', TEXT_DEFAULT_FONT);
+	m_letters['h'] = new LetterSprite(this, 'h', TEXT_DEFAULT_FONT);
+	m_letters['i'] = new LetterSprite(this, 'i', TEXT_DEFAULT_FONT);
+	m_letters['j'] = new LetterSprite(this, 'j', TEXT_DEFAULT_FONT);
+	m_letters['k'] = new LetterSprite(this, 'k', TEXT_DEFAULT_FONT);
+	m_letters['l'] = new LetterSprite(this, 'l', TEXT_DEFAULT_FONT);
+	m_letters['m'] = new LetterSprite(this, 'm', TEXT_DEFAULT_FONT);
+	m_letters['n'] = new LetterSprite(this, 'n', TEXT_DEFAULT_FONT);
+	m_letters['o'] = new LetterSprite(this, 'o', TEXT_DEFAULT_FONT);
+	m_letters['p'] = new LetterSprite(this, 'p', TEXT_DEFAULT_FONT);
+	m_letters['q'] = new LetterSprite(this, 'q', TEXT_DEFAULT_FONT);
+	m_letters['r'] = new LetterSprite(this, 'r', TEXT_DEFAULT_FONT);
+	m_letters['s'] = new LetterSprite(this, 's', TEXT_DEFAULT_FONT);
+	m_letters['t'] = new LetterSprite(this, 't', TEXT_DEFAULT_FONT);
+	m_letters['u'] = new LetterSprite(this, 'u', TEXT_DEFAULT_FONT);
+	m_letters['v'] = new LetterSprite(this, 'v', TEXT_DEFAULT_FONT);
+	m_letters['w'] = new LetterSprite(this, 'w', TEXT_DEFAULT_FONT);
+	m_letters['x'] = new LetterSprite(this, 'x', TEXT_DEFAULT_FONT);
+	m_letters['y'] = new LetterSprite(this, 'y', TEXT_DEFAULT_FONT);
+	m_letters['z'] = new LetterSprite(this, 'z', TEXT_DEFAULT_FONT);
 
-	m_letters['0'] = new LetterSprite(this, '0', 20.f);
-	m_letters['1'] = new LetterSprite(this, '1', 20.f);
-	m_letters['2'] = new LetterSprite(this, '2', 20.f);
-	m_letters['3'] = new LetterSprite(this, '3', 20.f);
-	m_letters['4'] = new LetterSprite(this, '4', 20.f);
-	m_letters['5'] = new LetterSprite(this, '5', 20.f);
-	m_letters['6'] = new LetterSprite(this, '6', 20.f);
-	m_letters['7'] = new LetterSprite(this, '7', 20.f);
-	m_letters['8'] = new LetterSprite(this, '8', 20.f);
-	m_letters['9'] = new LetterSprite(this, '9', 20.f);
+	m_letters['0'] = new LetterSprite(this, '0', TEXT_DEFAULT_FONT);
+	m_letters['1'] = new LetterSprite(this, '1', TEXT_DEFAULT_FONT);
+	m_letters['2'] = new LetterSprite(this, '2', TEXT_DEFAULT_FONT);
+	m_letters['3'] = new LetterSprite(this, '3', TEXT_DEFAULT_FONT);
+	m_letters['4'] = new LetterSprite(this, '4', TEXT_DEFAULT_FONT);
+	m_letters['5'] = new LetterSprite(this, '5', TEXT_DEFAULT_FONT);
+	m_letters['6'] = new LetterSprite(this, '6', TEXT_DEFAULT_FONT);
+	m_letters['7'] = new LetterSprite(this, '7', TEXT_DEFAULT_FONT);
+	m_letters['8'] = new LetterSprite(this, '8', TEXT_DEFAULT_FONT);
+	m_letters['9'] = new LetterSprite(this, '9', TEXT_DEFAULT_FONT);
 
-	m_letters['('] = new LetterSprite(this, '(', 20.f);
-	m_letters['$'] = new LetterSprite(this, '$', 20.f);
-	m_letters['£'] = new LetterSprite(this, '£', 20.f);
-	m_letters['.'] = new LetterSprite(this, '.', 20.f);
+	m_letters['('] = new LetterSprite(this, '(', TEXT_DEFAULT_FONT);
+	m_letters['$'] = new LetterSprite(this, '$', TEXT_DEFAULT_FONT);
+	m_letters['£'] = new LetterSprite(this, '£', TEXT_DEFAULT_FONT);
+	m_letters['.'] = new LetterSprite(this, '.', TEXT_DEFAULT_FONT);
 
 	m_letters[' ']->Initialize(device, context, shader, this);
 	m_letters['a']->Initialize(device, context, shader, this);

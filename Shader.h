@@ -17,9 +17,9 @@ class Shader
 private:
 	struct MatrixBufferType
 	{
-	XMMATRIX worldMatrix;
-	XMMATRIX viewMatrix;
-	XMMATRIX projectionMatrix;
+	struct DirectX::XMMATRIX worldMatrix;
+	struct DirectX::XMMATRIX viewMatrix;
+	struct DirectX::XMMATRIX projectionMatrix;
 	};
 
 	struct ColorBufferType

@@ -5,13 +5,14 @@ class ActionSetInterfaceText :
     public IAction
 {
     string m_text;
-    Interface* m_interface;
+    class Interface* m_interface;
+    float m_size;
 
     ActionSetInterfaceText() = delete;
 
 public:
 
-    ActionSetInterfaceText(class Interface* const inter,string text);
+    ActionSetInterfaceText(class Interface* const inter,string text,const float size);
     ~ActionSetInterfaceText();
 
     void execute() override;

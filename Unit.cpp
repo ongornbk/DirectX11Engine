@@ -236,7 +236,7 @@ void Unit::Render(
 		csh->SetShaderColorParameters(deviceContext, m_colorFilter);
 		//csh->SetShaderScaleParameters(deviceContext, m_scale);
 		m_vertexBuffer->Render(deviceContext);
-		csh->SetShaderColorParameters(deviceContext, XMFLOAT4(1.f,1.f,1.f,1.f));
+		//csh->SetShaderColorParameters(deviceContext, XMFLOAT4(1.f,1.f,1.f,1.f));
 
 		if (m_dead == false)
 		{

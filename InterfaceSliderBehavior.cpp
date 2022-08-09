@@ -10,12 +10,13 @@ InterfaceSliderBehavior::InterfaceSliderBehavior(Interface* const owner) :
 	ID3D11DeviceContext* const context = Engine::GetEngine()->GetGraphics()->GetDeviceContext();
 	//Shader* const m_unitsShader = (class TextureShader*)ResourceManager::GetInstance()->GetShaderByName("units.fx");
 	Shader* const m_interfaceShader = (class TextureShader*)ResourceManager::GetInstance()->GetShaderByName("interface.fx");
+	Shader* const m_textShader = (class TextureShader*)ResourceManager::GetInstance()->GetShaderByName("text.fx");
 
 	m_button = new class Interface();
 	m_button->SetParent(m_owner);
 	m_owner->PushChild(m_button);
 	m_button->m_flags.m_rendering = true;
-	m_button->Initialize(device, context, m_interfaceShader, L"slider_button", m_owner->m_boundingSphere.Center,38.f,29.f,ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER);
+	m_button->Initialize(device, context, m_interfaceShader, m_textShader, L"slider_button", m_owner->m_boundingSphere.Center,38.f,29.f,ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER);
 }
 
 InterfaceSliderBehavior::~InterfaceSliderBehavior()

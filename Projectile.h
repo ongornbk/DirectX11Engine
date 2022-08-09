@@ -6,15 +6,16 @@
 
 class Projectile : public EObject
 {
+protected:
 	modern_handle m_owner;
 
 	float m_size;
 	float m_collision;
-	DirectX::XMFLOAT3 m_velocity;
+	struct DirectX::XMFLOAT3 m_velocity;
 
-	VertexBuffer* m_vertexBuffer;
-	Texture* m_texture;
-	DirectX::XMFLOAT4X4 m_worldMatrix;
+	class VertexBuffer* m_vertexBuffer;
+	class Texture* m_texture;
+	struct DirectX::XMFLOAT4X4 m_worldMatrix;
 public:
 	Projectile();
 	~Projectile();

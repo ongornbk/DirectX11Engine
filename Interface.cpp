@@ -45,7 +45,8 @@ Interface::~Interface()
 void Interface::Initialize(
 	struct ID3D11Device* const device,
 	struct ID3D11DeviceContext* const deviceContext,
-	class Shader* const shader,
+	class Shader* const interfaceShader,
+	class Shader* const textShader,
 	WCHAR* paths,
 	const struct DirectX::XMFLOAT3 position,
 	const float xsize,
@@ -69,7 +70,7 @@ void Interface::Initialize(
 	{
 	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP_LEFT:
 	{
-		(void)m_vertexBuffer->InitializeAnchorTopLeft(device, shader, sizexy, true);
+		(void)m_vertexBuffer->InitializeAnchorTopLeft(device, interfaceShader, sizexy, true);
 		break;
 	}
 	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_TOP:
@@ -82,12 +83,12 @@ void Interface::Initialize(
 	//}
 	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_LEFT:
 	{
-		(void)m_vertexBuffer->InitializeAnchorLeft(device, shader, sizexy, true);
+		(void)m_vertexBuffer->InitializeAnchorLeft(device, interfaceShader, sizexy, true);
 		break;
 	}
 	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_CENTER:
 	{
-		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+		(void)m_vertexBuffer->Initialize(device, interfaceShader, sizexy, true);
 		break;
 	}
 	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_RIGHT:
@@ -100,7 +101,7 @@ void Interface::Initialize(
 	//}
 	case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM:
 	{
-		(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
+		(void)m_vertexBuffer->InitializeAnchorBottom(device, interfaceShader, sizexy, true);
 		break;
 	}
 	//case ObjectAnchorType::OBJECT_ANCHOR_TYPE_BOTTOM_RIGHT:
@@ -109,7 +110,7 @@ void Interface::Initialize(
 	//}
 	default:
 	{
-		(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+		(void)m_vertexBuffer->Initialize(device, interfaceShader, sizexy, true);
 	}
 	}
 	
@@ -165,7 +166,7 @@ void _fastcall Interface::Render(ID3D11DeviceContext* const deviceContext, const
 		m_vertexBuffer->Render(deviceContext);
 		if (m_text)
 		{
-			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginInterface());
+			m_text->Render(deviceContext, viewMatrix, projectionMatrix, shader.BeginText());
 		}
 		for (auto obj : m_children)
 		{
@@ -185,10 +186,10 @@ void _fastcall Interface::PreRender(ID3D11DeviceContext* const deviceContext, co
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
 		m_vertexBuffer->Render(deviceContext);
-		if (m_text)
-		{
-			m_text->PreRender(deviceContext, viewMatrix, projectionMatrix, shader.BeginShadow());
-		}
+		//if (m_text)
+		//{
+		//	m_text->PreRender(deviceContext, viewMatrix, projectionMatrix, shader.BeginShadow());
+		//}
 		for (auto obj : m_children)
 		{
 			if (obj)
@@ -367,27 +368,27 @@ void Interface::PushChild(EObject* const child)
 	m_children.push_back(child);
 }
 
-void Interface::SetText(std::string text)
+void Interface::SetText(std::string text,const float size)
 {
 	class TextFont* const font = RendererManager::GetInstance()->GetFont();
 	if (font == nullptr)
 		return;
 
 			m_text = new Text;
-			m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(),font->GetShader(), font, 20.f);
+			m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(),font->GetShader(), font, size);
 			m_text->SetText(text);
 			m_text->SetPosition(m_boundingSphere.Center);
 
 }
 
-void Interface::SetText(modern_string& text)
+void Interface::SetText(modern_string& text,const float size)
 {
 	class TextFont* const font = RendererManager::GetInstance()->GetFont();
 	if (font == nullptr)
 		return;
 
 	m_text = new Text;
-	m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(), font->GetShader(), font, 20.f);
+	m_text->Initialize(Engine::GetEngine()->GetGraphics()->GetDevice(), Engine::GetEngine()->GetGraphics()->GetDeviceContext(), font->GetShader(), font, size);
 	m_text->SetText(text);
 	m_text->SetPosition(m_boundingSphere.Center);
 }

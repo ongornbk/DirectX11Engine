@@ -76,6 +76,8 @@ void Tree::Initialize(
 		c_script_tree_fade_leave
 	))->GetHandle());
 
+	//ipp::Console::Println(m_size);
+
 	{
 		class RegionC* const loc_reg = (class RegionC* const)m_fadeRegion.get();
 		loc_reg->SetParent(this_handle);
@@ -97,11 +99,13 @@ void Tree::Render(
 	const struct XMFLOAT4X4& projectionMatrix,
 	const struct ShaderPackage &shader)
 {
+	shader.BeginStandard();
 	if (m_flags.m_rendering)
 	{
 		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
+		ipp::Console::Println(shader.GetShader()->GetName());
 		m_vertexBuffer->Render(deviceContext);
 	}
 }

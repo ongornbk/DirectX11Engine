@@ -13,5 +13,7 @@
 #define MAP_Y_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_Y
 #define MAP_X_CHUNK (TILE_MAP_SIZE) / NUM_OF_DIVIDES_X
 
+#define TEXT_DEFAULT_FONT 20.f
+
 int32_t GetXCell(const float x) modern_except_state;
 int32_t GetYCell(const float y) modern_except_state;
