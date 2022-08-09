@@ -10,6 +10,7 @@
 #include "BooleanVariableUnitIsAlive.h"
 #include "BooleanVariableUnitIsAttacking.h"
 #include "BooleanVariableObjectIsSelected.h"
+#include "BooleanVariableTreeStance.h"
 #include "BooleanVariableIsKeyDown.h"
 #include "BooleanOperatorType.h"
 #pragma endregion

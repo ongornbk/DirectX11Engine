@@ -202,6 +202,9 @@
     <Filter Include="Header Files\Actions\C">
       <UniqueIdentifier>{69f71c29-98ad-4748-95ee-0723b8088fd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Actions\Text">
+      <UniqueIdentifier>{7a4c54fd-77ff-43bb-b52f-02f4014c8024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -656,15 +659,6 @@
     </ClInclude>
     <ClInclude Include="DeleteHandleTrash.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionInitializeText.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionKillUnit.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionMap.h">
-      <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionMessageFront.h">
       <Filter>Header Files\Actions</Filter>
@@ -1145,6 +1139,27 @@
     </ClInclude>
     <ClInclude Include="CFunctionVoid.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableTreeStance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionContinue.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeText.h">
+      <Filter>Header Files\Actions\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionKillUnit.h">
+      <Filter>Header Files\Actions\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMap.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_thread.h">
+      <Filter>Header Files\modern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1881,6 +1896,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CFunctionVoid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Chest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanVariableTreeStance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionContinue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

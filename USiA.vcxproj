@@ -204,6 +204,7 @@
     <ClInclude Include="ActionAttack.h" />
     <ClInclude Include="ActionBehavior.h" />
     <ClInclude Include="ActionChangeLayer.h" />
+    <ClInclude Include="ActionContinue.h" />
     <ClInclude Include="ActionErasePack2.h" />
     <ClInclude Include="ActionErasePack4.h" />
     <ClInclude Include="ActionExecuteAction.h" />
@@ -253,6 +254,7 @@
     <ClInclude Include="BooleanVariableIsKeyDown.h" />
     <ClInclude Include="BooleanVariableObjectIntersectsWithRegion.h" />
     <ClInclude Include="BooleanVariableObjectIsSelected.h" />
+    <ClInclude Include="BooleanVariableTreeStance.h" />
     <ClInclude Include="BooleanVariableUnitIsAlive.h" />
     <ClInclude Include="BooleanVariableUnitIsAttacking.h" />
     <ClInclude Include="BooleanVariableUnitIsDead.h" />
@@ -261,6 +263,7 @@
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Canals.h" />
     <ClInclude Include="CFunctionVoid.h" />
+    <ClInclude Include="Chest.h" />
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="compilation_header.h" />
@@ -406,6 +409,7 @@
     <ClInclude Include="modern\modern_string_cast.h" />
     <ClInclude Include="modern\modern_string_casting_type.h" />
     <ClInclude Include="modern\modern_string_view.h" />
+    <ClInclude Include="modern\modern_thread.h" />
     <ClInclude Include="modern\modern_timer.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_vector.h" />
@@ -515,6 +519,7 @@
     <ClCompile Include="ActionApplyColorFilter.cpp" />
     <ClCompile Include="ActionAttack.cpp" />
     <ClCompile Include="ActionChangeLayer.cpp" />
+    <ClCompile Include="ActionContinue.cpp" />
     <ClCompile Include="ActionErasePack2.cpp" />
     <ClCompile Include="ActionErasePack4.cpp" />
     <ClCompile Include="ActionExecuteAction.cpp" />
@@ -559,11 +564,13 @@
     <ClCompile Include="BooleanVariableIsKeyDown.cpp" />
     <ClCompile Include="BooleanVariableObjectIntersectsWithRegion.cpp" />
     <ClCompile Include="BooleanVariableObjectIsSelected.cpp" />
+    <ClCompile Include="BooleanVariableTreeStance.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAlive.cpp" />
     <ClCompile Include="BooleanVariableUnitIsAttacking.cpp" />
     <ClCompile Include="BooleanVariableUnitIsDead.cpp" />
     <ClCompile Include="BooleanVariableUnitIsSelected.cpp" />
     <ClCompile Include="CFunctionVoid.cpp" />
+    <ClCompile Include="Chest.cpp" />
     <ClCompile Include="ConditionFactory.cpp" />
     <ClCompile Include="ConditionTimer.cpp" />
     <ClCompile Include="ConstBooleanVariable.cpp" />

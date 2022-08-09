@@ -8,6 +8,9 @@
 #include "ActionSetShadowCast.h"
 #include "ActionApplyColorFilter.h"
 #include "ActionTreeSetStance.h"
+#include "ActionIfThenElse.h"
+#include "ActionSkipRemainingActions.h"
+#include "ActionContinue.h"
 #include "IPP.h"
 #pragma endregion
 
@@ -24,34 +27,53 @@ void c_script_tree_fade_enter(void)
 	
 	
 	
-		//if (tree->GetStance())
-		//{
-		//	return;
-		//}
+		if (tree->GetStance())
+		{
+			return;
+		}
 		tree->SetColorFilter(1.f, 1.f, 1.f, 0.30f);
 		tree->CastShadow(false);
-		//tree->SetStance(1);
+		tree->SetStance(1);
 	}
 	//else if(Global::GetInstance()->m_enteringObject.get() == Global::GetInstance()->m_lastSelectedUnit.get())
 	//{
+	//	
 	//	class Tree* const tree = (class Tree* const)((class RegionC* const)Global::GetInstance()->m_triggeringRegion.get())->GetParent().get();
 	//	class EObject* const object = (class EObject* const)Global::GetInstance()->m_enteringObject.get();
 	//
-	//	class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
-	//	action->push(new ActionWaitUntil(ConditionFactory::CreateOrCondition(
-	//		ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIntersectsWithRegion(
-	//			Global::GetInstance()->m_enteringObject, Global::GetInstance()->m_triggeringRegion),
-	//			new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS
-	//		),
-	//		ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(
-	//			object),
-	//			new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS
-	//		))));
-	//	action->push(new ActionWaitUntil(nullptr));
-	//	action->push(new ActionSetShadowCast(tree, true));
-	//	action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
-	//	action->push(new ActionTreeSetStance(tree, 0));
-	//	Timer::CreateInstantTimer(action);
+	//	if(tree&&object)
+	//	{
+	//		if (tree->GetStance() == modern_false)
+	//		{
+	//			tree->SetColorFilter(1.f, 1.f, 1.f, 0.30f);
+	//			tree->CastShadow(false);
+	//		}
+	//
+	//		class ActionExecuteActionArray* const action = new ActionExecuteActionArray();
+	//
+	//		action->push(new ActionWaitUntil(ConditionFactory::CreateOrCondition(
+	//			ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIntersectsWithRegion(
+	//				Global::GetInstance()->m_enteringObject, Global::GetInstance()->m_triggeringRegion),
+	//				new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS
+	//			),
+	//			ConditionFactory::CreateBooleanCondition(new BooleanVariableObjectIsSelected(
+	//				object),
+	//				new ConstBooleanVariable(false), BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS
+	//			))));
+	//
+	//		action->push(new ActionIfThenElse(
+	//			ConditionFactory::CreateBooleanCondition(
+	//				new BooleanVariableTreeStance(tree),
+	//				new ConstBooleanVariable(true),
+	//				BooleanOperatorType::BOOLEAN_OPERATOR_TYPE_EQUALS
+	//			),
+	//			new ActionSkipRemainingActions(),
+	//			new ActionContinue()));
+	//		action->push(new ActionSetShadowCast(tree, true));
+	//		action->push(new ActionApplyColorFilter(tree, DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f)));
+	//		//action->push(new ActionTreeSetStance(tree, 0));
+	//	}
+	////	Timer::CreateInstantTimer(action);
 	//}
 }
 
@@ -61,7 +83,7 @@ void c_script_tree_fade_leave(void)
 	{
 		class Tree* const tree = (class Tree* const)((class RegionC* const)Global::GetInstance()->m_triggeringRegion.get())->GetParent().get();
 	
-		//tree->SetStance(0);
+		tree->SetStance(0);
 		tree->SetColorFilter(1.f, 1.f, 1.f, 1.f);
 		tree->CastShadow();
 	}

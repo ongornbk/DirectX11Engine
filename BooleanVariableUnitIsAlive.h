@@ -1,13 +1,14 @@
 #pragma once
 #include "IBooleanVariable.h"
-class Unit;
+#include "Unit.h"
 
 class BooleanVariableUnitIsAlive :
 	public IBooleanVariable
 {
-	class Unit* unit;
+	class modern_handle unit;
 public:
 	BooleanVariableUnitIsAlive(class Unit* const __unit);
+	BooleanVariableUnitIsAlive(const class modern_handle& __unit);
 	const bool get() override;
 };
 
