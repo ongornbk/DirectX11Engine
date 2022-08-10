@@ -12,8 +12,6 @@ namespace
 }
 
 
-
-
 struct __sort__SortByY {
 	bool _cdecl operator()( class EObject* const a,  class EObject* const b) const modern_except_state;
 };

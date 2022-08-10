@@ -10,8 +10,9 @@
 #include <streambuf>
 #include "modern/modern_vector.h"
 #include "modern/modern_file.h"
-#include "modern/modern_thread.h"
 #include "modern/modern_string.h"
+#include "modern/modern_mqueue.h"
+#include "modern/modern_thread_pool.h"
 
 #pragma region
 #define SETTINGS Settings::get()->
@@ -23,21 +24,26 @@
 
 using std::string;
 
+
+
 extern "C" {
 	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 
-	unsigned int _stdcall foof(void*)
-	{
-		ipp::Console::Println(modern_string(L"Wolololo"),modern_string(_Thrd_id()));
-		return 0;
-	}
+
 }
+
+
 
 void main(const int argc,char** const argv)
 {
-	modern_thread f(foof);
-	f.start();
-	f.join();
+
+	//initt();
+	{
+		modern_thread_pool sdfd(100ull);
+		sdfd.start();
+		sdfd.join();
+	}
+
 
 	{
 
@@ -103,6 +109,8 @@ void main(const int argc,char** const argv)
 
 		delete frameWork;
 	}
+
+	//f.join();
 
 	return;
 }

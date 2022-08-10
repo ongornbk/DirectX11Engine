@@ -398,6 +398,8 @@
     <ClInclude Include="modern\modern_math.h" />
     <ClInclude Include="modern\modern_memory.h" />
     <ClInclude Include="modern\modern_minheap.h" />
+    <ClInclude Include="modern\modern_mqueue.h" />
+    <ClInclude Include="modern\modern_mqueue_handle.h" />
     <ClInclude Include="modern\modern_node256.h" />
     <ClInclude Include="modern\modern_pack2.h" />
     <ClInclude Include="modern\modern_pack4.h" />
@@ -410,6 +412,7 @@
     <ClInclude Include="modern\modern_string_casting_type.h" />
     <ClInclude Include="modern\modern_string_view.h" />
     <ClInclude Include="modern\modern_thread.h" />
+    <ClInclude Include="modern\modern_thread_pool.h" />
     <ClInclude Include="modern\modern_timer.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_vector.h" />
@@ -679,10 +682,13 @@
     <ClCompile Include="modern\modern_framelock.cpp" />
     <ClCompile Include="modern\modern_guard.cpp" />
     <ClCompile Include="modern\modern_handle.cpp" />
+    <ClCompile Include="modern\modern_mqueue.cpp" />
+    <ClCompile Include="modern\modern_mqueue_handle.cpp" />
     <ClCompile Include="modern\modern_queue.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
     <ClCompile Include="modern\modern_string_view.cpp" />
+    <ClCompile Include="modern\modern_thread_pool.cpp" />
     <ClCompile Include="modern\modern_timer.cpp" />
     <ClCompile Include="modern\modern_vector.cpp" />
     <ClCompile Include="MultiSound.cpp" />
@@ -765,6 +771,7 @@
     <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="DeleteArrayTrash.inl" />
     <None Include="GarbageCollector.inl" />
     <None Include="modern\modern_math.inl" />

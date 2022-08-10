@@ -1161,6 +1161,15 @@
     <ClInclude Include="modern\modern_thread.h">
       <Filter>Header Files\modern</Filter>
     </ClInclude>
+    <ClInclude Include="modern\modern_mqueue.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_mqueue_handle.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_thread_pool.h">
+      <Filter>Header Files\modern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp">
@@ -1907,6 +1916,15 @@
     <ClCompile Include="ActionContinue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="modern\modern_mqueue.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_mqueue_handle.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
+    <ClCompile Include="modern\modern_thread_pool.cpp">
+      <Filter>Header Files\modern</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
@@ -2059,6 +2077,7 @@
     <None Include="x64\Release\bin\shaders\text.fx">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc">

@@ -1,3 +1,8 @@
+#pragma once
+#include "modern_memory.h"
+#include "modern_queue.h"
+#include "modern_mqueue_handle.h"
+
 /*
 Copyright(C) < 08.10.2022 > ongornbk@gmail.com
 
@@ -11,60 +16,30 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 
 modern is a trademark of ongornbk@gmail.com.
 */
-#include "modern_def.h"
 
-#include <xthreads.h>
-#include <thread>
+class modern_mqueue_handle;
 
-typedef _Thrd_t modern_thread_t;
-
-class modern_thread
+class modern_mqueue : modern_class
 {
-	modern_thread_t            m_thread;
-    _beginthreadex_proc_type     m_foo;
+	class modern_queue m_queue;
 
-    modern_thread() = delete;
 public:
-	modern_thread(_beginthreadex_proc_type foo) modern_except_state : m_thread{}, m_foo(foo) {}
 
-    ~modern_thread() modern_except_state {
-        if (joinable()) {
-            _STD terminate();
-        }
-    }
+	modern_mqueue();
 
-    void start() {
+	~modern_mqueue();
 
-        //_beginthread_proc_type;
-        m_thread._Hnd = reinterpret_cast<void*>(_CSTD _beginthreadex(nullptr, 0, m_foo, 0, 0, &m_thread._Id));
-        if (m_thread._Hnd)
-        {
+	[[nodiscard]]class modern_mqueue_handle&& obtain();//No discard bugg, so do not discard!!!! only if ref returned
 
-        }
-        else {
-            m_thread._Id = 0;
-            std::_Throw_Cpp_error(std::_RESOURCE_UNAVAILABLE_TRY_AGAIN);
-        }
-    }
+private:
 
-    _NODISCARD bool joinable() const modern_except_state
-    {
-        return m_thread._Id != 0;
-    }
+	friend class modern_mqueue_handle;
 
-    void join() {
-        if (!joinable()) {
-            std::_Throw_Cpp_error(std::_INVALID_ARGUMENT);
-        }
-
-        if (m_thread._Id == _Thrd_id()) {
-            std::_Throw_Cpp_error(std::_RESOURCE_DEADLOCK_WOULD_OCCUR);
-        }
-
-        if (_Thrd_join(m_thread, nullptr) != _Thrd_success) {
-            std::_Throw_Cpp_error(std::_NO_SUCH_PROCESS);
-        }
-
-        m_thread = {};
-    }
+	void* const front() const modern_except_state;
+	
+	void* const pop();
+	
+	void push(void* const element);
 };
+
+typedef class modern_mqueue_handle& modern_mqueue_handle_ref;

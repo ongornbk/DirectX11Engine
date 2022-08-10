@@ -17,6 +17,7 @@
 #include "modern/modern_vector.h"
 #include "modern/modern_bpair.h"
 #include "compilation_header.h"
+#include "modern/modern_thread.h"
 #include <map>
 #include <streambuf>
 #include <fstream>
@@ -253,6 +254,7 @@ namespace
 	}
 }
 
+
 void Engine::Run()
 {
 	//clock_t beginFrame = clock();
@@ -260,11 +262,11 @@ void Engine::Run()
 	m_timer->Restart();
 
 	{
-
+		
 
 		Update();
-	}
 
+	}
 	{
 		Render();
 	}
@@ -698,4 +700,9 @@ void Engine::InitializeActionMap()
 	map->AddAction(__action__remove__object__, "RemoveObject");
 	map->AddAction(__action__apply__color__filter__, "ApplyColorFilter");
 	map->AddAction(__action__message__front, "MessageFront");
+}
+
+void Engine::mUpdate()
+{
+	Update();
 }

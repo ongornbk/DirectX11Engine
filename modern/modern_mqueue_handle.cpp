@@ -1,3 +1,7 @@
+#include "modern_mqueue_handle.h"
+#include "modern_mqueue.h"
+
+
 /*
 Copyright(C) < 08.10.2022 > ongornbk@gmail.com
 
@@ -11,60 +15,33 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 
 modern is a trademark of ongornbk@gmail.com.
 */
-#include "modern_def.h"
 
-#include <xthreads.h>
-#include <thread>
+modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue* const queue) : modern_guard((struct modern_class* const)queue), m_queue(queue)
+	{
 
-typedef _Thrd_t modern_thread_t;
+	}
 
-class modern_thread
-{
-	modern_thread_t            m_thread;
-    _beginthreadex_proc_type     m_foo;
+modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue_handle&& handle) modern_except_state :
+		m_queue(std::move(handle.m_queue)),
+		modern_guard(std::move((struct modern_class* const)handle.m_queue))
+	{}
 
-    modern_thread() = delete;
-public:
-	modern_thread(_beginthreadex_proc_type foo) modern_except_state : m_thread{}, m_foo(foo) {}
+modern_mqueue_handle::~modern_mqueue_handle()
+	{
 
-    ~modern_thread() modern_except_state {
-        if (joinable()) {
-            _STD terminate();
-        }
-    }
+	}
 
-    void start() {
+	void* const modern_mqueue_handle::front() const modern_except_state
+	{
+		return m_queue->front();
+	}
 
-        //_beginthread_proc_type;
-        m_thread._Hnd = reinterpret_cast<void*>(_CSTD _beginthreadex(nullptr, 0, m_foo, 0, 0, &m_thread._Id));
-        if (m_thread._Hnd)
-        {
+	void* const modern_mqueue_handle::pop()
+	{
+		return m_queue->pop();
+	}
 
-        }
-        else {
-            m_thread._Id = 0;
-            std::_Throw_Cpp_error(std::_RESOURCE_UNAVAILABLE_TRY_AGAIN);
-        }
-    }
-
-    _NODISCARD bool joinable() const modern_except_state
-    {
-        return m_thread._Id != 0;
-    }
-
-    void join() {
-        if (!joinable()) {
-            std::_Throw_Cpp_error(std::_INVALID_ARGUMENT);
-        }
-
-        if (m_thread._Id == _Thrd_id()) {
-            std::_Throw_Cpp_error(std::_RESOURCE_DEADLOCK_WOULD_OCCUR);
-        }
-
-        if (_Thrd_join(m_thread, nullptr) != _Thrd_success) {
-            std::_Throw_Cpp_error(std::_NO_SUCH_PROCESS);
-        }
-
-        m_thread = {};
-    }
-};
+	void modern_mqueue_handle::push(void* const element)
+	{
+		m_queue->push(element);
+	}

@@ -9,7 +9,7 @@
 namespace
 {
 	static ipp::Console* m_instance = nullptr;
-	static std::mutex m_consoleMutex;
+	//static std::mutex m_consoleMutex;
 	static std::ofstream m_cstream;
 }
 
@@ -25,12 +25,16 @@ ipp::Console::Console(void) : __Console()
 
 ipp::Console* ipp::Console::GetInstance()
 {
-	std::lock_guard<std::mutex> guard(m_consoleMutex);
+	//std::lock_guard<std::mutex> guard(m_consoleMutex);
 	if (m_instance)
 	{
 		return m_instance;
 	}
-	else return new Console();
+	else
+	{
+		m_instance = new Console();
+	}
+	return m_instance;
 }
 
 void ipp::Console::Release()

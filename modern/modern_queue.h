@@ -1,3 +1,4 @@
+#pragma once
 #include "modern_memory.h"
 #include "modern_element.h"
 

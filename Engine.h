@@ -105,5 +105,7 @@ private:
 
 	lua_State*       m_lua;
 
+public:
 
+	void mUpdate();
 };
