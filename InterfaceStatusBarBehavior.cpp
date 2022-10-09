@@ -4,6 +4,8 @@
 #include "UserInterface.h"
 #include "LUAManager.h"
 #include "Options.h"
+#include "GPUMemory.h"
+#include "modern/modern_guard.h"
 
 InterfaceStatusBarBehavior::InterfaceStatusBarBehavior(Interface* const inter) :
 	m_owner(inter), m_status(1.f)
@@ -58,8 +60,8 @@ void InterfaceStatusBarBehavior::SetStatusCutYAnchorBottom(const float status)
 	vertices[2].position = DirectX::XMFLOAT3(m_owner->m_box.Extents.x, m_owner->m_height * status, 0.0f);
 	vertices[3].position = DirectX::XMFLOAT3(m_owner->m_box.Extents.x, 0.0f, 0.0f);
 
-	//#pragma omp critical
 	{
+		modern_guard g(GPUMemory::get());
 		HRESULT result = Engine::GetEngine()->GetGraphics()->GetDeviceContext()->Map(m_owner->m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 		if (FAILED(result))
 		{
@@ -98,6 +100,7 @@ void InterfaceStatusBarBehavior::SetStatusCutXAnchorLeft(const float status)
 
 	//#pragma omp critical
 	{
+		modern_guard g(GPUMemory::get());
 		HRESULT result = Engine::GetEngine()->GetGraphics()->GetDeviceContext()->Map(m_owner->m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 		if (FAILED(result))
 		{

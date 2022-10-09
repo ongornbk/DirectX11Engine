@@ -4,6 +4,11 @@
 #include "Timer.h"
 #include <iostream>
 
+EObject* const EObject::GetClosestObject() const
+{
+    return nullptr;
+}
+
 const modern_handle& EObject::GetHandle()
 {
     return m_object;

@@ -53,5 +53,6 @@ void Global::release()
 	m_lastPickedUnit.release();
 	m_castingUnit.release();
 	m_levelingUnit.release();
+	m_pickedPlayer.release();
 }
 

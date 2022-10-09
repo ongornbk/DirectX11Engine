@@ -195,7 +195,7 @@ void TextFont::LoadFontFromFile(std::string filename,float width,float height)
 	ifstream stream(filename);
 	if (!stream.good())
 	{
-		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 		ipp::Console::Println("Bad stream : " + filename);
 	}
 	string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
@@ -305,7 +305,7 @@ void TextFont::InitializeCoordinates(class modern_vector<float>& coords)
 
 	if (coords.size() < 148)
 	{
-		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 		ipp::Console::Print("Font coords error - invalid number of coords : ");
 		ipp::Console::Println(coords.size());
 		return;

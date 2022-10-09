@@ -136,7 +136,7 @@ void Projectile::Intersect(EObject* const other)
             //owner not guarded
             class Unit* const owner = (class Unit* const)m_owner.get();
             class Unit* const target = (class Unit* const)other;
-            if (owner && owner != target)
+            if (owner && owner != target&& owner->GetOwner().get() != target->GetOwner().get())
             {
                 modern_shared_guard guard(owner);
                 

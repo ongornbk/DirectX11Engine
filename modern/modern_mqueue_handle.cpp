@@ -16,15 +16,30 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
-modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue* const queue) : modern_guard((struct modern_class* const)queue), m_queue(queue)
+modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue* const queue)
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	: 
+modern_guard((struct modern_class* const)queue), m_queue(queue)//, m_size(0ll)
+#else
+	:
+m_queue(queue)
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
 	{
-
+	//m_state.store(modern_true, std::memory_order_seq_cst);
 	}
 
-modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue_handle&& handle) modern_except_state :
+modern_mqueue_handle::modern_mqueue_handle(class modern_mqueue_handle&& handle) modern_except_state
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	:
 		m_queue(std::move(handle.m_queue)),
 		modern_guard(std::move((struct modern_class* const)handle.m_queue))
-	{}
+#else
+	:
+	m_queue(std::move(handle.m_queue))
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
+{
+
+}
 
 modern_mqueue_handle::~modern_mqueue_handle()
 	{
@@ -38,10 +53,16 @@ modern_mqueue_handle::~modern_mqueue_handle()
 
 	void* const modern_mqueue_handle::pop()
 	{
+		//m_size--;
+		//if (m_size == 0)
+		//{
+		////	m_state.store(modern_false, std::memory_order::memory_order_seq_cst);
+		//}
 		return m_queue->pop();
 	}
 
 	void modern_mqueue_handle::push(void* const element)
 	{
+		//m_size++;
 		m_queue->push(element);
 	}

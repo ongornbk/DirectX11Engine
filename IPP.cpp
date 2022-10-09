@@ -4,7 +4,8 @@
 #include <fstream>
 #include <string>
 #include <inttypes.h>
-
+#include "MPManager.h"
+#include "TaskPrintlnString.h"
 
 namespace
 {
@@ -56,20 +57,26 @@ void ipp::Console::Println(std::wstring text)
 	GetInstance()->__Print((const wchar_t*)(text + L"\n").c_str());
 }
 
-void ipp::Console::Println(std::string text, TextColors color)
+void ipp::Console::Println(std::string text, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	GetInstance()->__Print(text + "\n", color);
 }
 
-void ipp::Console::Println(std::string text, std::wstring wide, TextColors color)
+void ipp::Console::Println(std::string text, std::wstring wide, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	GetInstance()->__Print(text, wide, color);
 	GetInstance()->__Print('\n');
 }
 
-void ipp::Console::Println(const modern_string& str0, const modern_string& str1, TextColors color)
+void ipp::Console::Println(const modern_string& str0, const modern_string& str1, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	GetInstance()->__Println(str0, str1, color);
+}
+
+void ipp::Console::Println(const modern_string& str0, const enum MODERN_CONSOLE_TEXT_COLOR color)
+{
+	//GetInstance()->__Println(str0, color);
+	MPManager::Get()->push(new TaskPrintlnString(str0,color));
 }
 
 void ipp::Console::Println(const modern_string& str0, const modern_string& str1)
@@ -152,7 +159,7 @@ void ipp::Console::SetCursorPosition(int16_t x, int16_t y)
 	GetInstance()->__SetCursorPosition(x, y);
 }
 
-void ipp::Console::SetTextColor(TextColors color)
+void ipp::Console::SetTextColor(const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	GetInstance()->__SetTextColor(color);
 }
@@ -214,14 +221,14 @@ void ipp::__Console::__Print(const wchar_t* text)
 	wprintf(L"%s", text);
 }
 
-void ipp::__Console::__Print(std::string text, TextColors color)
+void ipp::__Console::__Print(std::string text, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	//m_cstream << text;
 	SetConsoleTextAttribute(m_outputHandle, color);
 	printf("%s", text.c_str());
 }
 
-void ipp::__Console::__Print(std::string text, std::wstring wide, TextColors color)
+void ipp::__Console::__Print(std::string text, std::wstring wide, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	//m_cstream << text;
 	SetConsoleTextAttribute(m_outputHandle, color);
@@ -229,7 +236,7 @@ void ipp::__Console::__Print(std::string text, std::wstring wide, TextColors col
 	wprintf(L"%s", wide.c_str());
 }
 
-void ipp::__Console::__Println(const modern_string& str0, const modern_string& str1, TextColors color)
+void ipp::__Console::__Println(const modern_string& str0, const modern_string& str1, const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 	wprintf(L"%s", str0.c_wstr());
@@ -240,6 +247,12 @@ void ipp::__Console::__Println(const modern_string& str0, const modern_string& s
 {
 	wprintf(L"%s", str0.c_wstr());
 	wprintf(L"%s\n", str1.c_wstr());
+}
+
+void ipp::__Console::__Println(const modern_string& str0, const enum MODERN_CONSOLE_TEXT_COLOR color)
+{
+	SetConsoleTextAttribute(m_outputHandle, color);
+	wprintf(L"%s\n", str0.c_wstr());
 }
 
 void ipp::__Console::__Println(const modern_string& str0, const modern_string_view& str1)
@@ -303,7 +316,7 @@ void ipp::__Console::__SetCursorPosition(int16_t x, int16_t y)
 	SetConsoleCursorPosition(m_outputHandle, { x,y });
 }
 
-void ipp::__Console::__SetTextColor(TextColors color)
+void ipp::__Console::__SetTextColor(const enum MODERN_CONSOLE_TEXT_COLOR color)
 {
 	SetConsoleTextAttribute(m_outputHandle, color);
 }

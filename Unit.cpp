@@ -25,6 +25,7 @@
 #include "SettingsC.h"
 #include "InterfaceStatusBarBehavior.h"
 #include "EventManager.h"
+#include "GPUMemory.h"
 #include "modern/modern_bpair.h"
 
 Unit::Unit() :
@@ -152,6 +153,49 @@ void Unit::Initialize(
 	const bool wander
 )
 {
+	m_name = L"Barbarian";
+	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(paths);
+
+
+	m_rotations = (float)ptr->m_rotations;
+	assert(m_rotations >= 1.f);
+	if (m_rotations < 1.f)
+		m_rotations = 1.f;
+
+	m_size = size;
+	m_lastSize = size;
+	m_boundingSphere.Radius = collision;
+	m_boundingSphere.Center = position;
+	m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
+
+	InitializeModel(device, deviceContext, shader, ptr);
+	m_wanderingFlag = wander;
+
+	switch (ptr->m_leaveCorpse)
+	{
+	case true:
+		m_decayType = UnitDecay::ENUM_LEAVE_CORPSE;
+		break;
+	case false:
+		m_decayType = UnitDecay::ENUM_DECAY;
+		break;
+	}
+}
+
+void Unit::Initialize(
+	ID3D11Device* const device,
+	ID3D11DeviceContext* const deviceContext,
+	Shader* const shader,
+	const char* const paths,
+	const float size,
+	const float collision,
+	const DirectX::XMFLOAT3& position,
+	const bool wander,
+	class Player* const owner
+)
+{
+	m_owner.make_handle(owner->GetHandle());
 	m_name = L"Barbarian";
 	struct ModelPaths* const ptr = S_ModelPaths::GetModelPaths(paths);
 
@@ -326,7 +370,7 @@ void Unit::Update(const float dt)
 
 		if (m_tasks.Update())
 		{
-
+		
 		}
 		else
 		{
@@ -338,7 +382,7 @@ void Unit::Update(const float dt)
 			{
 				if (m_stop)
 				{
-
+			
 				}
 				else
 				{
@@ -349,7 +393,7 @@ void Unit::Update(const float dt)
 						Unit::EndRunning();
 					}
 				}
-
+			
 			}
 		}
 
@@ -449,9 +493,9 @@ void Unit::Update(const float dt)
 			vertices[3].uv.x = (m_currentFrame + 1.f) / m_modelVariant.GetMaxFrames();
 			vertices[3].uv.y = (m_rotation[0] + 1.f) / m_rotations;
 
-
-//#pragma omp critical
+			
 			{
+				modern_guard g(GPUMemory::get());
 				HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource);
 				if (FAILED(result))
 				{
@@ -548,7 +592,8 @@ void Unit::Intersect(class EObject* const other)
 					}
 					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
 					{
-						if (this->IsAttacking() || ((class Unit*)other)->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/)
+						class Unit* const otheru = (class Unit* const)other;
+						if (this->IsAttacking() || otheru->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/|| (m_owner.get() == otheru->GetOwner().get()))
 						{
 					
 						}
@@ -556,7 +601,7 @@ void Unit::Intersect(class EObject* const other)
 						{
 							TaskAttack* task = new TaskAttack();
 							task->object.make_handle(this_handle);
-							task->target.make_handle(other->GetHandle());
+							task->target.make_handle(otheru->GetHandle());
 							task->Initialize();
 							m_tasks.SetTask(task);
 						}
@@ -1390,6 +1435,11 @@ class ISound * Unit::GetFootstepsSound() const modern_except_state
 modern_string const& Unit::GetName() modern_except_state
 {
 	return m_name;
+}
+
+modern_handle& Unit::GetOwner()
+{
+	return m_owner;
 }
 
 void Unit::Resize(

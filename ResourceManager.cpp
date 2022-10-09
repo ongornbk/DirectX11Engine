@@ -73,7 +73,7 @@ ResourceManager::ResourceManager()
 		{
 			if (FAILED(GetItemByUrl(RESOURCES_URL, RESOURCES_LOCATION)))
 			{
-				Console::Println(("Download Failed : " + string(RESOURCES_URL)), ipp::RED);
+				Console::Println((modern_string(L"Download Failed : ") << modern_string(RESOURCES_URL)), MODERN_CONSOLE_TEXT_COLOR::RED);
 				return;
 			}
 			else
@@ -141,7 +141,7 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 		//	if (!resourceShader->Load(m_device,hwnd, shaderFileName))
 		//	{
 		//		delete resourceShader;
-		//		Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), ipp::RED);
+		//		Console::Println(("Download Failed : " + string(m_resourcesURLS[str])), MODERN_CONSOLE_TEXT_COLOR::RED);
 		//		return;
 		//	}
 		//	else
@@ -154,11 +154,12 @@ void ResourceManager::LoadShaderResource(HWND hwnd, WCHAR* shaderFileName)
 		//else
 		//{
 			delete resourceShader;
-			Console::SetTextColor(ipp::RED);
-			Console::Print("Load Failed : ");
-			if (shaderFileName == L"")
-				shaderFileName = L"-empty wstring-";
-			Console::Println(wstring(shaderFileName));
+			//Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
+			//Console::Print("Load Failed : ");
+			//if (shaderFileName == L"")
+			//	shaderFileName = L"-empty wstring-";
+			Console::Println(modern_string(L"Load Failed : ") << modern_string(shaderFileName), MODERN_CONSOLE_TEXT_COLOR::RED);
+			
 			return;
 		//}
 	}
@@ -174,7 +175,7 @@ void ResourceManager::LoadShaderResource(Shader * shader)
 	if (!resourceShader->Load(shader))
 	{
 		delete resourceShader;
-		Console::Println("Unable to load shader!", ipp::RED);
+		Console::Println(modern_string(L"Unable to load shader!"), MODERN_CONSOLE_TEXT_COLOR::RED);
 		return;
 	}
 	m_shaders.push_back(resourceShader);
@@ -187,7 +188,7 @@ void ResourceManager::LoadTextureResource(const class modern_string& name)
 	class ResourceTexture* const resourceTexture = new class ResourceTexture();
 	if (resourceTexture->Load(m_device, name))
 	{
-		Console::Println("Load Succesfull : ", name, ipp::LIGHTGREEN);
+		Console::Println(modern_string(L"Load Succesfull : "), name, MODERN_CONSOLE_TEXT_COLOR::LIGHTGREEN);
 		m_textures.push_back(resourceTexture);
 		return;
 
@@ -195,7 +196,7 @@ void ResourceManager::LoadTextureResource(const class modern_string& name)
 	else
 	{
 		delete resourceTexture;
-		Console::Println("Load Failed : ", name, ipp::RED);
+		Console::Println(modern_string(L"Load Failed : "), name, MODERN_CONSOLE_TEXT_COLOR::RED);
 		return;
 	}
 
@@ -207,14 +208,14 @@ void ResourceManager::LoadSoundResource(class modern_string& name, const enum cl
 	class ResourceSound* const resourceSound = new class ResourceSound();
 	if (resourceSound->Load(name, type))
 	{
-		Console::Println(L"Load Succesfull : ", name, ipp::LIGHTGREEN);
+		Console::Println(L"Load Succesfull : ", name, MODERN_CONSOLE_TEXT_COLOR::LIGHTGREEN);
 		m_sounds.push_back(resourceSound);
 		return;
 	}
 	else
 	{
 		delete resourceSound;
-		Console::Println(L"Load Failed : ", name, ipp::RED);
+		Console::Println(L"Load Failed : ", name, MODERN_CONSOLE_TEXT_COLOR::RED);
 		return;
 	}
 }
@@ -226,21 +227,32 @@ void ResourceManager::LoadUnitTemplateResource(modern_string& filename)
 void ResourceManager::PrintOutTextures()
 {
 
-	Console::SetTextColor(ipp::GOLDEN);
-	Console::Print((int)m_textures.size());
-	Console::Println(" Textures found ...");
+	//Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::GOLDEN);
+	//Console::Print((int)m_textures.size());
+	//Console::Println(" Textures found ...");
+	//
+	//for (int i = 0; i < (int)m_textures.size(); i++)
+	//{
+	//	Console::Print((void*)m_textures[i]);
+	//	Console::Println(L" : ", m_textures[i]->GetName());
+	//}
 
-	for (int i = 0; i < (int)m_textures.size(); i++)
+	modern_string str(m_textures.size());
+	str << modern_string(L" Textures found ...\n");
+	for (size_t i = 0ull; i < m_textures.size(); ++i)
 	{
-		Console::Print((void*)m_textures[i]);
-		Console::Println(L" : ", m_textures[i]->GetName());
+		str << modern_string(m_textures[i]->GetName().c_wstr()) << modern_string(L"\n");
+		//Console::Print((void*)m_textures[i]);
+		//Console::Println(L" : ", m_textures[i]->GetName());
 	}
+	//throw modern_exception(str);
+	ipp::Console::Println(str, MODERN_CONSOLE_TEXT_COLOR::GOLDEN);
 }
 
 void ResourceManager::PrintOutSounds()
 {
 
-	Console::SetTextColor(ipp::GOLDEN);
+	Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::GOLDEN);
 	Console::Print((int)m_sounds.size());
 	Console::Println(" Sounds found ...");
 

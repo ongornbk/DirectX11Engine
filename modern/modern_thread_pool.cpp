@@ -19,20 +19,48 @@ modern is a trademark of ongornbk@gmail.com.
 
 extern "C"
 {
-	static unsigned int _stdcall slave_loop(void*)
+	unsigned int _stdcall slave_loop(void*)
 	{
-		class modern_thread_pool* m_pool = s_pool;
-		while (m_pool->state() == modern_thread_pool_state::MODERN_THREAD_POOL_STATE_RUNNING)
+		class modern_thread_pool* const m_pool = s_pool;
+		
+		if (m_pool)
 		{
 
+			void(__stdcall* const m_loop)(void) = reinterpret_cast<void(__stdcall* const)(void)>(m_pool->getLoop());
+		repeat:
+			const enum class modern_thread_pool_state state = m_pool->state();
+			switch (state)
+			{
+			case modern_thread_pool_state::MODERN_THREAD_POOL_STATE_RUNNING:
+			{
+				m_loop();
+				goto repeat;
+			}
+			case modern_thread_pool_state::MODERN_THREAD_POOL_STATE_DECREMENT:
+			{
+				if (_Thrd_id() == m_pool->get_dec())
+				{
+					break;
+				}
+				else
+				{
+					goto repeat;
+				}
+			}
+			case modern_thread_pool_state::MODERN_THREAD_POOL_STATE_STOPPED:
+			{
+				break;
+			}
+			}
 		}
 		return 0ul;
 	}
 }
 
-modern_thread_pool::modern_thread_pool(const size_t num_of_threads)
+modern_thread_pool::modern_thread_pool(const size_t num_of_threads, void(__stdcall* const loop)(void))
 	{
 		s_pool = this;
+		m_loop = loop;
 		for (size_t i = 0ull; i < num_of_threads; ++i)
 		{
 			m_threads.push_back(modern_thread(slave_loop));
@@ -51,6 +79,7 @@ modern_thread_pool::~modern_thread_pool()
 
 	void modern_thread_pool::start()
 	{
+		m_state.store(modern_thread_pool_state::MODERN_THREAD_POOL_STATE_RUNNING, std::memory_order::memory_order_seq_cst);
 		for (size_t i = 0ull; i < m_threads.size(); ++i)
 		{
 			m_threads[i].start();
@@ -64,4 +93,35 @@ modern_thread_pool::~modern_thread_pool()
 		{
 			m_threads[i].join();
 		}
+	}
+
+	void modern_thread_pool::dec()
+	{
+		if (m_threads.size() > 1ull)
+		{
+			m_dec_thrd_id = m_threads.end()->get_id();
+			m_state.store(modern_thread_pool_state::MODERN_THREAD_POOL_STATE_DECREMENT, std::memory_order::memory_order_seq_cst);
+			if (m_dec_thrd_id)
+			{
+				m_threads.end()->join();
+			}
+			m_threads.pop_end();
+		}
+	}
+
+	void modern_thread_pool::inc()
+	{
+		//resize vector
+		//m_threads.push_back(* new modern_thread(slave_loop));
+		//m_threads.end()->start();
+	}
+
+	void* const modern_thread_pool::getLoop()
+	{
+		return m_loop;
+	}
+
+	const unsigned int modern_thread_pool::get_dec() const modern_thread_safe modern_except_state
+	{
+		return m_dec_thrd_id;
 	}

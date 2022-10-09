@@ -5,6 +5,7 @@
 #include "RendererManager.h"
 #include "IPP.h"
 #include "modern/modern.h"
+#include "GPUMemory.h"
 #include <array>
 #include <fstream>
 #include <string>
@@ -720,17 +721,19 @@ void TileMap::Update(
 	vertices[3].uv.x = (m_currentFrame + 1.0f) / m_maxFrames;
 	vertices[3].uv.y = 1.0f;
 
-	HRESULT result = m_deviceContext->Map(m_animatedVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
 	{
-		return;
+		modern_guard g(GPUMemory::get());
+		HRESULT result = m_deviceContext->Map(m_animatedVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(result))
+		{
+			return;
+		}
+
+		SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+		memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_animatedVertexBuffer->GetVertexCount());
+
+		m_deviceContext->Unmap(m_animatedVertexBuffer->GetVertexBuffer(), 0);
 	}
-
-	SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
-	memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_animatedVertexBuffer->GetVertexCount());
-
-	m_deviceContext->Unmap(m_animatedVertexBuffer->GetVertexBuffer(), 0);
-
 	m_previousFrame = m_currentFrame;
 }
 

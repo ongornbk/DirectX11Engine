@@ -4,6 +4,8 @@
 #include "SettingsC.h"
 #include "IPP.h"
 #include "LUAManager.h"
+#include "MPManager.h"
+#include "GPUMemory.h"
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -13,6 +15,7 @@
 #include "modern/modern_string.h"
 #include "modern/modern_mqueue.h"
 #include "modern/modern_thread_pool.h"
+#include "modern/modern_static_array.h"
 
 #pragma region
 #define SETTINGS Settings::get()->
@@ -29,20 +32,25 @@ using std::string;
 extern "C" {
 	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 
-
 }
 
-
+//void __stdcall myloop(void)
+//{
+//	ipp::Console::GetInstance()->Println(_Thrd_id());
+//};
 
 void main(const int argc,char** const argv)
 {
 
 	//initt();
-	{
-		modern_thread_pool sdfd(100ull);
-		sdfd.start();
-		sdfd.join();
-	}
+	
+		//modern_thread_pool sdfd(100ull,myloop);
+		//sdfd.start();
+
+	
+		
+	MPManager::Initialize(1ull);
+	GPUMemory::Initialize();
 
 
 	{
@@ -51,13 +59,13 @@ void main(const int argc,char** const argv)
 		
 		if (!stream.good())
 		{
-			ipp::Console::SetTextColor(ipp::RED);
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION));
 			stream.close();
 			stream.open(SETTINGS_LOCATION2);
 			if (!stream.good())
 			{
-				ipp::Console::SetTextColor(ipp::RED);
+				ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 				ipp::Console::Println("Bad stream : " + string(SETTINGS_LOCATION2));
 				return;
 			}
@@ -78,7 +86,7 @@ void main(const int argc,char** const argv)
 
 		if (settings.size() == SETTINGS_NUMBER_OF_ARGUMENTS)
 		{
-			ipp::Console::SetTextColor(ipp::DARKGRAY);
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::DARKGRAY);
 			ipp::Console::Print("Settings::Resolution : ");
 			ipp::Console::Print(settings.at(0));
 			ipp::Console::Print(".");
@@ -92,7 +100,7 @@ void main(const int argc,char** const argv)
 		}
 		else
 		{
-			ipp::Console::SetTextColor(ipp::RED);
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::Print("Invalid number of arguments in settings.file! : ");
 			ipp::Console::Println(settings.size());
 			Settings::Initialize(800, 600, GetSystemMetrics(SM_CXSCREEN),
@@ -110,7 +118,14 @@ void main(const int argc,char** const argv)
 		delete frameWork;
 	}
 
+	//MPManager::Get()->barrier();
+	MPManager::Release();
+
+	//sdfd.join();
+
 	//f.join();
+
+	//ipp::Console::GetInstance()->GetInput();
 
 	return;
 }

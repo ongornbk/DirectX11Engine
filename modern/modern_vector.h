@@ -115,4 +115,13 @@ public:
 			std::swap(m_data[i], m_data[m_size - i - 1]);
 	}
 
+	void pop_end()
+	{
+		if (m_size)
+		{
+			m_data[m_size].~T();
+			m_size--;
+		}
+	}
+
 };

@@ -1,4 +1,5 @@
 #include "LUAManager.h"
+#include "MPManager.h"
 #include <Windows.h>
 #include <map>
 #include "IPP.h"
@@ -102,6 +103,7 @@ extern "C"
 			//}
 			//luaL_dostring(m_instance, "filename");
 			result = lua_pcall(m_instance, 0, LUA_MULTRET, 0);
+			MPManager::Get()->barrier();
 			if (result != LUA_OK) {
 				lua::PrintError();
 				return;

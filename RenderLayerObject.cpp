@@ -1,5 +1,8 @@
 #include "RenderLayerObject.h"
 #include "modern/modern_guard.h"
+#include "TaskObjectUpdate_v0.h"
+#include "TaskPack.h"
+#include "MPManager.h"
 
 RenderLayerObject::RenderLayerObject()
 {
@@ -17,6 +20,7 @@ const RenderLayerType RenderLayerObject::GetType() const modern_except_state
 void RenderLayerObject::Update(const float dt)
 {
 //#pragma omp parallel
+
 	{
 		m_size = 0ull;
 		for (int32_t i = 0; i < MAP_DIVISION; ++i)
@@ -25,19 +29,33 @@ void RenderLayerObject::Update(const float dt)
 		}
 	}
 
+	class MPManager* const mpm = MPManager::Get();
+
+	
+
 //#pragma omp for schedule(dynamic)
+
+	//mpm->begin_weak_pushing();
+
 	for (int32_t i = 0; i < MAP_DIVISION; ++i)
 	{
+		class TaskPack* const pack = new TaskPack();
 		if (!xta[i])
 			for (auto& obj : m_objects[1][i])
 			{
-				if (obj)
-				{
+				//if (obj)
+				//{
+					//mpm->weak_push(new TaskObjectUpdate_v0(obj->GetHandle(), dt));
 					//modern_guard objG(obj);
-					obj->Update(dt);
-				}
+					//obj->Update(dt);
+					pack->pack(new TaskObjectUpdate_v0(obj->GetHandle(), dt));
+				//}
 			}
+		mpm->push(pack);
 	}
+
+	//mpm->finalize_weak_pushing();
+	
 //#pragma omp barrier
 }
 
@@ -59,6 +77,7 @@ void _stdcall RenderLayerObject::QSort()
 	//{
 		QSortByXV(m_objects);
 		QSortByYV(m_objects);
+
 	//}
 	//else
 	//{
@@ -68,7 +87,10 @@ void _stdcall RenderLayerObject::QSort()
 
 	//m_counter++;
 
-	PostSort();
+		
+
+	//PostSort();not thread safe
+	
 //#pragma omp barrier
 }
 

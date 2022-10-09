@@ -49,6 +49,18 @@ public:
 		const bool wander = true
 	);
 
+	void Initialize(
+		struct ID3D11Device* const device,
+		struct ID3D11DeviceContext* const deviceContext,
+		class Shader* const shader,
+		const char* const paths,
+		const float size,
+		const float collision,
+		const struct DirectX::XMFLOAT3& position,
+		const bool wander,
+		class Player* const owner
+	);
+
 	void Initialize(class Unit* const other);
 
 	void Resize(struct ID3D11Device * const device,class Shader * const shader,const float resize);
@@ -160,6 +172,7 @@ public:
 
 	class ISound* GetFootstepsSound() const modern_except_state;
 	[[nodiscard]] class modern_string const& GetName() modern_except_state;
+	[[nodiscard]] class modern_handle& GetOwner() modern_except_state;
 
 	friend class Task;
 	friend class TaskGotoPoint;
@@ -227,7 +240,7 @@ private:
 	bool                m_wanderingFlag;
 	bool                m_isLooping;
 
-	
+	class  modern_handle m_owner;
 	struct UnitStats     m_stats;
 	struct Attack        m_attack;
 

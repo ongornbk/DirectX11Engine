@@ -7,6 +7,7 @@
 #include "TextureShader.h"
 #include "GlobalUtilities.h"
 #include "RendererManager.h"
+#include "PlayerManager.h"
 #include "Global.h"
 #include "CameraControl.h"
 #include "FrameWork.h"
@@ -19,6 +20,8 @@
 #include "modern/modern_shared.h"
 #include "modern/modern_timer.h"
 #include "modern/modern_framelock.h"
+#include "modern/modern_thread_pool.h"
+#include "modern/modern_mqueue.h"
 
 class RendererManager;
 class FrameWork;
@@ -27,9 +30,10 @@ struct lua_State;
 #undef PlaySound
 class Engine
 {
-	modern_framelock m_timerLock;
-	modern_framelock m_updateLock;
-	modern_framelock m_renderLock;
+	class modern_framelock m_timerLock;
+	class modern_framelock m_updateLock;
+	class modern_framelock m_renderLock;
+	class modern_framelock m_collisionLock;
 public:
 	~Engine(void);
 
@@ -92,6 +96,7 @@ private:
     Graphics* m_graphics;
 	Global*   m_global;
 	EventManager* m_eventManager{};
+	PlayerManager* m_playerManager;
 	static Engine* m_instance;
 	Camera* m_camera;
 	Input* m_input;

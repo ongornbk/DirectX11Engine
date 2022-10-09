@@ -3,6 +3,7 @@
 #include "IPP.h"
 #include "GlobalUtilities.h"
 #include "SettingsC.h"
+#include "MPManager.h"
 #include <omp.h>
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);
@@ -75,6 +76,7 @@ void FrameWork::Run()
 		}
 		else
 		{
+			
 			Engine::GetEngine()->Run();
 		}
 	}
@@ -193,6 +195,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 		}
 		break;
 	case WM_CLOSE:
+		MPManager::Get()->barrier();
 		PostQuitMessage(WM_CLOSE);
 		break;
 	case WM_ACTIVATEAPP:

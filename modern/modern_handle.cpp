@@ -1,6 +1,6 @@
 #include "modern_handle.h"
 #include "modern_class_view.h"
-#include <iostream>
+//#include <iostream>
 
 modern_handle& modern_handle::operator=(modern_handle const& diff)
 {

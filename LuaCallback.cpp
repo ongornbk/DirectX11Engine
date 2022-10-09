@@ -19,6 +19,8 @@
 #include "modern/modern.h"
 #include "modern/modern_class_view.h"
 #include "Timer.h"
+#include "MPManager.h"
+#include "PlayerManager.h"
 
 #include <atlbase.h>
 
@@ -337,6 +339,7 @@ namespace lua_callback
 			struct lua_State* const state
 		) modern_except_state
 		{
+			//MPManager::Release();
 			PostQuitMessage(( int32)lua_tointeger(state, 1));
 			return 0;
 		}
@@ -728,13 +731,13 @@ namespace lua_callback
 			}
 			else
 			{
-				ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+				ipp::Console::GetInstance()->SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 				ipp::Console::GetInstance()->Println("Failed To Set Sound :: " + str);
 			}
 		}
 		else
 		{
-			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::GetInstance()->Println("Failed To Set Sound :: Bad Unit Pointer!!!");
 		}
 		return 0;
@@ -753,7 +756,7 @@ namespace lua_callback
 		}
 		else
 		{
-			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::GetInstance()->Println("Failed To Begin Running :: Bad Unit Pointer!!!");
 		}
 		return 0;
@@ -771,7 +774,7 @@ namespace lua_callback
 		}
 		else
 		{
-			ipp::Console::GetInstance()->SetTextColor(ipp::TextColors::RED);
+			ipp::Console::GetInstance()->SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::GetInstance()->Println("Failed To End Running :: Bad Unit Pointer!!!");
 		}
 		return 0;
@@ -794,6 +797,7 @@ namespace lua_callback
 	) modern_except_state
 	{
 		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
+		
 		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
 		if (unit)
 		{
@@ -808,7 +812,8 @@ namespace lua_callback
 				(float)lua_tointeger(state, 3),
 				(float)lua_tointeger(state, 4),
 				struct DirectX::XMFLOAT3((float)lua_tointeger(state, 5),(float)lua_tointeger(state, 6),0.f),
-				lua_toboolean(state, 8)
+				lua_toboolean(state, 8),
+				PlayerManager::GetInstance()->SlotToPlayer(enum_cast<enum class PlayerSlot>(lua_tointeger(state, 9)))
 			);
 			m_renderer->PushUnit(unit);
 		}
@@ -972,7 +977,7 @@ namespace lua_callback
 		}
 		else
 		{
-			ipp::Console::SetTextColor(ipp::TextColors::RED);
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 			ipp::Console::Print("Interface initialization failed : ");
 			ipp::Console::Println(lua_tostring(state, 2));
 		}
@@ -1467,7 +1472,7 @@ namespace lua_callback
 		}
 		else
 		{
-			ipp::Console::SetTextColor(ipp::TextColors::RED);///
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);///
 			ipp::Console::Println("Game chat has not been initialized!");///
 		}
 		return 0;
@@ -1485,7 +1490,7 @@ namespace lua_callback
 		}
 		else
 		{
-			ipp::Console::SetTextColor(ipp::TextColors::RED);///
+			ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);///
 			ipp::Console::Println("Game chat has not been initialized!");///
 		}
 		return 0;

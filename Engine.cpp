@@ -34,6 +34,7 @@ namespace
 {
 	static ISound*                  m_playingMusic = nullptr;
 
+
 }
 
 
@@ -46,6 +47,11 @@ Engine::~Engine(void)
 
 	//ThreadPoolHandle tph;
 	//tph.wait();
+	if (m_playerManager)
+	{
+		delete m_playerManager;
+		m_playerManager = nullptr;
+	}
 	if (m_eventManager)
 	{
 		delete m_eventManager;
@@ -97,7 +103,8 @@ double Engine::GetDeltaTime() const modern_except_state
 }
 
 Engine::Engine(void) :
-	m_updateLock(modern_framelock(320.0)),
+	m_collisionLock(modern_framelock(32.0)),
+	m_updateLock(modern_framelock(1000.0)),
 	m_timerLock(modern_framelock(100.0)),
 	m_renderLock(modern_framelock(60.0))
 {
@@ -112,6 +119,7 @@ Engine::Engine(void) :
 	m_global          = nullptr;
 	m_framework       = nullptr;
 	m_lua             = nullptr;
+	m_playerManager = new PlayerManager();
 #pragma endregion
 
 	m_timer.make_shared(new modern_timer());
@@ -130,11 +138,11 @@ bool Engine::InitializeGraphics(HWND hwnd)
 bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
 
-	ipp::Console::Println("Engine::Initialize");
+	//ipp::Console::Println(modern_string(L"Engine::Initialize"),MODERN_CONSOLE_TEXT_COLOR::);
 
 	Initialize_CPU();
 
-	ipp::Console::Println("Engine::InitializeCpu");
+	//ipp::Console::Println("Engine::InitializeCpu");
 
 #define LOADSHADER  m_resourceManager->LoadShaderResource(hwnd, 
 #define END );
@@ -146,13 +154,13 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_camera = new Camera();
 	m_resourceManager = ResourceManager::GetInstance();
 
-	ipp::Console::Println("Engine::InitializeRM");
+	//ipp::Console::Println("Engine::InitializeRM");
 
 	InitializeActionMap();
 
 	lua_callback::Initialize(this);
 
-	ipp::Console::Println("Engine::InitializeLCB");
+	//ipp::Console::Println("Engine::InitializeLCB");
 
 	lua_callback::SetResourceManager(m_resourceManager);
 	lua_callback::SetCamera(m_camera);
@@ -165,7 +173,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	m_eventManager = new EventManager(m_lua);
 	lua::Execute(lua::LUA_LOCATION_ENGINE_INITIALIZATION);
 
-	ipp::Console::Println("Engine::Lua Open and exec");
+	//ipp::Console::Println("Engine::Lua Open and exec");
 
 #pragma region
 
@@ -183,7 +191,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 	LOADSHADER  L"../shaders/units.fx"                                END
 	LOADSHADER  L"../shaders/shadow.fx"                               END
 	LOADSHADER  L"../shaders/select.fx"                               END
-	LOADSHADER  L"x64/Release/bin/shaders/blendtile.fx"                            END
+	LOADSHADER  L"../shaders/blendtile.fx"                            END
 #endif //VS_DEBUG_COMPILATION
 
 	//LOADSHADER  L"x64/Release/bin/Shaders/interface.fx"                            END
@@ -230,7 +238,7 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 
 	else
 	{
-		ipp::Console::Println("No game component!", ipp::TextColors::RED);
+		ipp::Console::Println(modern_string(L"No game component!"),MODERN_CONSOLE_TEXT_COLOR::RED);
 	}
 	
 
@@ -381,7 +389,7 @@ ISound * Engine::CreateSound(string name, float volume, bool looping)
 	}
 	else
 	{
-		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 		ipp::Console::Println("Cannot get sound : " + name);
 	}
 	return sound;
@@ -544,6 +552,7 @@ void Engine::Update()
 			//	float dt = GetDeltaTime();
 				m_updateLock.Update(dt);
 				m_renderLock.Update(dt);
+				m_collisionLock.Update(dt);
 			//}
 
 
@@ -574,14 +583,16 @@ void Engine::Update()
 					m_gameComponent->Update();
 					m_cameraControl.Update((float)ldt);
 
+					if (MPManager::Get())
 					m_rendererManager->Update((float)ldt, true);
 				}
-				else
-				{
+				//if(m_collisionLock.Run())
+				//{
+
 				m_rendererManager->Sort();
 				//EventManager::GetInstance()->PostSort();
 				
-			}
+			//}
 			
 		}
 	}

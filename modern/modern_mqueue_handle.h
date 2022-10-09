@@ -19,7 +19,10 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_mqueue;
 
-class modern_mqueue_handle : modern_guard
+class modern_mqueue_handle
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	: modern_guard
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
 {
 	class modern_mqueue* m_queue;
 

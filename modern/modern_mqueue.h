@@ -1,7 +1,9 @@
 #pragma once
+#include "modern_def.h"
 #include "modern_memory.h"
 #include "modern_queue.h"
 #include "modern_mqueue_handle.h"
+#include "modern_condition_variable.h"
 
 /*
 Copyright(C) < 08.10.2022 > ongornbk@gmail.com
@@ -17,11 +19,23 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
+
+
 class modern_mqueue_handle;
 
-class modern_mqueue : modern_class
+
+
+class modern_mqueue
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	: modern_class
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
 {
 	class modern_queue m_queue;
+#ifdef MODERN_MQUEUE_LOCK_MUTEX
+mutable modern_condition_variable m_cv;
+mutable std::mutex m_mtx;
+mutable std::atomic<int32_t> m_size;
+#endif // MODERN_MQUEUE_LOCK_MUTEX
 
 public:
 
@@ -29,7 +43,12 @@ public:
 
 	~modern_mqueue();
 
-	[[nodiscard]]class modern_mqueue_handle&& obtain();//No discard bugg, so do not discard!!!! only if ref returned
+	class modern_mqueue_handle* const modern_mqueue::obtain_pointer();
+	[[nodiscard]]class modern_mqueue_handle&& obtain();//nodiscard!
+
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	mutable std::atomic<int32_t> m_size;
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
 
 private:
 
@@ -40,6 +59,10 @@ private:
 	void* const pop();
 	
 	void push(void* const element);
+
+public:
+
+	 void barrier() const modern_thread_safe modern_except_state;
 };
 
 typedef class modern_mqueue_handle& modern_mqueue_handle_ref;

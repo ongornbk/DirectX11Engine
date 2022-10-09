@@ -1,5 +1,6 @@
 #include "modern_math.h"
 #include <cmath>
+#include <random>
 #pragma once
 
 template <class T>
@@ -114,8 +115,12 @@ inline uint32_t modern_random(uint32_t min, uint32_t max)
 
 inline float modern_random(float min, float max)
 {
-	assert(max > min);
-	return min + (rand() / (RAND_MAX / (max - min)));
+	thread_local static std::random_device rd;
+	thread_local static std::mt19937 rng(rd());
+	//assert(max > min);
+	//return min + (rand() / (RAND_MAX / (max - min)));
+	thread_local std::uniform_real_distribution<float> urd;
+	return urd(rng, decltype(urd)::param_type{ min,max });
 }
 
 inline float modern_random_direction_degrees()

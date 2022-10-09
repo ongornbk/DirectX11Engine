@@ -20,7 +20,8 @@ modern is a trademark of ongornbk@gmail.com.
 enum class modern_thread_pool_state
 {
 	MODERN_THREAD_POOL_STATE_STOPPED,
-	MODERN_THREAD_POOL_STATE_RUNNING
+	MODERN_THREAD_POOL_STATE_RUNNING,
+	MODERN_THREAD_POOL_STATE_DECREMENT
 };
 
 class modern_thread_pool
@@ -30,10 +31,13 @@ class modern_thread_pool
 	modern_thread_pool() = delete;
 
 	mutable std::atomic<enum class modern_thread_pool_state> m_state;
+	mutable std::atomic<int32_t>                             m_threadsState{};
 
-
+	mutable volatile unsigned int m_dec_thrd_id;
+	void(__stdcall* m_loop)(void);
 public:
-	modern_thread_pool(const size_t num_of_threads);
+
+	modern_thread_pool(const size_t num_of_threads, void(__stdcall* const loop)(void));
 
 	~modern_thread_pool();
 
@@ -41,4 +45,9 @@ public:
 	void start();
 	void join();
 
+	const unsigned int get_dec() const modern_thread_safe modern_except_state;
+	void dec() modern_except_state;
+	void inc() modern_except_state;
+
+	void* const getLoop() modern_except_state;
 };

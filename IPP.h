@@ -14,24 +14,7 @@ namespace ipp
 
 
 
-	enum TextColors
-	{
-		DARKBLUE = 1,
-		DARKGREEN = 2,
-		OCEANBLUE = 3,
-		DARKRED = 4,
-		PURPLE = 5,
-		GOLDEN = 6,
-		LIGHTGRAY = 7,
-		DARKGRAY = 8,
-		BLUE = 9,
-		LIGHTGREEN = 10,
-		LIGHTBLUE = 11,
-		RED = 12,
-		PINK = 13,
-		YELLOW = 14,
-		WHITE = 15
-	};
+	
 
 
 
@@ -68,7 +51,7 @@ namespace ipp
 
 	class __Console
 	{
-	protected:
+	public:
 		explicit __Console(void);
 		~__Console(void);
 		void __Println(float number);
@@ -77,10 +60,11 @@ namespace ipp
 		void __Print(std::string text);
 		void __Print(const char* text);
 		void __Print(const wchar_t* text);
-		void __Print(std::string text, TextColors color);
-		void __Print(std::string text, std::wstring wide, TextColors color);
-		void __Println(const class modern_string& str0, const class modern_string& str1, TextColors color);
+		void __Print(std::string text, const enum MODERN_CONSOLE_TEXT_COLOR color);
+		void __Print(std::string text, std::wstring wide, const enum MODERN_CONSOLE_TEXT_COLOR color);
+		void __Println(const class modern_string& str0, const class modern_string& str1, const enum MODERN_CONSOLE_TEXT_COLOR color);
 		void __Println(const class modern_string& str0, const class modern_string& str1);
+		void __Println(const class modern_string& str0, const enum MODERN_CONSOLE_TEXT_COLOR color);
 		void __Println(const class modern_string& str0, const class modern_string_view& str1);
 		void __Println(void* const address);
 		void __Print(std::string text,const int32_t value);
@@ -91,7 +75,7 @@ namespace ipp
 		void __Print(void* address);
 		void __Flush();
 		void __SetCursorPosition(int16_t x, int16_t y);
-		void __SetTextColor(TextColors color);
+		void __SetTextColor(const enum MODERN_CONSOLE_TEXT_COLOR color);
 		void __SetTextColor(uint16_t color);
 		std::string __GetInput();
 
@@ -102,7 +86,7 @@ namespace ipp
 
 	};
 
-	class Console : __Console
+	class Console : public __Console
 	{
 	public:
 		~Console(void);
@@ -110,9 +94,10 @@ namespace ipp
 		static void Release();
 		static void Println(std::string text);
 		static void Println(std::wstring text);
-		static void Println(std::string text, TextColors color);
-		static void Println(std::string text,std::wstring wide, TextColors color);
-		static void Println(const class modern_string& str0,const class modern_string& str1, TextColors color);
+		static void Println(std::string text, const enum MODERN_CONSOLE_TEXT_COLOR color);
+		static void Println(std::string text,std::wstring wide, const enum MODERN_CONSOLE_TEXT_COLOR color);
+		static void Println(const class modern_string& str0,const class modern_string& str1, const enum MODERN_CONSOLE_TEXT_COLOR color);
+		static void Println(const class modern_string& str0, const enum MODERN_CONSOLE_TEXT_COLOR color);
 		static void Println(const class modern_string& str0, const class modern_string& str1);
 		static void Println(const class modern_string& str0, const class modern_string_view& str1);
 		static void Println(std::string text, const int value);
@@ -129,7 +114,7 @@ namespace ipp
 		static void Print(void* address);
 		static void Flush();
 		static void SetCursorPosition(int16_t x, int16_t y);
-		static void SetTextColor(TextColors color);
+		static void SetTextColor(const enum MODERN_CONSOLE_TEXT_COLOR color);
 		static void SetTextColor(uint16_t color);
 		static void SetTitle(std::string title);
 		static std::string GetInput();

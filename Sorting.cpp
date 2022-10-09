@@ -5,10 +5,14 @@
 #include "modern/modern_guard.h"
 #include "modern/modern_shared_guard.h"
 #include "modern/modern_vector.h"
+#include "TaskSortX.h"
+#include "TaskSortY.h"
+#include "TaskPack.h"
 #include "IAction.h"
 //#include "Math.h"
 #include "Tile.h"
 #include "game_math.h"
+#include "MPManager.h"
 #include <sstream>
 #include <sal.h>
 #include <omp.h>
@@ -518,8 +522,8 @@ for ( int32 i = 0u; i < MAP_DIVISION; i++)
 bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const modern_except_state
 {
 
-		const volatile class modern_guard AG(A);
-		const volatile class modern_guard BG(B);
+		const class modern_guard AG(A);
+		const class modern_guard BG(B);
 
 		const float Aradius = A->m_boundingSphere.Radius;
 		const float Bradius = B->m_boundingSphere.Radius;
@@ -842,15 +846,25 @@ void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 
 //#pragma omp parallel
 //#pragma omp for schedule(dynamic)
+
+	class MPManager* const mpm = MPManager::Get();
+	//mpm->begin_weak_pushing();
+
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
+			class TaskPack* const pack = new TaskPack();
 			if (yta[i])
 			{
-				sortPyVTP(vec[1][i]);
+				//mpm->weak_push(
+				//sortPyVTP(vec[1][i]);
+				pack->pack(new TaskSortY(&vec[1][i]));
 			}
-
+			mpm->push(pack);
 		}
+		//MPManager::Get()->barrier();
 //#pragma omp barrier
+
+		//mpm->finalize_weak_pushing();
 }
 
 void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
@@ -904,13 +918,24 @@ void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 {
 //#pragma omp parallel
 //#pragma omp for schedule(dynamic)
+
+	class MPManager* const mpm = MPManager::Get();
+	//mpm->begin_weak_pushing();
+
 	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
+		class TaskPack* const pack = new TaskPack();
 		if (xta[i])
 		{
-			sortPxVTP(vec[0][i]);
+			//mpm->weak_push(new TaskSortX(&vec[0][i])); //sortPxVTP(vec[0][i]);
+			pack->pack(new TaskSortX(&vec[0][i])); //sortPxVTP(vec[0][i]);
 		}
+		mpm->push(pack);
 	}
+
+	//mpm->finalize_weak_pushing();
+	//std::cout << a << std::endl;
+	//MPManager::Get()->barrier();
 //#pragma omp barrier
 }
 

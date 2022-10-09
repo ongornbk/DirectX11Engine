@@ -11,7 +11,7 @@
 #include <set>
 //#include <boost/bimap/bimap.hpp>
 
-class Global
+class Global : public modern_class
 {
 	
 public:
@@ -30,6 +30,7 @@ public:
 	modern_handle                      m_leavingObject;
 	modern_handle                      m_enteringObject;
 	modern_handle                      m_matchingObject;
+	modern_handle                      m_pickedPlayer;
 	MSVC_VOLATILE ObjectFlags          m_lastFlags{};
 	MSVC_VOLATILE Task*                m_lastTask;
 	static Global*       GetInstance();

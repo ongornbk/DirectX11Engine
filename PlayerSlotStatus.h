@@ -1,0 +1,9 @@
+#pragma once
+
+enum class PlayerSlotStatus
+{
+	PLAYER_SLOT_STATUS_UNUSED,
+	PLAYER_SLOT_STATUS_PLAYING,
+	PLAYER_SLOT_STATUS_LEFT,
+	COUNT
+};

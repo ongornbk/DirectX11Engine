@@ -31,8 +31,16 @@
 #include "RectOfCollisionAgentSecond.h"
 #include "InterfaceStatusBarBehavior.h"
 #include "ActionSetInterfaceBehavior.h"
+#include "TaskUpdateInterface_v0.h"
+#include "TaskUpdateInteface_v1.h"
+#include "TaskUpdateInterface_v2.h"
+#include "TaskUpdateInterface_v3.h"
+#include "TaskUpdateInterface_v4.h"
+#include "TaskUpdateInterface_v5.h"
+#include "TaskPack.h"
 #include "RegionAgent.h"
 #include "RegionAgentMaster.h"
+#include "MPManager.h"
 #pragma endregion
 #include <future>
 #include <mutex>
@@ -515,7 +523,9 @@ void RendererManager::PushInterface(Interface* const object)
 		const struct DirectX::XMFLOAT4X4& projectionMatrix
 	)
 	{
+		//MPManager::Get()->increment();
 		this->Render(deviceContext, viewMatrix, projectionMatrix, projectionMatrix);
+		//
 	}
 	
 
@@ -531,7 +541,7 @@ void RendererManager::Render(
 	struct ShaderPackage pck(deviceContext, m_unitsShader, m_shadowShader, m_selectShader, m_interfaceShader,m_textShader);
 
 	GRAPHICS EnableAlphaBlending(true);
-
+	//MPManager::Get()->increment();
 
 	m_map->Render(deviceContext, viewMatrix, projectionMatrix, m_cameraPosition);
 
@@ -713,7 +723,7 @@ void RendererManager::Render(
 
 	//pck.End();
 
-
+	//MPManager::Get()->decrement();
 }
 
 	//static float updatetime = 0.f;
@@ -726,156 +736,54 @@ void RendererManager::Render(
 		m_cameraPosition = CAMERA GetPosition();
 		m_ui->Update(m_cameraPosition);
 
-		switch (m_type)
-		{
-		case UserInterfaceState::ENUM_USERINTERFACE_GAME:
-		{
-			{
-				class Interface* const A = (class Interface*)m_gameUI.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetPosition(m_cameraPosition);
-					A->Update(dt);
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_damage.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetPosition(m_cameraPosition);
-					A->Update(dt);
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_exp.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetPosition(m_cameraPosition);
-					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus.get();
-					if (Unit::CheckIfValid(unit))
-					{
-						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
-						modern_shared_guard g(unit);
-						const float che = modern_ceil(unit->GetExperience());
-						const float mhe = unit->GetMaxExperience();
-						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
-						if (behaviorA)
-						{
-							behaviorA->SetStatusScaleX(che / mhe);
-						}
-					}
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_healthGlobe.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetPosition(m_cameraPosition);
-					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus.get();
-					if (Unit::CheckIfValid(unit))
-					{
-						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
-						modern_shared_guard g(unit);
-						const float che = modern_ceil(unit->GetHealth());
-						const float mhe = unit->GetMaxHealth();
-						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
-						if (behaviorA)
-						{
-							behaviorA->SetStatusCutYAnchorBottom(che / mhe);
-						}
-					}
-				}
-			}
-			{
-				class Interface* const A = (class Interface*)m_manaGlobe.get();
-				if (A)
-				{
-					modern_guard g(A);
-					A->SetPosition(m_cameraPosition);
-					A->Update(dt);
-					class Unit* const unit = (class Unit* const)m_focus.get();
-					if (Unit::CheckIfValid(unit))
-					{
-						class InterfaceStatusBarBehavior* const behaviorA = (class InterfaceStatusBarBehavior* const)A->GetBehavior();
-						modern_shared_guard g(unit);
-						const float che = modern_ceil(unit->GetMana());
-						const float mhe = unit->GetMaxMana();
-						//A->SetText(modern_string((int32_t)che, L".", (int32_t)mhe));
-						if (behaviorA)
-						{
-							behaviorA->SetStatusCutYAnchorBottom(che / mhe);
-						}
-					}
-				}
-			}
-			break;
-		}
-		}
+		class MPManager* const mpm = MPManager::Get();
+		//mpm->begin_weak_pushing();
 
-		if (modern_Boolean_check ((class Options* const)m_activeOptions.get())->option_ShowFPS)
 		{
-			class Text* const A = (class Text*)m_fpsText.get();
-			if (A)
-			{
-				modern_guard g(A);
-				A->SetPosition(m_cameraPosition);
-				A->Update();
+			class TaskPack* const pack = new TaskPack();
 
-			}
-			class Text* const D = (class Text*)m_bmapText.get();
-			if (D)
+			switch (m_type)
 			{
-				modern_guard g(D);
-				D->SetPosition(m_cameraPosition);
-				D->Update();
+			case UserInterfaceState::ENUM_USERINTERFACE_GAME:
+			{
+				//mpm->weak_push(new TaskUpdateInterface_v0(m_gameUI,dt));
+				//mpm->weak_push(new TaskUpdateInterface_v0(m_damage, dt));
+				//mpm->weak_push(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
+			 //	  mpm->weak_push(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
+			//	  mpm->weak_push(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
+				pack->pack(new TaskUpdateInterface_v0(m_gameUI, dt));
+				pack->pack(new TaskUpdateInterface_v0(m_damage, dt));
+				pack->pack(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
+				pack->pack(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
+				pack->pack(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
+				break;
+			}
+			}
 
-			}
-			class Text* const B = (class Text*)m_objectsText.get();
-			if (B)
+			if (modern_Boolean_check((class Options* const)m_activeOptions.get())->option_ShowFPS)
 			{
-				modern_guard g(B);
-				B->SetPosition(m_cameraPosition);
-				B->Update();
+				//mpm->weak_push(new TaskUpdateInterface_v4(m_fpsText));
+				//mpm->weak_push(new TaskUpdateInterface_v4(m_bmapText));
+		     	//mpm->weak_push(new TaskUpdateInterface_v4(m_objectsText));
+			  //  mpm->weak_push(new TaskUpdateInterface_v4(m_timersText));
+				pack->pack(new TaskUpdateInterface_v4(m_fpsText));
+				pack->pack(new TaskUpdateInterface_v4(m_bmapText));
+				pack->pack(new TaskUpdateInterface_v4(m_objectsText));
+				pack->pack(new TaskUpdateInterface_v4(m_timersText));
 			}
-			class Text* const C = (class Text*)m_timersText.get();
-			if (C)
-			{
-				modern_guard g(C);
-				C->SetPosition(m_cameraPosition);
-				C->Update();
-			}
+
+			//mpm->weak_push(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
+		//	mpm->weak_push(new TaskUpdateInterface_v0(m_selectStatusBorder, dt));
+
+			pack->pack(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
+			pack->pack(new TaskUpdateInterface_v0(m_selectStatusBorder, dt));
+
+			mpm->push(pack);
+
+		//	mpm->finalize_weak_pushing();
+		// 
 		}
-		{
-			class Interface* const A = (class Interface*)m_selectStatus.get();
-			if (A)
-			{
-				modern_guard g(A);
-				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				XMFLOAT3 mm(0.f, 500.f, 0.f);
-				XMVECTOR offca = m_cameraPosition + XMLoadFloat3(&mm);
-				A->SetPosition(offca);
-				A->Update(dt);
-				
-			}
-		} {
-			class Interface* const A = (class Interface*)m_selectStatusBorder.get();
-			if (A)
-			{
-				modern_guard g(A);
-				//A->PreRender(deviceContext, viewMatrix, projectionMatrix, pck.BeginShadow());
-				//A->Render(deviceContext, viewMatrix, projectionMatrix, pck.BeginInterface());
-				A->SetPosition(m_cameraPosition);
-				A->Update(dt);
-			}
-		}
-		//{
+	//{
 		//	class Interface* const A = (class Interface*)m_cursor.get();
 		//	if (A)
 		//	{
@@ -900,14 +808,14 @@ void RendererManager::Render(
 			//updatetime = 0.f;
 //#pragma omp single
 			m_map->Update(dt);
-
+			mpm->barrier();
 			//switch (m_editMode.load())
 			//{
 			//case 0:
 			//{
 			if (m_engine->GetGameStance() == false)
 			{
-				if (m_cleanupMode.load(std::memory_order::memory_order_seq_cst) == 1)
+				if (m_cleanupMode.load(std::memory_order::memory_order_acquire) == 1)
 				{
 					//m_objects.CleanUp();
 
@@ -926,8 +834,10 @@ void RendererManager::Render(
 					{
 						
 						m_layers[i]->Update(dt);
+						
 					}
 				}
+				
 				//else
 				//{
 				//		{						for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
@@ -937,6 +847,7 @@ void RendererManager::Render(
 				//}
 
 			}
+			//mpm->barrier();
 
 			//g_units.Sort();
 			//g_units.StaticSort();
@@ -948,8 +859,8 @@ void RendererManager::Render(
 			//m_objects.Sort();
 			//m_objects.QSort();
 
-			
-			this->Sort();
+			mpm->barrier();
+			//this->Sort();
 			//EventManager::GetInstance()->PostSort();
 
 //#pragma omp critical
@@ -1061,8 +972,12 @@ void RendererManager::Render(
 				m_layers[i]->Sort();
 				m_layers[i]->QSort();
 			}
-
+			MPManager::Get()->barrier();
 		}
+		//for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+		//{
+		//	m_layers[i]->PostSort();
+		//}
 	}
 
 	void RendererManager::PostSortUpdate(const float dt, const bool renderframe)
@@ -1295,7 +1210,7 @@ void RendererManager::SetState(const int64_t state) modern_except_state
 
 void RendererManager::Clear()
 {
-	for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
+	for (int32_t i = 0l; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 	{
 		if (m_layers[i])
 		{

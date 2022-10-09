@@ -24,7 +24,12 @@ void Agent::Initialize(const XMFLOAT3 position)
     m_boundingSphere.Center = position;
 }
 
-void _fastcall Agent::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)
+void _fastcall Agent::Render(
+   struct ID3D11DeviceContext* const  deviceContext,
+    const struct DirectX::XMFLOAT4X4& viewMatrix,
+    const struct DirectX::XMFLOAT4X4& projectionMatrix,
+    const struct ShaderPackage&       shader
+)
 {
 }
 

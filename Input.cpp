@@ -92,7 +92,7 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 	{
 		return false;
 	}
-	ipp::Console::Println("DirectInput Initialized Successfully!", ipp::LIGHTGREEN);
+	ipp::Console::Println(modern_string(L"DirectInput Initialized Successfully!"), MODERN_CONSOLE_TEXT_COLOR::LIGHTGREEN);
 	return true;
 }
 

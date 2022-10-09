@@ -34,7 +34,7 @@ ModelPaths::ModelPaths(WCHAR * file)
 	ifstream stream(file);
 	if (!stream.good())
 	{
-		ipp::Console::SetTextColor(ipp::RED);
+		ipp::Console::SetTextColor(MODERN_CONSOLE_TEXT_COLOR::RED);
 		ipp::Console::Println("Bad stream : ");
 	}
 	std::string BUFFER((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());

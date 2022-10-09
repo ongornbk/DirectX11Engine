@@ -1,6 +1,6 @@
 #pragma once
 #include "modern_mqueue.h"
-
+#include <mutex>
 
 /*
 Copyright(C) < 08.10.2022 > ongornbk@gmail.com
@@ -27,20 +27,69 @@ modern_mqueue::~modern_mqueue()
 
 class modern_mqueue_handle&& modern_mqueue::obtain()
 {
-	return modern_mqueue_handle(this);
+	return std::move(modern_mqueue_handle(this));
+}
+
+class modern_mqueue_handle* const modern_mqueue::obtain_pointer()
+{
+	return new modern_mqueue_handle(this);
 }
 
 void* const modern_mqueue::front() const modern_except_state
 {
+#ifdef MODERN_MQUEUE_LOCK_MUTEX
+	std::unique_lock<std::mutex> m_lck(m_mtx);
+	m_cv.wait(m_lck);
+#endif // MODERN_MQUEUE_LOCK_MUTEX
 	return m_queue.front();
 }
 
 void* const modern_mqueue::pop()
 {
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	m_size.fetch_sub(1l);
+#else
+	m_size.fetch_sub(1l);
+	std::unique_lock<std::mutex> m_lck(m_mtx);
+	m_cv.wait(m_lck);
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
+
+	//m_cv.wait();
 	return m_queue.pop();
 }
 
 void modern_mqueue::push(void* const element)
 {
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	m_size.fetch_add(1l);
+#else
+	m_size.fetch_add(1l);
+	std::unique_lock<std::mutex> m_lck(m_mtx);
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
+
 	m_queue.push(element);
+
+#ifdef MODERN_MQUEUE_LOCK_MUTEX
+	m_lck.unlock();
+	m_cv.notify_one();
+#endif // MODERN_MQUEUE_LOCK_MUTEX
+
+}
+
+void modern_mqueue::barrier() const modern_thread_safe modern_except_state
+{
+
+#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	while (m_size.load(std::memory_order::memory_order_seq_cst) > 0l)
+	{
+		_Thrd_yield();
+	}
+#else
+	//m_cv.wait(m_mtx);
+	//m_cv.wait
+	while (m_size.load(std::memory_order::memory_order_relaxed) > 0l)
+	{
+		_Thrd_yield();
+	}
+#endif // MODERN_MQUEUE_LOCK_ATOMIC
 }

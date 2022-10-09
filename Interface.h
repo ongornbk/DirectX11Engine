@@ -20,7 +20,7 @@ public:
 		class Shader* const interfaceShader,
 		class Shader* const textShader,
 		WCHAR* paths,
-		const XMFLOAT3 position,
+		const struct DirectX::XMFLOAT3 position,
 		const float xsize,
 		const float ysize,
 		const enum ObjectAnchorType anchor

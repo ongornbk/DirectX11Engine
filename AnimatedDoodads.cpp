@@ -2,6 +2,8 @@
 #include "RendererManager.h"
 #include "ActionExecuteActionArray.h"
 #include "ActionRemoveObject.h"
+#include "GPUMemory.h"
+#include "modern/modern_guard.h"
 #include "Timer.h"
 #include "IPP.h"
 
@@ -153,17 +155,18 @@ void AnimatedDoodads::Update(float dt)
 	vertices[3].uv.y = 1.0f;
 
 
-
-	HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
 	{
-		return;
+		modern_guard g(GPUMemory::get());
+		HRESULT result = m_deviceContext->Map(m_vertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(result))
+		{
+			return;
+		}
+
+		SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
+		memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
+		m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
 	}
-
-	SpriteVertexType* verticesPtr = (SpriteVertexType*)mappedResource.pData;
-	memcpy(verticesPtr, (void*)vertices, sizeof(SpriteVertexType) * m_vertexBuffer->GetVertexCount());
-	m_deviceContext->Unmap(m_vertexBuffer->GetVertexBuffer(), 0);
-
 	m_previousFrame = m_currentFrame;
 
 }

@@ -11,8 +11,8 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 
 modern is a trademark of ongornbk@gmail.com.
 */
+#pragma once
 #include "modern_def.h"
-
 #include <xthreads.h>
 #include <thread>
 
@@ -20,7 +20,7 @@ typedef _Thrd_t modern_thread_t;
 
 class modern_thread
 {
-	modern_thread_t            m_thread;
+	modern_thread_t              m_thread;
     _beginthreadex_proc_type     m_foo;
 
     modern_thread() = delete;
@@ -36,20 +36,20 @@ public:
     void start() {
 
         //_beginthread_proc_type;
-        m_thread._Hnd = reinterpret_cast<void*>(_CSTD _beginthreadex(nullptr, 0, m_foo, 0, 0, &m_thread._Id));
+        m_thread._Hnd = reinterpret_cast<void*>(_CSTD _beginthreadex(nullptr, 0ul, m_foo, nullptr, 0ul, &m_thread._Id));
         if (m_thread._Hnd)
         {
 
         }
         else {
-            m_thread._Id = 0;
+            m_thread._Id = 0ul;
             std::_Throw_Cpp_error(std::_RESOURCE_UNAVAILABLE_TRY_AGAIN);
         }
     }
 
     _NODISCARD bool joinable() const modern_except_state
     {
-        return m_thread._Id != 0;
+        return m_thread._Id != 0ul;
     }
 
     void join() {
@@ -67,4 +67,11 @@ public:
 
         m_thread = {};
     }
+
+    const unsigned int get_id() const modern_thread_safe modern_except_state
+    {
+        return m_thread._Id;
+    }
+
+    
 };

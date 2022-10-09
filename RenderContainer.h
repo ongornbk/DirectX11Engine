@@ -77,6 +77,8 @@ public:
 		OBJECT_TYPE_RENDER_AGENT
 	}m_type;
 
+	class EObject* const GetClosestObject() const modern_except_state;
+
 	const modern_handle& GetHandle();
 	modern_handle* const GetHandlePtr();
 	modern_handle* const GetNewHandlePtr();

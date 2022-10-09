@@ -262,7 +262,7 @@ bool TaskAttack::Update()
 
 	if (A && B)
 	{
-		modern_guard guardA(A);
+		//modern_guard guardA(A);//Maybe Already Guarded
 		modern_shared_guard guardB(B);
 
 		DirectX::XMFLOAT3 position = A->GetPosition();

@@ -125,12 +125,14 @@ const struct DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPit
 	m_rotation.m128_f32[1],
 	m_rotation.m128_f32[2]
 );
+{
+	modern_shared_guard g(m_global);
+	DirectX::XMVECTOR lookat = DirectX::XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
+	DirectX::XMVECTOR up = DirectX::XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
 
-DirectX::XMVECTOR lookat = DirectX::XMVector3TransformCoord(m_global->camera_lookat, rotationMatrix);
-DirectX::XMVECTOR up = DirectX::XMVector3TransformCoord(m_global->camera_up, rotationMatrix);
-
-lookat += m_position;
-DirectX::XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position,lookat,up));
+	lookat += m_position;
+	DirectX::XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(m_position, lookat, up));
+}
 }
 
 void Camera::ZoomIn() const modern_except_state
