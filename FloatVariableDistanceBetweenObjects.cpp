@@ -3,7 +3,7 @@
 #include "modern/modern_xmath.h"
 
 
-FloatVariableDistanceBetweenObjects::FloatVariableDistanceBetweenObjects(EObject* const A, EObject* const B)
+FloatVariableDistanceBetweenObjects::FloatVariableDistanceBetweenObjects(GameObject* const A, GameObject* const B)
 {
 	object_A.make_handle(A->GetHandle());
 	object_B.make_handle(B->GetHandle());
@@ -12,8 +12,8 @@ FloatVariableDistanceBetweenObjects::FloatVariableDistanceBetweenObjects(EObject
 const float FloatVariableDistanceBetweenObjects::get()
 {
 	//assert(object_A && object_B);
-	class EObject* const A = (class EObject*)object_A.get();
-	class EObject* const B = (class EObject*)object_B.get();
+	class GameObject* const A = (class GameObject*)object_A.get();
+	class GameObject* const B = (class GameObject*)object_B.get();
 	if (A && B)
 	{
 		return modern_xfloat3_distance2(A->m_boundingSphere.Center,B->m_boundingSphere.Center);

@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 struct AttackTarget
 {
@@ -8,10 +8,10 @@ struct AttackTarget
 		UNIT
 	} m_ATtype;
 
-	AttackTarget(class EObject* const rc, const enum AttackTarget::ATType type);
+	AttackTarget(class GameObject* const rc, const enum AttackTarget::ATType type);
 
 	
 
-	EObject* ATtarget;
+	GameObject* ATtarget;
 };
 

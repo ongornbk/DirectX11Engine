@@ -130,7 +130,7 @@ void Interface::Initialize(
 	//m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	//m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_INTERFACE;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_INTERFACE;
 
 	
 }
@@ -291,7 +291,7 @@ int32 Interface::isReleased() const modern_except_state
 	}
 }
 
-void Interface::Intersect( EObject* const other) 
+void Interface::Intersect( GameObject* const other) 
 {
 }
 
@@ -363,7 +363,7 @@ IInterfaceBehavior* const Interface::GetBehavior()
 	return m_behavior;
 }
 
-void Interface::PushChild(EObject* const child)
+void Interface::PushChild(GameObject* const child)
 {
 	m_children.push_back(child);
 }

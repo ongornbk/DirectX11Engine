@@ -2,7 +2,7 @@
 #include "Sorting.h"
 #include <algorithm>
 
-TaskSortY::TaskSortY(modern_array<class EObject*>* const arr)
+TaskSortY::TaskSortY(modern_array<class GameObject*>* const arr)
 {
 	m_arr = arr;
 }

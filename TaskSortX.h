@@ -5,9 +5,9 @@
 class TaskSortX :
     public ITask
 {
-    class modern_array<class EObject*>* m_arr;
+    class modern_array<class GameObject*>* m_arr;
 public:
-    TaskSortX(class modern_array<class EObject*>* const arr);
+    TaskSortX(class modern_array<class GameObject*>* const arr);
     ~TaskSortX();
 
     void execute() override;

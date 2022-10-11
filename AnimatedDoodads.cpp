@@ -74,7 +74,7 @@ void AnimatedDoodads::Initialize(
 	m_boundingSphere.Radius = collision;
 	m_boundingSphere.Center = position;
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_ANIMATED_DOODADS;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_ANIMATED_DOODADS;
 }
 
 void AnimatedDoodads::Render(
@@ -197,7 +197,7 @@ int32 AnimatedDoodads::isReleased() const modern_except_state
 	}
 }
 
-void AnimatedDoodads::Intersect( class EObject* const other)  
+void AnimatedDoodads::Intersect( class GameObject* const other)  
 {
 
 }

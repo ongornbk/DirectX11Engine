@@ -1,6 +1,6 @@
 #pragma once
 #include "gdef.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "ColorFilter.h"
 #include "VertexBuffer.h"
 #include "Texture.h"
@@ -49,8 +49,8 @@ public:
 	const DirectX::XMFLOAT3& GetPosition()const modern_except_state;
 	const enum class RenderLayerType GetRenderLayer() const modern_except_state override;
 
-	const enum DirectX::ContainmentType Contains(class EObject* const object) const;
-	const bool Intersects(class EObject* const object) const;
+	const enum DirectX::ContainmentType Contains(class GameObject* const object) const;
+	const bool Intersects(class GameObject* const object) const;
 private:
 	void Enters(const modern_handle& object);
 	void Leaves(const modern_handle& object);

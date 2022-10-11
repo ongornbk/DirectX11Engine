@@ -5,9 +5,9 @@
 class TaskSortY :
     public ITask
 {
-    class modern_array<class EObject*>* m_arr;
+    class modern_array<class GameObject*>* m_arr;
 public:
-    TaskSortY(class modern_array<class EObject*>* const arr);
+    TaskSortY(class modern_array<class GameObject*>* const arr);
     ~TaskSortY();
 
     void execute() override;

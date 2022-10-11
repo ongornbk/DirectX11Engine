@@ -305,6 +305,7 @@ class Texture * ResourceManager::GetTextureByName(const char* textureName)
 		std::string resourceTextureName = std::string(resourceTextureNameW.begin(), resourceTextureNameW.end());
 		if (!strcmp("sys", resourceTextureName.c_str()))
 		{
+			m_resultFlag = modern_true;
 			return resourceTexture->GetTexture();
 		}
 
@@ -359,4 +360,16 @@ class ResourceManager * ResourceManager::GetInstance()
 		m_instance = new ResourceManager();
 	}
 	return m_instance;
+}
+
+const modern_Boolean ResourceManager::exchange_flag(const modern_Boolean flag) const
+{
+	const modern_Boolean prev = m_resultFlag;
+	m_resultFlag = flag;
+	return prev;
+}
+
+const void ResourceManager::clear_flag() const
+{
+	m_resultFlag = modern_false;
 }

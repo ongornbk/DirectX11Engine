@@ -12,7 +12,7 @@ class ActionRemoveObject :
 
 public:
 
-	ActionRemoveObject(class EObject* const object);
+	ActionRemoveObject(class GameObject* const object);
 	~ActionRemoveObject();
 	
 	void execute() override;

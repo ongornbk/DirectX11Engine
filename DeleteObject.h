@@ -1,14 +1,14 @@
 #pragma once
 #include "ITrash.h"
 
-class EObject;
+class GameObject;
 
 class DeleteObjectTrash : public ITrash
 {
-	class EObject* m_data;
+	class GameObject* m_data;
 public:
 	DeleteObjectTrash() = delete;
-	DeleteObjectTrash(class EObject* const data);
+	DeleteObjectTrash(class GameObject* const data);
 
 	~DeleteObjectTrash();
 };

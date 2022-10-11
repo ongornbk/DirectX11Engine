@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-
+#include "modern/modern_cstring.h"
 
 
 
@@ -16,7 +16,18 @@
 		bool GetFullscreen();
 		bool GetVsync();
 
-		void Initialize(int32_t resX, int32_t resY, int32_t scrX, int32_t scrY, int32_t threads, bool fullscreen, bool vsync);
+		class modern_cstring& GetDatabasePort();
+
+		void Initialize(
+			const int32_t resX,
+			const int32_t resY,
+			const int32_t scrX,
+			const int32_t scrY,
+			const int32_t threads,
+			const bool    fullscreen,
+			const bool    vsync,
+			const char*   db_port
+		);
 
 	}
 

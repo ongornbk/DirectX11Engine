@@ -8,7 +8,7 @@ class FloatVariableDistanceBetweenObjects :
 	class modern_handle object_A;
 	class modern_handle object_B;
 public:
-	FloatVariableDistanceBetweenObjects(class EObject* const A,class EObject* const B);
+	FloatVariableDistanceBetweenObjects(class GameObject* const A,class GameObject* const B);
 	const float get() override;
 };
 

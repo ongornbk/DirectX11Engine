@@ -9,6 +9,7 @@ namespace
 	static int32_t SETTINGS_NUMBER_OF_THREADS = 1;
 	static bool    SETTINGS_FULL_SCREEN = true;
     static bool    SETTINGS_VSYNC = true;
+	static modern_cstring SETTINGS_DB_PORT = "0";
 }
 
 float Settings::GetAspectRatio()
@@ -53,13 +54,28 @@ bool Settings::GetVsync()
 	return SETTINGS_VSYNC;
 }
 
-void Settings::Initialize(int32_t resX, int32_t resY, int32_t scrX, int32_t scrY, int32_t threads,bool fullscreen,bool vsync)
+modern_cstring& Settings::GetDatabasePort()
 {
-	SETTINGS_RESOLUTION_X = resX;
-	SETTINGS_RESOLUTION_Y = resY;
+	return SETTINGS_DB_PORT;
+}
+
+void Settings::Initialize(
+	const int32_t resX,
+	const int32_t resY,
+	const int32_t scrX,
+	const int32_t scrY,
+	const int32_t threads,
+	const bool    fullscreen,
+	const bool    vsync,
+	const char*   port
+)
+{
+	SETTINGS_RESOLUTION_X        = resX;
+	SETTINGS_RESOLUTION_Y        = resY;
 	SETTINGS_SCREEN_RESOLUTION_X = scrX;
 	SETTINGS_SCREEN_RESOLUTION_Y = scrY;
-	SETTINGS_NUMBER_OF_THREADS = threads;
-	SETTINGS_FULL_SCREEN = fullscreen;
-	SETTINGS_VSYNC = vsync;
+	SETTINGS_NUMBER_OF_THREADS   = threads;
+	SETTINGS_FULL_SCREEN         = fullscreen;
+	SETTINGS_VSYNC               = vsync;
+	SETTINGS_DB_PORT             = port;
 }

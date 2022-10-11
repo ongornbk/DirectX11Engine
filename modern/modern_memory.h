@@ -51,3 +51,6 @@ inline void mfree(A& ptr)
 {
 	return free(ptr);
 }
+
+#define modern_offset_of(s,m) ((size_t)&reinterpret_cast<char const volatile&>((((s*)0)->m)))
+#define modern_get_parent(parent,member_name,addr_of_member) (parent* const)(((size_t)addr_of_member) - (size_t)modern_offset_of(parent, member_name))

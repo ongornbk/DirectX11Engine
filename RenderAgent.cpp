@@ -55,7 +55,7 @@ int32 RenderAgent::isReleased() const modern_except_state
     return int32();
 }
 
-void RenderAgent::Intersect(EObject* const other)
+void RenderAgent::Intersect(GameObject* const other)
 {
 }
 

@@ -85,7 +85,7 @@ public:
 	void PushRegionAgent(class RegionAgent* const agent);
 	void PushRegionAgentMaster(class RegionAgentMaster* const agent);
 	void PushRenderAgent(class RenderAgent* const agent);
-	void Push(class EObject* const object, const enum class RenderLayerType layer);
+	void Push(class GameObject* const object, const enum class RenderLayerType layer);
 	void PushRegionPointObject(class RegionPointObject* object);
 	void PushInterface(class Interface * const object);
 	void Render(
@@ -102,7 +102,7 @@ public:
 	void Update(const float dt,const bool renderframe = false);
 	void Sort();
 	void PostSortUpdate(const float dt, const bool renderframe = false);
-	void Focus(class EObject* const object,const enum class ObjectFocusType type);
+	void Focus(class GameObject* const object,const enum class ObjectFocusType type);
 	void SetInterface(const uint32 type,class Shader* shader);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile);
 	void SetTile(struct DirectX::XMFLOAT2 &position, const int32 tile,const int32 brush);
@@ -147,10 +147,15 @@ private:
 	class modern_handle m_focus;
 	class RenderLayer* m_layers[enum_cast<int32_t>(RenderLayerType::COUNT)];
 	class TextFont* m_font;
+
+#pragma region DEBUG_TEXTS
 	class modern_handle m_fpsText;
 	class modern_handle m_objectsText;
 	class modern_handle m_timersText;
 	class modern_handle m_bmapText;
+	class modern_handle m_heroPositionX;
+	class modern_handle m_heroPositionY;
+#pragma endregion
 	class modern_handle m_selectStatus;
 	class modern_handle m_selectStatusBorder; //TEMP THERE SHOULD BE AN ARRAY IN INTERFACE TO DRAW 
 	class modern_handle m_cursorAgent;

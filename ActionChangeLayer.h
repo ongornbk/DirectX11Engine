@@ -1,7 +1,7 @@
 #pragma once
 #include "IAction.h"
 #include "RenderLayerType.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "RendererManager.h"
 
 class ActionChangeLayer :
@@ -14,7 +14,7 @@ class ActionChangeLayer :
 
 public:
 
-	ActionChangeLayer(class EObject* const object,const enum class RenderLayerType layer);
+	ActionChangeLayer(class GameObject* const object,const enum class RenderLayerType layer);
 	~ActionChangeLayer();
 
 	void execute() override;

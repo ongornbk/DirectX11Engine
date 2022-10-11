@@ -1,10 +1,10 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "Texture.h"
 #include "ColorFilter.h"
 #include "ModelVariant.h"
 
-class npc : public EObject, public ColorFilter
+class npc : public GameObject, public ColorFilter
 {
 public:
 	int32 isReleased() const modern_except_state override;
@@ -29,7 +29,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
-	void Intersect( class EObject* const other) override;
+	void Intersect( class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 
 private:

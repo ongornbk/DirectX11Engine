@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 class IObjectVariable
 {

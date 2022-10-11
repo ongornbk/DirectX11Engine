@@ -65,7 +65,7 @@ void _stdcall RenderLayerShadow::StaticQSort()
 
 void _vectorcall RenderLayerShadow::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
-	class modern_array<class modern_array<class EObject*>*> mvpp;
+	class modern_array<class modern_array<class GameObject*>*> mvpp;
 
 
 	for (int32 i = 0; i < MAP_DIVISION; i++)
@@ -83,7 +83,7 @@ void _vectorcall RenderLayerShadow::Render(ID3D11DeviceContext* const deviceCont
 
 		shader.BeginShadow();
 
-		modern_array_iterator<EObject*> mbpi(*vec);
+		modern_array_iterator<GameObject*> mbpi(*vec);
 
 		for (auto& obj : mbpi)
 		{
@@ -149,7 +149,7 @@ void RenderLayerShadow::Push(RegionPointObject* const tree)
 {
 }
 
-void RenderLayerShadow::Push(EObject* const object)
+void RenderLayerShadow::Push(GameObject* const object)
 {
 	m_objects[1][0].push_back(object);
 }
@@ -168,7 +168,7 @@ std::stack<class Unit*> _vectorcall RenderLayerShadow::GetUnitsInRange(Agent* ag
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(class EObject* const object, float range) modern_except_state
+std::stack<class Tree*> _vectorcall RenderLayerShadow::GetTreesBelow(class GameObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

@@ -1,5 +1,5 @@
 #include "TaskObjectUpdate_v0.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 TaskObjectUpdate_v0::TaskObjectUpdate_v0(const modern_handle& object, const float dt) : m_dt(dt)
 {
@@ -12,7 +12,7 @@ TaskObjectUpdate_v0::~TaskObjectUpdate_v0()
 
 void TaskObjectUpdate_v0::execute()
 {
-	class EObject* const obj = (class EObject* const)m_object.get();
+	class GameObject* const obj = (class GameObject* const)m_object.get();
 	if (obj)
 	{
 		class modern_guard g(obj);

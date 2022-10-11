@@ -43,8 +43,6 @@ namespace ipp
 
 	namespace System
 	{
-		int _stdcall GetScreenWidth() modern_except_state;
-		int _stdcall GetScreenHeight() modern_except_state;
 		std::string _stdcall GetFileName(const std::string &s) modern_except_state;
 		void _stdcall Exit(const int32 return_value = 0) modern_except_state;
 	}

@@ -5,7 +5,7 @@
 class RenderLayerCorpse :
 	public RenderLayer
 {
-	class modern_array<class EObject*> m_objects[2][MAP_DIVISION];
+	class modern_array<class GameObject*> m_objects[2][MAP_DIVISION];
 public:
 	RenderLayerCorpse();
 	~RenderLayerCorpse();
@@ -35,10 +35,10 @@ public:
 	void Push(class AnimatedDoodads* const animated) override;
 	void Push(class Tree* const tree) override;
 	void Push(class RegionPointObject* const tree) override;
-	void Push(class EObject* const object) override;
+	void Push(class GameObject* const object) override;
 	void Push(class Interface* const inter) override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) modern_except_state override;
 	std::stack<class Unit*> _vectorcall GetUnitsInRange(Agent* agent, float range) modern_except_state override;
-	std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range)modern_except_state override;
+	std::stack<class Tree*> _vectorcall GetTreesBelow(class GameObject* const object, float range)modern_except_state override;
 };
 

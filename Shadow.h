@@ -1,9 +1,9 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 
-class Shadow : public EObject
+class Shadow : public GameObject
 {
-	class EObject* m_parent;
+	class GameObject* m_parent;
 
 public:
 
@@ -15,7 +15,7 @@ public:
 		const float size,
 		const float collision,
 		const struct DirectX::XMFLOAT3 position,
-		class EObject* const parent
+		class GameObject* const parent
 	);
 
 	_Use_decl_annotations_
@@ -37,7 +37,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void Intersect( class EObject* const other) override;
+	void Intersect( class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 
 };

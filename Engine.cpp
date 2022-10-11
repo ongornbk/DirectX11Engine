@@ -47,6 +47,11 @@ Engine::~Engine(void)
 
 	//ThreadPoolHandle tph;
 	//tph.wait();
+	if (m_sqlManager)
+	{
+		delete m_sqlManager;
+		m_sqlManager = nullptr;
+	}
 	if (m_playerManager)
 	{
 		delete m_playerManager;
@@ -119,7 +124,8 @@ Engine::Engine(void) :
 	m_global          = nullptr;
 	m_framework       = nullptr;
 	m_lua             = nullptr;
-	m_playerManager = new PlayerManager();
+	m_playerManager   = new PlayerManager();
+	m_sqlManager      = new MySQLManager();
 #pragma endregion
 
 	m_timer.make_shared(new modern_timer());
@@ -139,6 +145,14 @@ bool Engine::Initialize(HINSTANCE hInstance, HWND hwnd,FrameWork* framework)
 {
 
 	//ipp::Console::Println(modern_string(L"Engine::Initialize"),MODERN_CONSOLE_TEXT_COLOR::);
+
+	modern_database_connection_details m_sqlDetails;
+	m_sqlDetails.database = "";
+	m_sqlDetails.password = "";
+	m_sqlDetails.server = "";
+	m_sqlDetails.user = "";
+
+	m_sqlManager->initialize(m_sqlDetails);
 
 	Initialize_CPU();
 
@@ -269,12 +283,15 @@ void Engine::Run()
 	m_deltaTime = m_timer->GetDeltaTime() / 1000.0;
 	m_timer->Restart();
 
+
+
 	{
 		
 
 		Update();
 
 	}
+
 	{
 		Render();
 	}
@@ -620,7 +637,7 @@ void Engine::Render()
 	if (m_renderLock.Run())
 	{
 		m_graphics->BeginScene(0.0f, 0.0f, 0.0f, 0.0f);
-		m_camera->Update();
+
 
 		XMFLOAT4X4 viewMatrix = m_camera->GetView();
 		XMFLOAT4X4 projectionMatrix = m_camera->GetOrtho();
@@ -633,7 +650,7 @@ void Engine::Render()
 			m_gameComponent->Render(m_graphics->GetDeviceContext(), viewMatrix, projectionMatrix);
 		}
 
-
+		//m_camera->Update();
 
 
 
@@ -677,7 +694,7 @@ extern "C"
 	_Use_decl_annotations_
 	class _Out_ IAction* _stdcall __action__remove__object__(class ActionMap* _In_ map)
 	{
-		class EObject* const object = (class EObject* const)(map->PopPointer());
+		class GameObject* const object = (class GameObject* const)(map->PopPointer());
 		class IAction* const action = new ActionRemoveObject((object));
 		return action;
 	}
@@ -698,7 +715,7 @@ extern "C"
 	_Use_decl_annotations_
 		class _Out_ IAction* _stdcall __action__message__front(class ActionMap* const _In_ map)
 	{
-		class EObject* const object = (class EObject* const)map->PopPointer();
+		class GameObject* const object = (class GameObject* const)map->PopPointer();
 		class IAction* const action = new ActionMessageFront(object);
 		return action;
 	}

@@ -1,10 +1,10 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 class SortPair
 {
 public:
-	SortPair(class EObject* const A, class EObject* const B);
-	class EObject* m_A;
-	class EObject* m_B;
+	SortPair(class GameObject* const A, class GameObject* const B);
+	class GameObject* m_A;
+	class GameObject* m_B;
 };
 

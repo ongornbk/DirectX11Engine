@@ -20,20 +20,30 @@ modern is a trademark of ongornbk@gmail.com.
 #include "modern_weak.h"
 
 class modern_exception;
+class modern_cstring;
 
-[[nodiscard]] bool modern_isdigit(wchar_t ch) modern_except_state;
-[[nodiscard]] int32_t modern_todigit(wchar_t ch) modern_except_state;
+[[nodiscard]] const bool     modern_isdigit(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const int8_t   modern_toint8(const wchar_t ch)     modern_except_state;
+[[nodiscard]] const int16_t  modern_toint16(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const int32_t  modern_toint32(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const int64_t  modern_toint64(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const uint8_t  modern_touint8(const wchar_t ch)     modern_except_state;
+[[nodiscard]] const uint16_t modern_touint16(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const uint32_t modern_touint32(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const uint64_t modern_touint64(const wchar_t ch)    modern_except_state;
 
 class modern_string
 {
 	friend class modern_string_view;
-	mutable modern_shared<class modern_array<wchar_t>> m_string;
+	mutable class modern_shared<class modern_array<wchar_t>> m_string;
 public:
 	modern_string();
 	modern_string(modern_string& string);
+	modern_string(class modern_cstring& string);
 	modern_string(const wchar_t* text);
 	modern_string(const wchar_t* text_begin, const wchar_t* text_end);
 	modern_string(const char* text);
+
 	modern_string(const size_t number);
 	modern_string(const int32_t number);
 	modern_string(const int32_t num1, wchar_t* text, int32_t num2);
@@ -46,7 +56,12 @@ public:
 	[[nodiscard]] char* const c_str() const modern_except_state;
 	[[nodiscard]] 
 	[[nodiscard]] size_t size() const modern_except_state;
-	[[nodiscard]] int32_t to_int32() modern_except_state;
+
+	[[nodiscard]] const int32_t to_int32() modern_except_state;
+	[[nodiscard]] const int64_t to_int64() modern_except_state;
+
+	[[nodiscard]] const int32_t to_uint32() modern_except_state;
+
 	[[nodiscard]] float to_float() modern_except_state;
 	[[nodiscard]] bool to_bool() modern_except_state;
 
@@ -54,7 +69,7 @@ public:
 
 	      class modern_string& operator= (      class modern_string& string);
 	const class modern_string& operator= (const class modern_string& string);
-	modern_string& operator= (const wchar_t* string);
+	class modern_string& operator= (const wchar_t* string);
 
 	modern_string operator+ (modern_string& string);
 	modern_string& operator<< (modern_string& string);

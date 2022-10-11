@@ -107,7 +107,7 @@ void RenderLayerInterface::Push(RegionPointObject* const tree)
 {
 }
 
-void RenderLayerInterface::Push(EObject* const object)
+void RenderLayerInterface::Push(GameObject* const object)
 {
 
 }
@@ -128,7 +128,7 @@ std::stack<class Unit*> _vectorcall RenderLayerInterface::GetUnitsInRange(Agent*
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerInterface::GetTreesBelow(class EObject* const object, float range) modern_except_state
+std::stack<class Tree*> _vectorcall RenderLayerInterface::GetTreesBelow(class GameObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

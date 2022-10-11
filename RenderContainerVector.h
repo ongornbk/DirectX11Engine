@@ -1,6 +1,6 @@
 #pragma once
 #include "AnimatedDoodads.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "Doodads.h"
 #include "Tree.h"
 #include "Unit.h"
@@ -16,7 +16,7 @@ struct EObjectVector
 
 	EObjectVector();
 
-	class modern_array<class EObject*> m_objectsXY[2][MAP_DIVISION];
+	class modern_array<class GameObject*> m_objectsXY[2][MAP_DIVISION];
 	//forward_list<RenderContainer*>   m_objectsXY[2][16];
 
 	void Update(float dt);

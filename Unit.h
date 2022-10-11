@@ -18,7 +18,7 @@
 
 class UnitTemplate;
 
-class Unit : public EObject, public ColorFilter, public IAttackOwner
+class Unit : public GameObject, public ColorFilter, public IAttackOwner
 {
 public:
 
@@ -88,7 +88,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
-	void Intersect(class EObject* const other) override;
+	void Intersect(class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void RemoveNow() override;
@@ -162,7 +162,7 @@ public:
 
 	void SetFootstepsSound(class ISound* sound);
 
-	void NotifyBlock(class EObject* const other);
+	void NotifyBlock(class GameObject* const other);
 
 	void BeginRunning();
 	void EndRunning();

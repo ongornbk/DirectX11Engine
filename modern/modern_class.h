@@ -28,6 +28,7 @@ struct modern_class
 protected:
 	modern_handle m_object;
 
+	
 	modern_class();
 	modern_class(struct modern_class& modern) = delete;
 

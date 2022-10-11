@@ -171,12 +171,12 @@ void Region::GiveName(std::string name)
 	}
 }
 
-const enum DirectX::ContainmentType Region::Contains(EObject* const object) const
+const enum DirectX::ContainmentType Region::Contains(GameObject* const object) const
 {
 	return m_rect.Contains(object->m_boundingSphere);
 }
 
-const bool Region::Intersects(EObject* const object) const
+const bool Region::Intersects(GameObject* const object) const
 {
 	return m_rect.Intersects(object->m_boundingSphere);
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "ColorFilter.h"
 #include "RenderLayerType.h"
 #include "Texture.h"
@@ -8,7 +8,7 @@
 #include "modern/modern_array.h"
 #include "Text.h"
 
-class Interface : public EObject, public ColorFilter
+class Interface : public GameObject, public ColorFilter
 {
 public:
 	Interface();
@@ -50,7 +50,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void  Intersect( class EObject* const other) override;
+	void  Intersect( class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void SetParent(class Interface* const parent);
 	void SetBehavior(class IInterfaceBehavior* const behavior);
@@ -58,7 +58,7 @@ public:
 	void SetPosition(const struct DirectX::XMFLOAT3& position);
 	void _vectorcall SetPosition(DirectX::FXMVECTOR& position);
 	class IInterfaceBehavior* const GetBehavior();
-	void PushChild(class EObject* const child);
+	void PushChild(class GameObject* const child);
 	void SetText(std::string text, const float size);
 	void SetText(class modern_string& text, const float size);
 	class Interface* const GetParent() const modern_except_state;
@@ -76,7 +76,7 @@ public:
 private:
 	class Interface* m_parent;
 	class IInterfaceBehavior* m_behavior;
-	modern_array<class EObject*> m_children;
+	modern_array<class GameObject*> m_children;
 
 	DirectX::BoundingBox m_box;//??
 	DirectX::XMFLOAT3 m_offset;

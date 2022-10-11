@@ -12,7 +12,7 @@ class ActionNotifyBlock :
 
 public:
 
-	ActionNotifyBlock(class Unit* const object,class EObject* const other);
+	ActionNotifyBlock(class Unit* const object,class GameObject* const other);
 	~ActionNotifyBlock();
 
 	void execute() override;

@@ -66,7 +66,7 @@ void Doodads::Initialize(
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_DOODADS;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_DOODADS;
 
 	
 
@@ -80,6 +80,7 @@ void Doodads::Render(
 )
 {
 	
+	shader.BeginStandard();
 	if (m_flags.m_rendering)
 	{
 		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
@@ -165,7 +166,7 @@ int32 Doodads::isReleased() const modern_except_state
 	}
 }
 
-void Doodads::Intersect( class EObject* const other) 
+void Doodads::Intersect( class GameObject* const other) 
 {
 }
 

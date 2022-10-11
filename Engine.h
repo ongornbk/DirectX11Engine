@@ -8,14 +8,13 @@
 #include "GlobalUtilities.h"
 #include "RendererManager.h"
 #include "PlayerManager.h"
+#include "MySQLManager.h"
 #include "Global.h"
 #include "CameraControl.h"
 #include "FrameWork.h"
 #include "Canals.h"
 #include "ThreadPool.h"
 #include "ActionMap.h"
-#include "PTaskGCClear.h"
-#include "PTaskRender.h"
 #include "EventManager.h"
 #include "modern/modern_shared.h"
 #include "modern/modern_timer.h"
@@ -82,8 +81,6 @@ private:
 
 	Engine(void);
 
-	friend class PTaskRender;
-
 	void Update();
 	void Render();
 	void PRender();
@@ -97,12 +94,14 @@ private:
 	Global*   m_global;
 	EventManager* m_eventManager{};
 	PlayerManager* m_playerManager;
+
 	static Engine* m_instance;
 	Camera* m_camera;
 	Input* m_input;
 
 	ResourceManager* m_resourceManager;
 	RendererManager* m_rendererManager;
+	MySQLManager*    m_sqlManager;
 	GameComponent*   m_gameComponent;
 	Canals           m_canals;
 	CameraControl    m_cameraControl;

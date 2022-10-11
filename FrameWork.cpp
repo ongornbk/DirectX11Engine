@@ -4,6 +4,7 @@
 #include "GlobalUtilities.h"
 #include "SettingsC.h"
 #include "MPManager.h"
+#include "modern/modern_system.h"
 #include <omp.h>
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);
@@ -39,7 +40,7 @@ FrameWork::~FrameWork(void)
 bool FrameWork::Initialize(GameComponent* gameComponent)
 {
 	
-	if (!CreateDXWindow("USiA",0,0,Settings::GetResolutionX(),Settings::GetResolutionY()))
+	if (!CreateDXWindow("Legion",0,0,Settings::GetResolutionX(),Settings::GetResolutionY()))
 	{
 		return false;
 	}
@@ -100,7 +101,7 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = m_hInstance;
-	wc.hIcon = LoadIcon(NULL,"IDI_ICON1");
+	wc.hIcon = LoadIcon(NULL,"favicon.ico");
 	wc.hIconSm = wc.hIcon;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
@@ -114,8 +115,8 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		return false;
 	}
 
-	int screenWidth = ipp::System::GetScreenWidth();
-	int screenHeight = ipp::System::GetScreenHeight();
+	int32_t screenWidth = modern_system_get_screen_width();
+	int32_t screenHeight = modern_system_get_screen_height();
 
 	if (Settings::GetFullscreen())
 	{
@@ -135,9 +136,11 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		screenHeight = height;
 	}
 
-	int nStyle = WS_OVERLAPPED | WS_SYSMENU | WS_VISIBLE | WS_CAPTION | WS_MINIMIZEBOX;
+	DWORD nStyle = WS_BORDER;
+	DWORD extStyle = WS_EX_APPWINDOW;
 
-	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, windowTitle, windowTitle,nStyle,x,y,screenWidth,screenHeight,NULL,NULL,m_hInstance,NULL);
+	m_hwnd = CreateWindowEx(extStyle, windowTitle, windowTitle,nStyle,x,y,screenWidth,screenHeight,NULL,NULL,m_hInstance,NULL);
+	SetWindowLong(m_hwnd, GWL_STYLE, WS_BORDER);
 
 	if (m_hwnd == NULL)
 	{
@@ -200,8 +203,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 		break;
 	case WM_ACTIVATEAPP:
 		class Graphics* const gfx = Engine::GetEngine()->GetGraphics();
+		const bool fullscreen = (bool)wParam;
 		if(gfx)
 		gfx->SetFullScreen((bool)wParam);
+		if (fullscreen)
+		{
+			MoveWindow(hwnd, 0, 0, 1920, 1080, TRUE);
+		}
+		else
+		{
+			MoveWindow(hwnd, 0, 0, 640, 480, TRUE);
+		}
 		break;
 	}
 

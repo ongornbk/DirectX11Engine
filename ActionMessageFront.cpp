@@ -1,7 +1,7 @@
 #include "ActionMessageFront.h"
 #include "UserInterfaceGame.h"
 
-ActionMessageFront::ActionMessageFront(class EObject* const object) : m_object(object)
+ActionMessageFront::ActionMessageFront(class GameObject* const object) : m_object(object)
 {
 }
 

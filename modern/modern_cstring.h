@@ -21,8 +21,15 @@ modern is a trademark of ongornbk@gmail.com.
 
 class modern_exception;
 
-[[nodiscard]] bool modern_isdigit(char ch) modern_except_state;
-[[nodiscard]] int32_t modern_todigit(char ch) modern_except_state;
+[[nodiscard]] const bool     modern_isdigit(const char ch)    modern_except_state;
+[[nodiscard]] const int8_t   modern_toint8(const char ch)     modern_except_state;
+[[nodiscard]] const int16_t  modern_toint16(const char ch)    modern_except_state;
+[[nodiscard]] const int32_t  modern_toint32(const char ch)    modern_except_state;
+[[nodiscard]] const int64_t  modern_toint64(const char ch)    modern_except_state;
+[[nodiscard]] const uint8_t  modern_touint8(const char ch)     modern_except_state;
+[[nodiscard]] const uint16_t modern_touint16(const char ch)    modern_except_state;
+[[nodiscard]] const uint32_t modern_touint32(const char ch)    modern_except_state;
+[[nodiscard]] const uint64_t modern_touint64(const char ch)    modern_except_state;
 
 class modern_cstring
 {
@@ -43,17 +50,18 @@ public:
 	[[nodiscard]] const wchar_t* c_wstr() const modern_except_state;
 	[[nodiscard]] const char* c_str() const modern_except_state;
 	[[nodiscard]]
-	[[nodiscard]] size_t size() const modern_except_state;
-	[[nodiscard]] int32_t to_int32() modern_except_state;
+	[[nodiscard]] const size_t  size()     const modern_except_state;
+	[[nodiscard]] const int32_t to_int32()         modern_except_state;
+	[[nodiscard]] const uint32_t to_uint32()       modern_except_state;
 	[[nodiscard]] float to_float() modern_except_state;
 	[[nodiscard]] bool to_bool() modern_except_state;
 
 	[[nodiscard]] static modern_pair<modern_cstring, modern_cstring>& SplitString(const char* string, char token);
 
-	modern_cstring& operator= (modern_cstring& string);
-	modern_cstring& operator= (const char* string);
+	class modern_cstring& operator= (modern_cstring& string);
+	class modern_cstring& operator= (const char* string);
 
-	modern_cstring operator+ (modern_cstring& string);
+	class modern_cstring operator+ (modern_cstring& string);
 
 	void push_back(const wchar_t element);
 	void push_back(const char element);

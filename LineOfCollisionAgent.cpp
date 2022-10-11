@@ -90,7 +90,7 @@ int32 LineOfCollisionAgent::isReleased() const modern_except_state
     return m_flags.m_hide;
 }
 
-void LineOfCollisionAgent::Intersect(EObject* const other)
+void LineOfCollisionAgent::Intersect(GameObject* const other)
 {
     if (other == nullptr)
         return;

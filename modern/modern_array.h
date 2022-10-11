@@ -26,6 +26,7 @@ modern is a trademark of ongornbk@gmail.com.
 template <class T>
 class modern_array
 {
+
 	T* m_data;
 	size_t m_size;
 	size_t m_capacity;

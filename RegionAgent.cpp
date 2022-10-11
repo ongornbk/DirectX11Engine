@@ -60,7 +60,7 @@ int32 RegionAgent::isReleased() const modern_except_state
     return m_flags.m_hide;
 }
 
-void RegionAgent::Intersect(EObject* const other)
+void RegionAgent::Intersect(GameObject* const other)
 {
     if (other == nullptr)
         return;

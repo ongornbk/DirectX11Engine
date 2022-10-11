@@ -39,6 +39,12 @@ void ModelVariant::SetVariant(const int32_t variant) const
 	this->m_variant = variant;
 }
 
+void ModelVariant::ErrorSprite(const size_t index)
+{
+	m_maxFrames[index] = 1.f;
+	m_sizes[index] = -1.f;
+}
+
 bool ModelVariant::Check() const modern_except_state
 {
 	return (this->m_variant != this->m_prevVariant);

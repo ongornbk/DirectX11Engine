@@ -519,7 +519,7 @@ for ( int32 i = 0u; i < MAP_DIVISION; i++)
 }
 }
 
-bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * const B) const modern_except_state
+bool _cdecl __sort__SortByY::operator()(class GameObject * const A,class GameObject * const B) const modern_except_state
 {
 
 		const class modern_guard AG(A);
@@ -624,7 +624,7 @@ bool _cdecl __sort__SortByY::operator()(class EObject * const A,class EObject * 
 	return Ay > By;
 }
 
-bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * const B) const modern_except_state
+bool _cdecl __sort__SortByX::operator()(class GameObject * const A,class GameObject * const B) const modern_except_state
 {
 	const class modern_guard AG(A);
 	const class modern_guard BG(B);
@@ -722,7 +722,7 @@ bool _cdecl __sort__SortByX::operator()(class EObject * const A,class EObject * 
 	return Ax > Bx;
 }
 
-bool _cdecl __sort__StaticSortByY::operator()(class EObject* const A, class EObject* const B) const modern_except_state
+bool _cdecl __sort__StaticSortByY::operator()(class GameObject* const A, class GameObject* const B) const modern_except_state
 {
 	if (A && B)
 	{
@@ -733,7 +733,7 @@ bool _cdecl __sort__StaticSortByY::operator()(class EObject* const A, class EObj
 	return false;
 }
 
-bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObject* const B) const modern_except_state
+bool _cdecl __sort__StaticSortByX::operator()(class GameObject* const A, class GameObject* const B) const modern_except_state
 {
 	if (A && B)
 	{
@@ -745,7 +745,7 @@ bool _cdecl __sort__StaticSortByX::operator()(class EObject* const A, class EObj
 }
 
 
-void sortPxVTP(class modern_array<class EObject*>& vector) modern_except_state
+void sortPxVTP(class modern_array<class GameObject*>& vector) modern_except_state
 {
 	//try
 	//{
@@ -764,7 +764,7 @@ void sortPxVTP(class modern_array<class EObject*>& vector) modern_except_state
 }
 
 
-void sortPyVTP(class modern_array<class EObject*>& vector) modern_except_state
+void sortPyVTP(class modern_array<class GameObject*>& vector) modern_except_state
 {
 	//try
 	//{
@@ -782,17 +782,17 @@ void sortPyVTP(class modern_array<class EObject*>& vector) modern_except_state
 	//std::sort(vector.begin(), vector.end(), __sort__SortByY());
 }
 
-void _stdcall _static_sortPxVTP(class EObject** _In_ const begin, class EObject** _In_ const end) modern_except_state
+void _stdcall _static_sortPxVTP(class GameObject** _In_ const begin, class GameObject** _In_ const end) modern_except_state
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByX());
 }
 
-void _stdcall _static_sortPyVTP(class EObject** _In_ const begin, class EObject** _In_ const end) modern_except_state
+void _stdcall _static_sortPyVTP(class GameObject** _In_ const begin, class GameObject** _In_ const end) modern_except_state
 {
 	_Sort_unchecked(begin, end, end - begin, __sort__StaticSortByY());
 }
 
-void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
+void _vectorcall SortByYV(class modern_array<class GameObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 	//for (int32 i = 0; i < 32; ++i)
 	//	vec[1][i].clear();
@@ -841,7 +841,7 @@ void _vectorcall SortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION
 //	}
 }
 
-void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
+void _vectorcall QSortByYV(class modern_array<class GameObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 
 //#pragma omp parallel
@@ -867,7 +867,7 @@ void _vectorcall QSortByYV(class modern_array<class EObject*> vec[2][MAP_DIVISIO
 		//mpm->finalize_weak_pushing();
 }
 
-void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
+void _vectorcall SortByXV(class modern_array<class GameObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 //#pragma omp single
 	{
@@ -914,7 +914,7 @@ void _vectorcall SortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION
 
 }
 
-void _vectorcall QSortByXV(class modern_array<class EObject*> vec[2][MAP_DIVISION]) modern_except_state
+void _vectorcall QSortByXV(class modern_array<class GameObject*> vec[2][MAP_DIVISION]) modern_except_state
 {
 //#pragma omp parallel
 //#pragma omp for schedule(dynamic)
@@ -951,14 +951,14 @@ void _cdecl PostSort() modern_except_state
 	m_postPairs.clear();
 }
 
-void _cdecl PushPair(EObject* const a, EObject* const b) modern_except_state
+void _cdecl PushPair(GameObject* const a, GameObject* const b) modern_except_state
 {
 	m_postPairs.push_back(SortPair(a, b));
 }
 
 //BUGGED
 /*
-void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) modern_except_state
+void _vectorcall StaticSortByYV(class Vector<class GameObject*> vec[2][32]) modern_except_state
 {
 	for (int32 i = 0; i < 32; ++i)
 		vec[1][i].clear();
@@ -974,7 +974,7 @@ void _vectorcall StaticSortByYV(class Vector<class EObject*> vec[2][32]) modern_
 
 }
 
-void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) modern_except_state
+void _vectorcall StaticQSortByYV(Vector<class GameObject*> vec[2][32]) modern_except_state
 {
 	for (int32 i = 0; i < 32; ++i)
 	{
@@ -986,7 +986,7 @@ void _vectorcall StaticQSortByYV(Vector<class EObject*> vec[2][32]) modern_excep
 	}
 }
 
-void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) modern_except_state
+void _vectorcall StaticSortByXV(class Vector<class GameObject*> vec[2][32]) modern_except_state
 {
 	__intersect_test__();
 
@@ -1008,7 +1008,7 @@ void _vectorcall StaticSortByXV(class Vector<class EObject*> vec[2][32]) modern_
 
 }
 
-void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) modern_except_state
+void _vectorcall StaticQSortByXV(Vector<class GameObject*> vec[2][32]) modern_except_state
 {
 
 	for (int32 i = 0; i < 32; i++)
@@ -1022,15 +1022,15 @@ void _vectorcall StaticQSortByXV(Vector<class EObject*> vec[2][32]) modern_excep
 }
 */
 
-void _vectorcall __CleanUp(class modern_array<class EObject*>* const vec) modern_except_state
+void _vectorcall __CleanUp(class modern_array<class GameObject*>* const vec) modern_except_state
 {
 	class GarbageCollector* const collector = GarbageCollector::GetInstance();
 	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
-	class modern_array<class EObject*>& vectemp = vec[i];
+	class modern_array<class GameObject*>& vectemp = vec[i];
 	for (int32 j = 0; j < vectemp.size(); ++j)
 	{
-		class EObject* obj = vectemp[j];
+		class GameObject* obj = vectemp[j];
 		if (obj)
 		{
 			

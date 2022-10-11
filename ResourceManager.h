@@ -42,6 +42,9 @@ public:
 
 
 	static class ResourceManager* GetInstance();
+
+	const modern_Boolean exchange_flag(const modern_Boolean flag) const modern_except_state;
+	const void           clear_flag()                              const modern_except_state;
 private:
 	vector<class ResourceTexture*> m_textures;
 	vector<class ResourceShader*>  m_shaders;
@@ -49,7 +52,7 @@ private:
 
 	static class ResourceManager* m_instance;
 
-
+	mutable modern_Boolean m_resultFlag;
 
 
 	ResourceManager(void);

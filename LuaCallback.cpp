@@ -259,7 +259,7 @@ namespace lua_callback
 			struct lua_State* const state																	 //^^
 		) modern_except_state																				 //^^
 		{																									 //^^
-			class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));								 //^^
+			class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));								 //^^
 			if (Unit::CheckIfValid(unit))																		 //^^
 			{																								 //^^
 				m_engine->GetCameraControl()->LockCameraPositionOnUnit(unit);									 //^^
@@ -442,7 +442,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			//object->m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DELETE;
@@ -489,7 +489,7 @@ namespace lua_callback
 	//	struct lua_State* const state
 	//) modern_except_state
 	//{
-	//	m_global->m_pickedObject = (class EObject* const)lua_tointeger(state, 1);
+	//	m_global->m_pickedObject = (class GameObject* const)lua_tointeger(state, 1);
 	//	return 0;
 	//}
 
@@ -497,7 +497,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 
 		if (object) lua_pushboolean(state, object->m_flags.m_selected);
 		else lua_pushboolean(state, false);
@@ -607,7 +607,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		MSVC_VOLATILE class EObject* const object = (class EObject*)m_global->m_matchingObject.get();
+		MSVC_VOLATILE class GameObject* const object = (class GameObject*)m_global->m_matchingObject.get();
 		lua_pushinteger(state, (lua_Integer)object);
 		return 1;
 	}
@@ -719,7 +719,7 @@ namespace lua_callback
 	) modern_except_state
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid(unit))
 		{
 			modern_guard guard(unit);
@@ -748,7 +748,7 @@ namespace lua_callback
 	) modern_except_state
 	{
 		//MSVC_VOLATILE class Unit* const unit = m_global->m_lastPickedUnit;
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid(unit))
 		{
 			//modern_guard guard(unit);
@@ -766,7 +766,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));
 		if (Unit::CheckIfValid(unit))
 		{
 			//modern_guard guard(unit);
@@ -798,7 +798,7 @@ namespace lua_callback
 	{
 		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);
 		
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));
+		class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));
 		if (unit)
 		{
 		std::string str = lua_tostring(state, 2);
@@ -826,7 +826,7 @@ namespace lua_callback
 	) modern_except_state																											 //^^
 	{																																 //^^
 		///class Unit* const unit = (class Unit* const)lua_tointeger(state, 1);														 //^^
-		class Unit* const unit = dynamic_cast<class Unit* const>((class EObject* const)lua_tointeger(state, 1));					 //^^
+		class Unit* const unit = dynamic_cast<class Unit* const>((class GameObject* const)lua_tointeger(state, 1));					 //^^
 			if(unit)
 				m_renderer->SetFocus(unit);			
 			//^^
@@ -1100,7 +1100,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			object->m_flags.m_rendering =  (bool)lua_toboolean(state, 2);
@@ -1112,7 +1112,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			object->m_flags.m_cast_shadow = (bool)lua_toboolean(state, 2);
@@ -1124,7 +1124,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			modern_guard g(object);
@@ -1137,7 +1137,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			object->m_flags.m_selectable = (bool)lua_toboolean(state, 2);
@@ -1149,7 +1149,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		if (object)
 		{
 			object->collisionPriority = (int32)lua_tointeger(state, 2);
@@ -1161,7 +1161,7 @@ namespace lua_callback
 		struct lua_State* const state
 	) modern_except_state
 	{
-		//class EObject* const object = (class EObject* const)lua_tointeger(state, 1);
+		//class GameObject* const object = (class GameObject* const)lua_tointeger(state, 1);
 		//if (object)
 		//{
 		//	lua_pushboolean(state, object->m_flags[(int64)lua_tointeger(state, 2)]);
@@ -1628,7 +1628,7 @@ namespace lua_callback
 		
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		const enum class AttackType type0 = enum_cast<const enum class AttackType>(lua_tointeger(state,2));
-		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (unit0->m_type != GameObject::EObjectType::OBJECT_TYPE_UNIT)
 			return 0;
 
 		unit0->SetAttackType(type0);
@@ -1643,7 +1643,7 @@ namespace lua_callback
 
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		const float range0 = (float)lua_tonumber(state, 2);
-		if (unit0->m_type != EObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (unit0->m_type != GameObject::EObjectType::OBJECT_TYPE_UNIT)
 			return 0;
 
 		unit0->SetAttackRange(range0);
@@ -1655,7 +1655,7 @@ namespace lua_callback
 		struct lua_State* const state
 	)
 	{
-		class EObject* const obj = (class EObject* const)lua_tointeger(state, 1);
+		class GameObject* const obj = (class GameObject* const)lua_tointeger(state, 1);
 		std::cout << "Object Debug Info : " << obj << std::endl;
 		std::cout << "BLOCKED : " << obj->m_flags.m_blocked << std::endl;
 		std::cout << "SHADOW : " << obj->m_flags.m_cast_shadow << std::endl;
@@ -1833,7 +1833,7 @@ namespace lua_callback
 	)
 	{
 		//tempcode warning
-		class EObject* const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_enteringObject.get());
+		class GameObject* const obj = dynamic_cast<class Unit* const>((class GameObject* const)Global::GetInstance()->m_enteringObject.get());
 		if (obj)
 		{
 			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_enteringObject.get());
@@ -1850,7 +1850,7 @@ namespace lua_callback
 	)
 	{
 		//tempcode warning
-		class EObject* const obj = dynamic_cast<class Unit* const>((class EObject* const)Global::GetInstance()->m_leavingObject.get());
+		class GameObject* const obj = dynamic_cast<class Unit* const>((class GameObject* const)Global::GetInstance()->m_leavingObject.get());
 		if (obj)
 		{
 			lua_pushinteger(state, (lua_Integer)Global::GetInstance()->m_leavingObject.get());
@@ -1898,7 +1898,7 @@ namespace lua_callback
 		lua_register(m_lua, "GetMousePressed", lua_callback::__GetMousePressed);
 		lua_register(m_lua, "GetMousePosition", lua_callback::GetMousePosition);
 		
-		//EObject
+		//GameObject
 		lua_register(m_lua, "SetPushableFlag", lua_callback::SetPushableFlag);//@@
 		lua_register(m_lua, "SetRenderingFlag", lua_callback::SetRenderingFlag);//@@
 		lua_register(m_lua, "SetShadowFlag", lua_callback::SetShadowFlag);//@@

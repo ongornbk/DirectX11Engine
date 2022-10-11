@@ -86,7 +86,7 @@ int32 RectOfCollisionAgentSecond::isReleased() const modern_except_state
     return m_flags.m_hide;
 }
 
-void RectOfCollisionAgentSecond::Intersect(EObject* const other)
+void RectOfCollisionAgentSecond::Intersect(GameObject* const other)
 {
     if (other == nullptr)
         return;

@@ -1,7 +1,7 @@
 #include "DeleteObject.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
-DeleteObjectTrash::DeleteObjectTrash(class EObject* const data) : m_data(data)
+DeleteObjectTrash::DeleteObjectTrash(class GameObject* const data) : m_data(data)
 {
 
 }

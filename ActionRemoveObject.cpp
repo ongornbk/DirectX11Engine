@@ -1,7 +1,7 @@
 #include "ActionRemoveObject.h"
 #include "modern/modern_guard.h"
 
-ActionRemoveObject::ActionRemoveObject(class EObject* const object)
+ActionRemoveObject::ActionRemoveObject(class GameObject* const object)
 {
 	m_object.make_handle(object->GetHandle());
 }
@@ -12,7 +12,7 @@ ActionRemoveObject::~ActionRemoveObject()
 
 void ActionRemoveObject::execute()
 {
-	class EObject* const A = (class EObject*)m_object.get();
+	class GameObject* const A = (class GameObject*)m_object.get();
 	if (A)
 	{
 		modern_guard guard(A);

@@ -20,4 +20,3 @@ typedef uint8_t BYTE;
 #else
 #define MSVC_VOLATILE
 #endif
-

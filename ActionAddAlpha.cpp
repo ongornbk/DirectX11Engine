@@ -1,6 +1,6 @@
 #include "ActionAddAlpha.h"
 
-ActionAddAlpha::ActionAddAlpha(class EObject* const object,const float alpha)
+ActionAddAlpha::ActionAddAlpha(class GameObject* const object,const float alpha)
 {
 	m_object.make_handle(object->GetHandle());
 	m_alpha = alpha;
@@ -12,16 +12,16 @@ ActionAddAlpha::~ActionAddAlpha()
 
 void ActionAddAlpha::execute()
 {
-	class EObject* const A = (class EObject*)m_object.get();
+	class GameObject* const A = (class GameObject*)m_object.get();
 	if (A)
 	{
 		switch (A->m_type)
 		{
-		case EObject::EObjectType::OBJECT_TYPE_UNIT:
+		case GameObject::EObjectType::OBJECT_TYPE_UNIT:
 		{
 			goto APPLY;
 		}
-		case EObject::EObjectType::OBJECT_TYPE_TREE:
+		case GameObject::EObjectType::OBJECT_TYPE_TREE:
 		{
 			goto APPLY;
 		}

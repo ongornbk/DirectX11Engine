@@ -1,6 +1,6 @@
 #pragma once
 #include "IAction.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "Global.h"
 #include "modern/modern_handle.h"
 #include "modern/modern_class_view.h"

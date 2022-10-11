@@ -1,7 +1,7 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 class RegionPointObject :
-	public EObject
+	public GameObject
 {
 
 
@@ -27,7 +27,7 @@ public:
 	void Update(const float dt) override;
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
-	void Intersect( class EObject* const other) override;
+	void Intersect( class GameObject* const other) override;
 
 };
 

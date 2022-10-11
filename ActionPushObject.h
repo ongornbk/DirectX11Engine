@@ -1,6 +1,6 @@
 #include "IAction.h"
 #include "RenderLayerType.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "RendererManager.h"
 
 class ActionPushObject :
@@ -13,7 +13,7 @@ class ActionPushObject :
 
 public:
 
-	ActionPushObject(class EObject* const object, const enum class RenderLayerType layer);
+	ActionPushObject(class GameObject* const object, const enum class RenderLayerType layer);
 	~ActionPushObject();
 
 	void execute() override;

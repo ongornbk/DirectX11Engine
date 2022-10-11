@@ -1,12 +1,12 @@
 #pragma once
 #include "Sprite.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "Global.h"
 #include "RenderHandle.h"
 #include "ColorFilter.h"
 #include "RegionC.h"
 
-class Tree : public EObject, public ColorFilter
+class Tree : public GameObject, public ColorFilter
 {
 public:
 	Tree();
@@ -41,7 +41,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void Intersect(class EObject* const other) override;
+	void Intersect(class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void RemoveNow() override;

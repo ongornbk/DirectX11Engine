@@ -26,6 +26,6 @@ void RegionPointObject::Release()
 {
 }
 
-void RegionPointObject::Intersect( EObject* const other)
+void RegionPointObject::Intersect( GameObject* const other)
 {
 }

@@ -51,7 +51,7 @@ void _stdcall RenderLayerItem::StaticQSort()
 
 void _vectorcall RenderLayerItem::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader) modern_except_state
 {
-	class modern_array<class modern_array<class EObject*>*> mvpp;
+	class modern_array<class modern_array<class GameObject*>*> mvpp;
 
 
 	for (int32 i = 0; i < MAP_DIVISION; i++)
@@ -139,7 +139,7 @@ void RenderLayerItem::Push(RegionPointObject* const tree)
 	m_objects[1][0].push_back(tree);
 }
 
-void RenderLayerItem::Push(EObject* const object)
+void RenderLayerItem::Push(GameObject* const object)
 {
 	m_objects[1][0].push_back(object);
 }
@@ -149,8 +149,8 @@ void RenderLayerItem::Push(Interface* const inter)
 }
 
 static int64_t _fastcall CheckDistance(
-	class EObject* const A,
-	class EObject* const B,
+	class GameObject* const A,
+	class GameObject* const B,
 	const float range
 ) modern_except_state
 {
@@ -170,12 +170,12 @@ static int64_t _fastcall CheckDistance(
 	}
 }
 
-static void _stdcall PushUnitsInRange(vector<EObject*>& vec, std::stack<Unit*>& sa, EObject* object, const float range) modern_except_state
+static void _stdcall PushUnitsInRange(vector<GameObject*>& vec, std::stack<Unit*>& sa, GameObject* object, const float range) modern_except_state
 {
 
 	for (auto&& unit : vec)
 	{
-		if (unit && unit != object && (unit->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+		if (unit && unit != object && (unit->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 		{
 			switch (CheckDistance(unit, object, range))
 			{
@@ -220,7 +220,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -235,7 +235,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec + 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -257,7 +257,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -272,7 +272,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -294,7 +294,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec - 1])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -309,7 +309,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				for (auto& obj : m_objects[1][cVec])
 				{
-					if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+					if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 					{
 						switch (CheckDistance(obj, object, range))
 						{
@@ -324,7 +324,7 @@ std::stack<Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Unit* object, flo
 			{
 				{
 					for (auto& obj : m_objects[1][cVec + 1])
-						if (obj && obj != object && (obj->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT))
+						if (obj && obj != object && (obj->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT))
 						{
 							switch (CheckDistance(obj, object, range))
 							{
@@ -358,7 +358,7 @@ std::stack<class Unit*> _vectorcall RenderLayerItem::GetUnitsInRange(Agent* agen
 	return std::stack<class Unit*>();
 }
 
-std::stack<class Tree*> _vectorcall RenderLayerItem::GetTreesBelow(class EObject* const object, float range) modern_except_state
+std::stack<class Tree*> _vectorcall RenderLayerItem::GetTreesBelow(class GameObject* const object, float range) modern_except_state
 {
 	return std::stack<class Tree*>();
 }

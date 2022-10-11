@@ -1,6 +1,6 @@
 #pragma once
 #include "IAction.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 class ActionSetShadowCast :
 	public IAction
@@ -13,7 +13,7 @@ class ActionSetShadowCast :
 public:
 
 	//ActionApplyColorFilter(class Unit* const object,struct DirectX::XMFLOAT4& color);
-	ActionSetShadowCast(class EObject* const object, bool shadow);
+	ActionSetShadowCast(class GameObject* const object, bool shadow);
 	~ActionSetShadowCast();
 
 	void execute() override;

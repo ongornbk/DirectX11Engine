@@ -1,12 +1,12 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "AgentIntersectStance.h"
 
 
-class RectOfCollisionAgentFirst : public EObject
+class RectOfCollisionAgentFirst : public GameObject
 {
-	class EObject* m_intersectA;
-	class EObject* m_intersectB;
+	class GameObject* m_intersectA;
+	class GameObject* m_intersectB;
 	enum class AgentIntersectStance m_intersectStance;
 
 	modern_handle m_parent;
@@ -39,7 +39,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void Intersect(class EObject* const other) override;
+	void Intersect(class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void RemoveNow() override;

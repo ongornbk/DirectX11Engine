@@ -6,7 +6,7 @@
 //	//m_stance = ActionStance::ACTION_STANCE_RUNNING;
 //}
 
-ActionApplyColorFilter::ActionApplyColorFilter(class EObject* const object, DirectX::XMFLOAT4 color)
+ActionApplyColorFilter::ActionApplyColorFilter(class GameObject* const object, DirectX::XMFLOAT4 color)
 {
 	m_object.make_handle(object->GetHandle());
 	m_color = color;
@@ -18,16 +18,16 @@ ActionApplyColorFilter::~ActionApplyColorFilter()
 
 void ActionApplyColorFilter::execute()
 {
-	class EObject* const A = (class EObject*)m_object.get();
+	class GameObject* const A = (class GameObject*)m_object.get();
 	if (A)
 	{
 				switch (A->m_type)
 				{
-				case EObject::EObjectType::OBJECT_TYPE_UNIT:
+				case GameObject::EObjectType::OBJECT_TYPE_UNIT:
 				{
 					goto APPLY;
 				}
-				case EObject::EObjectType::OBJECT_TYPE_TREE:
+				case GameObject::EObjectType::OBJECT_TYPE_TREE:
 				{
 					goto APPLY;
 				}

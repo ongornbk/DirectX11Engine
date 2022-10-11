@@ -1,6 +1,7 @@
 #include "modern_string.h"
 #include "modern_exception.h"
 #include "modern_math.h"
+#include "modern_cstring.h"
 #include <iostream>
 #include <string>
 
@@ -20,6 +21,23 @@ modern_string::modern_string(class modern_string& string)
 	m_string->resize(string.size());
 #pragma warning(disable : 4996)
 	wcscpy(m_string->data(), string.c_wstr());
+}
+
+modern_string::modern_string(modern_cstring& string)
+{
+	m_string.make_shared(new class modern_array<wchar_t>());
+	m_string->reserve(strlen(string.data()) + 1);
+	for (int64_t i = 0ll; i < 100ll; i++)
+	{
+		if (string.data()[i] == '\0')
+			goto END;
+		m_string->push_back(wchar_t());
+		mbtowc(m_string->data() + i, &string.data()[i], 1);
+	}
+	//#pragma warning(disable : 4996)
+		//mbstowcs(m_string->data(), text, m_string->size());
+END:
+	push_zero();
 }
 
 modern_string::modern_string(const wchar_t* text)
@@ -211,29 +229,103 @@ size_t modern_string::size() const modern_except_state
 	return m_string->size();
 }
 
-int32_t modern_string::to_int32() modern_except_state
+const int32_t modern_string::to_int32() modern_except_state
 {
 	modern_array<int32_t> digits;
-	modern_shared<modern_array<wchar_t>> base;
+	int32_t value = 0l;
 
-	base.make_shared(m_string);
+	if (m_string->size())
+	{
 
-	for (auto  ch : *base)
-	{
-		if (modern_isdigit(ch))
-			digits.push_back(modern_todigit(ch));
-	}
-	int32_t value = 0;
-	for (int32_t i = 0; i < digits.size(); i++)
-	{
-		int32_t mult = (int32_t)digits.size() - i;
-		int32_t val10 = digits[i];
-		for (int32_t ii = 0; ii < mult - 1; ii++)
+		for (auto ch : *m_string)
 		{
-			val10 *= 10;
+			if (modern_isdigit(ch))
+			digits.push_back(modern_toint32(ch));
 		}
-		value += val10;
+
+		for (int32_t i = 0l; i < digits.size(); i++)
+		{
+			int32_t mult = (int32_t)digits.size() - i;
+			int32_t val10 = digits[i];
+			for (int32_t ii = 0l; ii < mult - 1; ii++)
+			{
+				val10 *= 10l;
+			}
+			value += val10;
+		}
+
 	}
+
+	else
+
+	{
+		return 0l;
+	}
+
+	if (m_string->at(0ull) modern_equal L'-')
+		return value * (-1l);
+	return value;
+}
+
+const int64_t modern_string::to_int64()
+{
+	modern_array<int64_t> digits;
+	int64_t value = 0ll;
+
+	if (m_string->size())
+	{
+
+		for (auto ch : *m_string)
+		{
+			if (modern_isdigit(ch))
+				digits.push_back(modern_toint64(ch));
+		}
+
+		for (int32_t i = 0l; i < digits.size(); i++)
+		{
+			int32_t mult = (int32_t)digits.size() - i;
+			int32_t val10 = digits[i];
+			for (int32_t ii = 0l; ii < mult - 1; ii++)
+			{
+				val10 *= 10ll;
+			}
+			value += val10;
+		}
+
+	}
+
+	else
+
+	{
+		return 0ll;
+	}
+
+	if (m_string->at(0ull) modern_equal L'-')
+		return value * (-1ll);
+	return value;
+}
+
+const int32_t modern_string::to_uint32()
+{
+	modern_array<int32_t> digits;
+	uint32_t value = 0ul;
+
+		for (auto ch : *m_string)
+		{
+			if (modern_isdigit(ch))
+				digits.push_back(modern_touint32(ch));
+		}
+
+		for (int32_t i = 0l; i < digits.size(); i++)
+		{
+			int32_t mult = (int32_t)digits.size() - i;
+			int32_t val10 = digits[i];
+			for (int32_t ii = 0l; ii < mult - 1; ii++)
+			{
+				val10 *= 10ul;
+			}
+			value += val10;
+		}
 
 	return value;
 }
@@ -405,12 +497,47 @@ const wchar_t modern_string::at(const size_t index) const modern_except_state
 	return L'\0';
 }
 
-bool modern_isdigit(wchar_t ch) modern_except_state
+const bool modern_isdigit(const wchar_t ch) modern_except_state
 {
 	return (ch >= L'0' && ch <= L'9');
 }
 
-int32_t modern_todigit(wchar_t ch) modern_except_state
+const int8_t modern_toint8(const wchar_t ch) modern_except_state
 {
-	return ch - L'0';
+	return (int8_t)(ch - L'0');
+}
+
+const int16_t modern_toint16(const wchar_t ch) modern_except_state
+{
+	return (int16_t)(ch - L'0');
+}
+
+const int32_t modern_toint32(const wchar_t ch) modern_except_state
+{
+	return (int32_t)(ch - L'0');
+}
+
+const int64_t modern_toint64(const wchar_t ch) modern_except_state
+{
+	return (int64_t)(ch - L'0');
+}
+
+const uint8_t modern_touint8(const wchar_t ch) modern_except_state
+{
+	return (uint8_t)(ch - L'0');
+}
+
+const uint16_t modern_touint16(const wchar_t ch) modern_except_state
+{
+	return (uint16_t)(ch - L'0');
+}
+
+const uint32_t modern_touint32(const wchar_t ch) modern_except_state
+{
+	return (uint32_t)(ch - L'0');
+}
+
+const uint64_t modern_touint64(const wchar_t ch) modern_except_state
+{
+	return (uint64_t)(ch - L'0');
 }

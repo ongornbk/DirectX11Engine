@@ -1,8 +1,8 @@
 #pragma once
 #include "Sprite.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
-class AnimatedDoodads : public EObject
+class AnimatedDoodads : public GameObject
 {
 public:
 	AnimatedDoodads();
@@ -37,7 +37,7 @@ public:
 	void SetZ(const float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void  Intersect( class EObject* const other)  override;
+	void  Intersect( class GameObject* const other)  override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void RemoveNow() override;

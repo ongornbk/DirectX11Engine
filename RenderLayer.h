@@ -37,11 +37,11 @@ public:
 	virtual void Push(class AnimatedDoodads* const animated) = 0;
 	virtual void Push(class Tree* const tree) = 0;
 	virtual void Push(class RegionPointObject* const tree) = 0;
-	virtual void Push(class EObject* const object) = 0;
+	virtual void Push(class GameObject* const object) = 0;
 	virtual void Push(class Interface* const inter) = 0;
 	virtual std::stack<class Unit*> _vectorcall GetUnitsInRange(Unit* object, float range) modern_except_state = 0;
 	virtual std::stack<class Unit*> _vectorcall GetUnitsInRange(Agent* agent, float range) modern_except_state = 0;
-	virtual std::stack<class Tree*> _vectorcall GetTreesBelow(class EObject* const object, float range) = 0;
+	virtual std::stack<class Tree*> _vectorcall GetTreesBelow(class GameObject* const object, float range) = 0;
 	virtual size_t GetNumberOfObjects() const modern_except_state;
 
 protected:

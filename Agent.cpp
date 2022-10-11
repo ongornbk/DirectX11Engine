@@ -3,7 +3,10 @@
 #include "ActionRemoveObject.h"
 #include "Timer.h"
 
-Agent::Agent() : m_intersectStance(AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT)
+Agent::Agent()
+    :
+    //GameObject((struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_AGENT_INFO),
+    m_intersectStance(AgentIntersectStance::AGENT_STANCE_PRE_INTERSECT)
 {
     m_boundingSphere.Center = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
     m_boundingSphere.Radius = 0.0f;
@@ -13,6 +16,7 @@ Agent::Agent() : m_intersectStance(AgentIntersectStance::AGENT_STANCE_PRE_INTERS
     m_flags.m_rendering = false;
 
     m_type = EObjectType::OBJECT_TYPE_AGENT;
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_AGENT_INFO;
 }
 
 Agent::~Agent()
@@ -56,7 +60,7 @@ int32 Agent::isReleased() const modern_except_state
     return m_flags.m_hide;
 }
 
-void Agent::Intersect(EObject* const other)
+void Agent::Intersect(GameObject* const other)
 {
     if (other == nullptr)
         return;

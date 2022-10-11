@@ -168,31 +168,59 @@ const char* modern_cstring::c_str() const modern_except_state
 	return m_string->data();
 }
 
-size_t modern_cstring::size() const modern_except_state
+const size_t modern_cstring::size() const modern_except_state
 {
 	return m_string->size();
 }
 
-int32_t modern_cstring::to_int32() modern_except_state
+const int32_t modern_cstring::to_int32() modern_except_state
 {
 	modern_array<int32_t> digits;
-	modern_shared<modern_array<char>> base;
+	int32_t value = 0;
+	//modern_shared<modern_array<char>> base;
 
-	base.make_shared(m_string);
+	//base.make_shared(m_string);
 
-	for (auto ch : *base)
+	for (auto ch : *m_string)
 	{
 		if (modern_isdigit(ch))
-			digits.push_back(modern_todigit(ch));
+			digits.push_back(modern_toint32(ch));
 	}
-	int32_t value = 0;
-	for (int32_t i = 0; i < digits.size(); i++)
+
+	for (int32_t i = 0l; i < digits.size(); i++)
 	{
 		int32_t mult = (int32_t)digits.size() - i;
 		int32_t val10 = digits[i];
-		for (int32_t ii = 0; ii < mult - 1; ii++)
+		for (int32_t ii = 0l; ii < mult - 1; ii++)
 		{
-			val10 *= 10;
+			val10 *= 10l;
+		}
+		value += val10;
+	}
+
+	if (m_string->at(0ull) modern_equal '-')
+		return value * (-1l);
+	return value;
+}
+
+const uint32_t modern_cstring::to_uint32()
+{
+	modern_array<uint32_t> digits;
+	uint32_t value = 0ul;
+
+	for (auto ch : *m_string)
+	{
+		if (modern_isdigit(ch))
+			digits.push_back(modern_touint32(ch));
+	}
+
+	for (int32_t i = 0l; i < digits.size(); i++)
+	{
+		int32_t mult = (int32_t)digits.size() - i;
+		int32_t val10 = digits[i];
+		for (int32_t ii = 0l; ii < mult - 1; ii++)
+		{
+			val10 *= 10ul;
 		}
 		value += val10;
 	}
@@ -258,6 +286,22 @@ modern_cstring& modern_cstring::operator=(modern_cstring& string)
 	return *this;
 }
 
+modern_cstring& modern_cstring::operator=(const char* string)
+{
+	m_string.make_shared(new class modern_array<char>());
+	for (int64_t i = 0; i < 100ll; i++)
+	{
+		if (string[i] == '\0')
+			goto END;
+		m_string->push_back(string[i]);
+
+	}
+END:
+	push_zero();
+
+	return *this;
+}
+
 
 
 #include <string>
@@ -311,12 +355,47 @@ void modern_cstring::push_zero() const modern_except_state
 	m_string->push_back('\0');
 }
 
-bool modern_isdigit(char ch) modern_except_state
+const bool modern_isdigit(const char ch) modern_except_state
 {
 	return (ch >= L'0' && ch <= L'9');
 }
 
-int32_t modern_todigit(char ch) modern_except_state
+const int8_t modern_toint8(const char ch) modern_except_state
 {
-	return ch - '0';
+	return (int8_t)(ch - '0');
+}
+
+const int16_t modern_toint16(const char ch) modern_except_state
+{
+	return (int16_t)(ch - '0');
+}
+
+const int32_t modern_toint32(const char ch) modern_except_state
+{
+	return (int32_t)(ch - '0');
+}
+
+const int64_t modern_toint64(const char ch) modern_except_state
+{
+	return (int64_t)(ch - '0');
+}
+
+const uint8_t modern_touint8(const char ch) modern_except_state
+{
+	return (uint8_t)(ch - '0');
+}
+
+const uint16_t modern_touint16(const char ch) modern_except_state
+{
+	return (uint16_t)(ch - '0');
+}
+
+const uint32_t modern_touint32(const char ch) modern_except_state
+{
+	return (uint32_t)(ch - '0');
+}
+
+const uint64_t modern_touint64(const char ch) modern_except_state
+{
+	return (uint64_t)(ch - '0');
 }

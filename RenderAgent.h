@@ -1,9 +1,9 @@
 #pragma once
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "AgentIntersectStance.h"
 #include "Region.h"
 
-class RenderAgent : public EObject
+class RenderAgent : public GameObject
 {
 	mutable modern_handle m_parent;
 
@@ -34,7 +34,7 @@ public:
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
 	int32 isReleased() const modern_except_state override;
-	void Intersect(class EObject* const other) override;
+	void Intersect(class GameObject* const other) override;
 	const enum class RenderLayerType GetLayerType() const modern_except_state override;
 	void Remove() override;
 	void RemoveNow() override;

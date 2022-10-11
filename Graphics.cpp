@@ -3,6 +3,11 @@
 #include "LUAManager.h"
 #include "LuaCallback.cpp"
 
+extern "C"
+{
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
+
 Graphics::Graphics(void)
 {
 	m_dxManager = nullptr;

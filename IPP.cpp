@@ -440,16 +440,6 @@ int32 _stdcall ipp::math::RandomInt32(const int32 min, const int32 max) modern_e
 	return min + (rand() % int32(max - min + 1));
 }
 
-int32 ipp::System::GetScreenWidth() modern_except_state
-{
-	return GetSystemMetrics(SM_CXSCREEN);
-}
-
-int32 ipp::System::GetScreenHeight() modern_except_state
-{
-	return GetSystemMetrics(SM_CYSCREEN);
-}
-
 std::string ipp::System::GetFileName(const std::string & s) modern_except_state
 {
 	char sep = '/';

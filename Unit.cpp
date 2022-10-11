@@ -25,10 +25,12 @@
 #include "SettingsC.h"
 #include "InterfaceStatusBarBehavior.h"
 #include "EventManager.h"
+#include "CompileTimeEnumManager.h"
 #include "GPUMemory.h"
 #include "modern/modern_bpair.h"
 
 Unit::Unit() :
+	//GameObject((struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO),
 	ColorFilter(1.f, 1.f, 1.f, 1.f),
 	m_scale(1.f, 1.f, 1.f, 1.f),
 	m_vertexBuffer(nullptr),
@@ -51,10 +53,12 @@ Unit::Unit() :
 	m_modelVariant.SetVariant(ModelStance::MODEL_STANCE_TOWNNEUTRAL);
 
 	m_attack.range = 100.f;
+	m_attack.range = 100.f;
 	m_attack.active = false;
 	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_MELEE;
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_UNIT;
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO;
 
 	m_tasks.SetOwner(this);
 }
@@ -85,7 +89,7 @@ Unit::Unit(class Unit* const other) :
 	m_attack.range = other->GetAttack().range;
 	m_attack.active = other->GetAttack().active;
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_UNIT;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_UNIT;
 
 	m_tasks.SetOwner(this);
 }
@@ -457,6 +461,12 @@ void Unit::Update(const float dt)
 			//{
 			//	return;
 			//}
+
+			if (m_modelVariant.GetSize() < 0.f)
+			{
+				goto UNIT_UPDATE_RETURN;
+			}
+
 			if (m_currentFrame < m_modelVariant.GetMaxFrames())
 			{
 				m_currentSpeed += m_animationSpeed * dt;
@@ -472,7 +482,7 @@ void Unit::Update(const float dt)
 
 				}
 			}
-			if (m_currentFrame == m_previousFrame) return;
+			if (m_currentFrame == m_previousFrame) goto UNIT_UPDATE_RETURN;
 
 
 
@@ -540,6 +550,8 @@ void Unit::Update(const float dt)
 	//	}
 	}
 	//
+
+	UNIT_UPDATE_RETURN:
 	m_intersection = false;
 }	
 
@@ -569,7 +581,7 @@ void Unit::Release()
 	}
 }
 
-void Unit::Intersect(class EObject* const other)
+void Unit::Intersect(class GameObject* const other)
 {
 	if (m_intersection == false)
 	{
@@ -798,7 +810,7 @@ void Unit::Die(Unit* const killer)
 	//m_flags.m_cast_shadow = false;
 	//m_flags.m_pushable = false;
 
-	Engine* const engine = Engine::GetEngine();
+	class Engine* const engine = Engine::GetEngine();
 	const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), m_boundingSphere.Center);
 	engine->PlaySound(L"death0", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
 
@@ -825,6 +837,7 @@ void Unit::Die(Unit* const killer)
 
 void Unit::ApplyExperienceBonus(Unit* const killer)
 {
+
 	if (killer && killer != this)
 	{
 		//modern_guard g(killer);
@@ -1375,7 +1388,7 @@ void Unit::SetFootstepsSound(class ISound * const sound)
 	//m_footstepsHandle = sound->GetSound();
 }
 
-void Unit::NotifyBlock(EObject* const other)
+void Unit::NotifyBlock(GameObject* const other)
 {
 	
 		GoBack();
@@ -1527,7 +1540,7 @@ int32 Unit::isReleased() const modern_except_state
 const modern_Boolean Unit::CheckIfValid(Unit* const pointer)
 {
 	if (pointer)
-		if (pointer->m_type == EObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (pointer->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT)
 			return modern_true;
 	return modern_false;
 }
@@ -1552,102 +1565,134 @@ void Unit::InitializeModel(
 		//std::cout << modern_cstring((int)m_modelVariant.m_sizes[i]).c_str() << std::endl;
 	}
 
-	
-
+	class ResourceManager* const resource_manager = ResourceManager::GetInstance();
+	resource_manager->clear_flag();
 
 	if (paths->ATTACK_1 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->ATTACK_1);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[0] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[0] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(0ull);
 	}
 
 	if (paths->ATTACK_2 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->ATTACK_2);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[1] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[1] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(1ull);
 	}
 
 	if (paths->GETHIT != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->GETHIT);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[2] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[2] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(2ull);
 	}
 
 	if (paths->KICK != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->KICK);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[3] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[3] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(3ull);
 	}
 	if (paths->NEUTRAL != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->NEUTRAL);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[4] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[4] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(4ull);
 	}
 	if (paths->RUN != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->RUN);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[5] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[5] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(5ull);
 	}
 	if (paths->SPECIALCAST != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->SPECIALCAST);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[6] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[6] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(6ull);
 	}
 	if (paths->SPECIAL_1 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->SPECIAL_1);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[7] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[7] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(7ull);
 	}
 	if (paths->SPECIAL_2 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->SPECIAL_2);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[8] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[8] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(8ull);
 	}
 	if (paths->SPECIAL_3 != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->SPECIAL_3);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[9] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[9] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(9ull);
 	}
 	if (paths->TOWNNEUTRAL != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->TOWNNEUTRAL);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[10] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[10] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(10ull);
 	}
 	if (paths->TOWNWALK != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->TOWNWALK);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[11] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[11] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(11ull);
 	}
 	if (paths->WALK != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->WALK);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[12] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[12] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(12ull);
 	}
 	if (paths->DEATH != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->DEATH);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[13] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[13] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(13ull);
 	}
 	if (paths->DEAD != NULL)
 	{
 		std::wstring tmp0 = std::wstring(paths->DEAD);
 		std::string tmp1 = std::string(tmp0.begin(), tmp0.end());
-		m_modelVariant.m_textures[14] = ResourceManager::GetInstance()->GetTextureByName((char*)tmp1.c_str());
+		m_modelVariant.m_textures[14] = resource_manager->GetTextureByName((char*)tmp1.c_str());
+		if (resource_manager->exchange_flag(modern_false))
+			m_modelVariant.ErrorSprite(14ull);
 	}
+
+
 
 
 	{

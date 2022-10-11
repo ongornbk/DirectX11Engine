@@ -33,6 +33,7 @@ Projectile::~Projectile()
     auto ite = GLOBAL m_mp2.find(&m_object);
     if (ite != GLOBAL m_mp2.end())
     {
+        
         auto& ss = (*ite).second;
         for (auto ele = ss->begin();ele != ss->end();ele++)
         {
@@ -126,7 +127,7 @@ int32 Projectile::isReleased() const modern_except_state
     return m_flags.m_hide;
 }
 
-void Projectile::Intersect(EObject* const other)
+void Projectile::Intersect(GameObject* const other)
 {
     if (m_flags.m_hide == false)
     {

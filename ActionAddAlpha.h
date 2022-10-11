@@ -1,7 +1,7 @@
 #pragma once
 #include "modern/modern_handle.h"
 #include "ColorFilter.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 #include "IAction.h"
 
 class ActionAddAlpha :
@@ -15,7 +15,7 @@ class ActionAddAlpha :
 public:
 
 	//ActionApplyColorFilter(class Unit* const object,struct DirectX::XMFLOAT4& color);
-	ActionAddAlpha(class EObject* const object,const float alpha);
+	ActionAddAlpha(class GameObject* const object,const float alpha);
 	~ActionAddAlpha();
 
 	void execute() override;

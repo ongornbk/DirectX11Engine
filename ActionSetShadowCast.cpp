@@ -2,7 +2,7 @@
 #include "modern/modern_guard.h"
 
 
-ActionSetShadowCast::ActionSetShadowCast(class EObject* const object, bool shadow)
+ActionSetShadowCast::ActionSetShadowCast(class GameObject* const object, bool shadow)
 {
 	m_object.make_handle(object->GetHandle());
 	m_shadowCast = shadow;
@@ -14,7 +14,7 @@ ActionSetShadowCast::~ActionSetShadowCast()
 
 void ActionSetShadowCast::execute()
 {
-	class EObject* const A = (class EObject*)m_object.get();
+	class GameObject* const A = (class GameObject*)m_object.get();
 	if (A)
 	{
 		modern_guard guard(A);

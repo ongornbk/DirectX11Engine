@@ -3,7 +3,7 @@
 #include "gdef.h"
 #include <deque>
 #include "modern/modern_array.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 class GarbageCollector
 {
@@ -13,7 +13,7 @@ class GarbageCollector
 public:
 
 	void AsyncDelete(void* ptr);
-	void AsyncDelete(class EObject* const obj);
+	void AsyncDelete(class GameObject* const obj);
 
 	template <class T>
 	void AsyncDeleteArray(modern_array<T>* __array);

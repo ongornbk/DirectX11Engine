@@ -41,7 +41,7 @@ void npc::Release()
 
 }
 
-void npc::Intersect( EObject* const other) 
+void npc::Intersect( GameObject* const other) 
 {
 
 }

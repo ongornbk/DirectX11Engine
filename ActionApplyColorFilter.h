@@ -3,7 +3,7 @@
 #include "ColorFilter.h"
 #include "modern/modern_handle.h"
 #include "modern/modern_guard.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 class ActionApplyColorFilter :
 	public IAction
@@ -16,7 +16,7 @@ class ActionApplyColorFilter :
 public:
 
 	//ActionApplyColorFilter(class Unit* const object,struct DirectX::XMFLOAT4& color);
-	ActionApplyColorFilter(class EObject* const object, struct DirectX::XMFLOAT4 color);
+	ActionApplyColorFilter(class GameObject* const object, struct DirectX::XMFLOAT4 color);
 	~ActionApplyColorFilter();
 
 	void execute() override;

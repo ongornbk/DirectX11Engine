@@ -90,7 +90,7 @@ void Tree::Initialize(
 		mfr->GiveName("tree");
 	}
 
-	m_type = EObject::EObjectType::OBJECT_TYPE_TREE;
+	m_type = GameObject::EObjectType::OBJECT_TYPE_TREE;
 }
 
 void Tree::Render(
@@ -105,7 +105,6 @@ void Tree::Render(
 		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
-		ipp::Console::Println(shader.GetShader()->GetName());
 		m_vertexBuffer->Render(deviceContext);
 	}
 }
@@ -182,7 +181,7 @@ int32 Tree::isReleased() const modern_except_state
 	}
 }
 
-void Tree::Intersect( class EObject* const other)
+void Tree::Intersect( class GameObject* const other)
 {
 
 }

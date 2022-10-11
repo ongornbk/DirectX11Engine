@@ -174,6 +174,36 @@ RendererManager::RendererManager(
 		)));
 
 	marray->push(new ActionInitializeText(
+		m_heroPositionX,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_textShader,
+		m_font, 24.f
+	));
+
+	marray->push(new ActionSetTextAlignment(m_heroPositionX, TextAlignment::TEXT_ALIGN_LEFT));
+
+	marray->push(new ActionTranslateText(
+		m_heroPositionX,
+		struct DirectX::XMFLOAT3(-935.f, 400.f, 0.f
+		)));
+
+	marray->push(new ActionInitializeText(
+		m_heroPositionY,
+		engine->GetGraphics()->GetDevice(),
+		engine->GetGraphics()->GetDeviceContext(),
+		m_textShader,
+		m_font, 24.f
+	));
+
+	marray->push(new ActionSetTextAlignment(m_heroPositionY, TextAlignment::TEXT_ALIGN_LEFT));
+
+	marray->push(new ActionTranslateText(
+		m_heroPositionY,
+		struct DirectX::XMFLOAT3(-935.f, 370.f, 0.f
+		)));
+
+	marray->push(new ActionInitializeText(
 		m_objectsText,
 		engine->GetGraphics()->GetDevice(),
 		engine->GetGraphics()->GetDeviceContext(),
@@ -487,7 +517,7 @@ void RendererManager::PushRenderAgent(RenderAgent* const agent)
 	m_layers[1]->Push(agent);
 }
 
-void RendererManager::Push(class EObject* const object, const enum class RenderLayerType layer)
+void RendererManager::Push(class GameObject* const object, const enum class RenderLayerType layer)
 {
 	m_layers[enum_cast<int32_t>(layer)]->Push(object);
 }
@@ -611,7 +641,7 @@ void RendererManager::Render(
 
 	if (modern_Boolean_check ((Options*)m_activeOptions.get())->option_ShowFPS)
 	{
-		class Text* const A = (class Text*)m_fpsText.get();
+		class Text* const A = (class Text* const)m_fpsText.get();
 		if (A)
 		{
 			modern_guard g(A);
@@ -619,7 +649,7 @@ void RendererManager::Render(
 			A->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 
 		}
-		class Text* const D = (class Text*)m_bmapText.get();
+		class Text* const D = (class Text* const)m_bmapText.get();
 		if (D)
 		{
 			modern_guard g(D);
@@ -627,19 +657,33 @@ void RendererManager::Render(
 			D->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 
 		}
-		class Text* const B = (class Text*)m_objectsText.get();
+		class Text* const B = (class Text* const)m_objectsText.get();
 		if (B)
 		{
 			modern_guard g(B);
 			B->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
 			B->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 		}
-		class Text* const C = (class Text*)m_timersText.get();
+		class Text* const C = (class Text* const)m_timersText.get();
 		if (C)
 		{
 			modern_guard g(C);
 			C->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
 			C->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+		}
+		class Text* const E = (class Text* const)m_heroPositionX.get();
+		if (E)
+		{
+			modern_guard g(E);
+			E->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			E->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
+		}
+		class Text* const F = (class Text* const)m_heroPositionY.get();
+		if (F)
+		{
+			modern_guard g(F);
+			F->PreRender(deviceContext, viewMatrix, interfaceMatrix, pck.BeginShadow());
+			F->Render(deviceContext, viewMatrix, interfaceMatrix, pck.BeginInterface());
 		}
 	}
 	{
@@ -770,6 +814,8 @@ void RendererManager::Render(
 				pack->pack(new TaskUpdateInterface_v4(m_bmapText));
 				pack->pack(new TaskUpdateInterface_v4(m_objectsText));
 				pack->pack(new TaskUpdateInterface_v4(m_timersText));
+				pack->pack(new TaskUpdateInterface_v4(m_heroPositionX));
+				pack->pack(new TaskUpdateInterface_v4(m_heroPositionY));
 			}
 
 			//mpm->weak_push(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
@@ -864,7 +910,7 @@ void RendererManager::Render(
 			//EventManager::GetInstance()->PostSort();
 
 //#pragma omp critical
-			//Focus((class EObject* const)m_focus.get(), ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
+			//Focus((class GameObject* const)m_focus.get(), ObjectFocusType::OBJECT_FOCUS_TYPE_NORMAL);
 
 			
 
@@ -985,7 +1031,7 @@ void RendererManager::Render(
 		Timer::UpdatePostSort(dt);
 	}
 
-void RendererManager::Focus(EObject* const object,const enum class ObjectFocusType type)
+void RendererManager::Focus(GameObject* const object,const enum class ObjectFocusType type)
 {
 //	if (object)
 //	{
@@ -1095,18 +1141,13 @@ void RendererManager::SetFps(const int32 fps)
 	if (A)
 	{
 		modern_guard g(A);
-			A->SetText(modern_cstring("FPS ",fps).c_str());
-
+		A->SetText(modern_cstring("FPS ",fps).c_str());
 	}
 	class Text* const D = (class Text*)m_bmapText.get();
 	if (D)
 	{
 		modern_guard g(D);
 		D->SetText(modern_cstring("BMP ", GLOBAL m_mp2.size()).c_str());
-		//for(auto & obj : GLOBAL m_bmap2)
-		//{
-		//	std::cout << obj.first << " : " << obj.second << std::endl;
-		//}
 	}
 	class Text* const B = (class Text*)m_objectsText.get();
 	if (B)
@@ -1118,13 +1159,45 @@ void RendererManager::SetFps(const int32 fps)
 	if (C)
 	{
 		modern_guard g(C);
-		class modern_string tim(L"TIM ");
 		C->SetText(modern_string(L"TIM ") << modern_string(Timer::CountSleepingTimers()) << modern_string(L"...") << modern_string(Timer::CountTimers()));
 	}
-	//if(m_fpsText)
-	//m_fpsText->SetText(modern_cstring(fps).c_str());
-	//if (m_objectsText)
-	//	m_objectsText->SetText(modern_cstring(this->GetNumberOfObjects()).c_str());
+
+	class Unit* const focus = (class Unit* const)m_focus.get();
+	{
+		if (Unit::CheckIfValid(focus))
+		{
+			class Text* const E = (class Text*)m_heroPositionX.get();
+			if (E)
+			{
+				modern_guard g(E);
+				E->SetText(modern_string(L"POS X ") << modern_string((int32_t)focus->GetPosition().x));
+			}
+
+			class Text* const F = (class Text*)m_heroPositionY.get();
+			if (F)
+			{
+				modern_guard g(F);
+				F->SetText(modern_string(L"POX Y ") << modern_string((int32_t)focus->GetPosition().y));
+			}
+		}
+		else
+		{
+			class Text* const E = (class Text*)m_heroPositionX.get();
+			if (E)
+			{
+				modern_guard g(E);
+				E->SetText(modern_string(L"INV"));
+			}
+
+			class Text* const F = (class Text*)m_heroPositionY.get();
+			if (F)
+			{
+				modern_guard g(F);
+				F->SetText(modern_string(L"INV"));
+			}
+		}
+	}
+	
 }
 
 void RendererManager::SetFocus(Unit* const unit)

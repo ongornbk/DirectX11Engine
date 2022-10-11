@@ -4,13 +4,13 @@
 class ActionMessageFront :
 	public IAction
 {
-	class EObject* m_object;
+	class GameObject* m_object;
 
 	ActionMessageFront() = delete;
 
 public:
 
-	ActionMessageFront(class EObject* const object);
+	ActionMessageFront(class GameObject* const object);
 	~ActionMessageFront();
 
 	void execute() override;

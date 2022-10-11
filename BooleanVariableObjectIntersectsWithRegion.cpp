@@ -1,7 +1,7 @@
 #include "BooleanVariableObjectIntersectsWithRegion.h"
 #include "modern/modern_shared_guard.h"
 #include "Region.h"
-#include "RenderContainer.h"
+#include "GameObject.h"
 
 BooleanVariableObjectIntersectsWithRegion::BooleanVariableObjectIntersectsWithRegion(const modern_handle& __object, const modern_handle& __region)
 {
@@ -9,7 +9,7 @@ BooleanVariableObjectIntersectsWithRegion::BooleanVariableObjectIntersectsWithRe
     region.make_handle(__region);
 }
 
-BooleanVariableObjectIntersectsWithRegion::BooleanVariableObjectIntersectsWithRegion(EObject* const __object, Region* const __region)
+BooleanVariableObjectIntersectsWithRegion::BooleanVariableObjectIntersectsWithRegion(GameObject* const __object, Region* const __region)
 {
 	object.make_handle(__object->GetHandle());
 	region.make_handle(__region->GetHandle());
@@ -17,7 +17,7 @@ BooleanVariableObjectIntersectsWithRegion::BooleanVariableObjectIntersectsWithRe
 
 const bool BooleanVariableObjectIntersectsWithRegion::get()
 {
-	class EObject* const A = (class EObject* const)object.get();
+	class GameObject* const A = (class GameObject* const)object.get();
 	class Region* const B = (class Region* const)region.get();
 	if (A&&B)
 	{

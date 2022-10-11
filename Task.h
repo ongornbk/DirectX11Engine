@@ -12,7 +12,7 @@ using namespace DirectX;
 
 #pragma region
 class  Unit;
-class  EObject;
+class  GameObject;
 #pragma endregion
 
 class Task

@@ -18,6 +18,8 @@ struct ModelVariant
 	void SetVariant(const enum ModelStance variant = ModelStance::MODEL_STANCE_NEUTRAL)const modern_except_state;
 
 	void SetVariant(const int32_t variant) const;
+	
+	void ErrorSprite(const size_t index) modern_except_state;
 
 	bool Check() const modern_except_state;
 
