@@ -58,14 +58,16 @@ public:
 
 bool operator< (const modern_handle& lhs, const modern_handle& rhs);
 
-struct modern_weak_handle_less : public std::binary_function<class modern_weak_handle, class  modern_weak_handle, bool> {
+struct modern_weak_handle_less
+{
 	bool operator()( class modern_weak_handle& lhs, class modern_weak_handle& rhs) const
 	{
 		return lhs.get() < rhs.get();
 	}
 };
 
-struct modern_handle_less : public std::binary_function<class modern_handle, class  modern_handle, bool> {
+struct modern_handle_less
+{
 	bool operator()(class modern_handle* lhs, class modern_handle* rhs) const
 	{
 		return lhs->get() < rhs->get();

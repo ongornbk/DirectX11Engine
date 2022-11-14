@@ -1,17 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\Engine">
       <UniqueIdentifier>{8071cd3b-ed04-4767-b871-4f274cd13312}</UniqueIdentifier>
@@ -43,9 +35,6 @@
     <Filter Include="Header Files\Engine\Global">
       <UniqueIdentifier>{b27527a3-4443-444a-b1bc-dd0bc7cc3d77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Input">
-      <UniqueIdentifier>{5e1282e1-bc9c-4496-97fb-69c35b76691d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Engine\Components\Scenes">
       <UniqueIdentifier>{1ecd5268-bfc0-43c5-8ae2-c3f170043d46}</UniqueIdentifier>
     </Filter>
@@ -58,140 +47,20 @@
     <Filter Include="Header Files\LUA">
       <UniqueIdentifier>{1843190f-f5aa-4970-8e70-8c61db8ef461}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\C">
-      <UniqueIdentifier>{0ba4ff76-b48f-4643-a0e1-23f04a7c9d4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lua">
-      <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\modern">
-      <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lua\Locations">
-      <UniqueIdentifier>{b9a7356f-1231-4d9e-8384-5a289124e713}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lua\interface">
-      <UniqueIdentifier>{06ba8441-ba14-4b58-bbac-fc208e805989}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lua\core">
-      <UniqueIdentifier>{35dda138-057e-4427-8f85-55184c046dfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HLSL">
-      <UniqueIdentifier>{4a971c0d-be8c-4924-b8c7-0fc4b2fb6026}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files">
-      <UniqueIdentifier>{31c2df90-7377-4e08-b31e-af93dd8eb03c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\gfx">
-      <UniqueIdentifier>{f500fffa-7ad5-400d-b4a0-40ab61aa6da3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Project">
-      <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Interface">
       <UniqueIdentifier>{a915115a-301a-45a4-976c-a2582149eda0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Actions">
       <UniqueIdentifier>{56c3ae34-9a3e-40d2-9254-4044f3dc0cda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Conditions">
-      <UniqueIdentifier>{b3cad30f-e2df-4c62-8287-ec3699755f44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Variables">
-      <UniqueIdentifier>{4e2a8da2-bb4c-4e85-973f-c87d407fab0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Variables\Boolean">
-      <UniqueIdentifier>{946cbe4e-0b96-4950-92fa-fd92ae8e07c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Timers">
-      <UniqueIdentifier>{c2d7588b-c19e-4bc2-8d6c-8ac4d64e12f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Variables\Float">
-      <UniqueIdentifier>{00aecc71-4ce1-4a99-9bf8-ced6a9afa14c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Variables\Integer">
-      <UniqueIdentifier>{6269d0ac-568a-457e-880a-72fbb3ef7ca5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Variables\Object">
-      <UniqueIdentifier>{924ce0ab-0e61-4ffc-be35-6cb247fe4f6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Basic">
-      <UniqueIdentifier>{7e85d8dd-5af4-4e89-a296-55652b1a4c45}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Boolean">
-      <UniqueIdentifier>{0837fbe0-fae7-4c7c-8de1-a643034d5e97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Float">
-      <UniqueIdentifier>{38d5650d-a27b-49ef-a052-bcb828d5cb50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Operators">
-      <UniqueIdentifier>{c925bb6c-118d-47fe-9574-78cf46607b5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Object">
-      <UniqueIdentifier>{3ab99cb8-b123-4d77-ac65-b9067b5525e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{9219db81-7257-46f2-87ba-7439510be66f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Unit">
-      <UniqueIdentifier>{395b114f-0b7d-4414-8f77-a4eb5892642b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Destructible">
-      <UniqueIdentifier>{a91a5ca0-f40c-4203-abb3-f7c6c8137025}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Doodads">
-      <UniqueIdentifier>{033e72b3-62be-448d-9637-82fd76250d10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Shared">
-      <UniqueIdentifier>{d8229223-ee21-4966-ad83-cbb1e0feadbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Integer">
-      <UniqueIdentifier>{460cb0a8-f6cb-44f3-86a4-8b87dfbe45ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Unit\Model">
-      <UniqueIdentifier>{ae4be8a4-63b9-41df-b931-af2ffeb5da04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\AnimatedDoodads">
-      <UniqueIdentifier>{d6958cde-2b4b-4193-bb47-ad12fdca1ba6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Unit\Task">
-      <UniqueIdentifier>{7cc9b053-3d0d-4d1c-9eba-fe1a2c16a116}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Task">
       <UniqueIdentifier>{0e29404e-64ca-4e02-87c6-29bcb2b221ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HTML">
-      <UniqueIdentifier>{635539f5-5b6e-4a71-bb29-e72822fbc707}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{6a98446f-0e50-4d9d-906d-0f961d4d0b6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions\Error">
-      <UniqueIdentifier>{5e26cd8f-db35-4333-b37e-21f97e9cb1ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Tree">
-      <UniqueIdentifier>{ece40f98-a588-47d0-b676-e5d1d7667a35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Actions">
-      <UniqueIdentifier>{4734f1ac-050d-4828-b826-38a23dc66e3d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Actions\Interface">
       <UniqueIdentifier>{789eeba2-5df1-443a-9535-2bf137575281}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Actions\ColorFilter">
       <UniqueIdentifier>{bc0c15b6-4e57-404e-9a28-69273929b014}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Actions\Unit">
-      <UniqueIdentifier>{345f375c-cb89-40ee-9be4-31d9c34f65cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Actions\Action">
       <UniqueIdentifier>{e0c37124-530c-4ef7-9568-d79cbbfdb83c}</UniqueIdentifier>
@@ -204,6 +73,185 @@
     </Filter>
     <Filter Include="Header Files\Actions\Text">
       <UniqueIdentifier>{7a4c54fd-77ff-43bb-b52f-02f4014c8024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\C">
+      <UniqueIdentifier>{0ba4ff76-b48f-4643-a0e1-23f04a7c9d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actions">
+      <UniqueIdentifier>{4734f1ac-050d-4828-b826-38a23dc66e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Lua">
+      <UniqueIdentifier>{7f1eb448-9186-44c7-8fa6-d9951bc4d146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Object\Projectile">
+      <UniqueIdentifier>{a7866cbb-a46d-417d-80b6-9c2c63600bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Object\Unit">
+      <UniqueIdentifier>{345f375c-cb89-40ee-9be4-31d9c34f65cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Tilemap">
+      <UniqueIdentifier>{2534d0a2-4b2e-4b99-acef-15ab066529cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Packs">
+      <UniqueIdentifier>{e6ea480e-85d8-4290-a30a-243454b2d294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions\Global">
+      <UniqueIdentifier>{a4b7d371-4c1f-4845-8af6-79e6d2ab8cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Guarded Resources">
+      <UniqueIdentifier>{9e0cc331-ac58-490f-90cd-89f1bffdbba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Task">
+      <UniqueIdentifier>{e14db6aa-8fc5-4463-8070-3ce3127cbd6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion">
+      <UniqueIdentifier>{da095b6a-0e24-4605-94e0-d7e8b2203131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game">
+      <UniqueIdentifier>{cf1cf9bb-2110-4c47-899b-c2ef6eca332c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine">
+      <UniqueIdentifier>{63834069-d18a-4d71-b670-960ab5c0c4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Core">
+      <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Core\modern">
+      <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Models">
+      <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Lua">
+      <UniqueIdentifier>{7e5acbb7-0b82-44e1-b979-e5e8b5a7a102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Lua\Locations">
+      <UniqueIdentifier>{b9a7356f-1231-4d9e-8384-5a289124e713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Lua\interface">
+      <UniqueIdentifier>{06ba8441-ba14-4b58-bbac-fc208e805989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Lua\core">
+      <UniqueIdentifier>{35dda138-057e-4427-8f85-55184c046dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\HLSL">
+      <UniqueIdentifier>{4a971c0d-be8c-4924-b8c7-0fc4b2fb6026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\HTML">
+      <UniqueIdentifier>{635539f5-5b6e-4a71-bb29-e72822fbc707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Files">
+      <UniqueIdentifier>{31c2df90-7377-4e08-b31e-af93dd8eb03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Files\gfx">
+      <UniqueIdentifier>{f500fffa-7ad5-400d-b4a0-40ab61aa6da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Legion\Game\Resource Files\Project">
+      <UniqueIdentifier>{8f145270-2874-40ae-b142-4e9b599294d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers">
+      <UniqueIdentifier>{3dc2ed38-43d7-488c-9482-cbf3e278b0f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Timers">
+      <UniqueIdentifier>{c2d7588b-c19e-4bc2-8d6c-8ac4d64e12f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions">
+      <UniqueIdentifier>{b3cad30f-e2df-4c62-8287-ec3699755f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Basic">
+      <UniqueIdentifier>{7e85d8dd-5af4-4e89-a296-55652b1a4c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Boolean">
+      <UniqueIdentifier>{0837fbe0-fae7-4c7c-8de1-a643034d5e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Float">
+      <UniqueIdentifier>{38d5650d-a27b-49ef-a052-bcb828d5cb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Object">
+      <UniqueIdentifier>{3ab99cb8-b123-4d77-ac65-b9067b5525e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Integer">
+      <UniqueIdentifier>{460cb0a8-f6cb-44f3-86a4-8b87dfbe45ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Conditions\Error">
+      <UniqueIdentifier>{5e26cd8f-db35-4333-b37e-21f97e9cb1ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Game\Settings">
+      <UniqueIdentifier>{80171775-463b-4940-8c57-d25a213851f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Variables">
+      <UniqueIdentifier>{4e2a8da2-bb4c-4e85-973f-c87d407fab0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Variables\Boolean">
+      <UniqueIdentifier>{946cbe4e-0b96-4950-92fa-fd92ae8e07c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Variables\Float">
+      <UniqueIdentifier>{00aecc71-4ce1-4a99-9bf8-ced6a9afa14c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Variables\Integer">
+      <UniqueIdentifier>{6269d0ac-568a-457e-880a-72fbb3ef7ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Variables\Object">
+      <UniqueIdentifier>{924ce0ab-0e61-4ffc-be35-6cb247fe4f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Operators">
+      <UniqueIdentifier>{c925bb6c-118d-47fe-9574-78cf46607b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Input">
+      <UniqueIdentifier>{5e1282e1-bc9c-4496-97fb-69c35b76691d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="__TRASH__">
+      <UniqueIdentifier>{e90c5d7c-c41b-471b-a3e3-2c26ed9443a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object">
+      <UniqueIdentifier>{9219db81-7257-46f2-87ba-7439510be66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Unit">
+      <UniqueIdentifier>{395b114f-0b7d-4414-8f77-a4eb5892642b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Unit\Model">
+      <UniqueIdentifier>{ae4be8a4-63b9-41df-b931-af2ffeb5da04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Unit\Task">
+      <UniqueIdentifier>{7cc9b053-3d0d-4d1c-9eba-fe1a2c16a116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Unit\Attack">
+      <UniqueIdentifier>{fe7bece7-19ef-4008-ae7d-909743ffa0c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Destructible">
+      <UniqueIdentifier>{a91a5ca0-f40c-4203-abb3-f7c6c8137025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Doodads">
+      <UniqueIdentifier>{033e72b3-62be-448d-9637-82fd76250d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Shared">
+      <UniqueIdentifier>{d8229223-ee21-4966-ad83-cbb1e0feadbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\AnimatedDoodads">
+      <UniqueIdentifier>{d6958cde-2b4b-4193-bb47-ad12fdca1ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Tree">
+      <UniqueIdentifier>{ece40f98-a588-47d0-b676-e5d1d7667a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Agent">
+      <UniqueIdentifier>{cb9497e9-4d97-48cb-a790-664f69a972f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Projectile">
+      <UniqueIdentifier>{b0435f73-307b-4e5a-90bd-d0c2b6cbbdbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\RenderAgent">
+      <UniqueIdentifier>{8712136b-2f3a-4c54-9548-d4a85afb8d7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Legion\Engine\Headers\Object\Interface">
+      <UniqueIdentifier>{7be0e90d-336b-4970-b020-4b892789db5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -259,7 +307,7 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Header Files\Input</Filter>
+      <Filter>Legion\Engine\Headers\Input</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuScene.h">
       <Filter>Header Files\Engine\Components\Scenes</Filter>
@@ -316,7 +364,7 @@
       <Filter>Header Files\Sound</Filter>
     </ClInclude>
     <ClInclude Include="..\x64\Release\bin\x64\lua\KEY VALUES.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Legion\Game\Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="LUAManager.h">
       <Filter>Header Files\LUA</Filter>
@@ -337,21 +385,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VariablesManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\TextFormat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\TextSize.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="2D\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderZMap.h">
@@ -394,7 +427,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadPool.h">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClInclude>
     <ClInclude Include="gdef.h">
       <Filter>Header Files\Engine\defines</Filter>
@@ -402,17 +435,14 @@
     <ClInclude Include="Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="String.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="List.h">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClInclude>
     <ClInclude Include="IBidirectionalStruct.h">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClInclude>
     <ClInclude Include="IBidirectionalElement.h">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClInclude>
     <ClInclude Include="UnitGroup.h">
       <Filter>Header Files</Filter>
@@ -427,7 +457,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Allocator.h">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClInclude>
     <ClInclude Include="IParameter.h">
       <Filter>Header Files</Filter>
@@ -439,12 +469,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITrigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GarbageCollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITrash.h">
@@ -480,9 +504,6 @@
     <ClInclude Include="HandleType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UnitStats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UnitTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -490,40 +511,37 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_xmath.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_weak.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_unique.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_string.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_pair.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_shared.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_memory.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_math.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_exception.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_def.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitDecay.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="RenderLayer.h">
       <Filter>Header Files</Filter>
@@ -573,9 +591,6 @@
     <ClInclude Include="IBooleanVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IntegerOperatorType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IObjectVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -592,10 +607,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_array.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_array_iterator.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFocusType.h">
       <Filter>Header Files</Filter>
@@ -637,22 +652,22 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_cstring.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_class.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_guard.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_guard_status.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_shared_guard.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_handle.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="DeleteObject.h">
       <Filter>Header Files</Filter>
@@ -669,122 +684,113 @@
     <ClInclude Include="ActionRemoveObject.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="ActionSetCellMultiplier.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSetInterfaceText.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="ActionSetShadowCast.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSkipRemainingActions.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionTranslateText.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableUnitIsSelected.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableUnitIsDead.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableUnitIsAttacking.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableUnitIsAlive.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableObjectIsSelected.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableIsKeyDown.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="ConstBooleanVariable.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="ConstBooleanVariableFalse.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="ConstBooleanVariableTrue.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="ConstFloatVariable.h">
-      <Filter>Header Files\Variables\Float</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Float</Filter>
     </ClInclude>
     <ClInclude Include="ConstIntegerVariable.h">
-      <Filter>Header Files\Variables\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Integer</Filter>
     </ClInclude>
     <ClInclude Include="ConstObjectVariable.h">
-      <Filter>Header Files\Variables\Object</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Object</Filter>
     </ClInclude>
     <ClInclude Include="ConditionTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="ExpiringTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="AndCondition.h">
-      <Filter>Header Files\Conditions\Basic</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Basic</Filter>
     </ClInclude>
     <ClInclude Include="BooleanConditionEquals.h">
-      <Filter>Header Files\Conditions\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="BooleanConditionNotEquals.h">
-      <Filter>Header Files\Conditions\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionEquals.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionGreater.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionGreaterOrEquals.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionLess.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionLessOrEquals.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatConditionNotEquals.h">
-      <Filter>Header Files\Conditions\Float</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatVariableDistanceBetweenObjects.h">
-      <Filter>Header Files\Variables\Float</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatVariableUnitDistanceFromCamera.h">
-      <Filter>Header Files\Variables\Float</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Float</Filter>
     </ClInclude>
     <ClInclude Include="FloatVariableUnitGetRotation.h">
-      <Filter>Header Files\Variables\Float</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Float</Filter>
     </ClInclude>
     <ClInclude Include="BooleanOperatorType.h">
-      <Filter>Header Files\Operators</Filter>
+      <Filter>Legion\Engine\Headers\Operators</Filter>
     </ClInclude>
     <ClInclude Include="FloatOperatorType.h">
-      <Filter>Header Files\Operators</Filter>
+      <Filter>Legion\Engine\Headers\Operators</Filter>
     </ClInclude>
     <ClInclude Include="FuzzyTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="OrCondition.h">
-      <Filter>Header Files\Conditions\Basic</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Basic</Filter>
     </ClInclude>
     <ClInclude Include="PeriodicTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="ObjectConditionEquals.h">
-      <Filter>Header Files\Conditions\Object</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Object</Filter>
     </ClInclude>
     <ClInclude Include="ObjectConditionNotEquals.h">
-      <Filter>Header Files\Conditions\Object</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Object</Filter>
     </ClInclude>
     <ClInclude Include="ITimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="InterfaceCheckboxBehavior.h">
       <Filter>Header Files\Interface</Filter>
@@ -808,76 +814,76 @@
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="IFloatVariable.h">
-      <Filter>Header Files\Variables\Float</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Float</Filter>
     </ClInclude>
     <ClInclude Include="IIntegerVariable.h">
-      <Filter>Header Files\Variables\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Integer</Filter>
     </ClInclude>
     <ClInclude Include="InstantTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="FuzzyExpiringTimer.h">
-      <Filter>Header Files\Timers</Filter>
+      <Filter>Legion\Engine\Headers\Timers</Filter>
     </ClInclude>
     <ClInclude Include="Attack.h">
-      <Filter>Header Files\Object\Unit</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="AttackTarget.h">
-      <Filter>Header Files\Object\Unit</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="Destructible.h">
-      <Filter>Header Files\Object\Destructible</Filter>
+      <Filter>Legion\Engine\Headers\Object\Destructible</Filter>
     </ClInclude>
     <ClInclude Include="Doodads.h">
-      <Filter>Header Files\Object\Doodads</Filter>
+      <Filter>Legion\Engine\Headers\Object\Doodads</Filter>
     </ClInclude>
     <ClInclude Include="ICondition.h">
-      <Filter>Header Files\Conditions</Filter>
+      <Filter>Legion\Engine\Headers\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="ConditionFactory.h">
-      <Filter>Header Files\Conditions</Filter>
+      <Filter>Legion\Engine\Headers\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="NorCondition.h">
-      <Filter>Header Files\Conditions\Basic</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Basic</Filter>
     </ClInclude>
     <ClInclude Include="ColorFilter.h">
-      <Filter>Header Files\Object\Shared</Filter>
+      <Filter>Legion\Engine\Headers\Object\Shared</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionLessOrEquals.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionNotEquals.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionLess.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionGreaterOrEquals.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionGreater.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="IntegerConditionEquals.h">
-      <Filter>Header Files\Conditions\Integer</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Integer</Filter>
     </ClInclude>
     <ClInclude Include="ModelStance.h">
-      <Filter>Header Files\Object\Unit\Model</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit\Model</Filter>
     </ClInclude>
     <ClInclude Include="WalkingStance.h">
-      <Filter>Header Files\Object\Unit</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedDoodads.h">
-      <Filter>Header Files\Object\AnimatedDoodads</Filter>
+      <Filter>Legion\Engine\Headers\Object\AnimatedDoodads</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
-      <Filter>Header Files\Object\Unit</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="TaskQueue.h">
-      <Filter>Header Files\Object\Unit\Task</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit\Task</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
-      <Filter>Header Files\Object\Unit\Task</Filter>
+      <Filter>Legion\Engine\Headers\Object\Unit\Task</Filter>
     </ClInclude>
     <ClInclude Include="IPlayer.h">
       <Filter>Header Files</Filter>
@@ -889,31 +895,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_string_casting_type.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_string_cast.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="Agent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AgentIntersectStance.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="SortPair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPTask.h">
-      <Filter>Header Files\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="PTaskGCClear.h">
-      <Filter>Header Files\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="PTaskRender.h">
-      <Filter>Header Files\Task</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_timer.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ActionPushTimer.h">
       <Filter>Header Files\Actions</Filter>
@@ -922,33 +913,21 @@
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_vector.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_framelock.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_queue.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_element.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionInitializeProjectile.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="LineOfCollision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LineOfCollisionAgent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionGoBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RectOfCollisionAgentFirst.h">
@@ -963,11 +942,8 @@
     <ClInclude Include="UserInterfaceState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionSetInterfaceBehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_class_view.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ModelVariant.h">
       <Filter>Header Files</Filter>
@@ -976,10 +952,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_bpair.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionNotifyBlock.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>
@@ -990,53 +963,35 @@
     <ClInclude Include="heddef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionExecuteLuaFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionGlobalSetLeavingObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RegionAgentMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IRegionAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAgent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAgentParent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="modern\modern_ibmap.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_node256.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_minheap.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_pack4.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_pack2.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionErasePack2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionErasePack4.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_barray.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ErrorCondition.h">
-      <Filter>Header Files\Conditions\Error</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Error</Filter>
     </ClInclude>
     <ClInclude Include="Tree.h">
-      <Filter>Header Files\Object\Tree</Filter>
+      <Filter>Legion\Engine\Headers\Object\Tree</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
@@ -1045,7 +1000,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_string_view.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader11.h">
       <Filter>Header Files</Filter>
@@ -1057,7 +1012,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BooleanVariableObjectIntersectsWithRegion.h">
-      <Filter>Header Files\Variables\Boolean</Filter>
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
     </ClInclude>
     <ClInclude Include="RegionC.h">
       <Filter>Header Files</Filter>
@@ -1068,17 +1023,14 @@
     <ClInclude Include="IAttackOwner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionResetAttackDelay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PermanentFuzzyTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_file.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_file_permits.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ActionAddAlpha.h">
       <Filter>Header Files\Actions\ColorFilter</Filter>
@@ -1087,7 +1039,7 @@
       <Filter>Header Files\Actions\ColorFilter</Filter>
     </ClInclude>
     <ClInclude Include="ActionAttack.h">
-      <Filter>Header Files\Actions\Unit</Filter>
+      <Filter>Header Files\Actions\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="ActionBehavior.h">
       <Filter>Header Files\Actions\Action</Filter>
@@ -1143,9 +1095,6 @@
     <ClInclude Include="Chest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BooleanVariableTreeStance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ActionContinue.h">
       <Filter>Header Files\Actions\Action</Filter>
     </ClInclude>
@@ -1153,22 +1102,22 @@
       <Filter>Header Files\Actions\Text</Filter>
     </ClInclude>
     <ClInclude Include="ActionKillUnit.h">
-      <Filter>Header Files\Actions\Unit</Filter>
+      <Filter>Header Files\Actions\Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="ActionMap.h">
       <Filter>Header Files\Actions\Action</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_thread.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_mqueue.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_mqueue_handle.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_thread_pool.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="MPManager.h">
       <Filter>Header Files</Filter>
@@ -1201,46 +1150,166 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_console.h">
-      <Filter>Header Files\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskSortX.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskSortY.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInterface_v0.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInteface_v1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInterface_v2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInterface_v3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInterface_v4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GPUMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskUpdateInterface_v5.h">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="TaskObjectUpdate_v0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_condition_variable.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="TaskPack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modern\modern_static_array.h">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionExecuteLuaFunction.h">
+      <Filter>Header Files\Actions\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionInitializeProjectile.h">
+      <Filter>Header Files\Actions\Object\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSkipRemainingActions.h">
+      <Filter>Header Files\Actions\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionResetAttackDelay.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceBehavior.h">
+      <Filter>Header Files\Actions\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetCellMultiplier.h">
+      <Filter>Header Files\Actions\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionErasePack2.h">
+      <Filter>Header Files\Actions\Packs</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionErasePack4.h">
+      <Filter>Header Files\Actions\Packs</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGlobalSetLeavingObject.h">
+      <Filter>Header Files\Actions\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGoBack.h">
+      <Filter>Header Files\Actions\Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionNotifyBlock.h">
+      <Filter>Header Files\Actions\Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSetInterfaceText.h">
+      <Filter>Header Files\Actions\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Legion\Engine\Headers\Object\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentIntersectStance.h">
+      <Filter>Legion\Engine\Headers\Object\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackType.h">
+      <Filter>Legion\Engine\Headers\Object\Unit\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanVariableTreeStance.h">
+      <Filter>Legion\Engine\Headers\Variables\Boolean</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Legion\Engine\Headers\Object\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitStats.h">
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitDecay.h">
+      <Filter>Legion\Engine\Headers\Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUMemory.h">
+      <Filter>Header Files\Guarded Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSortX.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSortY.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInteface_v1.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInterface_v0.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInterface_v2.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInterface_v3.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInterface_v4.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskUpdateInterface_v5.h">
+      <Filter>Header Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegerOperatorType.h">
+      <Filter>Legion\Engine\Headers\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAgent.h">
+      <Filter>Legion\Engine\Headers\Object\RenderAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAgentParent.h">
+      <Filter>Legion\Engine\Headers\Object\RenderAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>__TRASH__</Filter>
+    </ClInclude>
+    <ClInclude Include="GarbageCollector.h">
+      <Filter>__TRASH__</Filter>
+    </ClInclude>
+    <ClInclude Include="IPP.h">
+      <Filter>__TRASH__</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\TextFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\TextSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskGCClear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PTaskRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_database_connection_details.h">
+      <Filter>Legion\Core\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="CompileTimeEnumManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modern\modern_types.h">
+      <Filter>Legion\Core\modern</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedBanner.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1376,9 +1445,6 @@
     <ClCompile Include="Doodads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1416,13 +1482,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThreadPool.cpp">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedDoodads.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Attack.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="AttackTarget.cpp">
       <Filter>Source Files</Filter>
@@ -1440,7 +1503,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Allocator.cpp">
-      <Filter>Core</Filter>
+      <Filter>Legion\Core</Filter>
     </ClCompile>
     <ClCompile Include="ColorFilter.cpp">
       <Filter>Source Files</Filter>
@@ -1518,7 +1581,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_string.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="InstantTimer.cpp">
       <Filter>Source Files</Filter>
@@ -1749,25 +1812,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_cstring.cpp">
-      <Filter>Header Files\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="PTaskGCClear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PTaskRender.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_class.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_guard.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_shared_guard.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_handle.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="DeleteObject.cpp">
       <Filter>Source Files</Filter>
@@ -1818,19 +1875,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_timer.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="ActionTreeSetStance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_vector.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_framelock.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_queue.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files</Filter>
@@ -1854,13 +1911,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_class_view.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="ModelVariant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_bpair.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="ActionNotifyBlock.cpp">
       <Filter>Source Files</Filter>
@@ -1884,10 +1941,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ErrorCondition.cpp">
-      <Filter>Header Files\Conditions\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_string_view.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Legion\Engine\Headers\Conditions\Error</Filter>
     </ClCompile>
     <ClCompile Include="ActionAddAlpha.cpp">
       <Filter>Source Files\Actions</Filter>
@@ -1965,7 +2019,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_file.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="ActionShowInterface.cpp">
       <Filter>Source Files</Filter>
@@ -1989,13 +2043,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_mqueue.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_mqueue_handle.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_thread_pool.cpp">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="MPManager.cpp">
       <Filter>Source Files</Filter>
@@ -2019,33 +2073,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modern\modern_console.cpp">
-      <Filter>Header Files\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskSortX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskSortY.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInterface_v0.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInteface_v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInterface_v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInterface_v3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInterface_v4.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="GPUMemory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskUpdateInterface_v5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TaskObjectUpdate_v0.cpp">
@@ -2054,171 +2084,219 @@
     <ClCompile Include="TaskPack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>Legion\Engine\Headers\Object\Unit\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskSortX.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskSortY.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInteface_v1.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInterface_v0.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInterface_v2.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInterface_v3.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInterface_v4.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskUpdateInterface_v5.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MySQLManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompileTimeEnumManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedBanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Legion\Game\Resource Files</Filter>
     </None>
     <None Include="x64\Release\bin\settings\interface.ini">
-      <Filter>Settings</Filter>
+      <Filter>Legion\Game\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\settings.file">
-      <Filter>Settings</Filter>
+      <Filter>Legion\Game\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\settings\tile.file">
-      <Filter>Settings</Filter>
+      <Filter>Legion\Game\Settings</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Engine_Initialization.lua">
-      <Filter>Lua</Filter>
+      <Filter>Legion\Game\Lua</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\amazon.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\amazon_light.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\barbarian.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\diablo.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\enemy.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\Hero.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\paladin.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\reaper.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\hell_bovine.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\irrlicht.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="modern\modern_xmath.inl">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </None>
     <None Include="modern\modern_math.inl">
-      <Filter>Header Files\modern</Filter>
+      <Filter>Legion\Core\modern</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\griswold.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\baboon.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\fallen_shaman.mod">
-      <Filter>Models</Filter>
+      <Filter>Legion\Game\Models</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Initialization.lua">
-      <Filter>Lua\interface</Filter>
+      <Filter>Legion\Game\Lua\interface</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\interface\MainMenu_Update.lua">
-      <Filter>Lua\interface</Filter>
+      <Filter>Legion\Game\Lua\interface</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Music.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Unit.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Game.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Interface.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\select.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\shadow.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\texture.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\tile.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\units.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\interface.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Renderafter.lua">
-      <Filter>Lua\Locations</Filter>
+      <Filter>Legion\Game\Lua\Locations</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\GameScene_Update.lua">
-      <Filter>Lua\Locations</Filter>
+      <Filter>Legion\Game\Lua\Locations</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\locations\Loc1_init.lua">
-      <Filter>Lua</Filter>
+      <Filter>Legion\Game\Lua</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\GameScene_Initialization.lua">
-      <Filter>Lua\Locations</Filter>
+      <Filter>Legion\Game\Lua\Locations</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Camera.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Behavior.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Object.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\ButtonBehavior.lua">
-      <Filter>Lua\core</Filter>
-    </None>
-    <None Include="GarbageCollector.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="DeleteArrayTrash.inl">
       <Filter>Header Files</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Tree.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Doodads.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\manual\InputKeyboard.html">
-      <Filter>HTML</Filter>
+      <Filter>Legion\Game\HTML</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Handle.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\Triggers_Initialization.lua">
-      <Filter>Lua</Filter>
+      <Filter>Legion\Game\Lua</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\Model.lua">
-      <Filter>Lua\core</Filter>
+      <Filter>Legion\Game\Lua\core</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\blendtile.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="x64\Release\bin\shaders\text.fx">
-      <Filter>HLSL</Filter>
+      <Filter>Legion\Game\HLSL</Filter>
     </None>
     <None Include="cpp.hint" />
+    <None Include="GarbageCollector.inl">
+      <Filter>__TRASH__</Filter>
+    </None>
+    <None Include="modern\modern_string.inl">
+      <Filter>Legion\Core\modern</Filter>
+    </None>
+    <None Include="x64\Release\bin\x64\lua\core\AnimatedDoodads.lua">
+      <Filter>Legion\Game\Lua\core</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="USiA.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Legion\Game\Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="x64\Release\content\Textures\gui\button.png">
-      <Filter>Files\gfx</Filter>
+      <Filter>Legion\Game\Files\gfx</Filter>
     </Image>
     <Image Include="x64\Release\content\Textures\system\favicon.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Legion\Game\Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -15,34 +15,11 @@ void ActionAddAlpha::execute()
 	class GameObject* const A = (class GameObject*)m_object.get();
 	if (A)
 	{
-		switch (A->m_type)
+		if(A->m_type_v2->InheritsFromColorFilter())
 		{
-		case GameObject::EObjectType::OBJECT_TYPE_UNIT:
-		{
-			goto APPLY;
-		}
-		case GameObject::EObjectType::OBJECT_TYPE_TREE:
-		{
-			goto APPLY;
-		}
-		default:
-		{
-			break;
-		}
-		}
-
-
-		return;
-	APPLY:
-		class ColorFilter* const AA = dynamic_cast<ColorFilter*>(A);
-		if (AA)
-		{
+			class ColorFilter* const filter = (class ColorFilter* const)(A);
 			modern_guard g(A);
-			AA->AddAlpha(m_alpha);
-		}
-		else
-		{
-
+			filter->AddAlpha(m_alpha);
 		}
 	}
 }

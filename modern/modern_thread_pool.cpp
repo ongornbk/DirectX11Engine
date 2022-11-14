@@ -74,7 +74,7 @@ modern_thread_pool::~modern_thread_pool()
 
 	const enum class modern_thread_pool_state modern_thread_pool::state() const modern_except_state
 	{
-		return m_state.load(std::memory_order::memory_order_acquire);
+		return m_state.load(std::memory_order::memory_order_seq_cst);
 	}
 
 	void modern_thread_pool::start()

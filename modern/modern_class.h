@@ -20,7 +20,9 @@ modern is a trademark of ongornbk@gmail.com.
 
 struct modern_class
 {
-	mutable std::atomic<int64_t> m_lock;
+#ifdef MODERN_GUARDING_ENABLED
+	mutable std::atomic<uint64_t> m_lock;
+#endif MODERN_GUARDING_ENABLED
 
 	virtual ~modern_class();
 

@@ -9,7 +9,7 @@
 
 namespace
 {
-	static Global* m_global = nullptr;
+	static class Global* m_global = nullptr;
 }
 
 Tree::Tree() :
@@ -25,6 +25,8 @@ Tree::Tree() :
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
 	m_stance = 0;
+
+	enable();
 }
 
 
@@ -90,7 +92,7 @@ void Tree::Initialize(
 		mfr->GiveName("tree");
 	}
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_TREE;
+	m_type = GameObjectType::OBJECT_TYPE_TREE;
 }
 
 void Tree::Render(
@@ -99,9 +101,10 @@ void Tree::Render(
 	const struct XMFLOAT4X4& projectionMatrix,
 	const struct ShaderPackage &shader)
 {
-	shader.BeginStandard();
-	if (m_flags.m_rendering)
+	
+	if (m_type_v2->IsRendered())
 	{
+		shader.BeginStandard();
 		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		shader.SetShaderColorParameters(deviceContext, m_colorFilter);
@@ -116,7 +119,7 @@ void Tree::PreRender(
 	const struct ShaderPackage & shader
 )
 {
-	if (m_flags.m_rendering && m_flags.m_cast_shadow)
+	if (m_type_v2->IsRendered())
 	{
 		//shader.standard->End(deviceContext);
 		//shader.shadow->Begin(deviceContext);
@@ -151,7 +154,12 @@ void Tree::Update(const float dt)
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
+		enable();
 		DirectX::XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y, m_boundingSphere.Center.z));
+	}
+	else
+	{
+		disable();
 	}
 }
 
@@ -236,4 +244,16 @@ void Tree::SetGlobal(class Global * const global) modern_except_state
 RenderHandle Tree::GetRenderHandle()
 {
 	return RenderHandle(m_texture,m_vertexBuffer);
+}
+
+inline void Tree::enable()
+{
+
+	m_type_v2 = (GameObjectTypeInterface* const)GAMEOBJECT_TYPE_TREE_INFO;
+}
+
+inline void Tree::disable()
+{
+
+	m_type_v2 = (GameObjectTypeInterface* const)GAMEOBJECT_TYPE_TREE_INFO_DISABLED;
 }

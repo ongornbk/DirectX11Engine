@@ -47,10 +47,11 @@ void main(const int argc,char** const argv)
 //
 //
 //
-//	getchar();
-//	return;
 
-	MPManager::Initialize(1ull);
+	//getchar();
+	//return;
+
+	MPManager::Initialize(0ull);
 	GPUMemory::Initialize();
 
 

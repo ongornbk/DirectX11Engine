@@ -57,7 +57,7 @@ Unit::Unit() :
 	m_attack.active = false;
 	m_attack.m_atype = AttackType::ENUM_ATTACK_TYPE_MELEE;
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_UNIT;
+	m_type = GameObjectType::OBJECT_TYPE_UNIT;
 	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO;
 
 	m_tasks.SetOwner(this);
@@ -89,7 +89,8 @@ Unit::Unit(class Unit* const other) :
 	m_attack.range = other->GetAttack().range;
 	m_attack.active = other->GetAttack().active;
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_UNIT;
+	m_type = GameObjectType::OBJECT_TYPE_UNIT;
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO;
 
 	m_tasks.SetOwner(this);
 }
@@ -246,7 +247,7 @@ void Unit::Initialize(Unit* const other)
 
 	InitializeModel(other);
 	m_wanderingFlag = other->m_wanderingFlag;
-	m_type = other->m_type;
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO;
 	m_decayType = other->m_decayType;
 
 }
@@ -602,7 +603,7 @@ void Unit::Intersect(class GameObject* const other)
 					{
 						return;
 					}
-					if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
+					if (other->m_type_v2 == GAMEOBJECT_TYPE_UNIT_INFO)
 					{
 						class Unit* const otheru = (class Unit* const)other;
 						if (this->IsAttacking() || otheru->IsDead() || m_stop/* || ((class Unit*)other)->m_wanderingFlag == false*/|| (m_owner.get() == otheru->GetOwner().get()))
@@ -662,17 +663,6 @@ void Unit::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 DirectX::XMFLOAT3 Unit::GetVector() modern_except_state
 {
 	return m_floats[0];
-}
-
-float Unit::GetCollisionRadius() const modern_except_state
-{
-	return m_boundingSphere.Radius;
-}
-
-
-XMFLOAT3 Unit::GetPosition() const modern_except_state
-{
-	return m_boundingSphere.Center;
 }
 
 float Unit::GetSpeed() const modern_except_state
@@ -1540,7 +1530,7 @@ int32 Unit::isReleased() const modern_except_state
 const modern_Boolean Unit::CheckIfValid(Unit* const pointer)
 {
 	if (pointer)
-		if (pointer->m_type == GameObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (pointer->m_type_v2 == GAMEOBJECT_TYPE_UNIT_INFO)
 			return modern_true;
 	return modern_false;
 }

@@ -4,6 +4,7 @@
 #include "ActionErasePack4.h"
 #include "ActionErasePack2.h"
 #include "Timer.h"
+#include "IPP.h"
 
 Projectile::Projectile()
 {
@@ -19,7 +20,8 @@ Projectile::Projectile()
 
     XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
 
-    m_type = EObjectType::OBJECT_TYPE_PROJECTILE;
+    m_type = GameObjectType::OBJECT_TYPE_PROJECTILE;
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_PROJECTILE_INFO;
 }
 
 Projectile::~Projectile()
@@ -119,7 +121,7 @@ void Projectile::SetZ(float z)
 
 void Projectile::Release()
 {
-    m_flags.m_hide = true;
+    destroy();
 }
 
 int32 Projectile::isReleased() const modern_except_state
@@ -131,21 +133,27 @@ void Projectile::Intersect(GameObject* const other)
 {
     if (m_flags.m_hide == false)
     {
-        //other already guarded
-        if (other->m_type == EObjectType::OBJECT_TYPE_UNIT)
+
+        switch (other->m_type_v2->GetIntersectionWithProjectile())
+        {
+        case IntersectionWithProjectile::INTERSECTION_WITH_PROJECTILE_NONE:
+        {
+            break;
+        }
+        case IntersectionWithProjectile::INTERSECTION_WITH_PROJECTILE_HIT:
         {
             //owner not guarded
             class Unit* const owner = (class Unit* const)m_owner.get();
             class Unit* const target = (class Unit* const)other;
-            if (owner && owner != target&& owner->GetOwner().get() != target->GetOwner().get())
+            if (owner && owner != target && owner->GetOwner().get() != target->GetOwner().get())
             {
                 modern_shared_guard guard(owner);
-                
+
                 const float distance = modern_xfloat3_distance2(m_boundingSphere.Center, target->GetPosition());
                 const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
                 if (distance < (m_collision + target->GetCollisionRadius()))
                 {
-                   // struct modern_pack2* const pck2 = new struct modern_pack2(this, target);
+                    // struct modern_pack2* const pck2 = new struct modern_pack2(this, target);
 
                     auto ite = GLOBAL m_mp2.find(&m_object);
                     if (ite == GLOBAL m_mp2.end())
@@ -159,12 +167,12 @@ void Projectile::Intersect(GameObject* const other)
                         auto ddddd = (*ite).second->insert(target->GetNewHandlePtr());
                         if (ddddd.second)
                         {
-                           // class IAction* const action = new ActionErasePack2(pck2);
-                           // Timer::CreateExpiringTimer(action, 1.0f);
-                           // target->GetHit(owner);
-                           // target->DoDamage(owner);
-                           // Engine* const engine = Engine::GetEngine();
-                           // engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
+                            // class IAction* const action = new ActionErasePack2(pck2);
+                            // Timer::CreateExpiringTimer(action, 1.0f);
+                            // target->GetHit(owner);
+                            // target->DoDamage(owner);
+                            // Engine* const engine = Engine::GetEngine();
+                            // engine->PlaySound(L"impact_arrow", modern_clamp_reverse_div(soundDistance, 0.f, 1000.f) * 100.f);
                         }
                         else
                         {
@@ -181,7 +189,26 @@ void Projectile::Intersect(GameObject* const other)
 
                 }
             }
+            break;
+        }
+        case IntersectionWithProjectile::INTERSECTION_WITH_PROJECTILE_BLOCK:
+        {
+            //class Unit* const owner = (class Unit* const)m_owner.get();
+            if (other)
+            {
+                //modern_shared_guard guard(owner);
 
+                const float distance = modern_xfloat3_distance2(m_boundingSphere.Center, other->GetPosition());
+
+                //ipp::Console::Println(modern_string(other->m_type_v2->GetTypeName()) << modern_string(L" :: ") << modern_string(distance) << modern_string(L" : ") << modern_string(m_collision + other->GetCollisionRadius()), MODERN_CONSOLE_TEXT_COLOR::BLUE);
+                // const float soundDistance = modern_xfloat3_distance2(Camera::GetCurrentCamera()->GetPosition(), target->GetPosition());
+                if (distance < (m_collision + other->GetCollisionRadius()))
+                {
+                    destroy();
+                }
+            }
+            break;
+        }
         }
     }
 }
@@ -211,4 +238,10 @@ void Projectile::SetVector(const DirectX::XMFLOAT3& vec) modern_except_state
 DirectX::XMFLOAT3 Projectile::GetVector() modern_except_state
 {
     return m_boundingSphere.Center;
+}
+
+void Projectile::destroy()
+{
+    m_flags.m_hide = true;
+    m_flags.m_rendering = false;
 }

@@ -59,4 +59,8 @@ public:
 
 	void SetVector(const DirectX::XMFLOAT3& vec) modern_except_state override;
 	DirectX::XMFLOAT3 GetVector() modern_except_state override;
+
+protected:
+
+	void destroy() modern_except_state;
 };

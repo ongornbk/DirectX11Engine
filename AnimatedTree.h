@@ -1,16 +1,15 @@
 #pragma once
-#include "Sprite.h"
-#include "GameObject.h"
+
 #include "Global.h"
 #include "RenderHandle.h"
 #include "ColorFilter.h"
 #include "RegionC.h"
 
-class Tree : public GameObject, public ColorFilter
+class AnimatedTree : public GameObject, public ColorFilter
 {
 public:
-	Tree();
-	~Tree();
+	AnimatedTree();
+	~AnimatedTree();
 
 	void Initialize(
 		ID3D11Device* device,
@@ -21,22 +20,22 @@ public:
 		const float collision,
 		const XMFLOAT3 position
 	);
-	
-	_Use_decl_annotations_
-	void _fastcall Render(
-		struct ID3D11DeviceContext* const deviceContext,
-		const struct _In_ XMFLOAT4X4& viewMatrix,
-		const struct _In_ XMFLOAT4X4& projectionMatrix,
-		const struct ShaderPackage &shader
-	) override;
 
 	_Use_decl_annotations_
-	void _fastcall PreRender(
-		struct ID3D11DeviceContext* const deviceContext,
-		const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
-		const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
-		const struct ShaderPackage &shader
-	) override;
+		void _fastcall Render(
+			struct ID3D11DeviceContext* const deviceContext,
+			const struct _In_ XMFLOAT4X4& viewMatrix,
+			const struct _In_ XMFLOAT4X4& projectionMatrix,
+			const struct ShaderPackage& shader
+		) override;
+
+	_Use_decl_annotations_
+		void _fastcall PreRender(
+			struct ID3D11DeviceContext* const deviceContext,
+			const struct _In_ DirectX::XMFLOAT4X4& viewMatrix,
+			const struct _In_ DirectX::XMFLOAT4X4& projectionMatrix,
+			const struct ShaderPackage& shader
+		) override;
 	void Update(float dt) override;
 	void SetZ(float z = 0.0f) override;
 	void Release() override;
@@ -69,11 +68,25 @@ private:
 	float          m_size;
 	modern_Boolean m_stance;//Maybe enum class
 
-	Texture*       m_texture;
-	VertexBuffer*  m_vertexBuffer;
+	Texture* m_texture;
+	VertexBuffer* m_vertexBuffer;
+
+	float         m_previousSpeed;
+	float         m_rotations;
+	int32           m_stopped;
+	bool          m_stop;
+
+	float m_currentFrame;
+	float m_previousFrame;
+	float m_maxFrames;
+
+
+	float         m_animationSpeed;
+	float         m_currentSpeed;
+	float         m_framesPerSecond;
+	bool          m_isLooping;
 
 
 	inline void enable() modern_except_state;
 	inline void disable() modern_except_state;
 };
-

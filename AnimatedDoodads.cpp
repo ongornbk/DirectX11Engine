@@ -26,13 +26,15 @@ AnimatedDoodads::AnimatedDoodads()
 	m_currentFrame = 0.f;
 	m_stopped = false;
 	m_isLooping = true;
-	m_animationSpeed = 0.20f;
+	m_animationSpeed = 30.0f;
 	m_framesPerSecond = 1.0f;
 	m_currentSpeed = 0.0f;
 	m_previousSpeed = 0.f;
 	m_stop = false;
 	m_rotations = 1.0f;
 	m_size = 0.f;
+
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_ANIMATED_DOODADS_INFO;
 }
 
 
@@ -59,8 +61,8 @@ void AnimatedDoodads::Initialize(
 
 
 	m_vertexBuffer = new class VertexBuffer();
-	float sizexy[2] = { m_size,m_size };
-	(void)m_vertexBuffer->Initialize(device, shader, sizexy, true);
+	float sizexy[2] = { m_size,m_size};
+	(void)m_vertexBuffer->InitializeAnchorBottom(device, shader, sizexy, true);
 
 	if (paths != NULL)
 	{
@@ -74,7 +76,7 @@ void AnimatedDoodads::Initialize(
 	m_boundingSphere.Radius = collision;
 	m_boundingSphere.Center = position;
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_ANIMATED_DOODADS;
+	m_type = GameObjectType::OBJECT_TYPE_ANIMATED_DOODADS;
 }
 
 void AnimatedDoodads::Render(
@@ -86,6 +88,7 @@ void AnimatedDoodads::Render(
 {
 	if (m_flags.m_rendering)
 	{
+		shader.BeginStandard();
 		shader.SetShaderParameters(deviceContext, m_texture->GetTexture());
 		shader.SetShaderParameters(deviceContext, m_worldMatrix, viewMatrix, projectionMatrix);
 		m_vertexBuffer->Render(deviceContext);
@@ -108,15 +111,15 @@ void AnimatedDoodads::Update(float dt)
 	m_flags.m_rendering = validateRendering(m_boundingSphere.Center);
 	if (m_flags.m_rendering)
 	{
-		if (m_currentFrame < 24.0f)
+		if (m_currentFrame < m_maxFrames)
 		{
-			m_currentSpeed += m_animationSpeed + dt;
+			m_currentSpeed += m_animationSpeed * dt;
 
 			if (m_currentSpeed > m_framesPerSecond)
 			{
 				m_currentFrame++;
-				m_currentSpeed = 0.0f;
-				if (m_currentFrame >= 24.0f)
+				m_currentSpeed = 0.f;
+				if (m_currentFrame >= m_maxFrames)
 				{
 					if (m_isLooping)
 					{
@@ -124,8 +127,6 @@ void AnimatedDoodads::Update(float dt)
 					}
 					else
 					{
-						m_stop = false;
-						m_isLooping = true;
 						m_currentFrame = 0.0f;
 						m_previousFrame = -1.0f;
 					}
@@ -133,6 +134,8 @@ void AnimatedDoodads::Update(float dt)
 
 			}
 		}
+
+
 		if (m_currentFrame == m_previousFrame) return;
 		XMStoreFloat4x4(&m_worldMatrix, XMMatrixTranslation(m_boundingSphere.Center.x, m_boundingSphere.Center.y + (m_size / 1.5f), m_boundingSphere.Center.z - (m_size / 1.5f)));
 	}
@@ -142,16 +145,16 @@ void AnimatedDoodads::Update(float dt)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	SpriteVertexType* vertices = m_vertexBuffer->GetVertices();
 
-	vertices[0].uv.x = m_currentFrame / 24.0f;
+	vertices[0].uv.x = m_currentFrame / m_maxFrames;
 	vertices[0].uv.y = 1.0f;
 
-	vertices[1].uv.x = m_currentFrame / 24.0f;
+	vertices[1].uv.x = m_currentFrame / m_maxFrames;
 	vertices[1].uv.y = 0.0f;
 
-	vertices[2].uv.x = (m_currentFrame + 1.0f) / 24.0f;
+	vertices[2].uv.x = (m_currentFrame + 1.0f) / m_maxFrames;
 	vertices[2].uv.y = 0.0f;
 
-	vertices[3].uv.x = (m_currentFrame + 1.0f) / 24.0f;
+	vertices[3].uv.x = (m_currentFrame + 1.0f) / m_maxFrames;
 	vertices[3].uv.y = 1.0f;
 
 
@@ -231,5 +234,5 @@ DirectX::XMFLOAT3 AnimatedDoodads::GetVector() modern_except_state
 
 void AnimatedDoodads::SetNumberOfFrames(float frames)
 {
-	m_maxFrames = frames;
+	m_maxFrames = modern_max(1.f,frames);
 }

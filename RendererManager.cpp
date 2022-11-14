@@ -795,11 +795,16 @@ void RendererManager::Render(
 				//mpm->weak_push(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
 			 //	  mpm->weak_push(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
 			//	  mpm->weak_push(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
-				pack->pack(new TaskUpdateInterface_v0(m_gameUI, dt));
-				pack->pack(new TaskUpdateInterface_v0(m_damage, dt));
-				pack->pack(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
-				pack->pack(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
-				pack->pack(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
+				//pack->pack(new TaskUpdateInterface_v0(m_gameUI, dt));
+				//pack->pack(new TaskUpdateInterface_v0(m_damage, dt));
+				//pack->pack(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
+				//pack->pack(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
+				//pack->pack(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
+				mpm->push(new TaskUpdateInterface_v0(m_gameUI, dt));
+				mpm->push(new TaskUpdateInterface_v0(m_damage, dt));
+				mpm->push(new TaskUpdateInterface_v1(m_exp, m_focus, dt));
+				mpm->push(new TaskUpdateInterface_v2(m_healthGlobe, m_focus, dt));
+				mpm->push(new TaskUpdateInterface_v3(m_manaGlobe, m_focus, dt));
 				break;
 			}
 			}
@@ -810,21 +815,27 @@ void RendererManager::Render(
 				//mpm->weak_push(new TaskUpdateInterface_v4(m_bmapText));
 		     	//mpm->weak_push(new TaskUpdateInterface_v4(m_objectsText));
 			  //  mpm->weak_push(new TaskUpdateInterface_v4(m_timersText));
-				pack->pack(new TaskUpdateInterface_v4(m_fpsText));
-				pack->pack(new TaskUpdateInterface_v4(m_bmapText));
-				pack->pack(new TaskUpdateInterface_v4(m_objectsText));
-				pack->pack(new TaskUpdateInterface_v4(m_timersText));
-				pack->pack(new TaskUpdateInterface_v4(m_heroPositionX));
-				pack->pack(new TaskUpdateInterface_v4(m_heroPositionY));
+				//pack->pack(new TaskUpdateInterface_v4(m_fpsText));
+				//pack->pack(new TaskUpdateInterface_v4(m_bmapText));
+				//pack->pack(new TaskUpdateInterface_v4(m_objectsText));
+				//pack->pack(new TaskUpdateInterface_v4(m_timersText));
+				//pack->pack(new TaskUpdateInterface_v4(m_heroPositionX));
+				//pack->pack(new TaskUpdateInterface_v4(m_heroPositionY));
+				mpm->push(new TaskUpdateInterface_v4(m_fpsText));
+				mpm->push(new TaskUpdateInterface_v4(m_bmapText));
+				mpm->push(new TaskUpdateInterface_v4(m_objectsText));
+				mpm->push(new TaskUpdateInterface_v4(m_timersText));
+				mpm->push(new TaskUpdateInterface_v4(m_heroPositionX));
+				mpm->push(new TaskUpdateInterface_v4(m_heroPositionY));
 			}
 
 			//mpm->weak_push(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
 		//	mpm->weak_push(new TaskUpdateInterface_v0(m_selectStatusBorder, dt));
 
-			pack->pack(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
-			pack->pack(new TaskUpdateInterface_v0(m_selectStatusBorder, dt));
+			mpm->push(new TaskUpdateInterface_v5(m_selectStatus, struct DirectX::XMFLOAT3(0.f, 500.f, 0.f), dt));
+			mpm->push(new TaskUpdateInterface_v0(m_selectStatusBorder, dt));
 
-			mpm->push(pack);
+			//mpm->push(*pack);
 
 		//	mpm->finalize_weak_pushing();
 		// 
@@ -1011,7 +1022,7 @@ void RendererManager::Render(
 
 	void RendererManager::Sort()
 	{
-		if (m_collision)
+		//if (m_collision)
 		{
 			for (int32_t i = 0; i < enum_cast<int32_t>(RenderLayerType::COUNT); i++)
 			{

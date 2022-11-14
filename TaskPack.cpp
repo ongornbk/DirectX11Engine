@@ -19,7 +19,7 @@ void TaskPack::execute()
 	}
 }
 
-void TaskPack::pack(ITask* const task)
+void TaskPack::pack(class modern_task* const task)
 {
 	m_tasks.push_back(task);
 }

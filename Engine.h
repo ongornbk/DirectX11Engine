@@ -21,6 +21,7 @@
 #include "modern/modern_framelock.h"
 #include "modern/modern_thread_pool.h"
 #include "modern/modern_mqueue.h"
+#include "modern/modern_console.h"
 
 class RendererManager;
 class FrameWork;
@@ -33,6 +34,7 @@ class Engine
 	class modern_framelock m_updateLock;
 	class modern_framelock m_renderLock;
 	class modern_framelock m_collisionLock;
+	class modern_console   m_console;
 public:
 	~Engine(void);
 

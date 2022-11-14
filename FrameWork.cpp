@@ -89,20 +89,26 @@ void FrameWork::SetComponent(GameComponent* gameComponent)
 	Engine::GetEngine()->SetGameComponent(gameComponent);
 }
 
+HINSTANCE FrameWork::GetHInstance()
+{
+	return m_hInstance;
+}
+
 bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int height)
 {
 	ShowCursor(false);
 	WNDCLASSEX wc;
 	m_applicationName = windowTitle;
 	m_hInstance = GetModuleHandle(NULL);
+	m_icon = LoadIcon(m_hInstance, MAKEINTRESOURCE("favicon.ico"));
 
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC | CS_DROPSHADOW;
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = m_hInstance;
-	wc.hIcon = LoadIcon(NULL,"favicon.ico");
-	wc.hIconSm = wc.hIcon;
+	wc.hIcon = m_icon;
+	wc.hIconSm = m_icon;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName = NULL;
@@ -136,11 +142,11 @@ bool FrameWork::CreateDXWindow(char* windowTitle, int x, int y, int width, int h
 		screenHeight = height;
 	}
 
-	DWORD nStyle = WS_BORDER;
-	DWORD extStyle = WS_EX_APPWINDOW;
+	DWORD nStyle = WS_OVERLAPPEDWINDOW;
+	DWORD extStyle = 0;
 
 	m_hwnd = CreateWindowEx(extStyle, windowTitle, windowTitle,nStyle,x,y,screenWidth,screenHeight,NULL,NULL,m_hInstance,NULL);
-	SetWindowLong(m_hwnd, GWL_STYLE, WS_BORDER);
+	//SetWindowLong(m_hwnd, GWL_STYLE, WS_CAPTION);
 
 	if (m_hwnd == NULL)
 	{
@@ -178,18 +184,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 	
 	switch (message)
 	{
-	//case WM_COMMAND:
-	//{
-	//	switch (LOWORD(wParam))
-	//	{
-	//	case Menu::MenuEvents::MENU_EXIT:
-	//	{
-			//PostQuitMessage(WM_COMMAND);
-			//break;
-	//	}
-	//	}
-	//	break;
-//	}
+	case WM_CREATE:
+	{
+		//SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(NULL, "favicon.ico"));
+		break;
+	}
+
 	case WM_QUIT:
 		if (Instance)
 		{
@@ -209,10 +209,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lPar
 		if (fullscreen)
 		{
 			MoveWindow(hwnd, 0, 0, 1920, 1080, TRUE);
+			//Input* input = Engine::GetEngine()->GetInput();
+		//	if (Instance && input)
+		//	{
+		//		input->Refresh(Instance->GetHInstance(), hwnd, 1920, 1080);
+		//	}
 		}
 		else
 		{
 			MoveWindow(hwnd, 0, 0, 640, 480, TRUE);
+		//	Input* input = Engine::GetEngine()->GetInput();
+		//	if (Instance && input)
+		//	{
+		//		input->Refresh(Instance->GetHInstance(), hwnd, 640, 480);
+		//	}
 		}
 		break;
 	}

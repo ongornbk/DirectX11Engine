@@ -2,6 +2,8 @@
 #include "UserInterface.h"
 #include "LUAManager.h"
 #include "Options.h"
+#include "IPP.h"
+#include "modern/modern_types.h"
 
 InterfaceSliderBehavior::InterfaceSliderBehavior(Interface* const owner) :
 	m_owner(owner), m_checked(0)
@@ -60,7 +62,7 @@ void InterfaceSliderBehavior::OnClick()
 			{
 				modern_handle opth;
 				opth.make_handle(Options::GetInstance());
-				volatile Options* const options = dynamic_cast<volatile Options* const>(opth.get());
+				class Options* const options = (class Options* const)(opth.get());
 				if (options)
 				{
 					modern_guard g(options);
@@ -68,8 +70,22 @@ void InterfaceSliderBehavior::OnClick()
 					UserInterface::GetMousePosition(mousePosition[0], mousePosition[1]);
 					m_button->SetOffset(DirectX::XMFLOAT3{ mousePosition[0],0.f,0.f });
 					options->options[m_key] = m_checked;
-					m_key;
 					
+					//modern_as_percentage distanceA = modern_abs((m_owner->m_box.Center.x - m_owner->m_box.Extents.x) - mousePosition[0]);
+					//modern_as_percentage percent = mousePosition[0];
+					float left = m_owner->m_box.Center.x -9.f - (m_owner->m_box.Extents.x - 58.f);
+					float right = m_owner->m_box.Center.x -9.f + (m_owner->m_box.Extents.x - 58.f);
+					float mouse = mousePosition[0];
+					float width = m_owner->m_width;
+					float internal_width = modern_abs(left - right);
+					float percentage = (mouse + (m_owner->m_box.Extents.x - 58.f)) / internal_width * 100.f;
+
+					ipp::Console::Println(modern_string(modern_variable_name(left)) << modern_string(L": ") << modern_string(left),MODERN_CONSOLE_TEXT_COLOR::BLUE);
+					ipp::Console::Println(modern_string(modern_variable_name(right)) << modern_string(L": ") << modern_string(right), MODERN_CONSOLE_TEXT_COLOR::BLUE);
+					ipp::Console::Println(modern_string(modern_variable_name(mouse)) << modern_string(L": ") << modern_string(mouse), MODERN_CONSOLE_TEXT_COLOR::BLUE);
+					ipp::Console::Println(modern_string(modern_variable_name(width)) << modern_string(L": ") << modern_string(width), MODERN_CONSOLE_TEXT_COLOR::BLUE);
+					ipp::Console::Println(modern_string(modern_variable_name(internal_width)) << modern_string(L": ") << modern_string(internal_width), MODERN_CONSOLE_TEXT_COLOR::BLUE);
+					ipp::Console::Println(modern_string(modern_variable_name(percentage)) << modern_string(L": ") << modern_string(percentage), MODERN_CONSOLE_TEXT_COLOR::BLUE);
 				}
 			}
 
@@ -81,7 +97,7 @@ void InterfaceSliderBehavior::Bind(const modern_cstring& option)
 {
 	modern_handle opth;
 	opth.make_handle(Options::GetInstance());
-	volatile Options* const options = dynamic_cast<volatile Options* const>(opth.get());
+	class Options* const options = (class Options* const)(opth.get());
 	if (options)
 	{
 		modern_shared_guard g(options);

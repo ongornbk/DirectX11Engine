@@ -96,6 +96,26 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 	return true;
 }
 
+bool Input::Refresh(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight)
+{
+	if (hInstance && hwnd)
+	{
+
+		Unacquire(m_mouse);
+		Unacquire(m_keyboard);
+		if (m_directInput)
+		{
+			(void)m_directInput->Release();
+			m_directInput = NULL;
+		}
+		return Initialize(hInstance, hwnd, screenWidth, screenHeight);
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool __cdecl Input::Update()
 {
 	memcpy(m_prevKeys, m_keys, sizeof(bool)*s_NumKeys);

@@ -9,7 +9,9 @@ RenderAgent::RenderAgent()
     m_flags.m_selectable = false;
     m_flags.m_rendering = true;
 
-    m_type = EObjectType::OBJECT_TYPE_RENDER_AGENT;
+    m_type = GameObjectType::OBJECT_TYPE_RENDER_AGENT;
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_GAMEOBJECT_INFO;
+
 
     m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
 }

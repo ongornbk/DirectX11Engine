@@ -1,10 +1,10 @@
 #pragma once
-#include "ITask.h"
+#include "modern/modern_task.h"
 class TaskBarrier :
-    public ITask
+    public modern_task
 {
 private:
-    std::atomic<int64_t> m_barrier;
+   // std::atomic<int64_t> m_barrier;
 public:
     TaskBarrier();
     ~TaskBarrier();

@@ -11,12 +11,11 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 
 modern is a trademark of ongornbk@gmail.com.
 */
+#pragma once
 
 class modern_task
 {
 public:
 	virtual ~modern_task() {};
 	virtual void execute() = 0;
-
-	uint8_t* index;
 };

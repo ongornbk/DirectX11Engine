@@ -47,7 +47,7 @@ void InterfaceCheckboxBehavior::OnClick()
 			{
 				modern_handle opth;
 				opth.make_handle(Options::GetInstance());
-				volatile Options* const options = dynamic_cast<volatile Options* const>(opth.get());
+				class Options* const options = (class Options* const)(opth.get());
 				if (options)
 				{
 					m_checked = !m_checked;

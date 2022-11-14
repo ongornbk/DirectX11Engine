@@ -2,7 +2,7 @@
 
 void Shadow::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, WCHAR* paths, const float size, const float collision, const DirectX::XMFLOAT3 position, GameObject* const parent)
 {
-	m_type = GameObject::EObjectType::OBJECT_TYPE_SHADOW;
+	m_type = GameObjectType::OBJECT_TYPE_SHADOW;
 }
 
 void _fastcall Shadow::Render(ID3D11DeviceContext* const deviceContext, const XMFLOAT4X4& viewMatrix, const XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)

@@ -15,9 +15,11 @@ RegionAgent::RegionAgent()
     m_flags.m_selectable = false;
     m_flags.m_rendering = false;
 
-    m_type = EObjectType::OBJECT_TYPE_REGION_AGENT;
+    m_type = GameObjectType::OBJECT_TYPE_REGION_AGENT;
 
     m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
+
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_AGENT_INFO;
 }
 
 RegionAgent::~RegionAgent()

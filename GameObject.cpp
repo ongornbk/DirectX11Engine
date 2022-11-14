@@ -29,6 +29,16 @@ volatile modern_handle& GameObject::GetHandle() volatile
     return m_object;
 }
 
+const DirectX::XMFLOAT3& __vectorcall GameObject::GetPosition()
+{
+    return m_boundingSphere.Center;
+}
+
+const float GameObject::GetCollisionRadius() const
+{
+    return m_boundingSphere.Radius;
+}
+
 void GameObject::safe_remove() modern_except_state
 {
     class ActionExecuteActionArray* const def_actions_array = new class ActionExecuteActionArray();

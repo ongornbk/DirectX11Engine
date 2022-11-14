@@ -1,11 +1,5 @@
-#pragma once
-#include "modern_def.h"
-#include "modern_class.h"
-#include "modern_guard_status.h"
-
-
 /*
-Copyright(C) < 02.06.2020 > ongornbk@gmail.com
+Copyright(C) < 10.16.2022 > ongornbk@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this softwareand associated documentation files(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and /or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions :
 
@@ -18,20 +12,49 @@ Except as contained in this notice, the name of the ongornbk@gmail.com shall not
 modern is a trademark of ongornbk@gmail.com.
 */
 
+#include "modern_string.h"
 
-class modern_shared_guard
+const inline bool modern_isdigit(const wchar_t ch)
 {
-#ifdef MODERN_GUARDING_ENABLED
-	volatile std::atomic<uint64_t>* m_lock;
-#endif MODERN_GUARDING_ENABLED
-public:
+	return (ch >= L'0' && ch <= L'9');
+}
 
-	modern_shared_guard() = delete;
-	modern_shared_guard(class modern_shared_guard& guard) = delete;
-	_stdcall modern_shared_guard(struct modern_class* const object) modern_except_state;
-	_stdcall modern_shared_guard(volatile struct modern_class* const object) modern_except_state;
-	_stdcall modern_shared_guard(const struct modern_class* const object) modern_except_state;
-	_stdcall modern_shared_guard(std::atomic<uint64_t>& lock) modern_except_state;
-	_stdcall ~modern_shared_guard() modern_except_state;
-};
+const inline int8_t modern_toint8(const wchar_t ch)
+{
+	return (int8_t)(ch - L'0');
+}
 
+const inline int16_t modern_toint16(const wchar_t ch)
+{
+	return (int16_t)(ch - L'0');
+}
+
+const inline int32_t modern_toint32(const wchar_t ch)
+{
+	return (int32_t)(ch - L'0');
+}
+
+const inline int64_t modern_toint64(const wchar_t ch)
+{
+	return (int64_t)(ch - L'0');
+}
+
+const inline uint8_t modern_touint8(const wchar_t ch)
+{
+	return (uint8_t)(ch - L'0');
+}
+
+const inline uint16_t modern_touint16(const wchar_t ch)
+{
+	return (uint16_t)(ch - L'0');
+}
+
+const inline uint32_t modern_touint32(const wchar_t ch)
+{
+	return (uint32_t)(ch - L'0');
+}
+
+const inline uint64_t modern_touint64(const wchar_t ch)
+{
+	return (uint64_t)(ch - L'0');
+}

@@ -75,8 +75,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\LIBRARY\boost_1_76_0;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\LIBRARY\LIB;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\MSI\source\repos\folly;C:\LIBRARY\mysql-5.7.35-winx64\include;C:\LIBRARY\boost_1_76_0;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\LIBRARY\mysql-5.7.35-winx64\lib;C:\LIBRARY\LIB;D:\sdks\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\bin\x64\</OutDir>
     <TargetName>Legion</TargetName>
   </PropertyGroup>
@@ -163,7 +163,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_CONSOLE;_WIN32_WINNT=0x0601;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0601;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -177,7 +177,7 @@
       <IntelJCCErratum>false</IntelJCCErratum>
       <CallingConvention>Cdecl</CallingConvention>
       <AssemblerOutput>NoListing</AssemblerOutput>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <ControlFlowGuard>false</ControlFlowGuard>
       <SmallerTypeCheck>false</SmallerTypeCheck>
@@ -243,7 +243,9 @@
     <ClInclude Include="AgentIntersectStance.h" />
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="AndCondition.h" />
+    <ClInclude Include="AnimatedBanner.h" />
     <ClInclude Include="AnimatedDoodads.h" />
+    <ClInclude Include="AnimatedTree.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="AttackTarget.h" />
     <ClInclude Include="AttackType.h" />
@@ -267,6 +269,7 @@
     <ClInclude Include="ColorFilter.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="compilation_header.h" />
+    <ClInclude Include="CompileTimeEnumManager.h" />
     <ClInclude Include="ConditionFactory.h" />
     <ClInclude Include="ConditionTimer.h" />
     <ClInclude Include="ConstBooleanVariable.h" />
@@ -310,6 +313,8 @@
     <ClInclude Include="FuzzyTimer.h" />
     <ClInclude Include="GameChat.h" />
     <ClInclude Include="GameComponent.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectType.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="game_math.h" />
     <ClInclude Include="GarbageCollector.h" />
@@ -390,6 +395,7 @@
     <ClInclude Include="modern\modern_condition_variable.h" />
     <ClInclude Include="modern\modern_console.h" />
     <ClInclude Include="modern\modern_cstring.h" />
+    <ClInclude Include="modern\modern_database_connection_details.h" />
     <ClInclude Include="modern\modern_def.h" />
     <ClInclude Include="modern\modern_element.h" />
     <ClInclude Include="modern\modern_exception.h" />
@@ -420,6 +426,7 @@
     <ClInclude Include="modern\modern_thread.h" />
     <ClInclude Include="modern\modern_thread_pool.h" />
     <ClInclude Include="modern\modern_timer.h" />
+    <ClInclude Include="modern\modern_types.h" />
     <ClInclude Include="modern\modern_unique.h" />
     <ClInclude Include="modern\modern_vector.h" />
     <ClInclude Include="modern\modern_weak.h" />
@@ -582,7 +589,9 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="AndCondition.cpp" />
+    <ClCompile Include="AnimatedBanner.cpp" />
     <ClCompile Include="AnimatedDoodads.cpp" />
+    <ClCompile Include="AnimatedTree.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="AttackTarget.cpp" />
     <ClCompile Include="BasicParameter.cpp" />
@@ -598,6 +607,7 @@
     <ClCompile Include="BooleanVariableUnitIsSelected.cpp" />
     <ClCompile Include="CFunctionVoid.cpp" />
     <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="CompileTimeEnumManager.cpp" />
     <ClCompile Include="ConditionFactory.cpp" />
     <ClCompile Include="ConditionTimer.cpp" />
     <ClCompile Include="ConstBooleanVariable.cpp" />
@@ -634,6 +644,7 @@
     <ClCompile Include="FuzzyExpiringTimer.cpp" />
     <ClCompile Include="FuzzyTimer.cpp" />
     <ClCompile Include="GameChat.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="game_math.cpp" />
     <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
@@ -715,12 +726,12 @@
     <ClCompile Include="modern\modern_queue.cpp" />
     <ClCompile Include="modern\modern_shared_guard.cpp" />
     <ClCompile Include="modern\modern_string.cpp" />
-    <ClCompile Include="modern\modern_string_view.cpp" />
     <ClCompile Include="modern\modern_thread_pool.cpp" />
     <ClCompile Include="modern\modern_timer.cpp" />
     <ClCompile Include="modern\modern_vector.cpp" />
     <ClCompile Include="MPManager.cpp" />
     <ClCompile Include="MultiSound.cpp" />
+    <ClCompile Include="MySQLManager.cpp" />
     <ClCompile Include="NorCondition.cpp" />
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="ObjectConditionEquals.cpp" />
@@ -734,8 +745,6 @@
     <ClCompile Include="PointerParameter.cpp" />
     <ClCompile Include="PositionC.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="PTaskGCClear.cpp" />
-    <ClCompile Include="PTaskRender.cpp" />
     <ClCompile Include="RectOfCollision.cpp" />
     <ClCompile Include="RectOfCollisionAgentFirst.cpp" />
     <ClCompile Include="RectOfCollisionAgentSecond.cpp" />
@@ -747,7 +756,6 @@
     <ClCompile Include="RegionPointObject.cpp" />
     <ClCompile Include="RenderAgent.cpp" />
     <ClCompile Include="RenderAgentParent.cpp" />
-    <ClCompile Include="RenderContainer.cpp" />
     <ClCompile Include="RenderContainerVector.cpp" />
     <ClCompile Include="RendererManager.cpp" />
     <ClCompile Include="RenderHandle.cpp" />
@@ -818,11 +826,13 @@
     <None Include="DeleteArrayTrash.inl" />
     <None Include="GarbageCollector.inl" />
     <None Include="modern\modern_math.inl" />
+    <None Include="modern\modern_string.inl" />
     <None Include="modern\modern_xmath.inl" />
     <None Include="resource.rc" />
     <None Include="x64\Release\bin\settings\interface.ini" />
     <None Include="x64\Release\bin\settings\settings.file" />
     <None Include="x64\Release\bin\settings\tile.file" />
+    <None Include="x64\Release\bin\x64\lua\core\AnimatedDoodads.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Behavior.lua" />
     <None Include="x64\Release\bin\x64\lua\core\ButtonBehavior.lua" />
     <None Include="x64\Release\bin\x64\lua\core\Camera.lua" />

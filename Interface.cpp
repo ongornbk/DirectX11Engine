@@ -20,6 +20,8 @@ Interface::Interface() : ColorFilter(1.f,1.f,1.f,1.f),m_scale(1.f,1.f),m_width(0
 	m_box.Extents = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_INTERFACE_INFO;
 }
 
 Interface::~Interface()
@@ -130,7 +132,7 @@ void Interface::Initialize(
 	//m_boundingSphere.Center.x += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 	//m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_INTERFACE;
+	m_type = GameObjectType::OBJECT_TYPE_INTERFACE;
 
 	
 }

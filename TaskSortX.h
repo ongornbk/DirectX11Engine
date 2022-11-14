@@ -1,9 +1,9 @@
 #pragma once
 #include "modern/modern_array.h"
-#include "ITask.h"
+#include "modern/modern_task.h"
 
 class TaskSortX :
-    public ITask
+    public modern_task
 {
     class modern_array<class GameObject*>* m_arr;
 public:

@@ -1,11 +1,11 @@
 #pragma once
-#include "ITask.h"
+#include "modern/modern_task.h"
 #include "modern/modern_array.h"
 
 class TaskPack :
-    public ITask
+    public modern_task
 {
-    class modern_array<class ITask*> m_tasks;
+    class modern_array<class modern_task*> m_tasks;
 
 public:
     TaskPack();
@@ -13,6 +13,6 @@ public:
 
     void execute() override;
 
-    void pack(class ITask* const task);//Reverse order
+    void pack(class modern_task* const task);//Reverse order
 };
 

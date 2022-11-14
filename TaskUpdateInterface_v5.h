@@ -1,9 +1,9 @@
 #pragma once
-#include "ITask.h"
+#include "modern/modern_task.h"
 #include "modern/modern_handle.h"
 #include "modern/modern_xmath.h"
 
-class TaskUpdateInterface_v5 : public ITask
+class TaskUpdateInterface_v5 : public modern_task
 {
     class modern_handle m_interface;
     struct DirectX::XMFLOAT3 m_offset;

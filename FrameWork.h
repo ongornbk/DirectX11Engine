@@ -19,6 +19,8 @@ public:
 	void Run();
 	void SetComponent(GameComponent* component);
 
+	HINSTANCE GetHInstance();
+
 protected:
 private:
 	bool CreateDXWindow(char* windowTitle, int x, int y, int width, int height);
@@ -27,5 +29,6 @@ private:
 	HWND      m_hwnd;
 	Menu*     m_menu;
 	HINSTANCE m_hInstance;
+	HICON     m_icon;
 	HDC       m_hDC;
 };

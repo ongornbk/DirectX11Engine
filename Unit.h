@@ -100,9 +100,6 @@ public:
 	void SetTask(class Task* const task);
 	void GiveTask(class Task* const task);
 
-	float    GetCollisionRadius() const modern_except_state;
-
-	DirectX::XMFLOAT3 GetPosition() const modern_except_state;
 	float    GetSpeed() const modern_except_state;
 	float GetZ() const modern_except_state;
 	float GetNumberOfRotations() const modern_except_state;

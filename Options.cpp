@@ -14,6 +14,12 @@ Options::Options()
         this->option_ShowFPS = A->option_ShowFPS;
         this->option_Sound = A->option_Sound;
     }
+    else
+    {
+        this->option_null = modern_false;
+        this->option_ShowFPS = modern_true;
+        this->option_Sound = modern_false;
+    }
     m_activeOptions.make_handle(this->m_object);
 }
 

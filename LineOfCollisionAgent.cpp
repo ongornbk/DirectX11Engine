@@ -15,9 +15,11 @@ LineOfCollisionAgent::LineOfCollisionAgent() : m_intersectStance(AgentIntersectS
     m_flags.m_selectable = false;
     m_flags.m_rendering = false;
 
-    m_type = EObjectType::OBJECT_TYPE_LINE_COLLISION_AGENT;
+    m_type = GameObjectType::OBJECT_TYPE_LINE_COLLISION_AGENT;
 
     m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
+
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_GAMEOBJECT_INFO;
 }
 
 LineOfCollisionAgent::~LineOfCollisionAgent()
@@ -59,7 +61,7 @@ void LineOfCollisionAgent::Update(float dt)
         {
             switch (unit->m_type)
             {
-            case EObjectType::OBJECT_TYPE_UNIT:
+            case GameObjectType::OBJECT_TYPE_UNIT:
             {
                 //unit->m_flags.m_pushable = false;
                 //unit->m_flags.m_collided = true;

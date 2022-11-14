@@ -15,8 +15,8 @@ RectOfCollisionAgentFirst::RectOfCollisionAgentFirst() : m_intersectStance(Agent
     m_flags.m_selectable = false;
     m_flags.m_rendering = false;
 
-    m_type = EObjectType::OBJECT_TYPE_RECT_COLLISION_AGENT;
-
+    m_type = GameObjectType::OBJECT_TYPE_RECT_COLLISION_AGENT;
+    m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_GAMEOBJECT_INFO;
     m_managementType = ObjectManagementType::OBJECT_MANAGEMENT_DISABLED;
 }
 
@@ -56,7 +56,7 @@ void RectOfCollisionAgentFirst::Update(float dt)
        {
            switch (unit->m_type)
            {
-           case EObjectType::OBJECT_TYPE_UNIT:
+           case GameObjectType::OBJECT_TYPE_UNIT:
            {
    
                 unit->GoBack();

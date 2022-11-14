@@ -23,6 +23,8 @@ Doodads::Doodads() : ColorFilter(1.f, 1.f, 1.f, 1.f)
 	m_destroyed = false;
 
 	XMStoreFloat4x4(&m_worldMatrix, XMMatrixIdentity());
+
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_DOODADS_INFO;
 }
 
 Doodads::~Doodads()
@@ -66,7 +68,7 @@ void Doodads::Initialize(
 	m_boundingSphere.Center.y += ((((float)rand()) / (float)RAND_MAX) * 2.0f) - 1.0f;
 
 
-	m_type = GameObject::EObjectType::OBJECT_TYPE_DOODADS;
+	m_type = GameObjectType::OBJECT_TYPE_DOODADS;
 
 	
 

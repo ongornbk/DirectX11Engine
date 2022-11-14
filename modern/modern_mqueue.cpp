@@ -47,6 +47,7 @@ void* const modern_mqueue::front() const modern_except_state
 void* const modern_mqueue::pop()
 {
 #ifdef MODERN_MQUEUE_LOCK_ATOMIC
+	m_queueSize--;
 	m_size.fetch_sub(1l);
 #else
 	m_size.fetch_sub(1l);
@@ -62,6 +63,7 @@ void modern_mqueue::push(void* const element)
 {
 #ifdef MODERN_MQUEUE_LOCK_ATOMIC
 	m_size.fetch_add(1l);
+	m_queueSize++;
 #else
 	m_size.fetch_add(1l);
 	std::unique_lock<std::mutex> m_lck(m_mtx);
@@ -76,20 +78,46 @@ void modern_mqueue::push(void* const element)
 
 }
 
+const modern_Boolean modern_mqueue::consume(modern_task*& item)
+{
+	modern_guard g(this);
+
+	if (m_queueSize.load() == 0ull) {
+		return modern_false;
+	}
+
+	item = reinterpret_cast<modern_task*>(m_queue.front());
+	m_queue.pop();
+	m_queueSize--;
+	return modern_true;
+}
+
+void modern_mqueue::produce(modern_task*&& item)
+{
+	modern_guard g(this);
+	m_queue.push(item);
+	m_queueSize++;
+}
+
 void modern_mqueue::barrier() const modern_thread_safe modern_except_state
 {
 
-#ifdef MODERN_MQUEUE_LOCK_ATOMIC
-	while (m_size.load(std::memory_order::memory_order_seq_cst) > 0l)
+//#ifdef MODERN_MQUEUE_LOCK_ATOMIC
+//	while (m_size.load(std::memory_order::memory_order_seq_cst) > 0l)
+//	{
+//		_Thrd_yield();
+//	}
+//#else
+//	//m_cv.wait(m_mtx);
+//	//m_cv.wait
+//	while (m_size.load(std::memory_order::memory_order_relaxed) > 0l)
+//	{
+//		_Thrd_yield();
+//	}
+//#endif // MODERN_MQUEUE_LOCK_ATOMIC
+
+	while (m_queueSize.load())
 	{
-		_Thrd_yield();
+
 	}
-#else
-	//m_cv.wait(m_mtx);
-	//m_cv.wait
-	while (m_size.load(std::memory_order::memory_order_relaxed) > 0l)
-	{
-		_Thrd_yield();
-	}
-#endif // MODERN_MQUEUE_LOCK_ATOMIC
 }

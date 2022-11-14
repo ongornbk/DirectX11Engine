@@ -1,8 +1,8 @@
 #pragma once
-#include "ITask.h"
+#include "modern/modern_task.h"
 #include "modern/modern_handle.h"
 
-class TaskUpdateInterface_v0 : public ITask
+class TaskUpdateInterface_v0 : public modern_task
 {
     class modern_handle m_interface;
     const float m_dt;

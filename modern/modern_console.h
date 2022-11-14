@@ -15,10 +15,13 @@ modern is a trademark of ongornbk@gmail.com.
 #pragma once
 #include "modern_def.h"
 #include "modern_string.h"
+#include "modern_class.h"
 
-class modern_console
+class modern_console : public modern_class
 {
 	modern_string m_title;
 public:
+	modern_console();
+
 	void SetTitle(const class modern_string& title) modern_except_state;
 };

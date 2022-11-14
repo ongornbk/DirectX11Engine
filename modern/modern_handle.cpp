@@ -145,6 +145,7 @@ void modern_handle::make_handle(volatile class modern_handle& diff) volatile
 
 void modern_handle::Release() const
 {
+	if(m_object)
 	m_object[0] = nullptr;
 }
 

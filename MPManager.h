@@ -2,14 +2,16 @@
 #include "modern/modern_thread_pool.h"
 #include "modern/modern_mqueue.h"
 #include "modern/modern_shared.h"
-#include "ITask.h"
+#include "modern/modern_task.h"
+
+#include <folly/ProducerConsumerQueue.h>
 
 class MPManager
 {
 	MPManager() = delete;
 public:
 	class modern_thread_pool* m_pool;
-	class modern_mqueue*      m_queue;
+	struct folly::ProducerConsumerQueue<modern_task*>      m_queue;
 
 	class modern_mqueue_handle* m_tempHandle;//Not a real handle just guard
 
@@ -20,13 +22,9 @@ public:
 	static void Release();
 	static class MPManager* const Get() modern_except_state;
 
-	void begin_weak_pushing() modern_except_state;
-	void weak_push(class ITask* const task);
-	void push(class ITask* const task);
+	void push(class modern_task* task);
 	void barrier() modern_except_state;
-	void finalize_weak_pushing() modern_except_state;
-	void increment() modern_except_state;
-	void decrement() modern_except_state;
+
 };
 
 

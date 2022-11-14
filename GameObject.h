@@ -9,6 +9,7 @@
 #include "ObjectFlags.h"
 #include "CompileTimeEnumManager.h"
 #include "modern/modern_class.h"
+#include "GameObjectType.h"
 #include <DirectXCollision.h>
 
 class GameObject : public modern_class
@@ -60,25 +61,7 @@ public:
 	
 	struct GameObjectTypeInterface* m_type_v2;
 
-	enum class EObjectType
-	{
-		OBJECT_TYPE_UNIT,
-		OBJECT_TYPE_DOODADS,
-		OBJECT_TYPE_ANIMATED_DOODADS,
-		OBJECT_TYPE_TREE,
-		OBJECT_TYPE_COLLISION_BOX,
-		OBJECT_TYPE_SPECIAL_EFFECT,
-		OBJECT_TYPE_REGION_POINT,
-		OBJECT_TYPE_SHADOW,
-		OBJECT_TYPE_AGENT,
-		OBJECT_TYPE_INTERFACE,
-		OBJECT_TYPE_PROJECTILE,
-		OBJECT_TYPE_LINE_COLLISION_AGENT,
-		OBJECT_TYPE_RECT_COLLISION_AGENT,
-		OBJECT_TYPE_NPC,
-		OBJECT_TYPE_REGION_AGENT,
-		OBJECT_TYPE_RENDER_AGENT
-	}m_type;
+	enum class GameObjectType m_type;
 
 	class GameObject* const GetClosestObject() const modern_except_state;
 
@@ -86,6 +69,9 @@ public:
 	modern_handle* const GetHandlePtr();
 	modern_handle* const GetNewHandlePtr();
 	volatile modern_handle& GetHandle() volatile;
+
+	const virtual struct DirectX::XMFLOAT3& __vectorcall GetPosition() modern_except_state;
+	const virtual float GetCollisionRadius() const modern_except_state;
 
 protected:
 	void safe_remove() modern_except_state;

@@ -2,6 +2,7 @@
 #include "modern_def.h"
 #include "modern_memory.h"
 #include "modern_queue.h"
+#include "modern_task.h"
 #include "modern_mqueue_handle.h"
 #include "modern_condition_variable.h"
 
@@ -31,12 +32,13 @@ class modern_mqueue
 #endif // MODERN_MQUEUE_LOCK_ATOMIC
 {
 	class modern_queue m_queue;
+//volatile size_t m_queueSize = 0ull;
 #ifdef MODERN_MQUEUE_LOCK_MUTEX
 mutable modern_condition_variable m_cv;
 mutable std::mutex m_mtx;
-mutable std::atomic<int32_t> m_size;
+mutable std::atomic<int32_t> m_queueSize;
 #endif // MODERN_MQUEUE_LOCK_MUTEX
-
+mutable std::atomic<size_t> m_queueSize;
 public:
 
 	modern_mqueue();
@@ -45,6 +47,8 @@ public:
 
 	class modern_mqueue_handle* const modern_mqueue::obtain_pointer();
 	[[nodiscard]]class modern_mqueue_handle&& obtain();//nodiscard!
+	const modern_Boolean consume(modern_task*& const item);
+	void produce(modern_task*&& item);
 
 #ifdef MODERN_MQUEUE_LOCK_ATOMIC
 	mutable std::atomic<int32_t> m_size;
@@ -59,6 +63,8 @@ private:
 	void* const pop();
 	
 	void push(void* const element);
+
+
 
 public:
 

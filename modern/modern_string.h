@@ -18,19 +18,20 @@ modern is a trademark of ongornbk@gmail.com.
 #include "modern_shared.h"
 #include "modern_pair.h"
 #include "modern_weak.h"
+#include "modern_types.h"
 
 class modern_exception;
 class modern_cstring;
 
-[[nodiscard]] const bool     modern_isdigit(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const int8_t   modern_toint8(const wchar_t ch)     modern_except_state;
-[[nodiscard]] const int16_t  modern_toint16(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const int32_t  modern_toint32(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const int64_t  modern_toint64(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const uint8_t  modern_touint8(const wchar_t ch)     modern_except_state;
-[[nodiscard]] const uint16_t modern_touint16(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const uint32_t modern_touint32(const wchar_t ch)    modern_except_state;
-[[nodiscard]] const uint64_t modern_touint64(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline bool     modern_isdigit(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline int8_t   modern_toint8(const wchar_t ch)     modern_except_state;
+[[nodiscard]] const inline int16_t  modern_toint16(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline int32_t  modern_toint32(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline int64_t  modern_toint64(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline uint8_t  modern_touint8(const wchar_t ch)     modern_except_state;
+[[nodiscard]] const inline uint16_t modern_touint16(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline uint32_t modern_touint32(const wchar_t ch)    modern_except_state;
+[[nodiscard]] const inline uint64_t modern_touint64(const wchar_t ch)    modern_except_state;
 
 class modern_string
 {
@@ -49,6 +50,7 @@ public:
 	modern_string(const int32_t num1, wchar_t* text, int32_t num2);
 	modern_string(const uint32_t number);
 	explicit modern_string(const char character);
+	explicit modern_string(const float number);
 	modern_string(modern_exception& exception);
 	~modern_string();
 
@@ -87,8 +89,16 @@ public:
 
 private:
 
-	void push_zero() const modern_except_state;
+	void initialize();
+	void reverse();
+	void push_end_zero() const modern_except_state;
+	void push_minus() const modern_except_state;
+	void push_percentage() const modern_except_state;
+	void push_float32() const modern_except_state;
+	void from_int32(const int32_t number);
 
 };
 
+#define modern_string_end L'\0'
 
+#include "modern_string.inl"

@@ -14,7 +14,12 @@ modern is a trademark of ongornbk@gmail.com.
 
 #pragma once
 #include "modern_console.h"
+#include "modern_guard.h"
 
+modern_console::modern_console()
+{
+	AllocConsole();
+}
 
 void modern_console::SetTitle(const modern_string& title)
 {

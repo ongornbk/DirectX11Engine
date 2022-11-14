@@ -833,7 +833,15 @@ namespace lua_callback
 		return 0;																													 //^^
 																																	 //^^
 	}																																 //^^
-																																	 //^^
+				
+																																	//^^
+	// 1: Object Pointer
+	// 2: Texture Name
+	// 3: Size
+	// 4: Collision
+	// 5: X
+	// 6: Y
+	// 7: Z
 	static int32 InitializeDoodads(
 		struct lua_State* const state
 	) modern_except_state
@@ -869,6 +877,13 @@ namespace lua_callback
 
 	}
 
+	// 1: Object Pointer
+// 2: Texture Name
+// 3: Size
+// 4: Collision
+// 5: X
+// 6: Y
+// 7: Z
 	static int32 InitializeAnimatedDoodads(
 		struct lua_State* const state
 	) modern_except_state
@@ -1628,7 +1643,7 @@ namespace lua_callback
 		
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		const enum class AttackType type0 = enum_cast<const enum class AttackType>(lua_tointeger(state,2));
-		if (unit0->m_type != GameObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (unit0->m_type_v2 != GAMEOBJECT_TYPE_UNIT_INFO)
 			return 0;
 
 		unit0->SetAttackType(type0);
@@ -1643,7 +1658,7 @@ namespace lua_callback
 
 		class Unit* const unit0 = (class Unit* const)lua_tointeger(state, 1);
 		const float range0 = (float)lua_tonumber(state, 2);
-		if (unit0->m_type != GameObject::EObjectType::OBJECT_TYPE_UNIT)
+		if (unit0->m_type_v2 != GAMEOBJECT_TYPE_UNIT_INFO)
 			return 0;
 
 		unit0->SetAttackRange(range0);

@@ -19,6 +19,7 @@ public:
 	};
 
 	bool Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight);
+	bool Refresh(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight);
 	bool Update();
 	void Release();
 

@@ -1,9 +1,9 @@
 #pragma once
-#include "ITask.h"
+#include "modern/modern_task.h"
 #include "modern/modern_string.h"
 
 class TaskPrintlnString :
-    public ITask
+    public modern_task
 {
     enum MODERN_CONSOLE_TEXT_COLOR m_color;
     class modern_string m_str;

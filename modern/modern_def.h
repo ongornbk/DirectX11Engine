@@ -36,6 +36,8 @@
 #define MODERN_MQUEUE_LOCK_MUTEX
 #endif // !MODERN_MQUEUE_LOCK_ATOMIC
 
+#define MODERN_GUARDING_ENABLED
+
 
 #define modern_thread_safe
 

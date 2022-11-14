@@ -556,7 +556,7 @@ bool _cdecl __sort__SortByY::operator()(class GameObject * const A,class GameObj
 	if (Acollided || Bcollided)
 		return Ax > Bx;
 
-	const float Sradius = Aradius + Bradius;
+	const float Sradius = modern_max(Aradius,Bradius);
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
 	const float Sdistance = XMVector2Length({Xdistance,Ydistance}).m128_f32[0];
@@ -658,7 +658,7 @@ bool _cdecl __sort__SortByX::operator()(class GameObject * const A,class GameObj
 	//if (Acollided || Bcollided)
 	//	return Ay > By;
 
-	const float Sradius = Aradius + Bradius;
+	const float Sradius = modern_max(Aradius, Bradius);
 	const float Xdistance = Ax - Bx;
 	const float Ydistance = Ay - By;
 	const float Sdistance = XMVector2Length({ Xdistance,Ydistance }).m128_f32[0];
@@ -852,14 +852,14 @@ void _vectorcall QSortByYV(class modern_array<class GameObject*> vec[2][MAP_DIVI
 
 		for (int32 i = 0; i < MAP_DIVISION; ++i)
 		{
-			class TaskPack* const pack = new TaskPack();
+			//class TaskPack* const pack = new TaskPack();
 			if (yta[i])
 			{
 				//mpm->weak_push(
 				//sortPyVTP(vec[1][i]);
-				pack->pack(new TaskSortY(&vec[1][i]));
+				mpm->push(new TaskSortY(&vec[1][i]));
 			}
-			mpm->push(pack);
+			//mpm->push(pack);
 		}
 		//MPManager::Get()->barrier();
 //#pragma omp barrier
@@ -924,13 +924,13 @@ void _vectorcall QSortByXV(class modern_array<class GameObject*> vec[2][MAP_DIVI
 
 	for (int32 i = 0; i < MAP_DIVISION; ++i)
 	{
-		class TaskPack* const pack = new TaskPack();
+		//class TaskPack* const pack = new TaskPack();
 		if (xta[i])
 		{
 			//mpm->weak_push(new TaskSortX(&vec[0][i])); //sortPxVTP(vec[0][i]);
-			pack->pack(new TaskSortX(&vec[0][i])); //sortPxVTP(vec[0][i]);
+			mpm->push(new TaskSortX(&vec[0][i])); //sortPxVTP(vec[0][i]);
 		}
-		mpm->push(pack);
+		//mpm->push(pack);
 	}
 
 	//mpm->finalize_weak_pushing();

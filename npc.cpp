@@ -13,7 +13,8 @@ npc::npc() :
 	m_framesPerSecond(1.f),
 	m_currentSpeed(0.f)
 {
-	m_type = EObjectType::OBJECT_TYPE_NPC;
+	m_type = GameObjectType::OBJECT_TYPE_NPC;
+	m_type_v2 = (struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_GAMEOBJECT_INFO;
 }
 
 void _fastcall npc::Render(ID3D11DeviceContext* const deviceContext, const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projectionMatrix, const ShaderPackage& shader)

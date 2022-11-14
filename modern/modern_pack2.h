@@ -69,7 +69,7 @@ struct modern_pack2
 //	}
 //};
 
-struct modern_pack2_less_second : public std::binary_function<struct modern_pack2, struct  modern_pack2, bool> {
+struct modern_pack2_less_second{
 	bool operator()(const modern_pack2& lhs, const modern_pack2& rhs) const
 	{
 		return lhs.second->get() < rhs.second->get();
