@@ -1,7 +1,8 @@
 #include "ActionChangeLayer.h"
 #include "ActionPushObject.h"
 #include "Timer.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 ActionChangeLayer::ActionChangeLayer(class GameObject* const object, const enum class RenderLayerType layer)
 {

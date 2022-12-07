@@ -1,7 +1,6 @@
 #pragma once
-#include "modern/modern_guard.h"
-#include "modern/modern_shared_guard.h"
-#include "modern/modern_handle.h"
+
+#include <modern__.h>
 
 #include <d3d11_1.h>
 #include <directxmath.h>

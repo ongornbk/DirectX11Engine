@@ -1,7 +1,8 @@
 #pragma once
 #include <list>
 #include <stack>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class Unit;
 

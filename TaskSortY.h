@@ -1,6 +1,6 @@
 #pragma once
-#include "modern/modern_array.h"
-#include "modern/modern_task.h"
+
+#include <modern__.h>
 
 class TaskSortY :
     public modern_task

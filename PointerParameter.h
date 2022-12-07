@@ -1,6 +1,5 @@
 #pragma once
 #include "IParameter.h"
-#include "modern/modern_def.h"
 
 class PointerParameter : public IParameter
 {

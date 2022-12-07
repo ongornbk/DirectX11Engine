@@ -1,5 +1,6 @@
 #include "ActionNotifyBlock.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 ActionNotifyBlock::ActionNotifyBlock(class Unit* const object,class GameObject* const other)
 {

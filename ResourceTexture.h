@@ -1,9 +1,6 @@
 #pragma once
 #include "Texture.h"
 
-#include "modern/modern_string.h"
-#include "modern/modern_string_view.h"
-
 class ResourceTexture
 {
 public:

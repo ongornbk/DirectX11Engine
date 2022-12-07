@@ -1,12 +1,12 @@
 #pragma once
-#include "modern/modern_cstring.h"
-#include "modern/modern_handle.h"
+
+#include <modern__.h>
 
 class IBindableBehavior
 {
 protected:
 	int64_t m_key = (-1);
 public:
-	virtual void Bind(const modern_cstring& option) = 0;
+	virtual void Bind(const class modern_cstring& option) = 0;
 };
 

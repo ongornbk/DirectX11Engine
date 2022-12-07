@@ -60,6 +60,7 @@
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\..\..\..\..\WORK\modern\[modern]\[modern].vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -306,7 +307,6 @@
     <ClInclude Include="FloatVariableUnitDistanceFromCamera.h" />
     <ClInclude Include="FloatVariableUnitGetRotation.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="FrameLocker.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="FreeTrash.h" />
     <ClInclude Include="FuzzyExpiringTimer.h" />
@@ -385,52 +385,6 @@
     <ClInclude Include="ModelStance.h" />
     <ClInclude Include="ModelStanceNPC.h" />
     <ClInclude Include="ModelVariant.h" />
-    <ClInclude Include="modern\modern.h" />
-    <ClInclude Include="modern\modern_array.h" />
-    <ClInclude Include="modern\modern_array_iterator.h" />
-    <ClInclude Include="modern\modern_barray.h" />
-    <ClInclude Include="modern\modern_bpair.h" />
-    <ClInclude Include="modern\modern_class.h" />
-    <ClInclude Include="modern\modern_class_view.h" />
-    <ClInclude Include="modern\modern_condition_variable.h" />
-    <ClInclude Include="modern\modern_console.h" />
-    <ClInclude Include="modern\modern_cstring.h" />
-    <ClInclude Include="modern\modern_database_connection_details.h" />
-    <ClInclude Include="modern\modern_def.h" />
-    <ClInclude Include="modern\modern_element.h" />
-    <ClInclude Include="modern\modern_exception.h" />
-    <ClInclude Include="modern\modern_file.h" />
-    <ClInclude Include="modern\modern_file_permits.h" />
-    <ClInclude Include="modern\modern_framelock.h" />
-    <ClInclude Include="modern\modern_guard.h" />
-    <ClInclude Include="modern\modern_guard_status.h" />
-    <ClInclude Include="modern\modern_handle.h" />
-    <ClInclude Include="modern\modern_ibmap.h" />
-    <ClInclude Include="modern\modern_math.h" />
-    <ClInclude Include="modern\modern_memory.h" />
-    <ClInclude Include="modern\modern_minheap.h" />
-    <ClInclude Include="modern\modern_mqueue.h" />
-    <ClInclude Include="modern\modern_mqueue_handle.h" />
-    <ClInclude Include="modern\modern_node256.h" />
-    <ClInclude Include="modern\modern_pack2.h" />
-    <ClInclude Include="modern\modern_pack4.h" />
-    <ClInclude Include="modern\modern_pair.h" />
-    <ClInclude Include="modern\modern_queue.h" />
-    <ClInclude Include="modern\modern_shared.h" />
-    <ClInclude Include="modern\modern_shared_guard.h" />
-    <ClInclude Include="modern\modern_static_array.h" />
-    <ClInclude Include="modern\modern_string.h" />
-    <ClInclude Include="modern\modern_string_cast.h" />
-    <ClInclude Include="modern\modern_string_casting_type.h" />
-    <ClInclude Include="modern\modern_string_view.h" />
-    <ClInclude Include="modern\modern_thread.h" />
-    <ClInclude Include="modern\modern_thread_pool.h" />
-    <ClInclude Include="modern\modern_timer.h" />
-    <ClInclude Include="modern\modern_types.h" />
-    <ClInclude Include="modern\modern_unique.h" />
-    <ClInclude Include="modern\modern_vector.h" />
-    <ClInclude Include="modern\modern_weak.h" />
-    <ClInclude Include="modern\modern_xmath.h" />
     <ClInclude Include="IPP.h" />
     <ClInclude Include="IParameter.h" />
     <ClInclude Include="MPManager.h" />
@@ -639,7 +593,6 @@
     <ClCompile Include="FloatVariableDistanceBetweenObjects.cpp" />
     <ClCompile Include="FloatVariableUnitDistanceFromCamera.cpp" />
     <ClCompile Include="FloatVariableUnitGetRotation.cpp" />
-    <ClCompile Include="FrameLocker.cpp" />
     <ClCompile Include="FreeTrash.cpp" />
     <ClCompile Include="FuzzyExpiringTimer.cpp" />
     <ClCompile Include="FuzzyTimer.cpp" />
@@ -712,23 +665,6 @@
     <ClCompile Include="IParameter.cpp" />
     <ClCompile Include="MenuRendererManager.cpp" />
     <ClCompile Include="ModelVariant.cpp" />
-    <ClCompile Include="modern\modern_bpair.cpp" />
-    <ClCompile Include="modern\modern_class.cpp" />
-    <ClCompile Include="modern\modern_class_view.cpp" />
-    <ClCompile Include="modern\modern_console.cpp" />
-    <ClCompile Include="modern\modern_cstring.cpp" />
-    <ClCompile Include="modern\modern_file.cpp" />
-    <ClCompile Include="modern\modern_framelock.cpp" />
-    <ClCompile Include="modern\modern_guard.cpp" />
-    <ClCompile Include="modern\modern_handle.cpp" />
-    <ClCompile Include="modern\modern_mqueue.cpp" />
-    <ClCompile Include="modern\modern_mqueue_handle.cpp" />
-    <ClCompile Include="modern\modern_queue.cpp" />
-    <ClCompile Include="modern\modern_shared_guard.cpp" />
-    <ClCompile Include="modern\modern_string.cpp" />
-    <ClCompile Include="modern\modern_thread_pool.cpp" />
-    <ClCompile Include="modern\modern_timer.cpp" />
-    <ClCompile Include="modern\modern_vector.cpp" />
     <ClCompile Include="MPManager.cpp" />
     <ClCompile Include="MultiSound.cpp" />
     <ClCompile Include="MySQLManager.cpp" />
@@ -825,9 +761,6 @@
     <None Include="cpp.hint" />
     <None Include="DeleteArrayTrash.inl" />
     <None Include="GarbageCollector.inl" />
-    <None Include="modern\modern_math.inl" />
-    <None Include="modern\modern_string.inl" />
-    <None Include="modern\modern_xmath.inl" />
     <None Include="resource.rc" />
     <None Include="x64\Release\bin\settings\interface.ini" />
     <None Include="x64\Release\bin\settings\settings.file" />

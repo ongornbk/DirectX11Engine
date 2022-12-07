@@ -4,7 +4,6 @@
 #include "Doodads.h"
 #include "Tree.h"
 #include "Unit.h"
-#include "modern/modern.h"
 #include "game_math.h"
 #include <stack>
 //#include <forward_list>

@@ -1,6 +1,4 @@
 #pragma once
-#include "modern/modern_handle.h"
-#include "modern/modern_string.h"
 #include "Interface.h"
 #include "IAction.h"
 

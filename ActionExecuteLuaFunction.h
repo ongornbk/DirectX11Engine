@@ -2,7 +2,6 @@
 #pragma once
 #include "IAction.h"
 #include "LuaManager.h"
-#include "modern/modern_cstring.h"
 
 class ActionExecuteLuaFunction :
 	public IAction

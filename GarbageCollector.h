@@ -2,7 +2,6 @@
 #include "ITrash.h"
 #include "gdef.h"
 #include <deque>
-#include "modern/modern_array.h"
 #include "GameObject.h"
 
 class GarbageCollector

@@ -1,6 +1,5 @@
 #pragma once
 #include "IAction.h"
-#include "modern/modern_pack4.h"
 
 class ActionErasePack4 :
 	public IAction

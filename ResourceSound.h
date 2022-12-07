@@ -3,8 +3,6 @@
 #include "SingleSound.h"
 #include "SoundType.h"
 
-#include "modern/modern_string.h"
-
 class ResourceSound
 {
 public:

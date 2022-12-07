@@ -1,10 +1,6 @@
 #include "TaskQueue.h"
-#include "GlobalUtilities.h"
 #include "Unit.h"
 #include "GarbageCollector.h"
-#include "modern/modern.h"
-
-using::GlobalUtilities::random;
 
 struct DirectX::XMFLOAT3 _vectorcall RandomizeXMFLOAT3(DirectX::XMFLOAT3 object,const float x,const float y) modern_except_state
 {

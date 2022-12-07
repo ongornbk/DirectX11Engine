@@ -3,9 +3,6 @@
 #include "VariablesManager.h"
 #include "Doodads.h"
 #include "gdef.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_pack2.h"
-#include "modern/modern_pack4.h"
 #include <stack>
 #include <unordered_set>
 #include <set>

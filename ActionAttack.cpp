@@ -1,5 +1,7 @@
 #include "ActionAttack.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
+
 ActionAttack::ActionAttack(class Unit* const object,class Unit* const target)
 {
 	m_object.make_handle(object->GetHandle());

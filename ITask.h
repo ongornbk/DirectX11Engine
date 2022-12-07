@@ -1,5 +1,5 @@
 #pragma once
-#include "modern/modern_exception.h"
+#include <modern__.h>
 
 class modern_task
 {

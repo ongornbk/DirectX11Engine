@@ -1,7 +1,6 @@
 #pragma once
 #include "Texture.h"
 #include "ModelStance.h"
-#include "modern/modern_def.h"
 
 struct ModelVariant
 {

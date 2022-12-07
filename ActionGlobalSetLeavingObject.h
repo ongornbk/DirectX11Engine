@@ -2,8 +2,6 @@
 #include "IAction.h"
 #include "GameObject.h"
 #include "Global.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_class_view.h"
 
 class ActionGlobalSetLeavingObject :
 	public IAction

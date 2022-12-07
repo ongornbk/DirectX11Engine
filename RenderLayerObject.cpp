@@ -1,5 +1,4 @@
 #include "RenderLayerObject.h"
-#include "modern/modern_guard.h"
 #include "TaskObjectUpdate_v0.h"
 #include "TaskPack.h"
 #include "MPManager.h"

@@ -3,7 +3,6 @@
 #include "LUAManager.h"
 #include "Options.h"
 #include "IPP.h"
-#include "modern/modern_types.h"
 
 InterfaceSliderBehavior::InterfaceSliderBehavior(Interface* const owner) :
 	m_owner(owner), m_checked(0)

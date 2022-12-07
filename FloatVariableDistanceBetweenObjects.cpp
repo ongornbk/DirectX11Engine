@@ -1,6 +1,5 @@
 #include "FloatVariableDistanceBetweenObjects.h"
 #include "Unit.h"
-#include "modern/modern_xmath.h"
 
 
 FloatVariableDistanceBetweenObjects::FloatVariableDistanceBetweenObjects(GameObject* const A, GameObject* const B)

@@ -1,6 +1,6 @@
 #pragma once
-#include "modern/modern_task.h"
-#include "modern/modern_string.h"
+
+#include <modern__.h>
 
 class TaskPrintlnString :
     public modern_task

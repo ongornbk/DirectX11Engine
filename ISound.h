@@ -9,8 +9,7 @@
 #include <deque>
 #pragma comment(lib,"sfml-audio.lib")
 
-#include "modern/modern_string.h"
-#include "modern/modern_string_view.h"
+#include <modern__.h>
 
 class ISound
 {

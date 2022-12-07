@@ -1,5 +1,7 @@
 #include "ActionSetInterfaceBehavior.h"
 
+#include <modern__.h>
+
 ActionSetInterfaceBehavior::ActionSetInterfaceBehavior(modern_handle& inter, class IInterfaceBehavior* const behavior)
 {
 	m_interface.make_handle(inter);

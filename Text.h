@@ -1,11 +1,10 @@
 #pragma once
 #include "LetterSprite.h"
-#include "Vector.h"
 #include "GarbageCollector.h"
 #include "TextAlignment.h"
 #include <comdef.h>
-#include "modern/modern.h"
-#include "modern/modern_class.h"
+
+#include <modern__.h>
 
 using std::string;
 

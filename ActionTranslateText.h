@@ -1,8 +1,5 @@
 #pragma once
 #include "IAction.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_guard.h"
-#include "modern/modern_xmath.h"
 
 class ActionTranslateText :
 	public IAction

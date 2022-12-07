@@ -1,8 +1,6 @@
 #pragma once
 #include "ISound.h"
 
-#include "modern/modern_string.h"
-
 class SingleSound :
 	public ISound
 {

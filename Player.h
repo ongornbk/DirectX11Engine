@@ -2,8 +2,8 @@
 #include "PlayerController.h"
 #include "PlayerSlotStatus.h"
 #include "PlayerSlot.h"
-#include "modern/modern_memory.h"
-#include "modern/modern_class.h"
+
+#include <modern__.h>
 
 class Player : public modern_class
 {

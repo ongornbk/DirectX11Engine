@@ -2,9 +2,6 @@
 #include "IInterfaceBehavior.h"
 #include "IBindableBehavior.h"
 #include "Interface.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_guard.h"
-#include "modern/modern_shared_guard.h"
 
 class InterfaceSliderBehavior :
 	public IInterfaceBehavior,

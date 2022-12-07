@@ -6,6 +6,8 @@
 #include "IActionCondition.h"
 #include "Timer.h"
 
+#include <modern__.h>
+
 ActionExecuteActionArray::ActionExecuteActionArray()
 {
 }

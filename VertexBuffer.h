@@ -2,7 +2,8 @@
 #include "Shader.h"
 #include "Vertex.h"
 #include "ObjectAnchorType.h"
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class VertexBuffer
 {

@@ -1,8 +1,8 @@
 #pragma once
-#include "modern/modern_vector.h"
-#include "modern/modern_array.h"
 #include <string>
 #include "LuaManager.h"
+
+#include <modern__.h>
 
 enum class ENUM_EVENT_TYPE
 {

@@ -1,6 +1,7 @@
 #pragma once
-#include "modern/modern_def.h"
 #include "GameObjectType.h"
+
+#include <modern__.h>
 
 enum class IntersectionWithProjectile
 {

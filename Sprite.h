@@ -3,7 +3,8 @@
 #include "Texture.h"
 #include "TextureShader.h"
 #include "ColorFilter.h"
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class Sprite : public ColorFilter
 {

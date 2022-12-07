@@ -1,5 +1,4 @@
 #include "TaskUpdateInterface_v4.h"
-#include "modern/modern_guard.h"
 #include "Text.h"
 #include "Camera.h"
 

@@ -3,7 +3,6 @@
 #include "ActionExecuteActionArray.h"
 #include "ActionRemoveObject.h"
 #include "GPUMemory.h"
-#include "modern/modern_guard.h"
 #include "Timer.h"
 #include "IPP.h"
 

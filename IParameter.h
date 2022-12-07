@@ -1,6 +1,7 @@
 #pragma once
 #include "gdef.h"
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 enum class ParameterType
 {
@@ -16,6 +17,6 @@ protected:
 
 public:
 
-	virtual const ParameterType get_type() const modern_except_state = 0;
+	virtual const enum class ParameterType get_type() const modern_except_state = 0;
 };
 

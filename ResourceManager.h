@@ -2,7 +2,6 @@
 #include "ResourceShader.h"
 #include "ResourceTexture.h"
 #include "ResourceSound.h"
-#include "modern/modern.h"
 
 #include <iostream>
 #include <vector>

@@ -4,6 +4,8 @@
 #include "gdef.h"
 #include <DirectXCollision.h>
 
+#include <modern__.h>
+
 
 class Handle
 {

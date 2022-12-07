@@ -1,6 +1,6 @@
 #pragma once
-#include "modern/modern_task.h"
-#include "modern/modern_array.h"
+
+#include <modern__.h>
 
 class TaskPack :
     public modern_task

@@ -1,7 +1,6 @@
 #pragma once
-#include "modern/modern_class.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_cstring.h"
+
+#include <modern__.h>
 
 #define OPTIONS_LENGTH 3
 

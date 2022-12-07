@@ -1,5 +1,8 @@
 #include "ActionResetAttackDelay.h"
 #include "Unit.h"
+
+#include <modern__.h>
+
 ActionResetAttackDelay::ActionResetAttackDelay(const modern_handle& handle)
 {
 	m_object.make_handle(handle);

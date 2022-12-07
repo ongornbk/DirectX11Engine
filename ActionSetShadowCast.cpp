@@ -1,6 +1,6 @@
 #include "ActionSetShadowCast.h"
-#include "modern/modern_guard.h"
 
+#include <modern__.h>
 
 ActionSetShadowCast::ActionSetShadowCast(class GameObject* const object, bool shadow)
 {

@@ -1,5 +1,4 @@
 #include "BooleanVariableObjectIntersectsWithRegion.h"
-#include "modern/modern_shared_guard.h"
 #include "Region.h"
 #include "GameObject.h"
 

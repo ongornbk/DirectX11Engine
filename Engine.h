@@ -16,12 +16,8 @@
 #include "ThreadPool.h"
 #include "ActionMap.h"
 #include "EventManager.h"
-#include "modern/modern_shared.h"
-#include "modern/modern_timer.h"
-#include "modern/modern_framelock.h"
-#include "modern/modern_thread_pool.h"
-#include "modern/modern_mqueue.h"
-#include "modern/modern_console.h"
+
+#include <modern__.h>
 
 class RendererManager;
 class FrameWork;

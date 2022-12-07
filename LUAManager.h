@@ -1,6 +1,7 @@
 #pragma once
-#include "modern/modern_def.h"
 #include "compilation_header.h"
+
+#include <modern__.h>
 
 extern "C"
 {

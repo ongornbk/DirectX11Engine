@@ -1,5 +1,7 @@
 #include "ActionInitializeText.h"
 
+#include <modern__.h>
+
 ActionInitializeText::ActionInitializeText(class modern_handle& text, ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, TextFont* font, float size) :
     m_device(device),
     m_deviceContext(deviceContext),

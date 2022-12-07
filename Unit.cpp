@@ -18,7 +18,6 @@
 #include "ActionResetAttackDelay.h"
 #include "ActionAddAlpha.h"
 #include "ConditionFactory.h"
-#include "modern/modern.h"
 #include "Timer.h"
 #include "UnitTemplate.h"
 #include "Projectile.h"
@@ -27,7 +26,6 @@
 #include "EventManager.h"
 #include "CompileTimeEnumManager.h"
 #include "GPUMemory.h"
-#include "modern/modern_bpair.h"
 
 Unit::Unit() :
 	//GameObject((struct GameObjectTypeInterface*)GAMEOBJECT_TYPE_UNIT_INFO),

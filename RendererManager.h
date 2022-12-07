@@ -9,7 +9,6 @@
 #include "Interface.h"
 #include "RegionPointObject.h"
 #include "RenderContainerVector.h"
-#include "modern/modern_array.h"
 #include "RenderLayer.h"
 #include "ObjectFocusType.h"
 #include "Agent.h"

@@ -1,5 +1,6 @@
 #pragma once
-#include "modern/modern_class.h"
+
+#include <modern__.h>
 
 class GPUMemory : public modern_class
 {

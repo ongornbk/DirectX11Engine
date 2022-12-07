@@ -1,4 +1,7 @@
 #pragma once
+
+#include <modern__.h>
+
 class IFloatVariable
 {
 public:

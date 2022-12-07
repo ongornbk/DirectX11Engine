@@ -1,5 +1,7 @@
 #include "ActionGlobalSetLeavingObject.h"
 
+#include <modern__.h>
+
 ActionGlobalSetLeavingObject::ActionGlobalSetLeavingObject(class modern_handle& object)
 {
     m_object.make_handle(object);

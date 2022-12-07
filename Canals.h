@@ -4,7 +4,8 @@
 #include <map>
 #include <string>
 
-#include "modern/modern_string.h"
+#include <modern__.h>
+
 #pragma region
 using std::string;
 using std::map;

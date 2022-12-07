@@ -9,7 +9,7 @@
 
 #include "IPP.h"
 
-#include "modern/modern_string.h"
+#include <modern__.h>
 
 #pragma region
 using std::string;

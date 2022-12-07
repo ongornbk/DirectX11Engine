@@ -1,8 +1,6 @@
 #pragma once
 #include "IAction.h"
 #include "Text.h"
-#include "modern/modern_guard.h"
-#include "modern/modern_handle.h"
 
 class ActionInitializeText :
     public IAction

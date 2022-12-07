@@ -3,8 +3,8 @@
 #include <string>
 #include "WICTextureLoader.h"
 #include "DDSTextureLoader11.h"
-#include "modern/modern_string.h"
-#include "modern/modern_string_view.h"
+
+#include <modern__.h>
 
 using namespace std;
 

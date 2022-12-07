@@ -1,12 +1,12 @@
 #include "Task.h"
 #include "SettingsC.h"
-#include "modern/modern.h"
 #include "Unit.h"
 #include <cmath>
 
 #include "IPP.h"
 #include "UserInterfaceGame.h"
 
+#include <modern__.h>
 
 #define CONTINUE_TASK return true
 #define CLOSE_TASK return false

@@ -1,6 +1,8 @@
 
 #include "Allocator.h"
 
+
+
 Allocator::Allocator(size_t size, void* start)
 {
     _start = start;

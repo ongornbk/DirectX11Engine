@@ -1,7 +1,7 @@
 #pragma once
 #include "IBooleanVariable.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 class GameObject;
 

@@ -1,5 +1,6 @@
 #include "ActionKillUnit.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 ActionKillUnit::ActionKillUnit(Unit* const object)
 {

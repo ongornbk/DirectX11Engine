@@ -1,6 +1,7 @@
 #pragma once
 #include <typeinfo>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class ICondition
 {

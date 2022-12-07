@@ -1,5 +1,6 @@
 #include "ActionGoBack.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 ActionGoBack::ActionGoBack(Unit* const object)
 {

@@ -1,5 +1,7 @@
 #include "ActionInitializeInterface.h"
 
+#include <modern__.h>
+
 ActionInitializeInterface::ActionInitializeInterface(
     modern_handle& inter, ID3D11Device* const device,
     ID3D11DeviceContext* const deviceContext,

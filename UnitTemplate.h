@@ -1,5 +1,7 @@
 #pragma once
-#include "modern/modern.h"
+
+#include <modern__.h>
+
 class UnitTemplate
 {
 	UnitTemplate();

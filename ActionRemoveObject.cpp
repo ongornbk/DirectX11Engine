@@ -1,5 +1,6 @@
 #include "ActionRemoveObject.h"
-#include "modern/modern_guard.h"
+
+#include <modern__.h>
 
 ActionRemoveObject::ActionRemoveObject(class GameObject* const object)
 {

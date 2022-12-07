@@ -1,8 +1,6 @@
 #pragma once
-#include "modern/modern_thread_pool.h"
-#include "modern/modern_mqueue.h"
-#include "modern/modern_shared.h"
-#include "modern/modern_task.h"
+
+#include <modern__.h>
 
 #include <folly/ProducerConsumerQueue.h>
 

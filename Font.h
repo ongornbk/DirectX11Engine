@@ -1,9 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include "LetterSprite.h"
-#include "modern/modern_array.h"
 #include <string>
-#include "modern/modern_vector.h"
 
 
 

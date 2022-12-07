@@ -1,5 +1,4 @@
 #pragma once
-#include "modern/modern_handle.h"
 #include "ColorFilter.h"
 #include "GameObject.h"
 #include "IAction.h"

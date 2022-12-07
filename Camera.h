@@ -4,7 +4,8 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 using namespace DirectX;
 

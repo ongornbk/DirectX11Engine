@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 #define TILE_MAP_SIZE 256
 #define RENDER_CELLS_RANGE 1

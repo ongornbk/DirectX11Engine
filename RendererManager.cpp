@@ -21,7 +21,6 @@
 #include "ActionTranslateText.h"
 #include "ActionShowInterface.h"
 #include "ConditionFactory.h"
-#include "modern/modern_cstring.h"
 #include "Options.h"
 #include "ActionSetTextAlignment.h"
 #include "ActionInitializeInterface.h"

@@ -1,5 +1,7 @@
 #include "ActionShowInterface.h"
 
+#include <modern__.h>
+
 ActionShowInterface::ActionShowInterface(Interface* const inter, const modern_Boolean value)
 {
 	m_interface.make_handle(inter->GetHandle());

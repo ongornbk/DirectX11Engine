@@ -120,9 +120,6 @@
     <Filter Include="Legion\Core">
       <UniqueIdentifier>{7a71e6a5-29e9-47db-ab43-ee7a284b527c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Legion\Core\modern">
-      <UniqueIdentifier>{a7de36e7-8009-4d19-b46f-13e5da75e7b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Legion\Game\Models">
       <UniqueIdentifier>{47e910e1-730e-45fd-9316-5f772aec3e55}</UniqueIdentifier>
     </Filter>
@@ -510,39 +507,6 @@
     <ClInclude Include="UnitDefaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_xmath.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_weak.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_unique.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_string.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_pair.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_shared.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_memory.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_math.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_exception.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_def.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="RenderLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -603,15 +567,6 @@
     <ClInclude Include="LuaScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FrameLocker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_array.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_array_iterator.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectFocusType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -650,24 +605,6 @@
     </ClInclude>
     <ClInclude Include="TextAlignment.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_cstring.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_class.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_guard.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_guard_status.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_shared_guard.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_handle.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="DeleteObject.h">
       <Filter>Header Files</Filter>
@@ -894,35 +831,14 @@
     <ClInclude Include="InterfaceStatusBarBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_string_casting_type.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_string_cast.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="SortPair.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_timer.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ActionPushTimer.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionTreeSetStance.h">
       <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_vector.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_framelock.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_queue.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_element.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="LineOfCollision.h">
       <Filter>Header Files</Filter>
@@ -942,17 +858,11 @@
     <ClInclude Include="UserInterfaceState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_class_view.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="ModelVariant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelStanceNPC.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_bpair.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>
@@ -969,24 +879,6 @@
     <ClInclude Include="IRegionAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_ibmap.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_node256.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_minheap.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_pack4.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_pack2.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_barray.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="ErrorCondition.h">
       <Filter>Legion\Engine\Headers\Conditions\Error</Filter>
     </ClInclude>
@@ -998,9 +890,6 @@
     </ClInclude>
     <ClInclude Include="compilation_header.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_string_view.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader11.h">
       <Filter>Header Files</Filter>
@@ -1025,12 +914,6 @@
     </ClInclude>
     <ClInclude Include="PermanentFuzzyTimer.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_file.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_file_permits.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ActionAddAlpha.h">
       <Filter>Header Files\Actions\ColorFilter</Filter>
@@ -1107,18 +990,6 @@
     <ClInclude Include="ActionMap.h">
       <Filter>Header Files\Actions\Action</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_thread.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_mqueue.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_mqueue_handle.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_thread_pool.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="MPManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1149,20 +1020,11 @@
     <ClInclude Include="PlayerSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_console.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="TaskObjectUpdate_v0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_condition_variable.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="TaskPack.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_static_array.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="ActionExecuteLuaFunction.h">
       <Filter>Header Files\Actions\Lua</Filter>
@@ -1293,17 +1155,11 @@
     <ClInclude Include="GameObject.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="modern\modern_database_connection_details.h">
-      <Filter>Legion\Core\modern</Filter>
-    </ClInclude>
     <ClInclude Include="CompileTimeEnumManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectType.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modern\modern_types.h">
-      <Filter>Legion\Core\modern</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedTree.h">
       <Filter>Header Files</Filter>
@@ -1580,9 +1436,6 @@
     <ClCompile Include="UnitTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_string.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="InstantTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1754,9 +1607,6 @@
     <ClCompile Include="LuaScript.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FrameLocker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FloatVariableDistanceBetweenObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1811,21 +1661,6 @@
     <ClCompile Include="ActionSetInterfaceText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_cstring.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_class.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_guard.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_shared_guard.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_handle.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1874,20 +1709,8 @@
     <ClCompile Include="SortPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_timer.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="ActionTreeSetStance.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_vector.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_framelock.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_queue.cpp">
-      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files</Filter>
@@ -1910,14 +1733,8 @@
     <ClCompile Include="ActionSetInterfaceBehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_class_view.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="ModelVariant.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_bpair.cpp">
-      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="ActionNotifyBlock.cpp">
       <Filter>Source Files</Filter>
@@ -2018,9 +1835,6 @@
     <ClCompile Include="PermanentFuzzyTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_file.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="ActionShowInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2042,15 +1856,6 @@
     <ClCompile Include="ActionContinue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modern\modern_mqueue.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_mqueue_handle.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_thread_pool.cpp">
-      <Filter>Legion\Core\modern</Filter>
-    </ClCompile>
     <ClCompile Include="MPManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2071,9 +1876,6 @@
     </ClCompile>
     <ClCompile Include="TaskBarrier.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="modern\modern_console.cpp">
-      <Filter>Legion\Core\modern</Filter>
     </ClCompile>
     <ClCompile Include="GPUMemory.cpp">
       <Filter>Source Files</Filter>
@@ -2172,12 +1974,6 @@
     </None>
     <None Include="x64\Release\content\Textures\models\irrlicht.mod">
       <Filter>Legion\Game\Models</Filter>
-    </None>
-    <None Include="modern\modern_xmath.inl">
-      <Filter>Legion\Core\modern</Filter>
-    </None>
-    <None Include="modern\modern_math.inl">
-      <Filter>Legion\Core\modern</Filter>
     </None>
     <None Include="x64\Release\content\Textures\models\griswold.mod">
       <Filter>Legion\Game\Models</Filter>
@@ -2278,9 +2074,6 @@
     <None Include="cpp.hint" />
     <None Include="GarbageCollector.inl">
       <Filter>__TRASH__</Filter>
-    </None>
-    <None Include="modern\modern_string.inl">
-      <Filter>Legion\Core\modern</Filter>
     </None>
     <None Include="x64\Release\bin\x64\lua\core\AnimatedDoodads.lua">
       <Filter>Legion\Game\Lua\core</Filter>

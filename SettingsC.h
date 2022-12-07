@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
-#include "modern/modern_cstring.h"
+
+#include <modern__.h>
 
 
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "RenderLayer.h"
-#include "modern/modern_array.h"
 
 class RenderLayerShadow :
 	public RenderLayer

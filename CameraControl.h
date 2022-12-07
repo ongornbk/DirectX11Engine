@@ -1,7 +1,8 @@
 #pragma once
 #include "Camera.h"
 #include "Unit.h"
-#include "modern/modern_handle.h"
+
+#include <modern__.h>
 
 class CameraControl
 {

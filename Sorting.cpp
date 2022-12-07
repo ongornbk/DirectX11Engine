@@ -2,9 +2,7 @@
 #include "Defines.h"
 #include "Camera.h"
 #include "ThreadPool.h"
-#include "modern/modern_guard.h"
-#include "modern/modern_shared_guard.h"
-#include "modern/modern_vector.h"
+#include <modern__.h>
 #include "TaskSortX.h"
 #include "TaskSortY.h"
 #include "TaskPack.h"

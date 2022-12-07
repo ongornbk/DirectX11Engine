@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "RendererManager.h"
 #include "IPP.h"
-#include "modern/modern.h"
 #include "GPUMemory.h"
 #include <array>
 #include <fstream>

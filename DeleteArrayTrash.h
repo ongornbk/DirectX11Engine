@@ -1,6 +1,7 @@
 #pragma once
 #include "ITrash.h"
-#include "modern/modern_array.h"
+
+#include <modern__.h>
 
 template <class T>
 class DeleteArrayTrash : public ITrash

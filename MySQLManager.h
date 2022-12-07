@@ -1,6 +1,7 @@
 #pragma once
 #include <mysql.h>
-#include "modern/modern_database_connection_details.h"
+
+#include <modern__.h>
 
 
 

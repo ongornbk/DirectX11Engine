@@ -1,8 +1,6 @@
 #pragma once
 #include "IAction.h"
 #include "ColorFilter.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_guard.h"
 #include "GameObject.h"
 
 class ActionApplyColorFilter :

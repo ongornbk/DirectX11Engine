@@ -1,7 +1,8 @@
 #pragma once
 #include "Task.h"
-#include "modern/modern_queue.h"
 #include <list>
+
+#include <modern__.h>
 
 class TaskQueue
 {

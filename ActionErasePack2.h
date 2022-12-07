@@ -1,7 +1,6 @@
 #pragma once
 #include "IAction.h"
 #include "LuaManager.h"
-#include "modern/modern_pack2.h"
 
 class ActionErasePack2 :
 	public IAction

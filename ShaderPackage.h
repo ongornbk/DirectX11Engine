@@ -2,6 +2,8 @@
 #include "Shader.h"
 #include <mutex>
 
+#include <modern__.h>
+
 struct ShaderPackage
 {
 protected:

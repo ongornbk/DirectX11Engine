@@ -5,7 +5,6 @@
 #include "Texture.h"
 #include "VertexBuffer.h"
 #include "IInterfaceBehavior.h"
-#include "modern/modern_array.h"
 #include "Text.h"
 
 class Interface : public GameObject, public ColorFilter

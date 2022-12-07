@@ -1,6 +1,8 @@
 #include "ActionTranslateText.h"
 #include "Text.h"
 
+#include <modern__.h>
+
 ActionTranslateText::ActionTranslateText(class modern_handle& object, DirectX::XMFLOAT3 position)
 {
 	m_object.make_handle(object);

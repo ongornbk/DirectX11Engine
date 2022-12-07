@@ -2,6 +2,8 @@
 #include "ActionStance.h"
 #include "ActionBehavior.h"
 
+#include <modern__.h>
+
 class IAction
 {
 protected:

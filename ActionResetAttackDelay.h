@@ -1,9 +1,5 @@
 #pragma once
 #include "IAction.h"
-#include "IAttackOwner.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_guard.h"
-
 
 class ActionResetAttackDelay :
 	public IAction

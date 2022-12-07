@@ -1,5 +1,7 @@
 #include "ActionSetInterfaceOffset.h"
 
+#include <modern__.h>
+
 ActionSetInterfaceOffset::ActionSetInterfaceOffset(class Interface* const inter,DirectX::XMFLOAT3& offset)
 {
 	m_interface.make_handle(inter->GetHandle());

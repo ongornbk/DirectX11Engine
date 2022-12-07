@@ -1,8 +1,6 @@
 #pragma once
 #include "IAction.h"
 #include "Interface.h"
-#include "modern/modern_guard.h"
-#include "modern/modern_handle.h"
 
 class ActionSetInterfaceOffset :
     public IAction

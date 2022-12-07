@@ -6,8 +6,7 @@
 
 #include "gdef.h"
 
-#include "modern/modern_string.h"
-#include "modern/modern_string_view.h"
+#include <modern__.h>
 
 namespace ipp
 {

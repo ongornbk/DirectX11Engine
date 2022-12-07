@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "modern/modern.h"
 #include "game_math.h"
 #include "SortPair.h"
 #include <forward_list>

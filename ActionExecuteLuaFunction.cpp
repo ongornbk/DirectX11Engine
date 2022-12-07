@@ -1,5 +1,7 @@
 #include "ActionExecuteLuaFunction.h"
 
+#include <modern__.h>
+
 ActionExecuteLuaFunction::ActionExecuteLuaFunction(lua_State* const lua, modern_cstring& fooname)
 {
 	m_lua = lua;

@@ -1,6 +1,7 @@
 #pragma once
 #include "gdef.h"
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class Allocator
 {

@@ -14,10 +14,7 @@
 #include "ActionMessageFront.h"
 #include "GarbageCollector.h"
 #include "LUAManager.h"
-#include "modern/modern_vector.h"
-#include "modern/modern_bpair.h"
 #include "compilation_header.h"
-#include "modern/modern_thread.h"
 #include <map>
 #include <streambuf>
 #include <fstream>

@@ -1,7 +1,6 @@
 #include "FloatVariableUnitDistanceFromCamera.h"
 #include "Unit.h"
 #include "Camera.h"
-#include "modern/modern_xmath.h"
 #include <cassert>
 
 FloatVariableUnitDistanceFromCamera::FloatVariableUnitDistanceFromCamera(Unit* const __unit)

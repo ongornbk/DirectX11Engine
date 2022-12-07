@@ -3,7 +3,6 @@
 #include "Defines.h"
 #include "Vector.h"
 #include "ThreadPool.h"
-#include "modern/modern_guard.h"
 #include "Engine.h"
 #include <thread>
 

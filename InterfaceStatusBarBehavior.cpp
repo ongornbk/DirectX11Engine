@@ -5,7 +5,6 @@
 #include "LUAManager.h"
 #include "Options.h"
 #include "GPUMemory.h"
-#include "modern/modern_guard.h"
 
 InterfaceStatusBarBehavior::InterfaceStatusBarBehavior(Interface* const inter) :
 	m_owner(inter), m_status(1.f)

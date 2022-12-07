@@ -1,6 +1,5 @@
 #pragma once
 #include "IFloatVariable.h"
-#include "modern/modern_handle.h"
 
 class FloatVariableDistanceBetweenObjects :
 	public IFloatVariable

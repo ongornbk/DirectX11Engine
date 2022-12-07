@@ -8,7 +8,6 @@
 #include "ObjectAnchorType.h"
 #include "ObjectFlags.h"
 #include "CompileTimeEnumManager.h"
-#include "modern/modern_class.h"
 #include "GameObjectType.h"
 #include <DirectXCollision.h>
 

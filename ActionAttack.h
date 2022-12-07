@@ -1,7 +1,6 @@
 #pragma once
 #include "IAction.h"
 #include "Unit.h"
-#include "modern/modern_handle.h"
 
 class ActionAttack :
 	public IAction

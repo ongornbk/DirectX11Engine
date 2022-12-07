@@ -4,7 +4,6 @@
 #include "GlobalUtilities.h"
 #include "SettingsC.h"
 #include "MPManager.h"
-#include "modern/modern_system.h"
 #include <omp.h>
 
 LRESULT CALLBACK WndProc(HWND hwnd, uint32_t message, WPARAM wParam, LPARAM lParam);

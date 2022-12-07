@@ -1,7 +1,8 @@
 #pragma once
 #include "RenderLayerType.h"
 #include <combaseapi.h>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 interface RenderAgentParent
 {

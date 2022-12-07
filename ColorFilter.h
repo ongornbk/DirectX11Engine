@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
-#include "modern/modern_def.h"
+
+#include <modern__.h>
 
 class ColorFilter
 {

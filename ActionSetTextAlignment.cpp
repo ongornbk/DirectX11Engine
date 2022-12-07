@@ -1,6 +1,8 @@
 #include "ActionSetTextAlignment.h"
 #include "Text.h"
 
+#include <modern__.h>
+
 ActionSetTextAlignment::ActionSetTextAlignment(class modern_handle& text, const enum class TextAlignment alignment) : m_align(alignment)
 {
     m_text.make_handle(text);

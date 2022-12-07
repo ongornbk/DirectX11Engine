@@ -16,8 +16,6 @@
 #include "InterfaceButtonBehavior.h"
 #include "InterfaceCheckboxBehavior.h"
 #include "InterfaceSliderBehavior.h"
-#include "modern/modern.h"
-#include "modern/modern_class_view.h"
 #include "Timer.h"
 #include "MPManager.h"
 #include "PlayerManager.h"

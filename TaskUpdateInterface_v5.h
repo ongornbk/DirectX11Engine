@@ -1,7 +1,5 @@
 #pragma once
-#include "modern/modern_task.h"
-#include "modern/modern_handle.h"
-#include "modern/modern_xmath.h"
+#include <modern__.h>
 
 class TaskUpdateInterface_v5 : public modern_task
 {
